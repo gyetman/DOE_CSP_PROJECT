@@ -1,13 +1,14 @@
 #Created with SAM version 2017.9.5
+#Update pdll path according to platform
 import string, sys, struct, os
 from ctypes import *
 c_number = c_float # must be c_double or c_float depending on how defined in sscapi.h
 class PySSC:
 	def __init__(self):
 		if sys.platform == 'win32' or sys.platform == 'cygwin':
-			self.pdll = CDLL("D:/Columbia/Thesis/SAMProjects/Integration/ssc.dll") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dll")#("D:/Drive/Thesis/Github/DOE_CSP_PROJECT/SAM/ssc.dll") 
 		elif sys.platform == 'darwin':
-			self.pdll = CDLL("D:/Columbia/Thesis/SAMProjects/Integration/ssc.dylib") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dylib")#("D:/Columbia/Thesis/SAMProjects/Integration/ssc.dylib") 
 		elif sys.platform == 'linux2':
 			self.pdll = CDLL('D:/Columbia/Thesis/SAMProjects/Integration/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
 		else:
