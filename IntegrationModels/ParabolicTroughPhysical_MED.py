@@ -14,6 +14,7 @@ V1: - Integration by implementing Python classes for wrappers
 
 from PSA.Model_MED_PSA import medPsa as psaMed
 from SAM.SamCspParabolicTroughPhysical import samCspParabolicTroughPhysical as SamCsp
+import numpy as np
 
 sam = SamCsp()
 Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');

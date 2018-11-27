@@ -14,6 +14,7 @@ V1: - Integration by implementing Python classes for wrappers
 
 from PSA.Model_MED_PSA import medPsa as psaMed
 from SAM.SamCspLinearFresnelDirectSteam import samCspLinearFresnelDirectSteam as SamCsp
+import numpy as np
 
 #Initializing SAM Csp Modules
 sam = SamCsp()
@@ -21,14 +22,61 @@ Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');
 
 #Code for calculating Condenser temerature goes below
 Cond_temp = []
+Cond_temp_root2 = []
+
 print ('Condenser Pressure (year 1) = ')
 for i in Condenser_pressure:
-#    print (', ', i)
-    Cond_temp.append(i/200) #Enter equation here
+#   Coefficients for the equation to find out Condenser Temperature
+    coeff = [9.655*10**-4, -0.039, 4.426, -19.64, (1123.1 - i)]
+    temps = np.roots(coeff)
+    #Getting real roots
+    temps_real = temps.real[abs(temps.imag < 1e-5)] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
+    #Filtering for positive values
+    temps_yearly = temps_real[temps_real >= 0]
+    Cond_temp.append(temps_yearly) #Enter equation here
+    
+    #Making an array of the second real root as it seemed to model actual values better
+    Cond_temp_root2.append(temps_yearly[1])
+    
+    
+    #print(temps_yearly)
 #Condenser_pressure = sam.ssc.data_get_array(sam.data, b'T_sys_h');
+Condenser_temperature = np.asarray(Cond_temp)
+np.savetxt("CondTemp.csv", Condenser_temperature, delimiter = ",")
 print ('Field HTF temperature hot header outlet (year 1) = ')
 #for i in Condenser_pressure:
 #    print (i, ', ')
 sam.data_free()
 
-psa = psaMed()
+PerfRatio= [] 
+RecoveryRatio= []
+Xbn= [] 
+sA= []
+#By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
+for j in Cond_temp_root2:
+    psa = psaMed()
+    psa.Ts = j
+    psa.execute_module()
+    PerfRatio.append(psa.PR)
+    RecoveryRatio.append(psa.RR)
+    Xbn.append(psa.Xbn)
+    sA.append(psa.sA)
+    
+PR = np.asarray(PerfRatio)
+np.savetxt("PerfRatio.csv", PR, delimiter = ",")
+
+RR = np.asarray(RecoveryRatio)
+np.savetxt("RecRatio.csv", RR, delimiter = ",")
+
+Xbn_array = np.asarray(Xbn)
+np.savetxt("Xbn_array.csv", Xbn_array, delimiter = ",")
+
+sA_array = np.asarray(sA)
+np.savetxt("sA_array.csv", sA_array, delimiter = ",")
+
+cond_root2 = np.asarray(Cond_temp_root2)
+np.savetxt("cond_root2.csv", cond_root2, delimiter = ",")
+
+
+    
+    
