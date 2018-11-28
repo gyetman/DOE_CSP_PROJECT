@@ -19,6 +19,7 @@ import numpy as np
 #Initializing SAM Csp Modules
 sam = SamCsp()
 Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');
+Field_mf = sam.ssc.data_get_array(sam.data, b'm_dot');
 
 #Code for calculating Condenser temerature goes below
 Cond_temp = []
@@ -38,6 +39,17 @@ for i in Condenser_pressure:
     #Making an array of the second real root as it seemed to model actual values better
     Cond_temp_root2.append(temps_yearly[1])
     
+    ### Get mass flow rate also from SAM (Mf in PSA)
+    ### Equations will change for different Temperature Thresholds in PSA models
+    ### Check for other SAM outputs to understand what the model is actually
+    ### Cut-off temperature
+    
+    
+    
+    
+    
+    
+    
     
     #print(temps_yearly)
 #Condenser_pressure = sam.ssc.data_get_array(sam.data, b'T_sys_h');
@@ -53,14 +65,20 @@ RecoveryRatio= []
 Xbn= [] 
 sA= []
 #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
+print(Field_mf)
+k = 0
 for j in Cond_temp_root2:
     psa = psaMed()
     psa.Ts = j
+    psa.Ms = Field_mf[k]
+    
     psa.execute_module()
     PerfRatio.append(psa.PR)
     RecoveryRatio.append(psa.RR)
     Xbn.append(psa.Xbn)
     sA.append(psa.sA)
+    
+    k += 1
     
 PR = np.asarray(PerfRatio)
 np.savetxt("PerfRatio.csv", PR, delimiter = ",")
@@ -76,7 +94,7 @@ np.savetxt("sA_array.csv", sA_array, delimiter = ",")
 
 cond_root2 = np.asarray(Cond_temp_root2)
 np.savetxt("cond_root2.csv", cond_root2, delimiter = ",")
-
+#
 
     
     

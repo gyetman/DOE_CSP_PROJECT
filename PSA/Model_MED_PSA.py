@@ -23,7 +23,9 @@ class medPsa:
 #    Ts=70.8             #Ts is the steam temperature at the inlet of the first bundle tube, ºC
 
     def __init__(self):
-        self.Ts = 70.8
+        #Inputs from SAM
+        self.Ts = 70.8                              #Ts is the steam temperature at the inlet of the first bundle tube, ºC
+        self.Ms=0.082                                # Heating source mass flow rate, kg/s
         
         #Output Values
         self.Mpro=0 
@@ -117,7 +119,7 @@ class medPsa:
         ### AAA - Stop here for today , 11/5/2018 11:51 PM EST
         
         # Calculations and assumptions in the first effect that is fed with hot water as the heat source instead of steam 
-        Ms=0.082                                # Heating source mass flow rate, kg/s
+        #Ms=0.082                                # Heating source mass flow rate, kg/s
         Mgf=np.zeros((medPsa.Nef,1))
         Egbl = np.zeros((medPsa.Nef,1))    # Enthalpy of the brine that has not evaporated, kJ/kg
         Lgb=np.zeros((medPsa.Nef,1))         # Latent heat of the generated vapor by boiling of the brine in the first effect, kJ/kg
@@ -147,8 +149,8 @@ class medPsa:
         Esg[0]=F.enthalpySatVapTW(self.Ts+273.15) 
         Esl[0]=F.enthalpySatLiqTW(self.Ts+273.15) 
         Ls=Esg[0]-Esl[0] 
-        Qs=Ms*Ls 
-        Mgb[0]=((Ms*Ls[0])-(medPsa.Mf*medPsa.Cp*(Tb[0]-Tf)))/Lgb[0] 
+        Qs=self.Ms*Ls 
+        Mgb[0]=((self.Ms*Ls[0])-(medPsa.Mf*medPsa.Cp*(Tb[0]-Tf)))/Lgb[0] 
         Mfv[0]=(Mgb[0]+Mgf[0])*3600               # Mass flow rate of the vapor generated in the first effect (by boiling and flashing), kg/h
         Mb[0]=medPsa.Mf-Mgb[0]                             # Mass flow rate of the brine that leaves the first effect, kg/s
         Xb[0]=(medPsa.Mf*medPsa.Xf)/Mb[0] 
@@ -273,7 +275,7 @@ class medPsa:
         
         # Xbn=(Mf*medPsa.Xf)/Mb[medPsa.Nef-1] 
         Sum_Aef=sum(Aef) 
-        Amef=Sum_Aef/medPsa.Nef 
+        Amef=Sum_Aef/medPsa.Nef #Area for heat transfer
         
         # Calculate the total distillate mass flow rate, Mdbc, and its temperature, Tdbc, before entering the end condenser
         Mdbc=Mdr[medPsa.Nef-2]+Md[medPsa.Nef-2]+Md[medPsa.Nef-1]  #kg/s
@@ -297,12 +299,12 @@ class medPsa:
         self.Mprod_final=self.Mpro*24*3.6 
         
         # Performance parameters 
-        self.PR=self.Mpro/Ms 
+        self.PR=self.Mpro/self.Ms 
         self.RR=self.Mpro/medPsa.Mf 
         
-        self.Xbn=medPsa.Xf/(1-self.RR) 
+        self.Xbn=medPsa.Xf/(1-self.RR) #Brine Salinity
         
-        self.sA=(Sum_Aef+Sum_Aph+Ac)/self.Mprod_final 
+        self.sA=(Sum_Aef+Sum_Aph+Ac)/self.Mprod_final  #Specific Area for heat transfer
     
     
     
