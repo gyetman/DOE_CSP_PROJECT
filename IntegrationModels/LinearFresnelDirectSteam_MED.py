@@ -29,6 +29,7 @@ print ('Condenser Pressure (year 1) = ')
 for i in Condenser_pressure:
 #   Coefficients for the equation to find out Condenser Temperature
     coeff = [9.655*10**-4, -0.039, 4.426, -19.64, (1123.1 - i)]
+    
     temps = np.roots(coeff)
     #Getting real roots
     temps_real = temps.real[abs(temps.imag < 1e-5)] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
@@ -37,6 +38,7 @@ for i in Condenser_pressure:
     Cond_temp.append(temps_yearly) #Enter equation here
     
     #Making an array of the second real root as it seemed to model actual values better
+    #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
     Cond_temp_root2.append(temps_yearly[1])
     
     ### Get mass flow rate also from SAM (Mf in PSA)
@@ -64,13 +66,13 @@ PerfRatio= []
 RecoveryRatio= []
 Xbn= [] 
 sA= []
-#By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
-print(Field_mf)
+
+#print(Field_mf)
 k = 0
 for j in Cond_temp_root2:
     psa = psaMed()
-    psa.Ts = j
-    psa.Ms = Field_mf[k]
+    psa.Ts = j 
+    #psa.Ms = Field_mf[k]#/3600 #As the unit for M-dot_to_pb is (kg/hr)
     
     psa.execute_module()
     PerfRatio.append(psa.PR)
@@ -94,7 +96,10 @@ np.savetxt("sA_array.csv", sA_array, delimiter = ",")
 
 cond_root2 = np.asarray(Cond_temp_root2)
 np.savetxt("cond_root2.csv", cond_root2, delimiter = ",")
-#
+
+Field_mf2 = np.asarray(Field_mf)
+np.savetxt("Field_mf.csv", Field_mf, delimiter = ",")
+
 
     
     

@@ -271,12 +271,13 @@ class samCspParabolicTroughPhysical:
 	ssc.data_set_number( data, b'startup_time', 0.5 )
 	ssc.data_set_number( data, b'startup_frac', 0.20000000298023224 )
 	ssc.data_set_number( data, b'q_sby_frac', 0.20000000298023224 )
-	ssc.data_set_number( data, b'dT_cw_ref', 10 )
+	ssc.data_set_number( data, b'dT_cw_ref', 10 ) 
 	ssc.data_set_number( data, b'T_amb_des', 42 )
 	ssc.data_set_number( data, b'P_boil', 100 )
 	ssc.data_set_number( data, b'CT', 2 )
 	ssc.data_set_number( data, b'T_approach', 5 )
-	ssc.data_set_number( data, b'T_ITD_des', 16 )
+#  Commenting out as it is being set as an input parameter from IntegrationModels.ParabolicTroughPhysical_MED.py
+#	ssc.data_set_number( data, b'T_ITD_des', 16 )
 	ssc.data_set_number( data, b'P_cond_ratio', 1.0027999877929688 )
 	ssc.data_set_number( data, b'pb_bd_frac', 0.019999999552965164 )
 	ssc.data_set_number( data, b'P_cond_min', 1.25 )
@@ -303,18 +304,19 @@ class samCspParabolicTroughPhysical:
 	ssc.data_set_number( data, b'eta_lhv', 0.89999997615814209 )
 	ssc.data_set_number( data, b'eta_tes_htr', 0.98000001907348633 )
 	ssc.data_set_number( data, b'adjust:constant', 4 )
-	module = ssc.module_create(b'tcstrough_physical')	
-	ssc.module_exec_set_print( 0 );
-	if ssc.module_exec(module, data) == 0:
-		print ('tcstrough_physical simulation error')
-		idx = 1
-		msg = ssc.module_log(module, 0)
-		while (msg != None):
-			print ('	: ' + msg.decode("utf - 8"))
-			msg = ssc.module_log(module, idx)
-			idx = idx + 1
-		SystemExit( "Simulation Error" );
-	ssc.module_free(module)
+    #The execution of following block is done after setting parameters in IntegrationModels.ParabolicTroughPhysical_MED.py
+#	module = ssc.module_create(b'tcstrough_physical')	
+#	ssc.module_exec_set_print( 0 );
+#	if ssc.module_exec(module, data) == 0:
+#		print ('tcstrough_physical simulation error')
+#		idx = 1
+#		msg = ssc.module_log(module, 0)
+#		while (msg != None):
+#			print ('	: ' + msg.decode("utf - 8"))
+#			msg = ssc.module_log(module, idx)
+#			idx = idx + 1
+#		SystemExit( "Simulation Error" );
+#	ssc.module_free(module)
 	ssc.data_set_number( data, b'capital_cost', 303274272 )
 	ssc.data_set_number( data, b'fixed_operating_cost', 3300264 )
 	ssc.data_set_number( data, b'variable_operating_cost', 0.0040000001899898052 )
