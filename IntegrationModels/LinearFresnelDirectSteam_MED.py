@@ -20,10 +20,16 @@ import numpy as np
 sam = SamCsp()
 Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');
 Field_mf = sam.ssc.data_get_array(sam.data, b'm_dot');
+feedwater_outlet_temp = sam.ssc.data_get_array(sam.data, b'T_fw');
+
 
 #Code for calculating Condenser temerature goes below
 Cond_temp = []
 Cond_temp_root2 = []
+Cond_temp_root1 = []
+distillate_flow_rate = []
+mf = 12
+gor_empirical = []
 
 print ('Condenser Pressure (year 1) = ')
 for i in Condenser_pressure:
@@ -40,17 +46,23 @@ for i in Condenser_pressure:
     #Making an array of the second real root as it seemed to model actual values better
     #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
     Cond_temp_root2.append(temps_yearly[1])
+    Cond_temp_root1.append(temps_yearly[0])
     
     ### Get mass flow rate also from SAM (Mf in PSA)
     ### Equations will change for different Temperature Thresholds in PSA models
     ### Check for other SAM outputs to understand what the model is actually
     ### Cut-off temperature
-    
-    
-    
-    
-    
-    
+#    if temps_yearly[1] > 74 :
+#        temps_yearly[1] = 74
+    if temps_yearly[1] >= 60 and temps_yearly[1] <= 74 :
+        dist_flow_rate = -0.273 + 0.008409 * temps_yearly[1] - 0.04452 * mf + 0.0003093 * temps_yearly[1] ** 2 + 0.001969 * temps_yearly[1] * mf - 0.002485 * mf **2
+        distillate_flow_rate.append(dist_flow_rate)
+        gor = 648.2 - 26.74 * temps_yearly[1] - 16.45 * mf + 0.3842 * temps_yearly[1] ** 2 + 0.3137 * temps_yearly[1] * mf + 0.5995 * mf ** 2 + - 0.001835 * temps_yearly[1] ** 3 - 0.002371 * (temps_yearly[1] ** 2) * ( mf) - 0.0001411 * temps_yearly[1] * mf ** 2 - 0.01844 * mf ** 3
+        gor_empirical.append(gor)
+    else:
+        distillate_flow_rate.append(0)
+        gor_empirical.append(0)
+     
     
     
     #print(temps_yearly)
@@ -81,7 +93,7 @@ for j in Cond_temp_root2:
     sA.append(psa.sA)
     
     k += 1
-    
+'''    
 PR = np.asarray(PerfRatio)
 np.savetxt("PerfRatio.csv", PR, delimiter = ",")
 
@@ -94,12 +106,25 @@ np.savetxt("Xbn_array.csv", Xbn_array, delimiter = ",")
 sA_array = np.asarray(sA)
 np.savetxt("sA_array.csv", sA_array, delimiter = ",")
 
-cond_root2 = np.asarray(Cond_temp_root2)
-np.savetxt("cond_root2.csv", cond_root2, delimiter = ",")
-
 Field_mf2 = np.asarray(Field_mf)
 np.savetxt("Field_mf.csv", Field_mf, delimiter = ",")
 
+feedwater_outlet_temp2 = np.asarray(feedwater_outlet_temp)
+np.savetxt("feedwater_outlet_temp.csv", feedwater_outlet_temp2, delimiter = ",")
+'''
+mf_distillate = np.asarray(distillate_flow_rate)
+np.savetxt("mf_distillate2.csv", mf_distillate, delimiter = ",")
 
-    
+gor_distillate = np.asarray(gor_empirical)
+np.savetxt("gor_distillate2.csv", gor_distillate, delimiter = ",")
+
+
+cond_root2 = np.asarray(Cond_temp_root2)
+np.savetxt("cond_root2_2.csv", cond_root2, delimiter = ",")
+ 
+cond_pressure = np.asarray(Condenser_pressure)
+np.savetxt("cond_pressure.csv", cond_pressure, delimiter = ",")
+ 
+cond_root1 = np.asarray(Cond_temp_root1)
+np.savetxt("cond_root1.csv", cond_root1, delimiter = ",")
     
