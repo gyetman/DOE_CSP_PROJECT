@@ -32,21 +32,30 @@ mf = 12
 gor_empirical = []
 
 print ('Condenser Pressure (year 1) = ')
+temps_yearly=np.zeros([len(Condenser_pressure),1])
+count=0
 for i in Condenser_pressure:
 #   Coefficients for the equation to find out Condenser Temperature
+
     coeff = [9.655*10**-4, -0.039, 4.426, -19.64, (1123.1 - i)]
     
     temps = np.roots(coeff)
     #Getting real roots
-    temps_real = temps.real[abs(temps.imag < 1e-5)] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
+    temps=temps[temps.imag<1e-5]
+    temps=temps[temps.imag>=0]
+    if len(temps)>0:
+        temps_yearly[count]=np.real(max(temps))
+    
+    
+#    temps_real = temps.real[max(temps[temps.imag < 1e-5 and temps.imag >=0])] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
     #Filtering for positive values
-    temps_yearly = temps_real[temps_real >= 0]
-    Cond_temp.append(temps_yearly) #Enter equation here
+#    temps_yearly = temps_real[temps_real >= 0]
+    ###Cond_temp.append(temps_yearly) #Enter equation here
     
     #Making an array of the second real root as it seemed to model actual values better
     #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
-    Cond_temp_root2.append(temps_yearly[1])
-    Cond_temp_root1.append(temps_yearly[0])
+    ###Cond_temp_root2.append(temps_yearly[1])
+    ### Cond_temp_root1.append(temps_yearly[0])
     
     ### Get mass flow rate also from SAM (Mf in PSA)
     ### Equations will change for different Temperature Thresholds in PSA models
@@ -54,20 +63,21 @@ for i in Condenser_pressure:
     ### Cut-off temperature
 #    if temps_yearly[1] > 74 :
 #        temps_yearly[1] = 74
-    if temps_yearly[1] >= 60 and temps_yearly[1] <= 74 :
-        dist_flow_rate = -0.273 + 0.008409 * temps_yearly[1] - 0.04452 * mf + 0.0003093 * temps_yearly[1] ** 2 + 0.001969 * temps_yearly[1] * mf - 0.002485 * mf **2
+    if temps_yearly[count] >= 60 and temps_yearly[count] <= 74 :
+        dist_flow_rate = -0.273 + 0.008409 * temps_yearly[count] - 0.04452 * mf + 0.0003093 * temps_yearly[count] ** 2 + 0.001969 * temps_yearly[count] * mf - 0.002485 * mf **2
         distillate_flow_rate.append(dist_flow_rate)
-        gor = 648.2 - 26.74 * temps_yearly[1] - 16.45 * mf + 0.3842 * temps_yearly[1] ** 2 + 0.3137 * temps_yearly[1] * mf + 0.5995 * mf ** 2 + - 0.001835 * temps_yearly[1] ** 3 - 0.002371 * (temps_yearly[1] ** 2) * ( mf) - 0.0001411 * temps_yearly[1] * mf ** 2 - 0.01844 * mf ** 3
+        gor = 648.2 - 26.74 * temps_yearly[count] - 16.45 * mf + 0.3842 * temps_yearly[count] ** 2 + 0.3137 * temps_yearly[count] * mf + 0.5995 * mf ** 2 + - 0.001835 * temps_yearly[count] ** 3 - 0.002371 * (temps_yearly[count] ** 2) * ( mf) - 0.0001411 * temps_yearly[count] * mf ** 2 - 0.01844 * mf ** 3
         gor_empirical.append(gor)
     else:
         distillate_flow_rate.append(0)
         gor_empirical.append(0)
-     
+    
+    count+=1  
     
     
     #print(temps_yearly)
 #Condenser_pressure = sam.ssc.data_get_array(sam.data, b'T_sys_h');
-Condenser_temperature = np.asarray(Cond_temp)
+Condenser_temperature = temps_yearly
 np.savetxt("CondTemp.csv", Condenser_temperature, delimiter = ",")
 print ('Field HTF temperature hot header outlet (year 1) = ')
 #for i in Condenser_pressure:
