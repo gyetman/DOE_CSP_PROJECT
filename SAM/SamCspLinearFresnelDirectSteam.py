@@ -180,7 +180,7 @@ class samCspLinearFresnelDirectSteam:
 	ssc.data_set_number( data, b'startup_time', 0.34999999403953552 )
 	ssc.data_set_number( data, b'startup_frac', 0.34999999403953552 )
 	ssc.data_set_number( data, b'T_approach', 5 )
-	ssc.data_set_number( data, b'T_ITD_des', 16 )
+	ssc.data_set_number( data, b'T_ITD_des', 40) #16 )
 	ssc.data_set_number( data, b'P_cond_ratio', 1.0027999877929688 )
 	ssc.data_set_number( data, b'pb_bd_frac', 0.019999999552965164 )
 	ssc.data_set_number( data, b'P_cond_min', 1.25 )
