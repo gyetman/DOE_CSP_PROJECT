@@ -10,6 +10,7 @@ Modified date: 11/14/2018
 """
 #import Model_MED_PSA as model
 from SAM.PySSC import PySSC
+import os
 
 class samCspLinearFresnelDirectSteam:
 	ssc = PySSC()
@@ -18,7 +19,8 @@ class samCspLinearFresnelDirectSteam:
 	print ('SSC Build Information = ', ssc.build_info().decode("utf - 8"))
 	ssc.module_exec_set_print(0)
 	data = ssc.data_create()
-	ssc.data_set_string( data, b'file_name', b'C:/SAM/2017.9.5/solar_resource/United Arab Emirates ARE Abu_Dhabi (INTL).csv' );
+	path_solar_resource=os.path.dirname(os.path.realpath(__file__))+'/solar_resource'
+	ssc.data_set_string( data, b'file_name', b''+path_solar_resource.encode("ascii", "backslashreplace") + ('/United Arab Emirates ARE Abu_Dhabi (INTL).csv').encode("ascii","backslashreplace"));
 	ssc.data_set_number( data, b'track_mode', 1 )
 	ssc.data_set_number( data, b'tilt', 0 )
 	ssc.data_set_number( data, b'azimuth', 0 )
@@ -356,7 +358,7 @@ class samCspLinearFresnelDirectSteam:
 	ssc.data_set_number( data, b'system_use_recapitalization', 0 )
 	ssc.data_set_number( data, b'system_use_lifetime_output', 0 )
 	ssc.data_set_number( data, b'ppa_multiplier_model', 0 )
-	ssc.data_set_array_from_csv( data, b'dispatch_factors_ts', b'D:/Columbia/Thesis/SAMProjects/Integration/V11_11/LF_DS/dispatch_factors_ts.csv');
+	ssc.data_set_array_from_csv( data, b'dispatch_factors_ts', b'SAM/AssociatedFiles/dispatch_factors_ts.csv');
 	ssc.data_set_number( data, b'dispatch_factor1', 2.0639998912811279 )
 	ssc.data_set_number( data, b'dispatch_factor2', 1.2000000476837158 )
 	ssc.data_set_number( data, b'dispatch_factor3', 1 )
