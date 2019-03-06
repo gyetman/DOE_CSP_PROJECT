@@ -10,6 +10,13 @@ V1: - Integration by implementing Python classes for wrappers
     - Code able to access variables from both modules
     - Condenser Pressure to be calculated from SAM User-defined Power Cycle
     - Calculate Condenser Temperature from Condenser Pressure using Thermodynamic equaitons
+V2: 
+    Modified date: 3/5/2019
+    Modified by: AAA & VV
+    - Modified logic to calculate mass flow rate and GOR with empirical equations from
+      Experimental characterization of a multi-effect distillation system
+      coupled to a flat plate solar collector field: Empirical correlations by Chorak et. al. (2017)
+    - Initialized arrays before loop to improve performance  
 """
 
 from PSA.Model_MED_PSA import medPsa as psaMed
@@ -20,53 +27,57 @@ import numpy as np
 sam = SamCsp()
 Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');
 Field_mf = sam.ssc.data_get_array(sam.data, b'm_dot');
+feedwater_outlet_temp = sam.ssc.data_get_array(sam.data, b'T_fw');
+
 
 #Code for calculating Condenser temerature goes below
-Cond_temp = []
-Cond_temp_root2 = []
+mf = 12 #Hot water mass flow rate (L/s). Assumed to be 12 for initial calculations
 
-print ('Condenser Pressure (year 1) = ')
+#Initializing array of zeroes for condenser temperature, distillate mass flow rate, and GOR
+temps_yearly = np.zeros([len(Condenser_pressure),1])   #Condenser temperature array
+temps_yearly_for_empirical = np.zeros([len(Condenser_pressure),1])  #Condenser temperature used in empirical equation
+distillate_flow_rate = np.zeros([len(Condenser_pressure),1])  #Massflow rate of distillate hourly (m^3/hour)
+gor_empirical = np.zeros([len(Condenser_pressure),1])   #Gain output ratio or Performance ratio of the MED Plant
+
+count=0
 for i in Condenser_pressure:
 #   Coefficients for the equation to find out Condenser Temperature
     coeff = [9.655*10**-4, -0.039, 4.426, -19.64, (1123.1 - i)]
     
     temps = np.roots(coeff)
     #Getting real roots
-    temps_real = temps.real[abs(temps.imag < 1e-5)] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
-    #Filtering for positive values
-    temps_yearly = temps_real[temps_real >= 0]
-    Cond_temp.append(temps_yearly) #Enter equation here
+    temps=temps[temps.imag<1e-5]
+    temps=temps[temps.imag>=0]
+    if len(temps)>0:
+        temps_yearly[count]=np.real(max(temps))
     
-    #Making an array of the second real root as it seemed to model actual values better
-    #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
-    Cond_temp_root2.append(temps_yearly[1])
-    
-    ### Get mass flow rate also from SAM (Mf in PSA)
-    ### Equations will change for different Temperature Thresholds in PSA models
-    ### Check for other SAM outputs to understand what the model is actually
-    ### Cut-off temperature
-    
-    
-    
-    
-    
-    
-    
-    
-    #print(temps_yearly)
-#Condenser_pressure = sam.ssc.data_get_array(sam.data, b'T_sys_h');
-Condenser_temperature = np.asarray(Cond_temp)
+    #Setting the temperature as 74 DegC for calculations as it is the maximum limit for the empirical equation.
+    if temps_yearly[count] > 74 :
+        temps_yearly_for_empirical[count] = 74
+    else:
+        temps_yearly_for_empirical[count] = temps_yearly[count]
+        
+    #Calculating distillate flow rate and GOR using empirical equations from Experimental characterization of a multi-effect distillation system
+    #coupled to a flat plate solar collector field: Empirical correlations by Chorak et. al. (2017)   
+    if temps_yearly_for_empirical[count] >= 60 and temps_yearly_for_empirical[count] <= 74 :
+        distillate_flow_rate[count] = -0.273 + 0.008409 * temps_yearly_for_empirical[count] - 0.04452 * mf + 0.0003093 * temps_yearly_for_empirical[count] ** 2 + 0.001969 * temps_yearly_for_empirical[count] * mf - 0.002485 * mf **2        
+        gor_empirical[count] = 648.2 - 26.74 * temps_yearly_for_empirical[count] - 16.45 * mf + 0.3842 * temps_yearly_for_empirical[count] ** 2 + 0.3137 * temps_yearly_for_empirical[count] * mf + 0.5995 * mf ** 2 + - 0.001835 * temps_yearly_for_empirical[count] ** 3 - 0.002371 * (temps_yearly_for_empirical[count] ** 2) * ( mf) - 0.0001411 * temps_yearly_for_empirical[count] * mf ** 2 - 0.01844 * mf ** 3
+            
+    count += 1  
+
+Condenser_temperature = temps_yearly
 np.savetxt("CondTemp.csv", Condenser_temperature, delimiter = ",")
-print ('Field HTF temperature hot header outlet (year 1) = ')
+#print ('Field HTF temperature hot header outlet (year 1) = ')
 #for i in Condenser_pressure:
 #    print (i, ', ')
 sam.data_free()
-
+'''
+Old: PSA design model integration 
 PerfRatio= [] 
 RecoveryRatio= []
 Xbn= [] 
 sA= []
-
+    
 #print(Field_mf)
 k = 0
 for j in Cond_temp_root2:
@@ -81,25 +92,15 @@ for j in Cond_temp_root2:
     sA.append(psa.sA)
     
     k += 1
-    
-PR = np.asarray(PerfRatio)
-np.savetxt("PerfRatio.csv", PR, delimiter = ",")
 
-RR = np.asarray(RecoveryRatio)
-np.savetxt("RecRatio.csv", RR, delimiter = ",")
+'''
+mf_distillate = np.asarray(distillate_flow_rate)
+np.savetxt("mf_distillate2.csv", mf_distillate, delimiter = ",")
 
-Xbn_array = np.asarray(Xbn)
-np.savetxt("Xbn_array.csv", Xbn_array, delimiter = ",")
+gor_distillate = np.asarray(gor_empirical)
+np.savetxt("gor_distillate2.csv", gor_distillate, delimiter = ",")
+ 
+cond_pressure = np.asarray(Condenser_pressure)
+np.savetxt("cond_pressure.csv", cond_pressure, delimiter = ",")
 
-sA_array = np.asarray(sA)
-np.savetxt("sA_array.csv", sA_array, delimiter = ",")
-
-cond_root2 = np.asarray(Cond_temp_root2)
-np.savetxt("cond_root2.csv", cond_root2, delimiter = ",")
-
-Field_mf2 = np.asarray(Field_mf)
-np.savetxt("Field_mf.csv", Field_mf, delimiter = ",")
-
-
-    
-    
+np.savetxt("temperature_empirical.csv", temps_yearly_for_empirical, delimiter = ",")
