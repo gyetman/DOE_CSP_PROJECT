@@ -28,7 +28,7 @@ sam = SamCsp()
 Condenser_pressure = sam.ssc.data_get_array(sam.data, b'P_cond');
 Field_mf = sam.ssc.data_get_array(sam.data, b'm_dot');
 feedwater_outlet_temp = sam.ssc.data_get_array(sam.data, b'T_fw');
-
+system_power_generated = sam.ssc.data_get_array(sam.data, b'W_cycle_gross');
 
 #Code for calculating Condenser temerature goes below
 mf = 12 #Hot water mass flow rate (L/s). Assumed to be 12 for initial calculations
@@ -98,9 +98,12 @@ mf_distillate = np.asarray(distillate_flow_rate)
 np.savetxt("mf_distillate2.csv", mf_distillate, delimiter = ",")
 
 gor_distillate = np.asarray(gor_empirical)
-np.savetxt("gor_distillate2.csv", gor_distillate, delimiter = ",")
+np.savetxt("gor_distillate.csv", gor_distillate, delimiter = ",")
  
 cond_pressure = np.asarray(Condenser_pressure)
 np.savetxt("cond_pressure.csv", cond_pressure, delimiter = ",")
+ 
+system_power_generated = np.asarray(system_power_generated)
+np.savetxt("system_power_generated.csv", system_power_generated, delimiter = ",")
 
 np.savetxt("temperature_empirical.csv", temps_yearly_for_empirical, delimiter = ",")
