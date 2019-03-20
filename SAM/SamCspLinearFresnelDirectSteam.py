@@ -40,7 +40,8 @@ import argparse
 import logging
 import unittest
 
-        
+# TODO: implement logging (gyetman)
+     
 class samCspLinearFresnelDirectSteam(object):
     
     def __init__(self):
