@@ -1,16 +1,15 @@
-#Created with SAM version 2017.9.5
-#Update pdll path according to platform
+#Created with SAM version 2018.11.11
 import string, sys, struct, os
 from ctypes import *
 c_number = c_float # must be c_double or c_float depending on how defined in sscapi.h
 class PySSC:
 	def __init__(self):
 		if sys.platform == 'win32' or sys.platform == 'cygwin':
-			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dll")#("D:/Drive/Thesis/Github/DOE_CSP_PROJECT/SAM/ssc.dll") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dll") 
 		elif sys.platform == 'darwin':
-			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dylib")#("D:/Columbia/Thesis/SAMProjects/Integration/ssc.dylib") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dylib") 
 		elif sys.platform == 'linux2':
-			self.pdll = CDLL('D:/Columbia/Thesis/SAMProjects/Integration/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
+			self.pdll = CDLL('D:/Drive/Thesis/SAM_2018.11.11/Simulations/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
 		else:
 			print ('Platform not supported ', sys.platform)
 	INVALID=0
@@ -155,6 +154,12 @@ class PySSC:
 	def info_uihint( self, p_inf ):
 		self.pdll.ssc_info_uihint.restype = c_char_p
 		return self.pdll.ssc_info_uihint( c_void_p(p_inf) )
+	def info_required( self, p_inf ):
+		self.pdll.ssc_info_required.restype = c_char_p
+		return self.pdll.ssc_info_required( c_void_p(p_inf) )
+	def info_constraints( self, p_inf ):
+		self.pdll.ssc_info_constraints.restype = c_char_p
+		return self.pdll.ssc_info_constraints( c_void_p(p_inf) )
 	def module_exec( self, p_mod, p_data ):
 		self.pdll.ssc_module_exec.restype = c_int
 		return self.pdll.ssc_module_exec( c_void_p(p_mod), c_void_p(p_data) )
