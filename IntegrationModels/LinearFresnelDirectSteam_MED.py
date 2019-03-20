@@ -70,7 +70,7 @@ np.savetxt("CondTemp.csv", Condenser_temperature, delimiter = ",")
 #print ('Field HTF temperature hot header outlet (year 1) = ')
 #for i in Condenser_pressure:
 #    print (i, ', ')
-sam.data_free()
+sam.data_clear()
 '''
 Old: PSA design model integration 
 PerfRatio= [] 
