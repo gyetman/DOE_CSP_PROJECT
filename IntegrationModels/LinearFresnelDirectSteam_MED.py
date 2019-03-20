@@ -114,7 +114,7 @@ def genOutputFileNameSuffix():
 if not dev:
     suffix = genOutputFileNameSuffix()
 else:
-    dev = '.csv'
+    suffix = '.csv'
 
 mf_distillate = np.asarray(distillate_flow_rate)
 np.savetxt("mf_distillate2{}".format(suffix), mf_distillate, delimiter = ",")
