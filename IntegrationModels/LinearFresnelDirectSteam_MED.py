@@ -22,6 +22,9 @@ V2:
 from PSA.Model_MED_PSA import medPsa as psaMed
 from SAM.SamCspLinearFresnelDirectSteam import samCspLinearFresnelDirectSteam as SamCsp
 import numpy as np
+from datetime import datetime
+
+dev = True
 
 #Initializing SAM Csp Modules
 sam = SamCsp()
@@ -94,16 +97,35 @@ for j in Cond_temp_root2:
     k += 1
 
 '''
+def genOutputFileNameSuffix():
+    ''' Returns a string of the month-day-year-hour-minute plus extension''' 
+    dt = datetime.now()
+    return ('_{}-{}-{}-{}{}{}.csv'.format(
+            dt.year,
+            dt.month,
+            dt.day,
+            dt.hour,
+            dt.minute,
+            dt.second
+            ))
+    
+# TODO: write to different location (/output or /data subfolder?)
+    
+if not dev:
+    suffix = genOutputFileNameSuffix()
+else:
+    dev = '.csv'
+
 mf_distillate = np.asarray(distillate_flow_rate)
-np.savetxt("mf_distillate2.csv", mf_distillate, delimiter = ",")
+np.savetxt("mf_distillate2{}".format(suffix), mf_distillate, delimiter = ",")
 
 gor_distillate = np.asarray(gor_empirical)
-np.savetxt("gor_distillate.csv", gor_distillate, delimiter = ",")
+np.savetxt("gor_distillate{}".format(suffix), gor_distillate, delimiter = ",")
  
 cond_pressure = np.asarray(Condenser_pressure)
-np.savetxt("cond_pressure.csv", cond_pressure, delimiter = ",")
+np.savetxt("cond_pressure{}".format(suffix), cond_pressure, delimiter = ",")
  
 system_power_generated = np.asarray(system_power_generated)
-np.savetxt("system_power_generated.csv", system_power_generated, delimiter = ",")
+np.savetxt("system_power_generated{}".format(suffix), system_power_generated, delimiter = ",")
 
-np.savetxt("temperature_empirical.csv", temps_yearly_for_empirical, delimiter = ",")
+np.savetxt("temperature_empirical{}".format(suffix), temps_yearly_for_empirical, delimiter = ",")
