@@ -31,14 +31,14 @@ V2: Modular version of the wrapper
     - Used sys.argv so that the script can be executed directly from command prompt
     - Added placeholders for implementing logger and unit tests
    
-
 """
-#import Model_MED_PSA as model
+
 from SAM.PySSC import PySSC
 import os, sys
 import argparse
 import logging
 import unittest
+from SAM.SamFinPpaPartnershipFlipWithDebt import  samFinPpaPartnershipFlipWithDebt as finPPFWD
 
 # TODO: implement logging (gyetman)
      
@@ -60,6 +60,7 @@ class samCspLinearFresnelDirectSteam(object):
         #    from other classes
         if __name__ != '__main__':
             self.main()
+            #unittest.main(argv=['first-arg-is-ignored'], exit=False)
 
 
     #Logger - to be implemented  
@@ -109,8 +110,8 @@ class samCspLinearFresnelDirectSteam(object):
         self.create_ssc_module()
         
         #Parsing different default or UI input values for all the different parameters.
-        self.weather()
-        self.linear_fresnel(system_capacity = system_capacity)     
+        #self.weather()
+        #self.linear_fresnel(system_capacity = system_capacity)     
         self.locationResouce_weatherDataInf()
         
         
@@ -122,11 +123,11 @@ class samCspLinearFresnelDirectSteam(object):
         
         
         self.powerCycle_plantCoolingMode()
-        self.powerCycle_plantDesign()
+        self.powerCycle_plantDesign(system_capacity = system_capacity)
         self.powerCycle_operation()
         self.powerCycle_availAndCurtailment()
         self.powerCycle_dispatchControl()
-        self.tou_translator()
+        self.powerCycle_dispatchControl()
         
         
         self.collectorReceiver_BoilerGeomOptPerf()
@@ -142,9 +143,11 @@ class samCspLinearFresnelDirectSteam(object):
         #Executes the module and creates annual hourly simulations
         self.module_create_execute()
         
+        finModel = finPPFWD(self.data)
         #Clears the ssc data if the module is executed on its own.
-        if __name__ == '__main__':
-            self.data_clear()
+# TODO : implement this as the exit function of this module (vvicraman)
+#        if __name__ == '__main__':
+#            self.data_clear()
 
 
     def create_ssc_module(self):
@@ -166,15 +169,17 @@ class samCspLinearFresnelDirectSteam(object):
         self.data = self.ssc.data_create()
         
     # Tab title : Location and Resource
-    def weather(self
+    def locationResouce_weatherDataInf(self
                 , file_name = os.path.dirname(os.path.realpath(__file__)) + "/solar_resource/United Arab Emirates ARE Abu_Dhabi (INTL).csv"
                 , track_mode = 1
                 , tilt = 0
-                , azimuth = 0):
+                , azimuth = 0
+                , latitude = 32.130001068115234):
         """
-        Initializes the weather file csv and assigns different variables to the parameters on the Location and Resource
-            tab of System Advisor Model.
+        Assigns default or user-specified values to the fields under Tab : Location and Resource; 
+            Section : Weather Data Information for Linear Fresnel Direct Steam model of SAM.
         
+       :param latitude Site latitude resource page: [deg]  Type: SSC_NUMBER
 	    :param file_name local weather file path: []  Type: SSC_STRING    Constraint: LOCAL_FILE
 	    :param track_mode Tracking mode: []  Type: SSC_NUMBER
 	    :param tilt Tilt angle of surface/axis: []  Type: SSC_NUMBER
@@ -186,32 +191,11 @@ class samCspLinearFresnelDirectSteam(object):
         self.ssc.data_set_number( self.data, b'track_mode',  track_mode)
         self.ssc.data_set_number( self.data, b'tilt', tilt )
         self.ssc.data_set_number( self.data, b'azimuth', azimuth )
+        self.ssc.data_set_number( self.data, b'latitude', latitude )
         
-    # Tab title: Power Cycle
-    def linear_fresnel(self, system_capacity = 50000):
-        """
-        Assigns the System capacity for the system under consideration. Assigns the 
-            variable to sam.data.
-	    :param system_capacity Nameplate capacity: [kW]  Type: SSC_NUMBER
-        """
-        
-        self.ssc.data_set_number( self.data, b'system_capacity', system_capacity ) #50000.94921875 )
-       
-	# Tab title: Thermal Storage
-    def tou_translator(self, 
-                       weekday_schedule = [[ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ]],
-                       weekend_schedule = [[ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ]]):
-        """
-        Assigns Time of Use translator as a 12x24 array for week days. For understanding 
-            this array implementation, please see the Linear Fresnel Direct Steam ->
-            Power Cycle -> Dispatch Control -> Weekday/Weekend schedule section of SAM.
-            
-		:param weekday_schedule 12x24 Time of Use Values for week days: []  Type: SSC_MATRIX
-		:param weekend_schedule 12x24 Time of Use Values for week end days: []  Type: SSC_MATRIX
-		"""
-        self.ssc.data_set_matrix( self.data, b'weekday_schedule', weekday_schedule );
-        self.ssc.data_set_matrix( self.data, b'weekend_schedule', weekend_schedule );
-		
+    
+
+
     # Tab : Solar Field; Section : Steam Conditions at Design; Sub Section: 
     def solarField_steamCondnAtDesign (self
                                        , x_b_des = 0.75
@@ -377,6 +361,7 @@ class samCspLinearFresnelDirectSteam(object):
                                , P_rh_ref = 0
                                , rh_frac_ref = 0
                                , pb_bd_frac = 0.019999999552965164
+                               , system_capacity = 50000.94921875
                                ):
         """
         Assigns default or user-specified values to the fields under Tab : Power Cycle; 
@@ -390,6 +375,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param P_rh_ref Reheater operating pressure at design: [bar]  Type: SSC_NUMBER
         :param rh_frac_ref Reheater flow fraction at design: [none]  Type: SSC_NUMBER
         :param pb_bd_frac Power block blowdown steam fraction : [none]  Type: SSC_NUMBER
+        :param system_capacity Nameplate capacity: [kW]  Type: SSC_NUMBER
         """
         
         self.ssc.data_set_number( self.data, b'LHV_eff', LHV_eff ) 
@@ -400,6 +386,7 @@ class samCspLinearFresnelDirectSteam(object):
         self.ssc.data_set_number( self.data, b'P_rh_ref', P_rh_ref )
         self.ssc.data_set_number( self.data, b'rh_frac_ref', rh_frac_ref )
         self.ssc.data_set_number( self.data, b'pb_bd_frac', pb_bd_frac )
+        self.ssc.data_set_number( self.data, b'system_capacity', system_capacity )
         
     def powerCycle_operation(self
                              , cycle_max_fraction = 1.0499999523162842
@@ -435,6 +422,8 @@ class samCspLinearFresnelDirectSteam(object):
     def powerCycle_dispatchControl(self
                                    , ffrac = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
                                    , F_wc = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+                                   , weekday_schedule = [[ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   2,   2,   2,   3,   3,   3 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   4,   5,   5,   5 ]]
+                                   , weekend_schedule = [[ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ], [ 6,   6,   6,   6,   6,   6,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5,   5 ]]
                                    ):
         """
         Assigns default or user-specified values to the fields under Tab : Power Cycle; 
@@ -442,10 +431,13 @@ class samCspLinearFresnelDirectSteam(object):
         
         :param ffrac Fossil dispatch logic - TOU periods: [none]  Type: SSC_ARRAY
         :param F_wc Fraction indicating wet cooling use for hybrid system: [none]  Type: SSC_ARRAY
+		:param weekday_schedule 12x24 Time of Use Values for week days: []  Type: SSC_MATRIX
+		:param weekend_schedule 12x24 Time of Use Values for week end days: []  Type: SSC_MATRIX
         """               
         self.ssc.data_set_array( self.data, b'ffrac',  ffrac);
         self.ssc.data_set_array( self.data, b'F_wc',  F_wc);
-        
+        self.ssc.data_set_matrix( self.data, b'weekday_schedule', weekday_schedule );
+        self.ssc.data_set_matrix( self.data, b'weekend_schedule', weekend_schedule );        
         
         
     def powerCycle_availAndCurtailment(self
@@ -647,18 +639,7 @@ class samCspLinearFresnelDirectSteam(object):
         self.ssc.data_set_matrix( self.data, b'HL_W', HL_W );
 
         
-        
-    def locationResouce_weatherDataInf(self
-                                       , latitude = 32.130001068115234
-                                       ):
-        """
-        Assigns default or user-specified values to the fields under Tab : Location and Resource; 
-            Section : Weather Data Information for Linear Fresnel Direct Steam model of SAM.
-        
-        :param latitude Site latitude resource page: [deg]  Type: SSC_NUMBER
-        """
-        self.ssc.data_set_number( self.data, b'latitude', latitude )
-        
+    
     def parasitics(self
                    , PB_fixed_par = 0.0054999999701976776
                    , bop_array =[ 0, 1, 0.4830000102519989, 0.57099997997283936, 0 ]
@@ -745,6 +726,8 @@ class samCspLinearFresnelDirectSteam(object):
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
 #        print ('Annual Water Usage = ', annual_total_water_use)
+        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
+        print ('Annual energy (year 1) = ', annual_energy)
     
     #Clears the ssc data
     def data_clear(self):
@@ -752,7 +735,7 @@ class samCspLinearFresnelDirectSteam(object):
         
         
 #To be implemented - Unit test cases for the method    
-class TestMethods(unittest.TestCase):
+class sscTests(unittest.TestCase):
 
     def test_capacityFactor(self):
         """
@@ -764,7 +747,7 @@ class TestMethods(unittest.TestCase):
         samLfDs.main()
         capacity_factor = samLfDs.ssc.data_get_number(samLfDs.data, b'capacity_factor');
         self.assertEqual(capacity_factor, 25.037185668945312)
-
+"""
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
         self.assertFalse('Foo'.isupper())
@@ -775,7 +758,8 @@ class TestMethods(unittest.TestCase):
         # check that s.split fails when the separator is not a string
         with self.assertRaises(TypeError):
             s.split(2)
-            
+"""
+         
 if __name__ == '__main__':
     sam = samCspLinearFresnelDirectSteam()
     sam.main()
