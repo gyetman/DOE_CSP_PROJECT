@@ -20,7 +20,7 @@ Create date: 11/22/2018
 V1: - Wrapper from SAM v11.11
     Modified by: Vikas Vicraman
     Modified date: 11/14/2018
-    - Added function for ssc.data_free
+    - Added method for ssc.data_free
 
 V2: Modular version of the wrapper
     Modified by: Vikas Vicraman
@@ -34,27 +34,16 @@ V2: Modular version of the wrapper
 """
 
 from SAM.PySSC import PySSC
+from SAM.SamBaseClass import SamBaseClass
 import os, sys
 import argparse
-import logging
 import unittest
 from SAM.SamFinPpaPartnershipFlipWithDebt import  samFinPpaPartnershipFlipWithDebt as finPPFWD
 
-# TODO: implement logging (gyetman)
      
-class samCspLinearFresnelDirectSteam(object):
+class samCspLinearFresnelDirectSteam(SamBaseClass):
     
     def __init__(self):
-        """
-        Methods for setting up logger, unit testing and creating the ssc module 
-        go here.
-        """
-
-        
-        self.ssc = PySSC()
-        
-        print ('SSC Version = ', self.ssc.version())
-        print ('SSC Build Information = ', self.ssc.build_info().decode("utf - 8"))
         
         #Initializes all the variables to default values if the class is called 
         #    from other classes
@@ -62,20 +51,6 @@ class samCspLinearFresnelDirectSteam(object):
             self.main()
             #unittest.main(argv=['first-arg-is-ignored'], exit=False)
 
-
-    #Logger - to be implemented  
-    def _setup_logging(verbose=False):
-        if verbose:
-            level = logging.DEBUG
-        else:
-            level = logging.INFO
-
-        frmt = '%(asctime)s %(levelname)s %(message)s'
-        logging.basicConfig(
-            stream=sys.stderr,
-            level=level,
-            format=frmt,
-        )
     
     def main(self):
              
@@ -87,106 +62,85 @@ class samCspLinearFresnelDirectSteam(object):
         
         :param system_capacity Nameplate capacity: [kW]  Type: SSC_NUMBER
         """
-        # Logger lines goes below - to be implemented
-        """
-        parser = argparse.ArgumentParser(description='Initializing samCspLinearFresnelDirectSteam.py method')
-        parser.add_argument('house_location_file', help='Path to CSV file with house locations.')  # noqa
-        #parser.add_argument('-n', '--num-workers', type=int, default=DEFAULT_PROCS, help='Number of procs to use.  Default {}'.format(DEFAULT_PROCS))  # noqa
-        parser.add_argument('-v', '--verbose', action='store_true', help='Log more verbosely.')  # noqa
-        args = parser.parse_args()
-        self._setup_logging(args.verbose)
-        logging.debug('ARGS: {}'.format(args))
-        """     
-        #test = sys.argv[0]
-        print('File nmae = ', sys.argv[0])#, sys.argv[1])
-        if len(sys.argv) == 2:
-            system_capacity = float(sys.argv[1])
-        else:           
-            # Setting default value as 50000
-            system_capacity = 50000
-        print("System Capacity = " , system_capacity)
+        try:
+            # Logger lines goes below - from Base class
+            SamBaseClass._setup_logging(SamBaseClass, 'samCspLinearFresnelDirectSteam')
+            SamBaseClass.logger.debug('Running SAM Linear Fresnel Direct Steam with Partnership Flip with Debt')
 
-        #Creating SAM data and ssc modules. 
-        self.create_ssc_module()
+            print('File nmae = ', sys.argv[0])#, sys.argv[1])
+            if len(sys.argv) == 2:
+                system_capacity = float(sys.argv[1])
+            else:           
+                # Setting default value as 50000
+                system_capacity = 50000
+            print("System Capacity = " , system_capacity)
         
-        #Parsing different default or UI input values for all the different parameters.
-        #self.weather()
-        #self.linear_fresnel(system_capacity = system_capacity)     
-        self.locationResouce_weatherDataInf()
+            #Creating SAM data and ssc modules. 
+            self.data = SamBaseClass.create_ssc_module(SamBaseClass)
         
-        
-        self.solarField_steamCondnAtDesign()
-        self.solarFiled_mirrorWash()
-        self.solarField_solarFieldParams()
-        self.solarField_designPoint()
-        self.solarField_fieldControl()
-        
-        
-        self.powerCycle_plantCoolingMode()
-        self.powerCycle_plantDesign(system_capacity = system_capacity)
-        self.powerCycle_operation()
-        self.powerCycle_availAndCurtailment()
-        self.powerCycle_dispatchControl()
-        self.powerCycle_dispatchControl()
+            #Parsing different default or UI input values for all the different parameters.
+            self.locationResouce_weatherDataInf()
         
         
-        self.collectorReceiver_BoilerGeomOptPerf()
-        self.collectorReceiver_IncAngModifiers()
-        self.collectorReceiver_receiverGeomHeatLoss()
-        self.collectorReceiver_receiverGeomHeatLoss_evacTubeHeatLoss()
-        self.collectorReceiver_receiverGeomHeatLoss_PolyFitHeatLossModel()
+            self.solarField_steamCondnAtDesign()
+            self.solarFiled_mirrorWash()
+            self.solarField_solarFieldParams()
+            self.solarField_designPoint()
+            self.solarField_fieldControl()
         
         
-        self.parasitics()
-        self.remainingParams()
+            self.powerCycle_plantCoolingMode()
+            self.powerCycle_plantDesign(system_capacity = system_capacity)
+            self.powerCycle_operation()
+            self.powerCycle_availAndCurtailment()
+            self.powerCycle_dispatchControl()
+            self.powerCycle_dispatchControl()
         
-        #Executes the module and creates annual hourly simulations
-        self.module_create_execute()
         
-        finModel = finPPFWD(self.data)
-        #Clears the ssc data if the module is executed on its own.
-# TODO : implement this as the exit function of this module (vvicraman)
-#        if __name__ == '__main__':
-#            self.data_clear()
+            self.collectorReceiver_BoilerGeomOptPerf()
+            self.collectorReceiver_IncAngModifiers()
+            self.collectorReceiver_receiverGeomHeatLoss()
+            self.collectorReceiver_receiverGeomHeatLoss_evacTubeHeatLoss()
+            self.collectorReceiver_receiverGeomHeatLoss_PolyFitHeatLossModel()
+        
+        
+            self.parasitics()
+            self.remainingParams()
+        
+            #Executes the module and creates annual hourly simulations
+            SamBaseClass.module_create_execute(SamBaseClass, 'tcslinear_fresnel', self.ssc, self.data)
+        
+            self.print_impParams()
+            finModel = finPPFWD(SamBaseClass)
 
+            #Variables for unit tests
 
-    def create_ssc_module(self):
-        # Logging methods goes here
-        """
-        parser = argparse.ArgumentParser(description='Creating the ssc module of System Advisor model')
-        #parser.add_argument('house_location_file',
-        #                    help='Path to CSV file with house locations.')  
-        #parser.add_argument('-n', '--num-workers', type=int, default=DEFAULT_PROCS,
-        #    help='Number of procs to use.  Default {}'.format(DEFAULT_PROCS))  # noqa
-        parser.add_argument('-v', '--verbose', action='store_true',
-                            help='Log more verbosely.')  # noqa
-        args = parser.parse_args()
-        #self._setup_logging(args.verbose)
-        logging.debug('ARGS: {}'.format(args))
-        """
+            self.test_capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
         
-        self.ssc.module_exec_set_print(0)
-        self.data = self.ssc.data_create()
-        
+            SamBaseClass.data_free(SamBaseClass)
+        except Exception:
+            SamBaseClass.logger.critical("Error in executing SAM Linear Fresnel Direct Steam Model.", exc_info=True)
+
     # Tab title : Location and Resource
     def locationResouce_weatherDataInf(self
                 , file_name = os.path.dirname(os.path.realpath(__file__)) + "/solar_resource/United Arab Emirates ARE Abu_Dhabi (INTL).csv"
                 , track_mode = 1
                 , tilt = 0
                 , azimuth = 0
-                , latitude = 32.130001068115234):
+                , latitude = 32.130001068115234
+                ) :
         """
         Assigns default or user-specified values to the fields under Tab : Location and Resource; 
             Section : Weather Data Information for Linear Fresnel Direct Steam model of SAM.
         
-       :param latitude Site latitude resource page: [deg]  Type: SSC_NUMBER
+        :param latitude Site latitude resource page: [deg]  Type: SSC_NUMBER
 	    :param file_name local weather file path: []  Type: SSC_STRING    Constraint: LOCAL_FILE
 	    :param track_mode Tracking mode: []  Type: SSC_NUMBER
 	    :param tilt Tilt angle of surface/axis: []  Type: SSC_NUMBER
 	    :param azimuth Azimuth angle of surface/axis: []  Type: SSC_NUMBER
 
         """
-        #print(file_name)
+        SamBaseClass.logger.debug("Setting values for Tab: Location and Resource, Section: Weather data information.")
         self.ssc.data_set_string( self.data, b'file_name', b''+file_name.encode("ascii", "backslashreplace")) #Giving input as binary string
         self.ssc.data_set_number( self.data, b'track_mode',  track_mode)
         self.ssc.data_set_number( self.data, b'tilt', tilt )
@@ -205,7 +159,8 @@ class samCspLinearFresnelDirectSteam(object):
                                        , fP_sf_sh = 0.05000000074505806 
                                        , fP_hdr_h = 0.02500000037252903
                                        , P_boil_des = 110
-                                       , T_hot = 440) :
+                                       , T_hot = 440
+                                       ) :
         """
         Assigns default or user-specified values to the fields under Tab : Solar Field; 
             Section : Steam Conditions at Design for Linear Fresnel Direct Steam 
@@ -220,6 +175,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param P_boil_des Boiler operating pressure @ design: [bar]  Type: SSC_NUMBER
         :param T_hot Hot HTF inlet temperature, from storage tank: [C]  Type: SSC_NUMBER
         """
+        SamBaseClass.logger.debug("Setting values for Tab : Solar Field; Section : Steam Conditions at Design.")
         self.ssc.data_set_number( self.data, b'x_b_des', x_b_des )
         self.ssc.data_set_number( self.data, b'fP_hdr_c',  fP_hdr_c)
         self.ssc.data_set_number( self.data, b'fP_sf_boil', fP_sf_boil )
@@ -231,13 +187,14 @@ class samCspLinearFresnelDirectSteam(object):
         
     def solarFiled_mirrorWash(self
                   , water_per_wash = 0.019999999552965164
-                  , washes_per_year = 120):
+                  , washes_per_year = 120
+                  ) :
         """
         #:param csp.lf.sf.water_per_wash Water usage per wash: [L/m2_aper]  Type: SSC_NUMBER
         #:param csp.lf.sf.washes_per_year Mirror washing frequency: []  Type: SSC_NUMBER
 
         """
-        # Section title: Mirror washing
+        SamBaseClass.logger.debug("Setting values for Tab : Solar Field; Section : Mirror Washing.")
         self.ssc.data_set_number( self.data, b'csp.lf.sf.water_per_wash', water_per_wash )
         self.ssc.data_set_number( self.data, b'csp.lf.sf.washes_per_year',  washes_per_year)
 
@@ -270,6 +227,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param e_startup Thermal inertia contribution per sq meter of solar field: [kJ/K-m2]  Type: SSC_NUMBER
         :param T_amb_des_sf Design-point ambient temperature: [C]  Type: SSC_NUMBER
         """
+        SamBaseClass.logger.debug("Setting values for Tab : Solar Field; Section : Solar Field Parameters.")
         self.ssc.data_set_number( self.data, b'solarm', solarm )
         self.ssc.data_set_number( self.data, b'I_bn_des',  I_bn_des)
         self.ssc.data_set_number( self.data, b'is_oncethru',  is_oncethru)
@@ -293,6 +251,7 @@ class samCspLinearFresnelDirectSteam(object):
         
         :param nLoops Number of loops: [none]  Type: SSC_NUMBER
         """
+        SamBaseClass.logger.debug("Setting values for Tab : Solar Field; Section : Design Point.")
         self.ssc.data_set_number( self.data, b'nLoops', nLoops )
         
     def solarField_fieldControl(self
@@ -312,7 +271,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param T_fp Freeze protection temperature (heat trace activation temperature): [C]  Type: SSC_NUMBER
         :param V_wind_max Maximum allowable wind velocity before safety stow: [m/s]  Type: SSC_NUMBER
         """
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Solar Field; Section : Field Control.")
         self.ssc.data_set_number( self.data, b'theta_stow', theta_stow )
         self.ssc.data_set_number( self.data, b'theta_dep', theta_dep )
         self.ssc.data_set_number( self.data, b'm_dot_min', m_dot_min )
@@ -342,7 +301,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param P_cond_min Minimum condenser pressure: [inHg]  Type: SSC_NUMBER
         :param n_pl_inc Number of part-load increments for the heat rejection system: [none]  Type: SSC_NUMBER    Constraint: INTEGER
         """
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Power Cycle; Section : Plant Cooling Mode.")
         self.ssc.data_set_number( self.data, b'dT_cw_ref', dT_cw_ref )
         self.ssc.data_set_number( self.data, b'CT', CT )
         self.ssc.data_set_number( self.data, b'T_approach', T_approach )
@@ -377,7 +336,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param pb_bd_frac Power block blowdown steam fraction : [none]  Type: SSC_NUMBER
         :param system_capacity Nameplate capacity: [kW]  Type: SSC_NUMBER
         """
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Power Cycle; Section : Plant Design.")
         self.ssc.data_set_number( self.data, b'LHV_eff', LHV_eff ) 
         self.ssc.data_set_number( self.data, b'P_turb_des', P_turb_des )
         self.ssc.data_set_number( self.data, b'q_pb_des', q_pb_des )
@@ -409,7 +368,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param startup_time Time needed for power block startup: [hr]  Type: SSC_NUMBER
         :param startup_frac Fraction of design thermal power needed for startup: [none]  Type: SSC_NUMBER
         """
-         
+        SamBaseClass.logger.debug("Setting values for Tab : Power Cycle; Section : Operation.")
         self.ssc.data_set_number( self.data, b'cycle_max_fraction', cycle_max_fraction )
         self.ssc.data_set_number( self.data, b'cycle_cutoff_frac', cycle_cutoff_frac )
         self.ssc.data_set_number( self.data, b't_sby', t_sby )
@@ -433,7 +392,8 @@ class samCspLinearFresnelDirectSteam(object):
         :param F_wc Fraction indicating wet cooling use for hybrid system: [none]  Type: SSC_ARRAY
 		:param weekday_schedule 12x24 Time of Use Values for week days: []  Type: SSC_MATRIX
 		:param weekend_schedule 12x24 Time of Use Values for week end days: []  Type: SSC_MATRIX
-        """               
+        """  
+        SamBaseClass.logger.debug("Setting values for Tab : Power Cycle; Section : Dispatch Control.")
         self.ssc.data_set_array( self.data, b'ffrac',  ffrac);
         self.ssc.data_set_array( self.data, b'F_wc',  F_wc);
         self.ssc.data_set_matrix( self.data, b'weekday_schedule', weekday_schedule );
@@ -453,7 +413,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param adjust_hourly Hourly loss adjustments: [%]  Type: SSC_ARRAY    Constraint: LENGTH=8760
         :param adjust_periods Period-based loss adjustments: [%]  Type: SSC_MATRIX    Constraint: COLS=3
         """               
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Power Cycle; Section : Availability and Curtailment.")
         self.ssc.data_set_number( self.data, b'adjust:constant', adjust_constant )
         
         
@@ -485,8 +445,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param b_OpticalTable Values of the optical efficiency table: [none]  Type: SSC_MATRIX
         :param sh_OpticalTable Values of the optical efficiency table: [none]  Type: SSC_MATRIX
         """               
-        
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Collector and Receiver, Section : Boiler Geometry and Optical Performance.")
         self.ssc.data_set_matrix( self.data, b'A_aperture', A_aperture );                
         self.ssc.data_set_matrix( self.data, b'L_col', L_col );
         self.ssc.data_set_matrix( self.data, b'OptCharType', OptCharType );                
@@ -512,7 +471,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param IAM_T (boiler, SH) Transverse Incident angle modifiers (0,1,2,3,4 order terms): [none]  Type: SSC_MATRIX
         :param IAM_L (boiler, SH) Longitudinal Incident angle modifiers (0,1,2,3,4 order terms): [none]  Type: SSC_MATRIX
         """               
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Collector and Receiver, Section : Incidence Angle Modifiers.")
         self.ssc.data_set_matrix( self.data, b'IAM_T', IAM_T );                
         self.ssc.data_set_matrix( self.data, b'IAM_L', IAM_L );
         
@@ -525,7 +484,8 @@ class samCspLinearFresnelDirectSteam(object):
             Section : Recever Geometry and Heat Loss for Linear Fresnel Direct Steam model of SAM.
         
         :param HLCharType (boiler, SH) Flag indicating the heat loss model type {1=poly.; 2=Forristall}: [none]  Type: SSC_MATRIX
-        """               
+        """     
+        SamBaseClass.logger.debug("Setting values for Tab : Collector and Receiver, Section : Receiver Geometry and Heat Loss.")
         self.ssc.data_set_matrix( self.data, b'HLCharType', HLCharType );
         
         
@@ -592,7 +552,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param Shadowing (boiler, SH) Receiver bellows shadowing loss factor (4: # field fracs): [none]  Type: SSC_MATRIX
         :param Dirt_HCE (boiler, SH) Loss due to dirt on the receiver envelope (4: # field fracs): [none]  Type: SSC_MATRIX
         """               
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Collector and Receiver, Section : Receiver Geometry and Heat Loss, Sub Section - Evacuated Tube Heat Loss model")
         self.ssc.data_set_matrix( self.data, b'D_2', D_2 );
         self.ssc.data_set_matrix( self.data, b'D_3', D_3 );
         self.ssc.data_set_matrix( self.data, b'D_4', D_4 );
@@ -635,6 +595,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param HL_dT (boiler, SH) Heat loss coefficient - HTF temperature (0,1,2,3,4 order terms): [W/m-K^order]  Type: SSC_MATRIX
         :param HL_W (boiler, SH) Heat loss coef adj wind velocity (0,1,2,3,4 order terms): [1/(m/s)^order]  Type: SSC_MATRIX
         """
+        SamBaseClass.logger.debug("Setting values for Tab : Collector and Receiver, Section : Receiver Geometry and Heat Loss, Sub section: Polynomial fit heat loss model")
         self.ssc.data_set_matrix( self.data, b'HL_dT', HL_dT );
         self.ssc.data_set_matrix( self.data, b'HL_W', HL_W );
 
@@ -657,7 +618,7 @@ class samCspLinearFresnelDirectSteam(object):
         :param Pipe_hl_coef Loss coefficient from the header.. runner pipe.. and non-HCE pipin: [W/m2-K]  Type: SSC_NUMBER
         :param SCA_drives_elec Tracking power.. in Watts per SCA drive: [W/m2]  Type: SSC_NUMBER
         """
-        
+        SamBaseClass.logger.debug("Setting values for Tab : Parasitics.")
         self.ssc.data_set_number( self.data, b'PB_fixed_par', PB_fixed_par )
         self.ssc.data_set_array( self.data, b'bop_array',  bop_array);
         self.ssc.data_set_array( self.data, b'aux_array',  aux_array);
@@ -665,6 +626,7 @@ class samCspLinearFresnelDirectSteam(object):
         self.ssc.data_set_number( self.data, b'SCA_drives_elec', SCA_drives_elec )
         
     def remainingParams(self):    
+        SamBaseClass.logger.debug("Setting the values which were not identified initially.")
         #The methods for the following variables yet to be written.
         self.ssc.data_set_number( self.data, b'tes_hours', 0 )
         self.ssc.data_set_number( self.data, b'q_max_aux', 255.63600158691406 )
@@ -706,22 +668,8 @@ class samCspLinearFresnelDirectSteam(object):
         self.ssc.data_set_number( self.data, b'f_recSU', 1 )
         #self.ssc.data_set_number( self.data, b'adjust:constant', 4 )
 
-    #Executes the SAM module after all variables are initialized
-    def module_create_execute(self):
-        module = self.ssc.module_create(b'tcslinear_fresnel')	
-        self.ssc.module_exec_set_print( 0 );
-        if self.ssc.module_exec(module, self.data) == 0:
-            print ('tcslinear_fresnel simulation error')
-            idx = 1
-            msg = self.ssc.module_log(module, 0)
-            while (msg != None):
-                print ('	: ' + msg.decode("utf - 8"))
-                msg = self.ssc.module_log(module, idx)
-                idx = idx + 1
-            SystemExit( "Simulation Error" );
-            self.ssc.module_free(module)
-        self.ssc.module_free(module)
 
+    def print_impParams(self):
         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
@@ -729,12 +677,9 @@ class samCspLinearFresnelDirectSteam(object):
         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
         print ('Annual energy (year 1) = ', annual_energy)
     
-    #Clears the ssc data
-    def data_clear(self):
-        self.ssc.data_clear(self.data)
+      
         
-        
-#To be implemented - Unit test cases for the method    
+#Unit test cases for the method    
 class sscTests(unittest.TestCase):
 
     def test_capacityFactor(self):
@@ -745,7 +690,7 @@ class sscTests(unittest.TestCase):
 
         samLfDs = samCspLinearFresnelDirectSteam()
         samLfDs.main()
-        capacity_factor = samLfDs.ssc.data_get_number(samLfDs.data, b'capacity_factor');
+        capacity_factor = samLfDs.test_capacity_factor #ssc.data_get_number(samLfDs.data, b'capacity_factor');
         self.assertEqual(capacity_factor, 25.037185668945312)
 """
     def test_isupper(self):

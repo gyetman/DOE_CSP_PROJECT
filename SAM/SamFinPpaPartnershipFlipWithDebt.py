@@ -33,6 +33,7 @@ V1: - Wrapper from SAM v11.11
 """
 
 from SAM.PySSC import PySSC
+from SAM.SamBaseClass import SamBaseClass
 import os, sys
 import argparse
 import logging
@@ -41,17 +42,18 @@ import unittest
 
 # TODO: implement logging (gyetman)
      
-class samFinPpaPartnershipFlipWithDebt(object):
+class samFinPpaPartnershipFlipWithDebt(SamBaseClass):
     
-    def __init__(self, inputData):
+    def __init__(self, SamBaseClass):
         """
         Methods for setting up logger, unit testing and creating the ssc module 
         go here.
         """
 
-        
-        self.ssc = PySSC()
-        self.data = inputData
+        #Change to get the base class data - investigate whether this remains the same throughout the execution
+        #self.ssc = SamBaseClass
+        #self.data = inputData
+        self.data = SamBaseClass.create_ssc_module(SamBaseClass)
         print ('SSC Version = ', self.ssc.version())
         print ('SSC Build Information = ', self.ssc.build_info().decode("utf - 8"))
         
@@ -60,20 +62,6 @@ class samFinPpaPartnershipFlipWithDebt(object):
         if __name__ != '__main__':
             self.main()
 
-
-    #Logger - to be implemented  
-    def _setup_logging(verbose=False):
-        if verbose:
-            level = logging.DEBUG
-        else:
-            level = logging.INFO
-
-        frmt = '%(asctime)s %(levelname)s %(message)s'
-        logging.basicConfig(
-            stream=sys.stderr,
-            level=level,
-            format=frmt,
-        )
     
     def main(self):
              
@@ -85,17 +73,7 @@ class samFinPpaPartnershipFlipWithDebt(object):
         
         :param system_capacity Nameplate capacity: [kW]  Type: SSC_NUMBER
         """
-        # Logger lines goes below - to be implemented
-        """
-        parser = argparse.ArgumentParser(description='Initializing samCspLinearFresnelDirectSteam.py method')
-        parser.add_argument('house_location_file', help='Path to CSV file with house locations.')  # noqa
-        #parser.add_argument('-n', '--num-workers', type=int, default=DEFAULT_PROCS, help='Number of procs to use.  Default {}'.format(DEFAULT_PROCS))  # noqa
-        parser.add_argument('-v', '--verbose', action='store_true', help='Log more verbosely.')  # noqa
-        args = parser.parse_args()
-        self._setup_logging(args.verbose)
-        logging.debug('ARGS: {}'.format(args))
-        """     
-        
+
         print('File name = ', sys.argv[0])
         if len(sys.argv) == 2:     
             annual_energy = float(sys.argv[1])
@@ -133,31 +111,9 @@ class samFinPpaPartnershipFlipWithDebt(object):
         self.remainingParams()
         
         #Executes the module and creates annual hourly simulations
-        self.module_create_execute()
-        
-        #Clears the ssc data if the module is executed on its own.
-# TODO : implement this as the exit function of this module (vvicraman)
-#        if __name__ == '__main__':
-#            self.data_clear()
+        self.module_create_execute('levpartflip', self.ssc, self.data)
+        self.print_impParams()
 
-
-    def create_ssc_module(self):
-        # Logging methods goes here
-        """
-        parser = argparse.ArgumentParser(description='Creating the ssc module of System Advisor model')
-        #parser.add_argument('house_location_file',
-        #                    help='Path to CSV file with house locations.')  
-        #parser.add_argument('-n', '--num-workers', type=int, default=DEFAULT_PROCS,
-        #    help='Number of procs to use.  Default {}'.format(DEFAULT_PROCS))  # noqa
-        parser.add_argument('-v', '--verbose', action='store_true',
-                            help='Log more verbosely.')  # noqa
-        args = parser.parse_args()
-        #self._setup_logging(args.verbose)
-        logging.debug('ARGS: {}'.format(args))
-        """
-        
-        self.ssc.module_exec_set_print(0)
-        self.data = self.ssc.data_create()
 
 
     def systemCosts_OperAndMaint(self
@@ -1030,20 +986,8 @@ class samFinPpaPartnershipFlipWithDebt(object):
         self.ssc.data_set_number( self.data, b'depr_fedbas_method', 1 )
     
 
-    def module_create_execute(self):
-        module = self.ssc.module_create(b'levpartflip')	
-        self.ssc.module_exec_set_print( 0 );
-        if self.ssc.module_exec(module, self.data) == 0:
-            print ('levpartflip simulation error')
-            idx = 1
-            msg = self.ssc.module_log(module, 0)
-            while (msg != None):
-                print ('	: ' + msg.decode("utf - 8"))
-                msg = self.ssc.module_log(module, idx)
-                idx = idx + 1
-            SystemExit( "Simulation Error" );
-        self.ssc.module_free(module)
-    
+
+    def print_impParams(self):
         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
         print ('Annual energy (year 1) = ', annual_energy)
         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
@@ -1082,9 +1026,6 @@ class samFinPpaPartnershipFlipWithDebt(object):
         print ('Debt = ', size_of_debt)
         """
         
-    def data_free(self):
-        self.self.ssc.data_free(self.data);
-        #	ssc.data_free(data);
 
 
 
