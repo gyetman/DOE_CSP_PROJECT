@@ -11,7 +11,8 @@ class samjsonparser(object):
         self.main()
         
     def main(self):
-        with open(r"D:\Drive\Thesis\Data\Json\samLinearFresnelDirectSteam.json", "r") as read_file:
+        json_sample = os.path.dirname(os.path.realpath(__file__)) + "/utils/samLinearFresnelDirectSteam.json"
+        with open(json_sample, "r") as read_file:
             ssc_json = json.load(read_file)
             
         
