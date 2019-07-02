@@ -1,8 +1,6 @@
-
-
 from SAM.PySSC import PySSC
-import logging, json
-import ast
+import logging, json, os
+from pathlib import Path
 
 class SamBaseClass(object):
     """description of class"""
@@ -22,67 +20,116 @@ class SamBaseClass(object):
         self.ssc = PySSC()
         self.create_ssc_module()
         self.data = self.ssc.data_create()
-        self.varList = self.collect_all_vars_from_json()
-        self.set_data(self.varList)
+
+        self.samPath = Path(__file__).resolve().parent
+        #self.samPath = Path("source_data/text_files/")
+        self.cspModel = "TcslinearFresnel_DSLF"
+        self.financialModel = "LeveragedPartnershipFlip"
+        self.weatherFile = 'C:\\SAM/2018.11.11\\solar_resource\\USA_AZ_Tucson_32.116699_-110.932999_psmv3_60_tmy.csv'
+        self.varListCsp = self.collect_model_variables()
+        #self.varListCsp = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.cspModel + ".json")
+        self.set_data(self.varListCsp)
         self.module_create_execute('tcslinear_fresnel')
+
+        #self.varListFin = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.financialModel + ".json")
+        #self.set_data(self.varListFin)
+        self.module_create_execute('levpartflip')
+
         self.print_impParams()
         self.data_free()
         
 
-    def collect_all_vars_from_json(self):
-        with open(r"D:\Drive\Thesis\Github\DOE_CSP_PROJECT\SAM\models\tcslinear_fresnel.json", "r") as read_file:
-            ssc_json = json.load(read_file)
-        all_variables = []
+    def collect_model_variables(self):
 
-        #ssc_json dictionary has all the data
-        for model, tabsOrVars in ssc_json.items():
-            #Tabs or variables present in the main json
-            for tabOrVar in tabsOrVars:
+        json_files = []
+        cspPath = self.cspModel + '_inputs.json'
+        finPath = self.financialModel + '_inputs.json'
+        json_files.append(Path(self.samPath / "models" / "inputs" / cspPath))
+        json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
+
+        cspValues = self.cspModel + self.financialModel + ".json"
+        finValues = "Levpartflip_DSLFLeveragedPartnershipFlip.json"
+        json_values = []
+        json_values.append( Path(self.samPath / "defaults" /cspValues))
+        json_values.append( Path(self.samPath / "defaults" /finValues))
+        variableValues = []
+
+        i = 0
+        for json_file in json_files:
+            all_variables = []
+            with open(json_file, "r") as read_file:
+                ssc_json = json.load(read_file)
+            with open(json_values[i], "r") as read_file:
+                values_json = json.load(read_file)
+            i = i + 1
+            #ssc_json dictionary has all the data
+            for model, tabsOrVars in ssc_json.items():
+                #Tabs or variables present in the main json
+                for tabOrVar in tabsOrVars:
+                    try:
+                        tabs = tabOrVar['tabs']
+                        # Iterate over all tabs in the json.
+                        for tab in tabs:
+                            for tabName, sectsOrVars in tab.items():
+                                for sectOrVar in sectsOrVars:
+                                    try:
+                                        sects = sectOrVar['sections']
+                                        # Iterate over all sections in the json.
+                                        for sect in sects:
+                                            for sectName, subSectsOrVars in sect.items():
+                                                for subSectOrVar in subSectsOrVars:
+                                                    try:
+                                                        subSect = subSectOrVar['subsections']
+                                                        # Iterate over all subsections in the json.
+                                                        for subSector in subSect:
+                                                            for subSectName, variables in subSector.items():
+                                                                # Add variables in a subsection.
+                                                                for variable in variables:
+                                                                    all_variables.append(variable)
+                                                    # Add variables that does not belong to any subsection, but is in a section.
+                                                    except KeyError:
+                                                        all_variables.append(subSectOrVar)
+                                    # Add variables that does not belong to any section, but is in a tab.
+                                    except KeyError:
+                                        all_variables.append(sectOrVar)
+                    # Add variables that does not belong to any tab.
+                    except KeyError:
+                        all_variables.append(tabOrVar)
+
+
+            for variable in all_variables:
+                if variable['name'] == 'file_name':
+                    varValue = self.weatherFile
+                elif variable['name'] == 'gen':
+                    varValue = 0.050000001
+                else:
+                    varValue = values_json['defaults'][variable['group']][variable['name']]
                 try:
-                    tabs = tabOrVar['tabs']
-                    # Iterate over all tabs in the json.
-                    for tab in tabs:
-                        for tabName, sectsOrVars in tab.items():
-                            for sectOrVar in sectsOrVars:
-                                try:
-                                    sects = sectOrVar['sections']
-                                    # Iterate over all sections in the json.
-                                    for sect in sects:
-                                        for sectName, subSectsOrVars in sect.items():
-                                            for subSectOrVar in subSectsOrVars:
-                                                try:
-                                                    subSect = subSectOrVar['subsections']
-                                                    # Iterate over all subsections in the json.
-                                                    for subSector in subSect:
-                                                        for subSectName, variables in subSector.items():
-                                                            # Add variables in a subsection.
-                                                            for variable in variables:
-                                                                all_variables.append(variable)
-                                                # Add variables that does not belong to any subsection, but is in a section.
-                                                except KeyError:
-                                                    all_variables.append(subSectOrVar)
-                                # Add variables that does not belong to any section, but is in a tab.
-                                except KeyError:
-                                    all_variables.append(sectOrVar)
-                # Add variables that does not belong to any tab.
+                    variableValues.append({'name': variable['name'],
+                                           'value': varValue,
+                                           'datatype': variable['datatype'],
+                                           'constraint': variable['constraint'] })
                 except KeyError:
-                    all_variables.append(tabOrVar)
-        return all_variables
+                    variableValues.append({'name': variable['name'],
+                                           'value': varValue,
+                                           'datatype': variable['datatype'] })
+
+            #variable.valu
+        return variableValues
+
 
     def set_data(self, variables):
-        with open(r"D:\Drive\Thesis\Data\Json\samLinearFresnelDirectSteam.json", "r") as read_file:
-            ssc_json = json.load(read_file)
-
 
         # Map all the strings present in the json file.
         stringsInJson = {}
         added_variables = {}
 
         # Increment complete TODOs count for each user.
-        try:
-            for ssc_var in variables:
+
+        for ssc_var in variables:
+            try:
                 #Checking if the variable value is present in the json and if value of the variable is a valid one.
-                if ("value" in ssc_var and ssc_var["value"] != "#N/A"):
+                if ("value" in ssc_var and ssc_var["value"] != "#N/A" and ssc_var["value"] != ""):
                     # Add value to the dictionary.
                     
                     
@@ -95,17 +142,17 @@ class SamBaseClass(object):
                         added_variables[varName] = True
 
                     elif (ssc_var["datatype"] == "SSC_ARRAY"):
-                        varValue = ast.literal_eval( ssc_var["value"] )
+                        varValue = ssc_var["value"] #ast.literal_eval( ssc_var["value"] )
                         self.ssc.data_set_array( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue )
                         added_variables[varName] = True
 
                     elif (ssc_var["datatype"] == "SSC_MATRIX"):
-                        varValue = ast.literal_eval( ssc_var["value"] )
+                        varValue = ssc_var["value"] #ast.literal_eval( ssc_var["value"] )
                         self.ssc.data_set_matrix( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
                         added_variables[varName] = True
 
                     elif (ssc_var["datatype"] == "SSC_NUMBER"):
-                        varValue = ast.literal_eval( ssc_var["value"] )
+                        varValue = ssc_var["value"] #ast.literal_eval( ssc_var["value"] )
                         if "constraint" in ssc_var:
                             if (ssc_var["constraint"] == "INTEGER"):
                                 self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
@@ -127,9 +174,11 @@ class SamBaseClass(object):
                         raise Exception("Specified variable type for SAM file from the JSON is not found in definitions.")
                     stringsInJson[varName] = varValue
 
-        except Exception as error:
-            self.logger.critical(error)
-            self.logger.info(stringsInJson)
+            except Exception as error:
+                self.logger.critical(error)
+                print(error)
+                print(ssc_var)
+                self.logger.info(stringsInJson)
 
     def module_create_execute(self, module):
         module1 = self.ssc.module_create(b'' + module.encode("ascii", "backslashreplace"))	
@@ -162,12 +211,40 @@ class SamBaseClass(object):
         self.ssc.data_clear(self.data)
 
     def print_impParams(self):
+        cspOuts = self.cspModel + "_outputs.json"
+
+        output_values = Path(self.samPath / "models" / "outputs" / cspOuts)
+        with open(output_values, "r") as read_file:
+            outputs_json = json.load(read_file)
+        output_vars = []
+        for outputs in outputs_json['TcslinearFresnel_LFDS']:
+            output_vars.append(outputs['Name'])
+
+        outputs = []
+        for variable in output_vars:
+            if variable == 'twet': continue
+            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'));
+            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'));
+            outputs.append({'name': variable,
+                            'value': value,
+                            'array': arrayVal})
+
         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
 #        print ('Annual Water Usage = ', annual_total_water_use)
         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
         print ('Annual energy (year 1) = ', annual_energy)
+        
+        outputs.append({'name': 'capacity_factor',
+                        'value': capacity_factor})
+
+        outputs.append({'name': 'annual_energy',
+                        'value': annual_energy})
+        json_outfile = 'sample.json'
+        with open(json_outfile, 'w') as outfile:
+            json.dump(outputs, outfile)
+        #print ('outputs = ', outputs)
 
 
     #Setup logging for the SAM modules

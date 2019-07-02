@@ -25,8 +25,8 @@ import json
 import os
 
 ### variables hard-coded here but should be passed to the class
-json_infile = 'samLinearFresnelDirectSteam.json'
-model = "tcslinear_fresnel" ###
+json_infile = 'LeveragedPartnershipFlip_inputs.json'
+model = "LeveragedPartnershipFlip_inputs" ###
 
 json_outfile = '{}.json'.format(model)
 
@@ -34,7 +34,7 @@ json_outfile = '{}.json'.format(model)
 # otherwise just hard-coded here
 hierarchy_map = {'Tab':'tabs','Section':'sections','Subsection':'subsections'}
 recursion_path = ['Tab','Section','Subsection']
-var_attributes = {"Name":'name',"DataType":'datatype','Label':'label','Value':'value',
+var_attributes = {"Name":'name',"Data":'datatype','Label':'label','Group':'group',
                   'Units':'units','Require':'require','Constraints':'constraints'}
 ###
 
@@ -100,8 +100,8 @@ class samjsonparser(object):
     
     def main(self):
         json_sample = os.path.dirname(os.path.realpath(__file__)) + os.sep + json_infile
-        with open(json_sample, "r") as read_file:
-            ssc_json = json.load(read_file)
+        with open(json_sample, "r", encoding="UTF-8-SIG") as read_file:
+            ssc_json = json.load(read_file)  
             
             # initalize json_out dict
             first_level = {hierarchy_map[recursion_path[0]]:[]}

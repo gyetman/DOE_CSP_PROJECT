@@ -279,8 +279,8 @@
 			"x_b_des": 0.75
 		},
 		"Heliostat": {
-			"csp_lf_sf_washes_per_year": 120,
-			"csp_lf_sf_water_per_wash": 0.02
+			"csp.lf.sf.washes_per_year": 120,
+			"csp.lf.sf.water_per_wash": 0.02
 		},
 		"Powerblock": {
 			"CT": 2,
@@ -316,7 +316,9 @@
 			"startup_time": 0.35
 		},
 		"AdjustmentFactors": {
-			"constant": 4
+			"adjust:constant": 4,
+			"adjust:hourly": "",
+			"adjust:periods": ""
 		}
 	}
 }
