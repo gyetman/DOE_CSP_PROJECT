@@ -1,0 +1,91 @@
+﻿{
+    "LT_MED_GENERAL": [
+        {
+            "DataType": "Number",
+            "Name": "sA",
+            "Label": "Specific heat transfer area",
+            "Units": "m2/m3/d"
+        },
+        {
+            "DataType": "Number",
+            "Name": "sum_A",
+            "Label": "Total area of effects",
+            "Units": "m2"
+        },
+        {
+            "DataType": "Number",
+            "Name": "sum_Aph",
+            "Label": "Total area of preheaters",
+            "Units": "m2"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Mr",
+            "Label": "Flow rate of the rejected seawater from the condenser",
+            "Units": "kg/s"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Tm",
+            "Label": "Water temperature after the mixer",
+            "Units": "oC"
+        },
+        {
+            "DataType": "Number",
+            "Name": "RR",
+            "Label": "Recovery rate"
+        },
+        {
+            "DataType": "Number",
+            "Name": "GOR",
+            "Label": "Gained output ratio"
+        },
+        {
+            "DataType": "Number",
+            "Name": "STE",
+            "Label": "Specific thermal energy consumption",
+            "Units": "kWh/m3"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Mprod",
+            "Label": "Mass flow rate of produced water",
+            "Units": "kg/s"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Mprod_m3_day",
+            "Label": "Daily produced water volume",
+            "Units": "m3/h"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Tprod",
+            "Label": "Produced water temperature",
+            "Units": "oC"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Ac",
+            "Label": "Heat transfer area of the condenser",
+            "Units": "m2"
+        },
+        {
+            "DataType": "Array",
+            "Name": "Aef",
+            "Label": "Heat transfer area of the effects",
+            "Units": "m2"
+        },
+        {
+            "DataType": "Array",
+            "Name": "Aph",
+            "Label": "Heat transfer area of the preheaters",
+            "Units": "m2"
+        },
+        {
+            "DataType": "Number",
+            "Name": "max_DA",
+            "Label": "Convergency of the iterations"
+        }
+    ]
+}
