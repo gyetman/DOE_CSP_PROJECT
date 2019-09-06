@@ -15,22 +15,30 @@ altered as power shifts.
 """
 from numpy import array,cumprod,insert
 from numpy.matlib import repmat
-# (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
-T=298.15;           # Feedwater Temperature [Kelvin]
+from math import ceil
+###### (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
+# Fluid properties
+Cf=5                # Feed TDS, g/L or parts per trillion
+T=298.15            # Feedwater Temperature [Kelvin]
+
 
 CP=1.1              # Concentration polarization factor
 
+#Pump and ERD Parameters
 nERD=0.9            # Energy recovery device efficiency
 
+#RO Plant Design Specifications
+nominal_daily_cap_tmp=50000
+Nel1=6              #number elements per vessel in stage 1
+R1=.65               #Desired overall recovery rate
 
-Nel1=1              #number elements per vessel in stage 1
 # RO Membrane Property Inputs: 
 '''    preferably loaded in from a table of membrane types 
        and associated properties. The user would choose a membrane from list or enter parameters
        manually based on his/her own membrane datasheet observations'''
 # Using default values here based on manufacturer's datasheet for seawater RO membrane element: SWC4B MAX
 Qpnom1=27.3/24      #nominal permeate production per membrane element (m3/hr)
-Am1=40.9            #membrane area per membrane element (m^2) 
+Am1=40.8            #membrane area per membrane element (m^2) 
 Pmax1=82.7          #Max pressure of membrane element (bar)
 Ptest1=55.2         #Applied test pressure for each mem element
 Ctest1=32           #membrane manufacturer's test feed salinity (TDS) for each element (parts per thousand)
@@ -50,7 +58,7 @@ MW_nacl=58.443      # molecular weight of NaCl
 Ru=0.0831           # Universal Ideal Gas constant
 Rel=1/6;            #max element recovery rate based on manufacturer's recommended ratio of 5:1 for Qb:Qp
 
-
+#Intermediate Computations
 #Bs salt permeability
 Bs1=Qpnom1/Am1*(1-SR1/100)*Ctest1/CP/(Ctest1/(1-Rt1)-(1-SR1/100)*Ctest1)
 #estimated osmotic pressure for test conditions corresponding to each element
@@ -59,11 +67,24 @@ Posm1=vhfactor*Ru*T*CP/MW_nacl*Ctest1*(1-(1-SR1/100))/(1-Rt1)
 NDP1=Ptest1-Posm1
 #assuming constant membrane water permeability for each element, calculated
 #from test conditions
-A1=Qpnom1/(Am1*NDP1)                 # membrane water permeability
+A1=Qpnom1/(Am1*NDP1)                 # membrane water permeability ###COULD ALSO BE AN INPUT
 
-Pd=Pdropmax*Nel1                      #(simplified/conservative) MAX Pressure drop across feed channel per element * number of elements [bar]
+Pd=Pdropmax*Nel1                     #(simplified/conservative) MAX Pressure drop across feed channel per element * number of elements [bar]
 
 i_nel=cumprod(repmat((1-Rel),(Nel1-1),1)) # fraction of feed volume entering elements 2 - final element, Nel
 i_nel=insert(i_nel,0,1)             # fraction of feed volume entering elements 1 - Nel
-R1_max=sum(Rel*(i_nel))             #max recovery for stage by summing recovered fraction of each element
 
+## Computed values that can/should be displayed to the user upon entering inputs in GUI
+
+R1_max=sum(Rel*(i_nel))                         #max recovery for stage by summing recovered fraction of each element
+NV1=ceil(nominal_daily_cap_tmp/Qpnom1/Nel1/24)  # Compute number of pressure vessels
+nominal_daily_cap=Qpnom1*Nel1*NV1*24            # Compute daily RO permeate production in m3/day
+
+Qp1temp=nominal_daily_cap/24
+NDP1=Qp1temp/(Nel1*NV1*Am1*A1)
+Posm_f=vhfactor*Ru*T*CP/MW_nacl*Cf
+Posm_b=vhfactor*Ru*T*CP/MW_nacl*Cf/(1-R1)
+Pf1tmp=NDP1+CP*(Posm_f+Posm_b)*0.5 + Pd*0.5
+#R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
+Pb1=Pf1tmp-Pd; 
+Pbp_targ=Pf1tmp-nERD*Pb1
