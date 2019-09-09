@@ -18,6 +18,7 @@ class FO_Trevi(object):
     # Define input variables
     def __init__(self,
                  Mprod    = 1      , # Product water flow rate (m3/day)
+                 T_sw     = 13     , # Seawater temperature (oC)
                  NF_rcr   = 0.2    , # Nanofilter retentate recirculation rate 
                  RO_r     = 0.1    , # RO retentate reject rate
                  A        = 0.8    , # Percentage of pure draw in strong draw
@@ -31,8 +32,33 @@ class FO_Trevi(object):
                  DS_density = [[0,0.57492,1.01314,2.06163,4.00907,8.07857,10.29748,20.322,38.57126,56.59887,66.45577,71.81646,84.16594,100],[1000,1001,1001.4,1002.95,1005.6,1011.26,1013.99,1027.94,1053.67,1073.775,1080.52,1086.355,1083.684,1069.866]],
                  # Draw solution density as function of concentration
                  DS_heatcap    = [[0,30,45,60,85],[4.1855,3.332,2.852,2.569,2.205]], # Draw solution specific heat capacity
+                 DS_conductivity = [[0,30,45,60,85], [0.588,0.426,0.347,0.294,0.208]], # Draw solution thermal conductivity
                  T_memb        = 14.6338, # Membrane temperature (deg C)
-                 
+                 T_wd          = 16, # Weak draw temperature after Weak/Brine HX (oC)
+                 T_prod        = 23, # Product water temperature (oC)
+                 f_cin_1A      = 1.515, # Strong draw flow rate entering HX 1A
+                 T_cout_1A     = 16.79, # Cold side outlet temperature in HX 1A
+                 T_hin_1A      = 23,  # Hot side inlet temperature in HX 1A
+                 T_hout_1A     = 23,  # Hot side outlet temperature in HX 1A
+                 T_cout_1B     = 74.5,  # Cold side outlet temperature in HX 1B
+                 T_hin_1B      = 89,  # Hot side inlet temperature in HX 1B
+                 T_hin_1C      = 93,  # Hot side inlet temperature in HX 1C
+                 T_hout_1C     = 83,  # Hot side outlet temperature in HX 1C
+                 f_hin_1C      = 1.58, # Water flow rate entering HX 1C
+                 T_cout_1C     = 90, # Cold side outlet temperature in HX 1C
+                 T_hin_2A      = 23,  # Hot side inlet temperature in HX 2A
+                 T_hout_2A     = 23,  # Hot side outlet temperature in HX 2A
+                 T_cout_2A     = 16.79,  # Cold side outlet temperature in HX 2A
+                 T_hin_2B      = 89,  # Hot side inlet temperature in HX 2B
+                 T_cout_2B     = 74.5,  # Cold side outlet temperature in HX 2B
+                 f_hin_2C      = 1.88, # Water flow rate entering HX 2C
+                 T_hout_2C     = 83, # Hot side outlet temperature in HX 2C
+                 T_cout_2C     = 90, # Cold side outlet temperature in HX 2C
+                 T_hout_6      = 23, # Hot side outlet temperature in HX 6 (Brine outlet temperature)
+                 f_sw_sup      = 0.6, # Supplemental water flow rate
+                 T_hout_4      = 20, # Hot side outlet temperature in HX 4
+                 T_cout_4      = 19, # Cold side outlet temperature in HX 4 (Seawater outlet temperature)
+                 T_cout_5      = 13, # Cold side outlet temperature in HX 5 
                  # Seawater density look-up table
                  SW_d_temp  = [0,10,20,30,40,50,60,70,80,90,100,110,120],  # Temperature (deg C)
                  SW_d_salinity = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12],
@@ -66,9 +92,63 @@ class FO_Trevi(object):
                                  [4.2152,4.1654,4.1164,4.0682,4.0209,3.9743,3.9743,3.8836,3.8394,3.796,3.7535,3.7117,3.6708],
                                  [4.2294,4.1788,4.1291,4.0802,4.0322,3.9851,3.9851,3.8933,3.8486,3.8049,3.7619,3.7199,3.6786],
                                  [4.2461,4.1947,4.1442,4.0946,4.0459,3.9982,3.9982,3.9054,3.8603,3.8162,3.773,3.7307,3.6894]],
+                  
+                 # Seawater thermal conductivity look-up table
+                 SW_cond_temp  = [0,10,20,30,40,50,60,70,80,90,100,110,120],
+                 SW_cond_salinity = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12],
+                 SW_cond_cond = [[0.572,0.571,0.57,0.57,0.569,0.569,0.568,0.568,0.567,0.566,0.566,0.565,0.565],
+                                 [0.588,0.588,0.587,0.587,0.586,0.585,0.585,0.584,0.584,0.583,0.583,0.582,0.582],
+                                 [0.604,0.603,0.602,0.602,0.601,0.601,0.6,0.6,0.599,0.599,0.598,0.598,0.597],
+                                 [0.617,0.617,0.616,0.616,0.615,0.615,0.614,0.614,0.613,0.613,0.612,0.612,0.611],
+                                 [0.63,0.629,0.629,0.628,0.628,0.627,0.627,0.626,0.626,0.625,0.625,0.624,0.624],
+                                 [0.641,0.64,0.64,0.639,0.639,0.638,0.638,0.637,0.637,0.636,0.636,0.635,0.635],
+                                 [0.65,0.65,0.649,0.649,0.648,0.648,0.647,0.647,0.647,0.646,0.646,0.645,0.645],
+                                 [0.658,0.658,0.658,0.657,0.657,0.656,0.656,0.655,0.655,0.655,0.654,0.654,0.653],
+                                 [0.665,0.665,0.665,0.664,0.664,0.663,0.663,0.663,0.662,0.662,0.661,0.661,0.661],
+                                 [0.671,0.671,0.67,0.67,0.67,0.669,0.669,0.669,0.668,0.668,0.667,0.667,0.667],
+                                 [0.676,0.675,0.675,0.675,0.674,0.674,0.674,0.673,0.673,0.673,0.672,0.672,0.672],
+                                 [0.679,0.679,0.679,0.678,0.678,0.678,0.677,0.677,0.677,0.676,0.676,0.676,0.675],
+                                 [0.682,0.681,0.681,0.681,0.68,0.68,0.68,0.679,0.679,0.679,0.679,0.678,0.678]],
+                      
+                 # Seawater dynamic viscosity look-up table
+                 SW_v_temp  = [0,10,20,30,40,50,60,70,80,90,100,110,120],
+                 SW_v_salinity = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12],
+                 SW_v_v = [[1.791,1.82,1.852,1.887,1.925,1.965,2.008,2.055,2.104,2.156,2.21,2.268,2.328],
+                                 [1.306,1.33,1.355,1.382,1.412,1.443,1.476,1.511,1.548,1.586,1.627,1.669,1.714],
+                                 [1.002,1.021,1.043,1.065,1.089,1.114,1.14,1.168,1.197,1.227,1.259,1.292,1.326],
+                                 [0.797,0.814,0.632,0.851,0.871,0.891,0.913,0.936,0.96,0.984,1.01,1.037,1.064],
+                                 [0.653,0.667,0.683,0.699,0.716,0.734,0.752,0.771,0.791,0.812,0.833,0.855,0.878],
+                                 [0.547,0.56,0.573,0.587,0.602,0.617,0.633,0.649,0.666,0.684,0.702,0.721,0.74],
+                                 [0.466,0.478,0.49,0.502,0.515,0.528,0.542,0.556,0.571,0.586,0.602,0.618,0.635],
+                                 [0.404,0.414,0.425,0.436,0.447,0.459,0.471,0.484,0.497,0.51,0.524,0.538,0.553],
+                                 [0.354,0.364,0.373,0.383,0.393,0.404,0.415,0.426,0.437,0.449,0.462,0.474,0.487],
+                                 [0.315,0.323,0.331,0.34,0.349,0.359,0.369,0.379,0.389,0.4,0.411,0.422,0.434],
+                                 [0.282,0.289,0.297,0.305,0.313,0.322,0.331,0.34,0.35,0.359,0.369,0.38,0.39],
+                                 [0.255,0.262,0.269,0.276,0.283,0.291,0.299,0.308,0.316,0.325,0.334,0.344,0.354],
+                                 [0.232,0.238,0.245,0.251,0.258,0.265,0.273,0.28,0.288,0.297,0.305,0.314,0.323]],
 
-                 ):
+                  # Draw solution dynamic viscosity look-up table
+                  DS_viscosity_temp  = [15,25,35,45,55,65,75,85,90.01],
+                  DS_viscosity_c     = [0,0.5,0.6,0.8,1],
+                  DS_viscosity_v     = [[1.14,80,130,200,280],
+                                        [0.89,34.618,66.407,120.635,158.234],
+                                        [0.719,22.451,41.051,66.43,85.239],
+                                        [0.596,15.438,27.191,36.755,31.754],
+                                        [0.504,11.515,19.309,14.362,20.105],
+                                        [0.434,21.465,16.537,15.949,21.738],
+                                        [0.378,20.084,19.956,12.149,16.25],
+                                        [0.334,18.186,18.001,9.345,13.108],
+                                        [0.314,10,10,10,10]],
+                                        
+                  # Water Density, Cp and dynamic viscosity look-up table
+                  W_density = [[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100], [999.8,1000,999.8,999.2,998.3,997.1,995.7,994.1,992.3,990.2,988,986,983,980,978,975,972,968,965,962,958]],
+                  W_cp = [[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100], [4.21,4.204,4.193,4.1855,4.183,4.181,4.179,4.178,4.179,4.181,4.182,4.183,4.185,4.188,4.191,4.194,4.198,4.203,4.208,4.213,4.219]],
+                  W_viscosity = [[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100], [1.78,1.52,1.31,1.14,1,0.89,0.798,0.719,0.653,0.596,0.547,0.504,0.467,0.434,0.404,0.378,0.355,0.334,0.314,0.297,0.287]],
+                  W_cond = [[1.85,6.85,11.85,16.85,21.85,26.85,31.85,36.85,41.85,46.85,51.85,56.85,64.85,66.85,71.85,76.85,81.85,86.85,91.85,96.85], [0.5606,0.5715,0.5818,0.5917,0.6009,0.6096,0.6176,0.6252,0.6322,0.6387,0.6445,0.6499,0.6546,0.6588,0.6624,0.6655,0.668,0.67,0.6714,0.6723]],
+
+                ):
         # Assign instance variables
+        self.T_sw = T_sw
         self.Mprod  = Mprod
         self.NF_rcr = NF_rcr
         self.RO_r   = RO_r
@@ -84,13 +164,57 @@ class FO_Trevi(object):
         self.DS_d   = DS_density[1] # Draw solution density list (kg/m3)
         self.DS_c3  = DS_heatcap[0] 
         self.DS_cp  = DS_heatcap[1] 
+        self.DS_c4  = DS_conductivity[0]
+        self.DS_cond= DS_conductivity[1]
         self.SW_d_temp = SW_d_temp
         self.SW_d_salinity = SW_d_salinity
         self.SW_d_density = SW_d_density
         self.SW_cp_temp = SW_cp_temp
         self.SW_cp_salinity = SW_cp_salinity
         self.SW_cp_cp = SW_cp_cp
+        self.SW_cond_temp = SW_cond_temp
+        self.SW_cond_salinity = SW_cond_salinity
+        self.SW_cond_cond = SW_cond_cond
+        self.SW_v_temp = SW_v_temp
+        self.SW_v_salinity = SW_v_salinity
+        self.SW_v_v = SW_v_v
+        self.DS_viscosity_temp = DS_viscosity_temp
+        self.DS_viscosity_c = DS_viscosity_c
+        self.DS_viscosity_v = DS_viscosity_v
+        self.T_cout_2B = T_cout_2B
         self.T_memb = T_memb
+        self.T_wd   = T_wd
+        self.T_prod = T_prod
+        self.f_cin_1A = f_cin_1A
+        self.T_cout_1A = T_cout_1A
+        self.T_hin_1A = T_hin_1A
+        self.T_hout_1A = T_hout_1A
+        self.T_cout_1B = T_cout_1B
+        self.T_hin_1B = T_hin_1B
+        self.T_hin_1C = T_hin_1C
+        self.T_hout_1C = T_hout_1C
+        self.f_hin_1C = f_hin_1C
+        self.T_cout_1C = T_cout_1C
+        self.T_hin_2A = T_hin_2A
+        self.T_hout_2A = T_hout_2A
+        self.T_cout_2A = T_cout_2A
+        self.T_hin_2B = T_hin_2B
+        self.f_hin_2C = f_hin_2C
+        self.T_hout_2C = T_hout_2C
+        self.T_cout_2C = T_cout_2C
+        self.T_hout_6 = T_hout_6
+        self.f_sw_sup = f_sw_sup
+        self.T_hout_4 = T_hout_4
+        self.T_cout_4 = T_cout_4
+        self.T_cout_5 = T_cout_5
+        self.W_density_t1 = W_density[0]
+        self.W_density_d  = W_density[1]
+        self.W_cp_t2 = W_cp[0]
+        self.W_cp_cp = W_cp[1]
+        self.W_viscosity_t3 = W_viscosity[0]
+        self.W_viscosity_v = W_viscosity[1]
+        self.W_cond_t4 = W_cond[0]
+        self.W_cond_cond = W_cond[1]
         
         self.SW_d_points = []
         self.SW_d_values = []
@@ -111,7 +235,38 @@ class FO_Trevi(object):
         for i in range(len(self.SW_cp_temp)):
             for j in range(len(self.SW_cp_salinity)):
                 self.SW_cp_values.append(self.SW_cp_cp[i][j])
+                
+                
+        self.DS_viscosity_points = []
+        self.DS_viscosity_values = []
+        for temp in self.DS_viscosity_temp:
+            for s in self.DS_viscosity_c:
+                self.DS_viscosity_points.append([temp,s])
         
+        for i in range(len(self.DS_viscosity_temp)):
+            for j in range(len(self.DS_viscosity_c)):
+                self.DS_viscosity_values.append(self.DS_viscosity_v[i][j])
+                
+        self.SW_cond_points=[]
+        self.SW_cond_values=[]
+        for temp in self.SW_cond_temp:
+            for s in self.SW_cond_salinity:
+                self.SW_cond_points.append([temp,s])
+                
+        for i in range(len(self.SW_cond_temp)):
+            for j in range(len(self.SW_cond_salinity)):
+                self.SW_cond_values.append(self.SW_cond_cond[i][j])
+                
+        self.SW_v_points=[]
+        self.SW_v_values=[]  
+        for temp in self.SW_v_temp:
+            for s in self.SW_v_salinity:
+                self.SW_v_points.append([temp,s])
+        
+        for i in range(len(self.SW_v_temp)):
+            for j in range(len(self.SW_v_salinity)):
+                self.SW_v_values.append(self.SW_v_v[i][j])
+                
     # 1-dimension interpolation (linear method)
     def OneDInterp(self, v, z):
         # To add: Raise exception for disordered array or z that is out of range
@@ -124,19 +279,46 @@ class FO_Trevi(object):
         elif v == 'Draw cp':
             v1 = self.DS_c3
             v2 = self.DS_cp
+        elif v == 'Draw conductivity':
+            v1 = self.DS_c4
+            v2 = self.DS_cond
+        elif v == 'Water density':
+            v1 = self.W_density_t1
+            v2 = self.W_density_d 
+        elif v == 'Water cp':
+            v1 = self.W_cp_t2
+            v2 = self.W_cp_cp
+        elif v == 'Water viscosity':
+            v1 = self.W_viscosity_t3
+            v2 = self.W_viscosity_v   
+        elif v == 'Water conductivity':
+            v1 = self.W_cond_t4
+            v2 = self.W_cond_t4 
+            
+            
         f = interp1d(v1, v2)
-        return f(z)
+        return f(z)[()]
     
     # 2-dimension interpolation (linear method)
     def TwoDInterp(self, v, z1, z2):
         if v == 'Seawater density':
             points = self.SW_d_points
             values = self.SW_d_values
-        if v == 'Seawater Cp':
+        elif v == 'Seawater Cp':
             points = self.SW_cp_points
             values = self.SW_cp_values
+        elif v == 'Seawater conductivity':
+            points = self.SW_cond_points
+            values = self.SW_cond_values
+        elif v == 'Seawater viscosity':
+            points = self.SW_v_points
+            values = self.SW_v_values
+        elif v == 'Draw viscosity':
+            points = self.DS_viscosity_points
+            values = self.DS_viscosity_values
         
-        return griddata(points, values, (z1, z2), method='linear')
+        
+        return griddata(points, values, (z1, z2), method='linear')[()]
         
     
     def flow_rate_calculations(self):
@@ -161,8 +343,8 @@ class FO_Trevi(object):
         self.sw     = self.NF_pf + self.e + self.s  # Seawater 
         self.e_s    = self.e + self.s  # Brine
         self.salinity_b = self.s / self.e_s # Salinity of brine (%)
-#        self.p_b    = self.
-        
+ 
+       
     def membrane_heat_calculations(self):
         # To weak draw solution
         h_wd  = 0  # Heat transfered (MJ per m3/day)
@@ -178,8 +360,9 @@ class FO_Trevi(object):
         # Delta T in weak draw and brine
         dT_wd  = h_wd * 1000 / self.density_wd / f_wd / self.cp_wd
         dT_b   = h_b  * 1000 / self.density_b  / f_b  / self.cp_b
-        i = 1
+
         # Modify the heat to weak draw to have the same Delta T in weak draw and brine
+        i = 1
         while (abs(dT_wd - dT_b) > 0.0001):
             if dT_wd < dT_b:
                 h_wd += self.hm / 2**i
@@ -194,12 +377,98 @@ class FO_Trevi(object):
         self.h_b = h_b
         self.P_wd = h_wd *1000/24/3600
         self.P_b  = h_b *1000/24/3600
-        
+        self.dT  = dT_b
+ 
+        # Brine
+        self.T_b_in = self.T_memb + self.dT   # Temperature of brine entering HX
+        self.p_b    = 0.93*2 * self.salinity_b *10*100/58.5*0.08314472*14.50377*(273+ self.T_b_in)  # Brine osmotic pressure (psi)
+ 
         # Nanofilter
         self.NF_cp = self.OneDInterp('Draw cp', self.NF_rcc*100) # Specific heat of nanofilter retentate
         self.NF_d  = self.OneDInterp('Draw density', self.NF_rcc*100) # kg/m3
+        self.Temp_wd = (self.density_wd * self.WD_M * self.cp_wd * self.T_wd + self.NF_d * self.NF_rf * self.NF_cp * self.T_prod) / (self.density_wd * self.WD_M * self.cp_wd + self.NF_d * self.NF_rf *self.NF_cp)
+
+        # Transfer of heat of separation in heat exchanger at cloud point
+        self.d_HX = self.OneDInterp('Draw density', self.BHx*100)
+        self.f_HX = self.WD_HX  # Flow rate
+        self.cp_HX = self.OneDInterp('Draw cp', self.BHx*100)
+        self.dT_HX = self.hm * 1000 / self.d_HX / self.f_HX / self.cp_HX # Delta T
+        self.p_prod = self.hm / 3.6 / 24 # Power per m3 product water (kW)
+        self.p_wd  = self.p_prod / self.f_HX # Power per m3 weak draw (kW)
+        
+
+    def heat_exchanger_calculations(self, Name, Type_h, Type_c, rf_h, rf_c, dP_h, OP_h, dP_c, OP_c, T_hin, T_hout, T_cin, T_cout, c_hot, c_cold):
+        # Hot side
+        if Type_h == "Draw":
+            d_h    = self.OneDInterp('Draw density', c_hot*100) 
+            cp_h   = self.OneDInterp('Draw cp', c_hot*100)
+            cond_h = self.OneDInterp('Draw conductivity', c_hot*100)
+            v_hin  = self.TwoDInterp('Draw viscosity', T_hin, c_hot )
+            v_hout = self.TwoDInterp('Draw viscosity', T_hout, c_hot )
+            f_h    = self.Mprod * rf_h
+        elif Type_h == "Water":
+            d_h    = self.OneDInterp('Water density', (T_hin+T_hout)/2) 
+            cp_h   = self.OneDInterp('Water cp', (T_hin+T_hout)/2)
+            cond_h = self.OneDInterp('Water conductivity', (T_hin+T_hout)/2)
+            v_hin  = self.OneDInterp('Water viscosity', T_hin )
+            v_hout = self.OneDInterp('Water viscosity', T_hout )
+            f_h    = self.Mprod * rf_h
+        elif Type_h == "SW":
+            d_h    = self.TwoDInterp('Seawater density', (T_hin+T_hout)/2, c_hot) 
+            cp_h   = self.TwoDInterp('Seawater Cp', (T_hin+T_hout)/2, c_hot)
+            cond_h = self.TwoDInterp('Seawater conductivity', (T_hin+T_hout)/2, c_hot)
+            v_hin  = self.TwoDInterp('Seawater viscosity', T_hin, c_hot )
+            v_hout = self.TwoDInterp('Seawater viscosity', T_hout, c_hot )
+            f_h    = self.Mprod * rf_h
+        
+        # Cold side
+        if Type_c == "Draw":
+            d_c    = self.OneDInterp('Draw density', c_cold *100) 
+            cp_c   = self.OneDInterp('Draw cp', c_cold*100)
+            cond_c = self.OneDInterp('Draw conductivity', c_cold*100)
+            v_cin  = self.TwoDInterp('Draw viscosity', T_cin, c_cold )
+            v_cout = self.TwoDInterp('Draw viscosity', T_cout, c_cold )
+            f_c    = self.Mprod * rf_c
+        elif Type_c == "Water":
+            d_c    = self.OneDInterp('Water density', (T_cin+T_cout)/2) 
+            cp_c   = self.OneDInterp('Water cp', (T_cin+T_cout)/2)
+            cond_c = self.OneDInterp('Water conductivity', (T_cin+T_cout)/2)
+            v_cin  = self.OneDInterp('Water viscosity', T_hin )
+            v_cout = self.OneDInterp('Water viscosity', T_hout)
+            f_c    = self.Mprod * rf_c
+        elif Type_c == "SW":
+            d_c    = self.TwoDInterp('Seawater density', (T_cin+T_cout)/2, c_cold) 
+            cp_c   = self.TwoDInterp('Seawater Cp', (T_cin+T_cout)/2, c_cold)
+            cond_c = self.TwoDInterp('Seawater conductivity', (T_cin+T_cout)/2, c_cold)
+            v_cin  = self.TwoDInterp('Seawater viscosity', T_cin, c_cold )
+            v_cout = self.TwoDInterp('Seawater viscosity', T_cout, c_cold )
+            f_c    = self.Mprod * rf_c
+        
+        # Approach temperature
+        if abs((T_hin - T_cout) - (T_hout - T_cin)) < 0.1:
+            T_app = T_hin - T_cout
+        else:
+            T_app = ((T_hout - T_cin)-(T_hin - T_cout)) / np.log((T_hout - T_cin)/(T_hin - T_cout))
+        # Heat load
+        heat_h = f_h / 3600 / 24 * d_h * cp_h * (T_hin - T_hout)  # kW
+        heat_c = f_c / 3600 / 24 * d_c * cp_c * (T_cin - T_cout)  # kW        
+        
+        values = {'HX': Name, 'Approach Temp': T_app, 'Hot side flow rate (m3/day)': f_h, 'Cold side flow rate (m3/day)': f_c, 'Hot side heat load(kW)': heat_h, 'Cold side heat load(kW)': heat_c }
+        return values
+    
+    def system_calculations(self):
+        self.HX1A = self.heat_exchanger_calculations('HX_1A', 'Draw', 'Draw', self.SD, self.f_cin_1A, 3, 6, 3, 22, self.T_hin_1A, self.T_hout_1A, self.Temp_wd, self.T_cout_1A, self.A, self.BHx )
+        self.HX1B = self.heat_exchanger_calculations('HX_1B', 'Draw', 'Draw', self.SD, self.f_cin_1A, 4, 10,4, 19, self.T_hin_1B, self.T_hout_1A, self.Temp_wd, self.T_cout_1B, self.A, self.BHx )
+        self.HX1C = self.heat_exchanger_calculations('HX_1C', 'Water', 'Draw', self.f_hin_1C, self.f_cin_1A, 5, 30,5, 15, self.T_hin_1C, self.T_hout_1C, self.T_cout_1B, self.T_cout_1C, None, self.BHx )
+        self.HX2A = self.heat_exchanger_calculations('HX_2A', 'Water', 'Draw', self.S, self.WD_HX-self.f_cin_1A, 1, 9, 3, 22, self.T_hin_2A, self.T_hout_2A, self.Temp_wd, self.T_cout_2A, None, self.BHx )
+        self.HX2B = self.heat_exchanger_calculations('HX_2B', 'Water', 'Draw', self.S, self.WD_HX-self.f_cin_1A, 1, 10, 4, 19, self.T_hin_2B, self.T_hin_2A, self.T_cout_2A, self.T_cout_2B, None, self.BHx )
+        self.HX2C = self.heat_exchanger_calculations('HX_2C', 'Water', 'Draw', self.f_hin_2C, self.WD_HX-self.f_cin_1A, 5, 30, 5, 19, self.T_hin_1C, self.T_hout_2C, self.T_cout_2B, self.T_cout_2C, None, self.BHx )
+        self.HX6  = self.heat_exchanger_calculations('HX_6' , 'SW'   , 'Draw', self.e_s, self.WD_M, 1, 3, 1, 4, self.T_memb + self.dT, self.T_hout_6, self.T_memb + self.dT, self.T_wd, self.salinity_b, self.B  )
+        self.HX4  = self.heat_exchanger_calculations('HX_4' , 'Draw' , 'SW', self.SD, self.f_sw_sup, 4, 3, 1, 3, self.T_hin_1A, self.T_hout_4, self.T_sw, self.T_cout_4, self.A, self.salinity)
+        self.HX5  = self.heat_exchanger_calculations('HX_5' , 'Water' , 'SW', self.SD, self.sw, 1, 8, 1, 4, self.T_hout_2A, self.T_prod, self.T_sw, self.T_cout_5, None, self.salinity)
+                                                           
 #%%
 case = FO_Trevi()
 case.flow_rate_calculations()  
 case.membrane_heat_calculations()      
-        
+case.system_calculations()
