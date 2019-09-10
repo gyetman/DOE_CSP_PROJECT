@@ -16,36 +16,39 @@ altered as power shifts.
 from numpy import array,cumprod,insert
 from numpy.matlib import repmat
 from math import ceil
+
+class ReverseOsmosisDesignModel(object):
+    def __init__(self,
 ###### (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
-# Fluid properties
-Cf=5                # Feed TDS, g/L or parts per trillion
-T=298.15            # Feedwater Temperature [Kelvin]
+                # Fluid properties
+                Cf=5                # Feed TDS, g/L or parts per trillion
+                T=298.15            # Feedwater Temperature [Kelvin]
+                
+                
+                CP=1.1              # Concentration polarization factor
+                
+                #Pump and ERD Parameters
+                nERD=0.9            # Energy recovery device efficiency
+                
+                #RO Plant Design Specifications
+                nominal_daily_cap_tmp=50000
+                Nel1=6              #number elements per vessel in stage 1
+                R1=.65               #Desired overall recovery rate
 
-
-CP=1.1              # Concentration polarization factor
-
-#Pump and ERD Parameters
-nERD=0.9            # Energy recovery device efficiency
-
-#RO Plant Design Specifications
-nominal_daily_cap_tmp=50000
-Nel1=6              #number elements per vessel in stage 1
-R1=.65               #Desired overall recovery rate
-
-# RO Membrane Property Inputs: 
+                # RO Membrane Property Inputs: 
 '''    preferably loaded in from a table of membrane types 
        and associated properties. The user would choose a membrane from list or enter parameters
        manually based on his/her own membrane datasheet observations'''
-# Using default values here based on manufacturer's datasheet for seawater RO membrane element: SWC4B MAX
-Qpnom1=27.3/24      #nominal permeate production per membrane element (m3/hr)
-Am1=40.8            #membrane area per membrane element (m^2) 
-Pmax1=82.7          #Max pressure of membrane element (bar)
-Ptest1=55.2         #Applied test pressure for each mem element
-Ctest1=32           #membrane manufacturer's test feed salinity (TDS) for each element (parts per thousand)
-SR1=99.8            #rated salt rejection of each element (%)
-Rt1=.1              #Test recovery rate for each element
-Pdropmax=1          #maximum pressure drop per membrane element
-
+                # Using default values here based on manufacturer's datasheet for seawater RO membrane element: SWC4B MAX
+                Qpnom1=27.3/24      #nominal permeate production per membrane element (m3/hr)
+                Am1=40.8            #membrane area per membrane element (m^2) 
+                Pmax1=82.7          #Max pressure of membrane element (bar)
+                Ptest1=55.2         #Applied test pressure for each mem element
+                Ctest1=32           #membrane manufacturer's test feed salinity (TDS) for each element (parts per thousand)
+                SR1=99.8            #rated salt rejection of each element (%)
+                Rt1=.1              #Test recovery rate for each element
+                Pdropmax=1          #maximum pressure drop per membrane element
+                ):
 
 if(T>343.15):
     raise Exception("The temperature should be below 45 degrees Celsius to avoid membrane damage.")
