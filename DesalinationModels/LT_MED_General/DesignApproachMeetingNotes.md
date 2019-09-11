@@ -1,4 +1,5 @@
 <u><b> Zoom Meeting with PSA </u></b>
+
 Looking at the anticipated MED model inputs, PSA recommends not to let the user adjust tube bundle dimensions. Rather, the user should be
 able to enter the MED production capacity and be able to add effects. Prof. Fthenakis also says we should focus on a desalination-design-centric
 approach, where the user first enters the daily production capacity of the plant. Adam mentioned that we can have two approaches:
