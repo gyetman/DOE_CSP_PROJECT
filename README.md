@@ -6,7 +6,7 @@
 
 ## App (GUI)
 
-To run the app (configure environment and run app) brief notes below. 
+To run the app (configure environment and run app) follow the brief notes below. Questions? Ask John or Greg!
 
 Checkout the code from GitHub
 Create a Python environment
