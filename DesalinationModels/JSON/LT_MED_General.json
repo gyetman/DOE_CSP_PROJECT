@@ -1,0 +1,155 @@
+﻿{
+    "LT_MED_GENERAL": [
+        {
+            "DataType": "Number",
+            "Name": "Tb1",
+            "Label": "The brine temperature in the first effect",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "76"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Xf",
+            "Label": "The feed water salinity",
+            "Units": "ppm",
+            "Constraints": ">5000",
+            "Tab": "System Deign",
+            "Section": "Water Source Properties",
+            "Value": "35000"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Ms",
+            "Label": "The mass flow rate of the steam entering the bundle tube of the first effect",
+            "Units": "kg/s",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "1.023"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Ts",
+            "Label": "The temperature of the steam at the inlet of the first bundle tube",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "80"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Tcwin",
+            "Label": "Seawater inlet temperature in the condenser",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Water Source Properties",
+            "Value": "25"
+        },
+        {
+            "DataType": "Number",
+            "Name": "DELTATcw",
+            "Label": "The temperature difference between the inlet and outlet seawater temperature in the condenser",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "7.3"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Mf",
+            "Label": "Feed water mass flow rate sprayed on the bundle tube",
+            "Units": "kg/s",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "38.27"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Nef",
+            "Label": "Number of effects",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "16"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Nph",
+            "Label": "Number of preheaters",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "15"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Cp",
+            "Label": "Specific heat of distillate, feed and brine, that is considered",
+            "Units": "J/(kg C",
+            "Tab": "System Deign",
+            "Section": "Water Source Properties",
+            "Value": "4.18"
+        },
+        {
+            "DataType": "Number",
+            "Name": "BPE",
+            "Label": "The Boiling Point Elevation",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "0.5"
+        },
+        {
+            "DataType": "Number",
+            "Name": "NEA",
+            "Label": "The Non Equilibrium Allowance",
+            "Units": "oC",
+            "Tab": "System Deign",
+            "Section": "Operational Parameters",
+            "Value": "0.5"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Tol",
+            "Label": "The tolarance applied to get equal area in the effects",
+            "Tab": "System Deign",
+            "Section": "Others",
+            "Value": "0.0001"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Length_ef",
+            "Label": "Length of the tubes in the effects tube bundle",
+            "Units": "m",
+            "Tab": "System Deign",
+            "Section": "Module Size",
+            "Value": "0.5"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Length_ph",
+            "Label": "Lenghth of the tubes in the preheaters tube bundle",
+            "Units": "m",
+            "Tab": "System Deign",
+            "Section": "Module Size",
+            "Value": "0.75"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Length_c",
+            "Label": "Length of the tubes in the condenser tube bundle",
+            "Units": "m",
+            "Tab": "System Deign",
+            "Section": "Module Size",
+            "Value": "1.5"
+        },
+        {
+            "DataType": "Number",
+            "Name": "Di",
+            "Label": "Inner diameter of the tubes in the bundle tubes",
+            "Units": "m",
+            "Tab": "System Deign",
+            "Section": "Module Size",
+            "Value": "0.0254"
+        }
+    ]
+}
