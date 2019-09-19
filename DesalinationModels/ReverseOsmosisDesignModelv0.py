@@ -38,8 +38,14 @@ nFP=0.85
 
 #RO Plant Design Specifications
 nominal_daily_cap_tmp=50000#,
-Nel1=6#,              #number elements per vessel in stage 1
-R1=.65#,               #Desired overall recovery rate
+Nel1=8#,              #number elements per vessel in stage 1
+R1=.55#,               #Desired overall recovery rate
+
+
+
+
+
+
 
 # RO Membrane Property Inputs: 
 #load in from a table of membrane types w/properties or enter manually.
@@ -53,6 +59,7 @@ SR1=99.8#,            #rated salt rejection of each element (%)
 Rt1=.1#,              #Test recovery rate for each element
 Pdropmax=1           #maximum pressure drop per membrane element (bar)
 Pfp=1
+Tmax=318.15
 #                ):
 
    
@@ -110,9 +117,20 @@ Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
 
 Qf1=Qp1/R1
-Qbp_targ=Qf1-Qp1
-Qbp=Qbp_targ
+Qb1=Qf1-Qp1
+Qbp=Qb1
 Qhp=Qp1
+
+if(Qb1>2.7*NV1)==0: 
+    print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (Qb1,(2.7*NV1)))
+    
+if(Qf1<17*NV1)==0:
+    print("\nFeed flow rate is %s m3/h but should be less than %s m3/h" % (Qf1,(17*NV1)))
+if(Pf1<=Pmax1)==0:
+    print("\nFeed pressure is %s bar but should be less than %s bar" % (Pf1,(Pmax1)))
+if T>Tmax:
+    print("\nFeed temperature is %s K but should be less than %s K" % (T,(Tmax)))
+
 
 BP_power=Qbp*Pbp/nBP/36
 HP_power=Qhp*Pf1/nHP/36
