@@ -83,7 +83,7 @@ MW_nacl=58.443      # molecular weight of NaCl
 Ru=0.0831           # Universal Ideal Gas constant
 Rel=1/6             #max element recovery rate based on manufacturer's recommended ratio of 5:1 for Qb:Qp
 
-CP=exp(0.7*R1)#,                      # Concentration polarization factor
+CP=exp(0.7*R1)#,    # empirical relationship for Concentration polarization factor
 
 #Intermediate Computations
 #Bs salt permeability
