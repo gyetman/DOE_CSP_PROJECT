@@ -15,7 +15,7 @@ altered as power shifts.
 """
 from numpy import array,cumprod,insert
 from numpy.matlib import repmat
-from math import ceil
+from math import ceil, exp
 from warnings import warn
 
 #class RODesign:
@@ -27,8 +27,6 @@ Cf=32#,                # Feed TDS, g/L or parts per trillion
 T=298.15#,            # Feedwater Temperature [Kelvin]
 
 
-CP=1.1#,              # Concentration polarization factor
-
 #Pump and ERD Parameters
 nERD=0.9#,            # Energy recovery device efficiency
 nBP=0.85
@@ -39,7 +37,7 @@ nFP=0.85
 #RO Plant Design Specifications
 nominal_daily_cap_tmp=50000#,
 Nel1=8#,              #number elements per vessel in stage 1
-R1=.55#,               #Desired overall recovery rate
+R1=0.55#,               #Desired overall recovery rate
 
 
 
@@ -85,6 +83,8 @@ MW_nacl=58.443      # molecular weight of NaCl
 Ru=0.0831           # Universal Ideal Gas constant
 Rel=1/6             #max element recovery rate based on manufacturer's recommended ratio of 5:1 for Qb:Qp
 
+CP=exp(0.7*R1)#,                      # Concentration polarization factor
+
 #Intermediate Computations
 #Bs salt permeability
 Bs1=Qpnom1/Am1*(1-SR1/100)*Ctest1/CP/(Ctest1/(1-Rt1)-(1-SR1/100)*Ctest1)
@@ -107,11 +107,12 @@ R1_max=sum(Rel*(i_nel))                         #max recovery for stage by summi
 NV1=ceil(nominal_daily_cap_tmp/Qpnom1/Nel1/24)  # Compute number of pressure vessels
 nominal_daily_cap=Qpnom1*Nel1*NV1*24            # Compute daily RO permeate production in m3/day
 
-Qp1=nominal_daily_cap/24
+Qp1=nominal_daily_cap_tmp/24                    # use the input provided by user for daily capacity desired
 NDP1=Qp1/(Nel1*NV1*Am1*A1)
+
 Posm_f=vhfactor*Ru*T*CP/MW_nacl*Cf
 Posm_b=vhfactor*Ru*T*CP/MW_nacl*Cf/(1-R1)
-Pf1=NDP1+CP*(Posm_f+Posm_b)*0.5 + Pd*0.5
+Pf1=NDP1+(Posm_f+Posm_b)*0.5 + Pd*0.5
 #R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
 Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
