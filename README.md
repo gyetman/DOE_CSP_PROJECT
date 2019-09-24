@@ -11,7 +11,7 @@ To run the app (configure environment and run app) follow the brief notes below.
 Checkout the code from GitHub
 Create a Python environment
 
-conda create –name doe python = 3.7
+conda create –n doe python=3.7
 
 activate doe
 
