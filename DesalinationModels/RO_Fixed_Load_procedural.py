@@ -37,7 +37,7 @@ nFP=0.85
 #RO Plant Design Specifications
 nominal_daily_cap_tmp=50000#,
 Nel1=8#,              #number elements per vessel in stage 1
-R1=0.55#,               #Desired overall recovery rate
+R1=0.40#,               #Desired overall recovery rate
 
 
 
@@ -58,6 +58,8 @@ Rt1=.1#,              #Test recovery rate for each element
 Pdropmax=1           #maximum pressure drop per membrane element (bar)
 Pfp=1
 Tmax=318.15
+minQb=2.7            #minimum concentrate flow per module (m3/h)
+maxQf=17             #maximum feed flow per module (m3/h)
 #                ):
 
    
@@ -104,15 +106,19 @@ i_nel=insert(i_nel,0,1)             # fraction of feed volume entering elements 
 ## Computed values that can/should be displayed to the user upon entering inputs in GUI
 
 R1_max=sum(Rel*(i_nel))                         #max recovery for stage by summing recovered fraction of each element
-NV1=ceil(nominal_daily_cap_tmp/Qpnom1/Nel1/24)  # Compute number of pressure vessels
+#NV1=ceil(nominal_daily_cap_tmp/Qpnom1/Nel1/24)  # Compute number of pressure vessels
+NV1=ceil(nominal_daily_cap_tmp/24/17/R1)  # Compute number of pressure vessels
+
 nominal_daily_cap=Qpnom1*Nel1*NV1*24            # Compute daily RO permeate production in m3/day
 
 Qp1=nominal_daily_cap_tmp/24                    # use the input provided by user for daily capacity desired
 NDP1=Qp1/(Nel1*NV1*Am1*A1)
-
 Posm_f=vhfactor*Ru*T*CP/MW_nacl*Cf
 Posm_b=vhfactor*Ru*T*CP/MW_nacl*Cf/(1-R1)
-Pf1=NDP1+(Posm_f+Posm_b)*0.5 + Pd*0.5
+
+Pf1=Posm_b + Pd
+NDPf=Pf1-Posm_f
+NDPb=Pf1-Posm_b-Pd
 #R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
 Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
@@ -122,10 +128,10 @@ Qb1=Qf1-Qp1
 Qbp=Qb1
 Qhp=Qp1
 
-if(Qb1>2.7*NV1)==0: 
+if(Qb1>minQb*NV1)==0: 
     print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (Qb1,(2.7*NV1)))
     
-if(Qf1<17*NV1)==0:
+if(Qf1<maxQf*NV1)==0:
     print("\nFeed flow rate is %s m3/h but should be less than %s m3/h" % (Qf1,(17*NV1)))
 if(Pf1<=Pmax1)==0:
     print("\nFeed pressure is %s bar but should be less than %s bar" % (Pf1,(Pmax1)))
@@ -141,4 +147,6 @@ PowerRO=HP_power+BP_power
 SEC=PowerTotal/Qp1
 SEC_RO=PowerRO/Qp1
 
+print("\nFeed flow rate, m3/h = %.2f\nBrine flow rate, m3/h = %.2f\nPermeate flow rate, m3/h = %.2f\nSpecific Energy Consumption, kWh/m3 = %.2f\nSpecific Energy Consumption of RO, kWh = %.2f\nTotal Power Consumption, kW= %.2f\nRO Power Consumption, kW = %.2f\n" % (Qf1,Qb1,Qp1,SEC,SEC_RO,PowerTotal,PowerRO))
 
+#print("\nNDP1 = %.2f\nNDPf = %.2f\nNDPb = %.2f\nPf1 = %.2f\n" % (NDP1,NDPf,NDPb,Pf1))
