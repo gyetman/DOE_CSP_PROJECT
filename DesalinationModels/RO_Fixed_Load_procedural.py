@@ -120,6 +120,7 @@ Pf1=Posm_b + Pd
 NDPf=Pf1-Posm_f
 NDPb=Pf1-Posm_b-Pd
 #R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
+NDPavg=(NDPf+NDPb)*0.5
 Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
 
