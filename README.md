@@ -8,17 +8,18 @@
 
 To run the app (configure environment and run app) follow the brief notes below. Questions? Ask John or Greg!
 
-#Checkout the code from GitHub
-#Create a Python environment
+Checkout the code from GitHub
+Create a Python environment
 
-conda create –n doe python=3.7
+	conda create –n doe python=3.7
 
-activate doe
+	activate doe
 
-#add dash plotly 
-pip install dash
+add dash plotly 
+	
+	pip install dash
 
-#Run the logic model
+Run the logic model
 
 	python display_model_variables.py
 #In a second instance of python, run the menu system
