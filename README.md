@@ -15,10 +15,7 @@ conda create –n doe python=3.7
 
 activate doe
 
-## GETTING AN ERROR ON THE NEXT LINE: ADD IS NOT RECOGNIZED (USING ANACONDA PROMPT)
 #add dash plotly 
-
-
 pip install dash
 
 #Run the logic model
