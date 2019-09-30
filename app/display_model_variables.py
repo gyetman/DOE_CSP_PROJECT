@@ -12,19 +12,24 @@ import dash_html_components as html
 import dash_table
 from datetime import datetime
 import json
-import os
+from pathlib import Path
 import re
 import sys
 
-sys.path.insert(0, r'D:\\GitHub\DOE_CSP_PROJECT')
-from SAM import SamBaseClass as sam_base
+base_path = Path().resolve().parent
+sys.path.insert(0,str(base_path))
+from SAM.SamBaseClass import SamBaseClass
 
 # GLOBAL VARIABLES ###
 model = 'tcslinear_fresnel'
-json_infiles_dir = r'D:\\Github\DOE_CSP_PROJECT\utils'
-model_variables_file = json_infiles_dir+os.sep+'tcslinear_fresnel_for_ss.json'
-json_outfile = r'D:\\Github\DOE_CSP_PROJECT\SAM\models\inputs\{}'.format(model)
-weather_file = r'D:\\Github\DOE_CSP_PROJECT\app\solar_resource\tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+#json_infiles_dir = r'D:\\Github\DOE_CSP_PROJECT\utils'
+json_infiles_dir = base_path / 'utils'
+#model_variables_file = json_infiles_dir+os.sep+'tcslinear_fresnel_for_ss.json'
+model_variables_file = base_path / 'utils' / 'tcslinear_fresnel_for_ss.json'
+#json_outfile = r'D:\\Github\DOE_CSP_PROJECT\SAM\models\inputs\{}'.format(model)
+json_outfile = base_path / 'SAM' / 'models' / 'inputs' / model
+#weather_file = r'D:\\Github\DOE_CSP_PROJECT\app\solar_resource\tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+weather_file = base_path / 'app' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 levels = ['sections','subsections'] #'tabs' is also a level but they will always exist
 
 
@@ -204,8 +209,8 @@ def create_callback_for_tables(tabs):
                     _update_model_variables(names,tbl_data)  
             #create the json file that will be the input to the model
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            model_outfile = json_outfile+timestamp
-            with open(model_outfile+'_inputs.json', 'w') as write_file:
+            model_outfile = Path(str(json_outfile)+timestamp+'_inputs.json')
+            with model_outfile.open('w') as write_file:
                 json.dump(model_vars, write_file)
                 
             #run the model
@@ -355,7 +360,7 @@ def run_model(csp='TcslinearFresnel_DSLF',finance='LeveragedPartnershipFlip',wea
     financial model is currently hardcoded
     '''
     #TODO run non-SAM models
-    stdm = sam_base.SamBaseClass(cspModel=csp,financialModel=finance,weatherFile=weather)
+    stdm = SamBaseClass(cspModel=csp,financialModel=finance,weatherFile=weather)
     stdm.main()
      
 #copied from samJsonParser.py
