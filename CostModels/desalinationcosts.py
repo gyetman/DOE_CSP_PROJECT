@@ -12,7 +12,7 @@ SI Units
 # t is time in years, r is discount or interest rate (fraction)
 def CR_factor(t=30,r=0.05): 
     return 1/((1 - (1 / (1 + r) ** t)) / r)
-    
+# user-provided inputs (or supplied by model)    
 daily_cap= 10000         # daily capacity of desalination plant, m3/day
 
 unit_capex=1100          # unit installed cost of desal plant, USD/m3/day
@@ -27,19 +27,20 @@ SEC_e=3                  # specific electrical energy consumption,  kWh/m3 produ
 
 SEC_th=20                # specific thermal energy consumption, kWhthermal/m3
 
-specific_energy_cost= SEC_e*LCOE + SEC_th*LCOH          #total specific energy cost, USD/m3
-
 utilization_factor=0.95  #percent of year that desalination plant operates at full capacity (i.e., capacity factor), unitless
 
+lifetime=50              # desalination plant lifetime, years        
+
+discount_rate=0.05       #discount rate, unitless
+
+# calculations
+specific_energy_cost= SEC_e*LCOE + SEC_th*LCOH          #total specific energy cost, USD/m3
 
 total_annual_water=daily_cap*365*utilization_factor     #total annual water produced by desalination plant, m3
 
 
 total_capex=daily_cap*unit_capex                        # total capital cost of desalination plant, USD
 
-lifetime=50              # desalination plant lifetime, years        
-
-discount_rate=0.05       #discount rate, unitless
 
 annualized_capex=total_capex*CR_factor(lifetime,discount_rate) # annualized (fixed) capital cost, USD/year
 
