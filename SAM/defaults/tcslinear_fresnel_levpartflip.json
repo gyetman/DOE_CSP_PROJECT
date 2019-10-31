@@ -2,7 +2,7 @@
 	"defaults": {
 		"Weather": {
 			"azimuth": 0,
-			"tilt": 33,
+			"tilt": 0,
 			"track_mode": 1
 		},
 		"LinearFresnelr": {
@@ -317,8 +317,8 @@
 		},
 		"AdjustmentFactors": {
 			"adjust:constant": 4,
-			"adjust:hourly":"",
-			"adjust:periods":""
+			"adjust:hourly": "",
+			"adjust:periods": ""
 		}
 	}
 }
