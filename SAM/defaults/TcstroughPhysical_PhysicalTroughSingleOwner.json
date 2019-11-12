@@ -663,9 +663,7 @@
 			"eta_tes_htr": 0.98
 		},
 		"AdjustmentFactors": {
-			"adjust:constant": 4,
-			"adjust:hourly": "",
-			"adjust:periods": ""
+			"constant": 4
 		}
 	}
 }
