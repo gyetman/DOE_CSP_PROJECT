@@ -107,8 +107,8 @@ class RODesign:
                 NV1=ceil(nominal_daily_cap_tmp/Qpnom1/Nel1/24)  # Compute number of pressure vessels
                 nominal_daily_cap=Qpnom1*Nel1*NV1*24            # Compute daily RO permeate production in m3/day
                 
-                self.Qp1=nominal_daily_cap/24
-                NDP1=self.Qp1/(Nel1*NV1*Am1*A1)
+                Qp1=nominal_daily_cap/24
+                NDP1=Qp1/(Nel1*NV1*Am1*A1)
                 Posm_f=vhfactor*Ru*T*self.CP/MW_nacl*Cf
                 Posm_b=vhfactor*Ru*T*self.CP/MW_nacl*Cf/(1-R1)
                 Pf1=NDP1+(Posm_f+Posm_b)*0.5 + Pd*0.5
@@ -116,16 +116,16 @@ class RODesign:
                 Pb1=Pf1-Pd
                 Pbp=Pf1-self.nERD*Pb1
                 
-                self.Qf1=self.Qp1/R1
-                self.Qb1=self.Qf1-self.Qp1
-                Qbp=self.Qb1
-                Qhp=self.Qp1
+                Qf1=Qp1/R1
+                Qb1=Qf1-Qp1
+                Qbp=Qb1
+                Qhp=Qp1
                 
-                if(self.Qb1>2.7*NV1)==0: 
-                    print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (self.Qb1,(2.7*NV1)))
+                if(Qb1>2.7*NV1)==0: 
+                    print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (Qb1,(2.7*NV1)))
                     
-                if(self.Qf1<17*NV1)==0:
-                    print("\nFeed flow rate is %s m3/h but should be less than %s m3/h" % (self.Qf1,(17*NV1)))
+                if(Qf1<17*NV1)==0:
+                    print("\nFeed flow rate is %s m3/h but should be less than %s m3/h" % (Qf1,(17*NV1)))
                 if(Pf1<=Pmax1)==0:
                     print("\nFeed pressure is %s bar but should be less than %s bar" % (Pf1,(Pmax1)))
                 if T>Tmax:
@@ -135,10 +135,10 @@ class RODesign:
                 
                 BP_power=Qbp*Pbp/nBP/36
                 HP_power=Qhp*Pf1/nHP/36
-                FP_power=self.Qf1*Pfp/nFP/36
+                FP_power=Qf1*Pfp/nFP/36
                 PowerTotal=FP_power+HP_power+BP_power
-                self.PowerRO=HP_power+BP_power
-                SEC=PowerTotal/self.Qp1
-                SEC_RO=self.PowerRO/self.Qp1
+                PowerRO=HP_power+BP_power
+                SEC=PowerTotal/Qp1
+                SEC_RO=PowerRO/Qp1
 
 
