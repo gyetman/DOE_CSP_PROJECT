@@ -28,16 +28,16 @@ T=298.15#,            # Feedwater Temperature [Kelvin]
 
 
 #Pump and ERD Parameters
-nERD=0.9#,            # Energy recovery device efficiency
-nBP=0.85
-nHP=0.85
-nFP=0.85
+nERD=0.95#,            # Energy recovery device efficiency
+nBP=0.8
+nHP=0.8
+nFP=0.8
 
 
 #RO Plant Design Specifications
-nominal_daily_cap_tmp=50000#,
+nominal_daily_cap_tmp=550000#,
 Nel1=8#,              #number elements per vessel in stage 1
-R1=0.40#,               #Desired overall recovery rate
+R1=0.4#,               #Desired overall recovery rate
 
 
 
@@ -84,14 +84,15 @@ vhfactor=2          # van't Hoff factor
 MW_nacl=58.443      # molecular weight of NaCl
 Ru=0.0831           # Universal Ideal Gas constant
 Rel=1/6             #max element recovery rate based on manufacturer's recommended ratio of 5:1 for Qb:Qp
-
-CP=exp(0.7*R1)#,    # empirical relationship for Concentration polarization factor
-
+Rel_avg=1-(1-R1)**(1/Nel1)             #average recovery rate per element based on DOW Filmtec Technical Guide documentation
+CPavg=exp(0.7*Rel_avg)#,    # empirical relationship for average concentration polarization factor from DOW Filmtec documentation
+CPb=exp(0.7*Rel)
+CPtest=exp(0.7*Rt1)
 #Intermediate Computations
 #Bs salt permeability
-Bs1=Qpnom1/Am1*(1-SR1/100)*Ctest1/CP/(Ctest1/(1-Rt1)-(1-SR1/100)*Ctest1)
+Bs1=Qpnom1/Am1*(1-SR1/100)*Ctest1/CPtest/(Ctest1/(1-Rt1)-(1-SR1/100)*Ctest1)
 #estimated osmotic pressure for test conditions corresponding to each element
-Posm1=vhfactor*Ru*T*CP/MW_nacl*Ctest1*(1-(1-SR1/100))/(1-Rt1)
+Posm1=vhfactor*Ru*T*CPtest/MW_nacl*Ctest1*(1-(1-SR1/100))/(1-Rt1)
 #estimated net driving pressure used in testing each element
 NDP1=Ptest1-Posm1
 #assuming constant membrane water permeability for each element, calculated
@@ -113,14 +114,23 @@ nominal_daily_cap=Qpnom1*Nel1*NV1*24            # Compute daily RO permeate prod
 
 Qp1=nominal_daily_cap_tmp/24                    # use the input provided by user for daily capacity desired
 NDP1=Qp1/(Nel1*NV1*Am1*A1)
-Posm_f=vhfactor*Ru*T*CP/MW_nacl*Cf
-Posm_b=vhfactor*Ru*T*CP/MW_nacl*Cf/(1-R1)
 
-Pf1=Posm_b + Pd
-NDPf=Pf1-Posm_f
-NDPb=Pf1-Posm_b-Pd
+Posm_f=vhfactor*Ru*T/MW_nacl*Cf
+Posm_b=vhfactor*Ru*T/MW_nacl*Cf/(1-R1)
+Posm_avgmem=CPavg*(Posm_f+Posm_b)*0.5    #average feed-side osmotic pressure at the membrane interface
+
+Cm_avg=CPavg*(Cf+Cf/(1-R1))*0.5
+
+Cp=Bs1*Cm_avg*Nel1*NV1*Am1/Qp1    #permeate concentration from DOW system average performance equations
+Posm_perm=vhfactor*Ru*T/MW_nacl*Cp
+#Pf1=Posm_b + Pd
+#NDPf=Pf1-Posm_f
+#NDPb=Pf1-Posm_b-Pd
 #R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
-NDPavg=(NDPf+NDPb)*0.5
+#NDPavg=Pf1-(CPavg*(Posm_f+Posm_b)+Pd)*0.5
+
+
+Pf1=NDP1 + Posm_avgmem+Pd*0.5 - Posm_perm
 Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
 
@@ -129,6 +139,7 @@ Qb1=Qf1-Qp1
 Qbp=Qb1
 Qhp=Qp1
 
+Qp1
 if(Qb1>minQb*NV1)==0: 
     print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (Qb1,(2.7*NV1)))
     
@@ -148,6 +159,7 @@ PowerRO=HP_power+BP_power
 SEC=PowerTotal/Qp1
 SEC_RO=PowerRO/Qp1
 
-print("\nFeed flow rate, m3/h = %.2f\nBrine flow rate, m3/h = %.2f\nPermeate flow rate, m3/h = %.2f\nSpecific Energy Consumption, kWh/m3 = %.2f\nSpecific Energy Consumption of RO, kWh = %.2f\nTotal Power Consumption, kW= %.2f\nRO Power Consumption, kW = %.2f\n" % (Qf1,Qb1,Qp1,SEC,SEC_RO,PowerTotal,PowerRO))
+print("\nFeed flow rate, m3/h = %.2f\nBrine flow rate, m3/h = %.2f\nPermeate flow rate, m3/h = %.2f\nSpecific Energy Consumption, kWh/m3 = %.2f\nSpecific Energy Consumption of RO, kWh = %.2f\nTotal Power Consumption, kW= %.2f\nRO Power Consumption, kW = %.2f\nPermeate Concentration, mg/L = %.1f\n"\
+      % (Qf1,Qb1,Qp1,SEC,SEC_RO,PowerTotal,PowerRO,Cp*1000))
 
 #print("\nNDP1 = %.2f\nNDPf = %.2f\nNDPb = %.2f\nPf1 = %.2f\n" % (NDP1,NDPf,NDPb,Pf1))
