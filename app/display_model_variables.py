@@ -12,20 +12,24 @@ import dash_html_components as html
 import dash_table
 from datetime import datetime
 import json
-import os
+from pathlib import Path
 import re
 import sys
 
-sys.path.insert(0, 'C:\DOE_CSP_PROJECT')
-from SAM import SamBaseClass as sam_base
+base_path = Path().resolve().parent
+sys.path.insert(0,str(base_path))
+from SAM.SamBaseClass import SamBaseClass
 
 # GLOBAL VARIABLES ###
-#TODO add some of these to config file at some point
 model = 'tcslinear_fresnel'
-json_infiles_dir = r'C:\DOE_CSP_PROJECT\utils'
-model_variables_file = json_infiles_dir+os.sep+'tcslinear_fresnel_for_ss.json'
-json_outfile = r'C:\DOE_CSP_PROJECT\SAM\models\inputs\{}'.format(model)
-weather_file = r'C:\DOE_CSP_PROJECT\app\solar_resource\tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+#json_infiles_dir = r'D:\\Github\DOE_CSP_PROJECT\utils'
+json_infiles_dir = base_path / 'utils'
+#model_variables_file = json_infiles_dir+os.sep+'tcslinear_fresnel_for_ss.json'
+model_variables_file = base_path / 'utils' / 'tcslinear_fresnel_for_ss.json'
+#json_outfile = r'D:\\Github\DOE_CSP_PROJECT\SAM\models\inputs\{}'.format(model)
+json_outfile = base_path / 'SAM' / 'models' / 'inputs' / model
+#weather_file = r'D:\\Github\DOE_CSP_PROJECT\app\solar_resource\tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+weather_file = base_path / 'app' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 levels = ['sections','subsections'] #'tabs' is also a level but they will always exist
 
 
@@ -81,13 +85,15 @@ cols = [{'name':'Variable', 'id':'label','editable':False},
 def create_callback_for_tables(tabs):
     '''
     takes in tabs of json and generates a table_id with the form:
-        "Power_Cycle4Plant_Design4Plant_Cooling_Mode0"
-        Power_Cycle, Plant_Design and Plant_Cooling Mode are the
-        tab, section and subsection names with spaces replaced with underscores
-        The numbers 4,4 and 0 are the tab, section and subsection array positions 
+    "Power_Cycle4Plant_Design4Plant_Cooling_Mode0"
+    
+    Power_Cycle, Plant_Design and Plant_Cooling Mode are the
+    tab, section and subsection names with spaces replaced with underscores
+    The numbers 4,4 and 0 are the tab, section and subsection array positions 
+    in the example above.
      
-    Then creates states for each table_id.
-    Finally, creates a callback
+    Then creates states for each table_id. These store changes to the tables.
+    Finally, creates a callback that fires when the Run Model button is hit.
         
     '''        
 
@@ -127,7 +133,7 @@ def create_callback_for_tables(tabs):
     
     #Then create the callback
     @app.callback(
-        Output('model-loading-output','children'),  #TODO: run the model and output a progress component?
+        Output('model-loading-output','children'),
         [Input('model-button','n_clicks')],
         states)
     def update_model_variables_and_run_model(n_clicks, *tableData): 
@@ -137,7 +143,8 @@ def create_callback_for_tables(tabs):
         We then check through the state of each table to see if it has been 
         edited. We can tell by whether or not it has a data_timestamp.
         If it has been edited we update the model variables dict which will 
-        later be converted to json and used as input to run the model
+        converted to json and used as input to run the model.
+        Finally the model is run.
         '''
         def _update_model_variables(names,tbl_data):
             '''overwrite the portion of the model variables dict that the data belongs to'''
@@ -154,7 +161,7 @@ def create_callback_for_tables(tabs):
                         return
                     
                     else: #NOT len(names)>5, these are section variables
-                        #does the first position contain a variable or is it part of the heierarchy
+                        #determines whether first position contain a variable or is part of the heierarchy
                         if search_array_for_dict_with_key(model_vars[model][0]['tabs'][tab_pos][tab][0]['sections'][sec_pos][sec][0],'name') is False:
                             model_vars[model][0]['tabs'][tab_pos][tab][0]['sections'][sec_pos][sec][1:]=tbl_data
                         else: #there are no more hierarchy steps so replace the entire array with model variables
@@ -166,7 +173,7 @@ def create_callback_for_tables(tabs):
                         #replace table data after the tabs at position 0
                         model_vars[model][1:]=tbl_data
                     else:
-                        #does the first position contain a variable or is it part of the heierarchy
+                        #determines whether the first position contains a variable or is part of the heierarchy
                         if search_array_for_dict_with_key(model_vars[model][0]['tabs'][tab_pos][tab][0],'name') is False:
                             model_vars[model][0]['tabs'][tab_pos][tab][1:]=tbl_data
                         else: #there are no more hierarchy steps so replace the entire array with model variables
@@ -184,7 +191,7 @@ def create_callback_for_tables(tabs):
                 table = tableData[i+1]
                 tbl_data = tableData[i+2]
                 if updated:
-                    print('{};{};{}'.format(updated,table,tbl_data))
+                    #print('{};{};{}'.format(updated,table,tbl_data)) #debug
                     # break apart the table names to find the tab, sections, subsections
                     # along with their position in dict arrays
                     names = re.split('(\d+)',table)
@@ -200,19 +207,20 @@ def create_callback_for_tables(tabs):
                     
                     #using the table id, overwrite the dict with the updated portion
                     _update_model_variables(names,tbl_data)  
-                #create the json file that will be the input to the model
-                timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-                model_outfile = json_outfile+timestamp
-                with open(model_outfile+'_inputs.json', 'w') as write_file:
-                    json.dump(model_vars, write_file)
-                #run the model
-                #TODO create config or dict with model names when there's more than one
-                if model == 'tcslinear_fresnel':
-                    csp_model = 'TcslinearFresnel_DSLF'
-                run_model(csp=csp_model,finance=None,weather=weather_file)
-                return (
-                        dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
-                        )
+            #create the json file that will be the input to the model
+            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            model_outfile = Path(str(json_outfile)+timestamp+'_inputs.json')
+            with model_outfile.open('w') as write_file:
+                json.dump(model_vars, write_file)
+                
+            #run the model
+            #TODO create config or dict with model names when there's more than one
+#                if model == 'tcslinear_fresnel':
+#                    csp_model = 'TcslinearFresnel_DSLF'
+            run_model(csp=model_outfile,finance=None,weather=weather_file)
+            return (
+                    dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
+                    )
         else:
             return 'Edit the variables in the tabs below and then Run Model'
                         
@@ -265,8 +273,9 @@ def create_model_variable_page(tab):
         #don't process any of the named levels ('tabs', etc.) at position 0
         model_variables=[]
         for v in dict_level[1:]:
+            #use if you want to exclue matrices
 #            if v['datatype']=='SSC_MATRIX':
-#                print('skipping matrix: {}'.format(v))
+#                #print('skipping matrix: {}'.format(v)) #debug
 #                continue
             #create a list of dicts
             model_variables.append(v)
@@ -280,55 +289,55 @@ def iter_json(dl,levs,tab):
     tab_level=dl[0]['tabs'][tab_index][tab]    
     tableID = '{}{}'.format(tab.replace(' ','_'),tab_index)
     tab_page = []
-    print('**TAB**: {}'.format(tab))
+    #print('**TAB**: {}'.format(tab)) #debug
     def _recursive_json(tl,l,tID):
         #first get variables belonging to the base level
         # named levels: 'tabs', etc will be at position 0, if they exist
         # searching array for name because variables have a name key
         if search_array_for_dict_with_key([tl[0]],'name') is False:
-            print('model vars not in lowest group...')
+            #print('model vars not in lowest group...') #debug
             #variables that do not belong to the lowest hierarchy level
             model_variables = []
             for v in tl[1:]:
 #                if v['datatype']=='SSC_MATRIX': #skipping matrixes for now...
 #                    continue
                 model_variables.append(v)
-                print('model variables: {}'.format(v))
+                #print('model variables: {}'.format(v)) #debug
             #tab_page.append(create_data_table(model_variables))
         else:
-            print('model vars in lowest group...')
+            #print('model vars in lowest group...') #debug
             #variables that belong to the lowest hierarchy level
             model_variables = []
             for v in tl:
 #                if v['datatype']=='SSC_MATRIX':
 #                    continue
                 model_variables.append(v)
-                print('model variables: {}'.format(v))
+                #print('model variables: {}'.format(v)) #debug
             #tab_page.append(create_data_table(model_variables))
         # append the a variable table if any exist
         if model_variables:
             #if the tab page is empty add header for general tab-level variables
             if not tab_page:
                 tab_page.append(html.H6('General {} variables'.format(tab)))
-            print('CREATING DATATABLE with tID: {}'.format(tID))
+            #print('CREATING DATATABLE with tID: {}'.format(tID)) #debug
             tab_page.append(create_data_table(model_variables,tID))
         if l:
             lev = l[0]
-            print('level is {}'.format(lev))
+            #print('level is {}'.format(lev)) #debug
             #update the dict_level with the next level if that level exists
             index = search_array_for_dict_with_key(tl,lev)
             # if it does not exist end the iteration else move into the next level
             if index is False:
-                print('{} does not exist here...'.format(lev))
+                #print('{} does not exist here...'.format(lev)) #debug
                 return
             else:
-                print('WORKING IN {}'.format(lev))
+                #print('WORKING IN {}'.format(lev)) #debug
                 tl=tl[index][lev]
             #get a list of titles from that level
             titles = unpack_keys_from_array_of_dicts(tl)
-            print('TITLES: {}'.format(titles))
+            #print('TITLES: {}'.format(titles)) #debug
             for t in titles:
-                print('TITLE: {}'.format(t))
+                #print('TITLE: {}'.format(t)) #debug
                 t_index = search_array_for_dict_with_key(tl,t)
                 if lev=='sections':
                     tab_page.append(html.H6('{}'.format(t)))
@@ -341,7 +350,7 @@ def iter_json(dl,levs,tab):
             return
     
     _recursive_json(tab_level,levs,tableID)
-    print('RETURNING tab page...')
+    #print('RETURNING tab page...')  #debug
     return tab_page 
  
 def run_model(csp='TcslinearFresnel_DSLF',finance='LeveragedPartnershipFlip',weather=None):
@@ -351,10 +360,10 @@ def run_model(csp='TcslinearFresnel_DSLF',finance='LeveragedPartnershipFlip',wea
     financial model is currently hardcoded
     '''
     #TODO run non-SAM models
-    stdm = sam_base.SamBaseClass(cspModel=csp,financialModel=finance,weatherFile=weather)
+    stdm = SamBaseClass(cspModel=csp,financialModel=finance,weatherFile=weather)
     stdm.main()
      
-#copied from samJsonParser.py because I could not get module imports to work
+#copied from samJsonParser.py
 #TODO seperate dict functions into separate module
 def search_array_for_dict_with_key(s_array,key):
     '''
