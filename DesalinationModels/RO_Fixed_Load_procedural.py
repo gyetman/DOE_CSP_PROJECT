@@ -123,6 +123,7 @@ Cm_avg=CPavg*(Cf+Cf/(1-R1))*0.5
 
 Cp=Bs1*Cm_avg*Nel1*NV1*Am1/Qp1    #permeate concentration from DOW system average performance equations
 Posm_perm=vhfactor*Ru*T/MW_nacl*Cp
+
 #Pf1=Posm_b + Pd
 #NDPf=Pf1-Posm_f
 #NDPb=Pf1-Posm_b-Pd
@@ -130,7 +131,7 @@ Posm_perm=vhfactor*Ru*T/MW_nacl*Cp
 #NDPavg=Pf1-(CPavg*(Posm_f+Posm_b)+Pd)*0.5
 
 
-Pf1=NDP1 + Posm_avgmem+Pd*0.5 - Posm_perm
+Pf1=NDP1 + Posm_avgmem + Pd*0.5 - Posm_perm
 Pb1=Pf1-Pd
 Pbp=Pf1-nERD*Pb1
 
