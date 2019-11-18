@@ -1,12 +1,21 @@
-from SAM.PySSC import PySSC
-import logging, json, os
+import json
+import logging
 from pathlib import Path
+from SAM.PySSC import PySSC
 
 class SamBaseClass(object):
     """description of class"""
 
-    def __init__(self):
-        #Sets up logging for the SAM Modules
+    def __init__(self, cspModel='TcslinearFresnel_DSLF', 
+            cspInputFile='TcslinearFresnel_DSLF_inputs.json',
+            financialModel='LeveragedPartnershipFlip', 
+            financialModelInputFile='LeveragedPartnershipFlip_inputs.json',
+            weatherFile='C:\\SAM/2018.11.11\\solar_resource\\USA_AZ_Tucson_32.116699_-110.932999_psmv3_60_tmy.csv'):
+        self.cspModel = cspModel
+        self.cspInputFile = cspInputFile
+        self.financialModel = financialModel
+        self.financialModelInputFile = financialModelInputFile
+        self.weatherFile = weatherFile
         self._setup_logging('SamBaseClass')
 
     def create_ssc_module(self):
@@ -23,9 +32,6 @@ class SamBaseClass(object):
 
         self.samPath = Path(__file__).resolve().parent
         #self.samPath = Path("source_data/text_files/")
-        self.cspModel = "TcslinearFresnel_DSLF"
-        self.financialModel = "LeveragedPartnershipFlip"
-        self.weatherFile = 'C:\\SAM/2018.11.11\\solar_resource\\USA_AZ_Tucson_32.116699_-110.932999_psmv3_60_tmy.csv'
         self.varListCsp = self.collect_model_variables()
         #self.varListCsp = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.cspModel + ".json")
         self.set_data(self.varListCsp)
@@ -42,10 +48,8 @@ class SamBaseClass(object):
     def collect_model_variables(self):
 
         json_files = []
-        cspPath = self.cspModel + '_inputs.json'
-        finPath = self.financialModel + '_inputs.json'
-        json_files.append(Path(self.samPath / "models" / "inputs" / cspPath))
-        json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
+        json_files.append(Path(self.samPath / "models" / "inputs" / self.cspInputFile))
+        json_files.append(Path(self.samPath / "models" / "inputs" / self.financialModelInputFile))
 
         cspValues = self.cspModel + self.financialModel + ".json"
         finValues = "Levpartflip_DSLFLeveragedPartnershipFlip.json"
@@ -185,7 +189,7 @@ class SamBaseClass(object):
         try:
             self.logger.debug("Running execute statements for the SAM module '" + module + "'.")
             
-            self.ssc.module_exec_set_print( 0 );
+            self.ssc.module_exec_set_print( 0 )
             if self.ssc.module_exec(module1, self.data) == 0:
                 print ('{} simulation error'.format(module1))
                 idx = 1
@@ -194,7 +198,7 @@ class SamBaseClass(object):
                     print ('	: ' + msg.decode("utf - 8"))
                     msg = self.ssc.module_log(module1, idx)
                     idx = idx + 1
-                SystemExit( "Simulation Error" );
+                SystemExit( "Simulation Error" )
             self.ssc.module_free(module1)
         except Exception as e:
             print(e)
@@ -223,17 +227,17 @@ class SamBaseClass(object):
         outputs = []
         for variable in output_vars:
             if variable == 'twet': continue
-            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'));
-            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'));
+            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'))
+            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'))
             outputs.append({'name': variable,
                             'value': value,
                             'array': arrayVal})
 
-        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
+        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
 #        print ('Annual Water Usage = ', annual_total_water_use)
-        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
+        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
         print ('Annual energy (year 1) = ', annual_energy)
         
         outputs.append({'name': 'capacity_factor',
