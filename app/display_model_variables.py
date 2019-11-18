@@ -7,29 +7,27 @@ Created on Tue Jun  4 13:55:35 2019
 
 import dash
 import dash_core_components as dcc
-from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_table
-from datetime import datetime
 import json
-from pathlib import Path
 import re
 import sys
 
-base_path = Path().resolve().parent
+from dash.dependencies import Input, Output, State
+from datetime import datetime
+from pathlib import Path
+
+
+base_path = Path(__file__).resolve().parent.parent.absolute()
 sys.path.insert(0,str(base_path))
 from SAM.SamBaseClass import SamBaseClass
 
 # GLOBAL VARIABLES ###
 model = 'tcslinear_fresnel'
-#json_infiles_dir = r'D:\\Github\DOE_CSP_PROJECT\utils'
 json_infiles_dir = base_path / 'utils'
-#model_variables_file = json_infiles_dir+os.sep+'tcslinear_fresnel_for_ss.json'
 model_variables_file = base_path / 'utils' / 'tcslinear_fresnel_for_ss.json'
-#json_outfile = r'D:\\Github\DOE_CSP_PROJECT\SAM\models\inputs\{}'.format(model)
-json_outfile = base_path / 'SAM' / 'models' / 'inputs' / model
-#weather_file = r'D:\\Github\DOE_CSP_PROJECT\app\solar_resource\tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
-weather_file = base_path / 'app' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+json_outpath = base_path / 'SAM' / 'models' / 'inputs'
+weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 levels = ['sections','subsections'] #'tabs' is also a level but they will always exist
 
 
@@ -209,15 +207,20 @@ def create_callback_for_tables(tabs):
                     _update_model_variables(names,tbl_data)  
             #create the json file that will be the input to the model
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            model_outfile = Path(str(json_outfile)+timestamp+'_inputs.json')
-            with model_outfile.open('w') as write_file:
+            model_outfile = model+timestamp+'_inputs.json'
+            model_outfile_path = Path(json_outpath / model_outfile)
+            with model_outfile_path.open('w') as write_file:
                 json.dump(model_vars, write_file)
                 
             #run the model
             #TODO create config or dict with model names when there's more than one
-#                if model == 'tcslinear_fresnel':
-#                    csp_model = 'TcslinearFresnel_DSLF'
-            run_model(csp=model_outfile,finance=None,weather=weather_file)
+            if model == 'tcslinear_fresnel':
+                csp_model = 'TcslinearFresnel_DSLF'
+            run_model(csp=csp_model,
+                      cspFile=model_outfile,
+#                      finance=None,
+#                      financeFile=None,
+                      weather=weather_file)
             return (
                     dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
                     )
@@ -353,7 +356,11 @@ def iter_json(dl,levs,tab):
     #print('RETURNING tab page...')  #debug
     return tab_page 
  
-def run_model(csp='TcslinearFresnel_DSLF',finance='LeveragedPartnershipFlip',weather=None):
+def run_model(csp='TcslinearFresnel_DSLF',
+              cspFile='TcslinearFresnel_DSLF_inputs.json',
+              finance='LeveragedPartnershipFlip',
+              financeFile='LeveragedPartnershipFlip_inputs.json',
+              weather=None):
     '''
     runs solar thermal desal model
     currently only setup for SAM models
