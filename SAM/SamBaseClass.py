@@ -10,7 +10,7 @@ class SamBaseClass(object):
             cspInputFile='TcslinearFresnel_DSLF_inputs.json',
             financialModel='LeveragedPartnershipFlip', 
             financialModelInputFile='LeveragedPartnershipFlip_inputs.json',
-            weatherFile='C:\\SAM/2018.11.11\\solar_resource\\USA_AZ_Tucson_32.116699_-110.932999_psmv3_60_tmy.csv'):
+            weatherFile='C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
         self.cspModel = cspModel
         self.cspInputFile = cspInputFile
         self.financialModel = financialModel
@@ -103,9 +103,23 @@ class SamBaseClass(object):
 
             for variable in all_variables:
                 if variable['name'] == 'file_name':
-                    varValue = self.weatherFile
-                elif variable['name'] == 'gen':
-                    varValue = 0.050000001
+                    varValue = self.weatherFile   
+                #elif variable['name'] == 'gen':
+                #    varValue = [0]
+                elif variable['name'] not in values_json['defaults'][variable['group']] and variable['datatype'] == 'SSC_NUMBER':
+                    if 'require' in variable:
+                        if variable['require'] == '*':
+                            varValue = 0
+                        else:
+                            varValue = float(variable['require'])
+                    else:
+                        varValue = ""     
+                    print(variable['name'], varValue)
+                elif variable['name'] not in values_json['defaults'][variable['group']] and variable['datatype'] == 'SSC_ARRAY':
+                    if 'require' in variable:
+                        varValue = [0]
+                    else:
+                        varValue = ""
                 else:
                     varValue = values_json['defaults'][variable['group']][variable['name']]
                 try:
