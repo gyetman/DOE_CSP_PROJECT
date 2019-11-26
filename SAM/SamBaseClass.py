@@ -1,22 +1,22 @@
-import json
-import logging
-from pathlib import Path
 from SAM.PySSC import PySSC
+import logging, json, os
+from pathlib import Path
+import numpy as np
 
 class SamBaseClass(object):
     """description of class"""
 
-    def __init__(self, cspModel='TcslinearFresnel_DSLF', 
-            cspInputFile='TcslinearFresnel_DSLF_inputs.json',
-            financialModel='LeveragedPartnershipFlip', 
-            financialModelInputFile='LeveragedPartnershipFlip_inputs.json',
-            weatherFile='C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
-        self.cspModel = cspModel
-        self.cspInputFile = cspInputFile
-        self.financialModel = financialModel
-        self.financialModelInputFile = financialModelInputFile
-        self.weatherFile = weatherFile
+    def __init__(self,
+                 CSP          = 'tcstrough_physical',
+                 financial    = 'singleowner',
+                 desalination =  None,
+                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
+        #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
+        self.cspModel = CSP
+        self.financialModel = financial
+        self.Desalination = desalination
+        self.weatherFile = weatherfile
 
     def create_ssc_module(self):
         try:
@@ -31,16 +31,26 @@ class SamBaseClass(object):
         self.data = self.ssc.data_create()
 
         self.samPath = Path(__file__).resolve().parent
-        #self.samPath = Path("source_data/text_files/")
+        
+#        self.cspModel = "TcstroughPhysical_PhysicalTrough"
+#        self.financialModel = "SingleOwner"
+#        self.weatherFile = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
         self.varListCsp = self.collect_model_variables()
         #self.varListCsp = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.cspModel + ".json")
         self.set_data(self.varListCsp)
-        self.module_create_execute('tcslinear_fresnel')
+        self.module_create_execute(self.cspModel)
+#        self.module_create_execute('tcstrough_physical')
 
         #self.varListFin = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.financialModel + ".json")
         #self.set_data(self.varListFin)
-        self.module_create_execute('levpartflip')
-
+        if self.financialModel:
+            self.module_create_execute(self.financialModel)
+#        self.module_create_execute('singleowner')
+        if self.Desalination:
+            self.T_cond = self.P_T_conversion()
+            self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
+        
+        
         self.print_impParams()
         self.data_free()
         
@@ -48,11 +58,13 @@ class SamBaseClass(object):
     def collect_model_variables(self):
 
         json_files = []
-        json_files.append(Path(self.samPath / "models" / "inputs" / self.cspInputFile))
-        json_files.append(Path(self.samPath / "models" / "inputs" / self.financialModelInputFile))
+        cspPath = self.cspModel + '_inputs.json'
+        finPath = self.financialModel + '_inputs.json'
+        json_files.append(Path(self.samPath / "models" / "inputs" / cspPath))
+        json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
 
-        cspValues = self.cspModel + self.financialModel + ".json"
-        finValues = "Levpartflip_DSLFLeveragedPartnershipFlip.json"
+        cspValues = self.cspModel + "_" + self.financialModel + ".json"
+        finValues = self.financialModel + "_" + self.cspModel + ".json"
         json_values = []
         json_values.append( Path(self.samPath / "defaults" /cspValues))
         json_values.append( Path(self.samPath / "defaults" /finValues))
@@ -103,9 +115,10 @@ class SamBaseClass(object):
 
             for variable in all_variables:
                 if variable['name'] == 'file_name':
-                    varValue = self.weatherFile   
-                #elif variable['name'] == 'gen':
-                #    varValue = [0]
+                    varValue = self.weatherFile 
+                elif variable['name'] not in values_json['defaults'][variable['group']] :
+                    varValue = ""
+                    '''
                 elif variable['name'] not in values_json['defaults'][variable['group']] and variable['datatype'] == 'SSC_NUMBER':
                     if 'require' in variable:
                         if variable['require'] == '*':
@@ -120,6 +133,8 @@ class SamBaseClass(object):
                         varValue = [0]
                     else:
                         varValue = ""
+                    print(variable['name'], varValue) 
+                    '''
                 else:
                     varValue = values_json['defaults'][variable['group']][variable['name']]
                 try:
@@ -133,7 +148,7 @@ class SamBaseClass(object):
                                            'datatype': variable['datatype'] })
 
             #variable.valu
-        return variableValues
+        return variableValues 
 
 
     def set_data(self, variables):
@@ -203,7 +218,7 @@ class SamBaseClass(object):
         try:
             self.logger.debug("Running execute statements for the SAM module '" + module + "'.")
             
-            self.ssc.module_exec_set_print( 0 )
+            self.ssc.module_exec_set_print( 0 );
             if self.ssc.module_exec(module1, self.data) == 0:
                 print ('{} simulation error'.format(module1))
                 idx = 1
@@ -212,7 +227,7 @@ class SamBaseClass(object):
                     print ('	: ' + msg.decode("utf - 8"))
                     msg = self.ssc.module_log(module1, idx)
                     idx = idx + 1
-                SystemExit( "Simulation Error" )
+                SystemExit( "Simulation Error" );
             self.ssc.module_free(module1)
         except Exception as e:
             print(e)
@@ -224,6 +239,55 @@ class SamBaseClass(object):
                 msg = self.ssc.module_log(module1, idx)
                 idx = idx + 1
             self.logger.critical("Exception occurred while executing the SAM module. Please see the detailed error message below", exc_info=True)
+
+    def P_T_conversion(self):
+        Cond_p = self.ssc.data_get_array(self.data, b'P_cond');
+        Cond_temp=[]
+        Cond_temp_root2=[]
+        for i in Cond_p:
+        #   Coefficients for the equation to find out Condenser Temperature
+            coeff = [9.655*10**-4, -0.039, 4.426, -19.64, (1123.1 - i)]
+            
+            temps = np.roots(coeff)
+            #Getting real roots
+            temps_real = temps.real[abs(temps.imag < 1e-5)] #Imaginary parts are sometimes not exaclty zero becuase of approximations in calculation
+            #Filtering for positive values
+            temps_yearly = temps_real[temps_real >= 0]
+            Cond_temp.append(temps_yearly) #Enter equation here
+            
+            #Making an array of the second real root as it seemed to model actual values better
+            #By analyzing the outputs, it was found that root2 of the fourth order equation gave right values
+            Cond_temp_root2.append(max(temps_yearly))
+
+        # Eliminate any temperature below 60 deg C and above 75 deg C
+        for temp in Cond_temp_root2:
+            if temp < 60:
+                temp = 0
+            elif temp > 85:
+                temp = 80
+        #print(Cond_temp_root2)        
+        return Cond_temp_root2
+    
+        
+    def LT_MED_water_empirical(self, T_cond):
+        Ms = self.ssc.data_get_array(self.data, b'm_dot_makeup')
+        Ms_max = max(Ms)
+        Ms_capacity = Ms_max/14/3600
+
+        GOR = []
+        Md = []
+        for i in range(len(T_cond)):
+            Ms[i] = Ms[i] /3600/Ms_capacity
+            if T_cond[i] > 55 and T_cond[i] < 75:
+                GOR.append(648.2-26.74* T_cond[i]-16.45*Ms[i]+0.3842*T_cond[i]**2+0.3137*T_cond[i]*Ms[i]+0.5995*Ms[i]**2-0.001835*T_cond[i]**3-0.002371*T_cond[i]**2*Ms[i]-0.0001411*T_cond[i]*Ms[i]**2-0.01844*Ms[i]**3)
+                Md.append(-0.273+0.008409*T_cond[i]-0.04452*Ms[i]+0.0003093*T_cond[i]**2+0.001969*T_cond[i]*Ms[i]-0.002485*Ms[i]**2)
+            else:
+                GOR.append(0)
+                Md.append(0)
+#        print(Ms)
+        print('GOR:',max(GOR))
+        print('Md:',max(Md))
+        return GOR, Md
 
     def data_free(self):
         self.ssc.data_clear(self.data)
@@ -241,18 +305,21 @@ class SamBaseClass(object):
         outputs = []
         for variable in output_vars:
             if variable == 'twet': continue
-            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'))
-            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'))
+            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'));
+            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'));
             outputs.append({'name': variable,
                             'value': value,
                             'array': arrayVal})
 
-        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
+        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
 #        print ('Annual Water Usage = ', annual_total_water_use)
-        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
         print ('Annual energy (year 1) = ', annual_energy)
+        
+        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real');
+        print ('LCOE_real = ', lcoe_real)
         
         outputs.append({'name': 'capacity_factor',
                         'value': capacity_factor})
