@@ -116,9 +116,9 @@ class SamBaseClass(object):
             for variable in all_variables:
                 if variable['name'] == 'file_name':
                     varValue = self.weatherFile 
-                elif variable['name'] not in values_json['defaults'][variable['group']] :
-                    varValue = ""
-                    '''
+                # elif variable['name'] not in values_json['defaults'][variable['group']] :
+                #     varValue = ""
+
                 elif variable['name'] not in values_json['defaults'][variable['group']] and variable['datatype'] == 'SSC_NUMBER':
                     if 'require' in variable:
                         if variable['require'] == '*':
@@ -134,7 +134,7 @@ class SamBaseClass(object):
                     else:
                         varValue = ""
                     print(variable['name'], varValue) 
-                    '''
+                    
                 else:
                     varValue = values_json['defaults'][variable['group']][variable['name']]
                 try:
