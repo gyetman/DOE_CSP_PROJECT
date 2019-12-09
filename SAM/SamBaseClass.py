@@ -9,12 +9,16 @@ class SamBaseClass(object):
     def __init__(self,
                  CSP          = 'tcstrough_physical',
                  financial    = 'singleowner',
+                 cspInputFile = 'tcstrough_physical_singleowner.json',
+                 financialInputFile = 'singleowner_tcstrough_physical.json',
                  desalination =  None,
                  weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
         self.cspModel = CSP
         self.financialModel = financial
+        self.cspInputFile =cspInputFile
+        self.financialInputFile =financialInputFile
         self.Desalination = desalination
         self.weatherFile = weatherfile
 
@@ -45,6 +49,8 @@ class SamBaseClass(object):
         #self.set_data(self.varListFin)
         if self.financialModel:
             self.module_create_execute(self.financialModel)
+            if self.financialModel == 'iph_to_lcoefcr':
+                self.module_create_execute('lcoefcr')
 #        self.module_create_execute('singleowner')
         if self.Desalination:
             self.T_cond = self.P_T_conversion()
@@ -63,11 +69,23 @@ class SamBaseClass(object):
         json_files.append(Path(self.samPath / "models" / "inputs" / cspPath))
         json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
 
-        cspValues = self.cspModel + "_" + self.financialModel + ".json"
-        finValues = self.financialModel + "_" + self.cspModel + ".json"
+
+        # cspValues = self.cspModel + "_" + self.financialModel + ".json"
+        # finValues = self.financialModel + "_" + self.cspModel + ".json"
+
         json_values = []
-        json_values.append( Path(self.samPath / "defaults" /cspValues))
-        json_values.append( Path(self.samPath / "defaults" /finValues))
+        json_values.append(Path(self.samPath / "defaults" / self.cspInputFile))
+        json_values.append(Path(self.samPath / "defaults" / self.financialInputFile))
+        # json_values.append( Path(self.samPath / "defaults" /cspValues))
+        # json_values.append( Path(self.samPath / "defaults" /finValues))
+
+        if self.financialModel == 'iph_to_lcoefcr':
+            fin2Path = 'lcoefcr' + self.cspModel + '_inputs.json'
+            json_files.append(Path(self.samPath / "models" / "inputs" / fin2Path))
+
+            fin2Values= 'lcoefcr_' + self.cspModel + "_" + self.financialModel + '.json'
+            json_values.append(Path(self.samPath / "defaults" /fin2Values))
+
         variableValues = []
 
         i = 0
@@ -127,13 +145,13 @@ class SamBaseClass(object):
                             varValue = float(variable['require'])
                     else:
                         varValue = ""     
-                    print(variable['name'], varValue)
+                    # print(variable['name'], varValue)
                 elif variable['name'] not in values_json['defaults'][variable['group']] and variable['datatype'] == 'SSC_ARRAY':
                     if 'require' in variable:
                         varValue = [0]
                     else:
                         varValue = ""
-                    print(variable['name'], varValue) 
+                    # print(variable['name'], varValue)
                     
                 else:
                     varValue = values_json['defaults'][variable['group']][variable['name']]
@@ -218,7 +236,7 @@ class SamBaseClass(object):
         try:
             self.logger.debug("Running execute statements for the SAM module '" + module + "'.")
             
-            self.ssc.module_exec_set_print( 0 );
+            self.ssc.module_exec_set_print( 0 )
             if self.ssc.module_exec(module1, self.data) == 0:
                 print ('{} simulation error'.format(module1))
                 idx = 1
@@ -227,7 +245,7 @@ class SamBaseClass(object):
                     print ('	: ' + msg.decode("utf - 8"))
                     msg = self.ssc.module_log(module1, idx)
                     idx = idx + 1
-                SystemExit( "Simulation Error" );
+                SystemExit( "Simulation Error" )
             self.ssc.module_free(module1)
         except Exception as e:
             print(e)
@@ -241,7 +259,7 @@ class SamBaseClass(object):
             self.logger.critical("Exception occurred while executing the SAM module. Please see the detailed error message below", exc_info=True)
 
     def P_T_conversion(self):
-        Cond_p = self.ssc.data_get_array(self.data, b'P_cond');
+        Cond_p = self.ssc.data_get_array(self.data, b'P_cond')
         Cond_temp=[]
         Cond_temp_root2=[]
         for i in Cond_p:
@@ -305,27 +323,32 @@ class SamBaseClass(object):
         outputs = []
         for variable in output_vars:
             if variable == 'twet': continue
-            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'));
-            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'));
+            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'))#bytes(variable, 'utf-8'));
+            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'))
             outputs.append({'name': variable,
                             'value': value,
                             'array': arrayVal})
 
-        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
-        print ('\nCapacity factor (year 1) = ', capacity_factor)
-#        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
-#        print ('Annual Water Usage = ', annual_total_water_use)
-        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
-        print ('Annual energy (year 1) = ', annual_energy)
-        
-        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real');
-        print ('LCOE_real = ', lcoe_real)
-        
-        outputs.append({'name': 'capacity_factor',
-                        'value': capacity_factor})
+        if self.financialModel == 'iph_to_lcoefcr':
+            lcoe_fcr = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            print ('\nLCOH = ', lcoe_fcr)
+            annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+            print ('Annual energy (year 1) = ', annual_energy)
 
-        outputs.append({'name': 'annual_energy',
-                        'value': annual_energy})
+        else:
+            capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
+            print ('\nCapacity factor (year 1) = ', capacity_factor)
+            annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+            print ('Annual energy (year 1) = ', annual_energy)
+            lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real')
+            print ('LCOE_real = ', lcoe_real)
+        
+            # outputs.append({'name': 'capacity_factor',
+            #                 'value': capacity_factor})
+    
+            # outputs.append({'name': 'annual_energy',
+            #                 'value': annual_energy})
+
         json_outfile = 'sample.json'
         with open(json_outfile, 'w') as outfile:
             json.dump(outputs, outfile)
