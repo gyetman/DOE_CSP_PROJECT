@@ -122,7 +122,8 @@ class SamBaseClass(object):
                     varValue = self.weatherFile 
                 # elif variable['name'] not in values_json['defaults'][variable['group']] :
                 #     varValue = ""
-
+                elif variable['Name'] == 'T_ITD_des':
+                    varValue = 40
                 elif variable['Name'] not in values_json['defaults'][variable['Group']] and variable['DataType'] == 'SSC_NUMBER':
                     if 'Require' in variable:
                         if variable['Require'] == "*":
