@@ -7,9 +7,9 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcstrough_physical',
+                 CSP          = 'tcslinear_fresnel',
                  financial    = 'singleowner',
-                 desalination =  None,
+                 desalination =  'LT-MED',
                  weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
@@ -150,7 +150,8 @@ class SamBaseClass(object):
                     variableValues.append({'name': variable['Name'],
                                            'value': varValue,
                                            'datatype': variable['DataType'] })
-
+                if variable['Name'] == 'real_discount_rate':
+                    print(varValue)
             #variable.valu
         return variableValues 
 
@@ -289,8 +290,11 @@ class SamBaseClass(object):
                 GOR.append(0)
                 Md.append(0)
 #        print(Ms)
-        print('GOR:',max(GOR))
-        print('Md:',max(Md))
+        print('GOR:',max(GOR)) # GOR: Gained output ratio (%)
+        print('Md:',max(Md)) # Distillate water (m3/h)
+        # Generate csv
+        np.savetxt("GOR.csv", GOR,delimiter=',')
+        np.savetxt("Md.csv",  Md, delimiter=',')
         return GOR, Md
 
     def data_free(self):
