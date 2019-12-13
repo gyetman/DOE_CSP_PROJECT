@@ -7,15 +7,32 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcslinear_fresnel',
+                 CSP          = 'tcsmolten_salt',
                  financial    = 'singleowner',
-                 desalination =  'LT-MED',
+                 desalination =  None,
+                 json_value_filepath = None, # Such as: 'D:/DOE_CSP_PROJECT/SAM_flatJSON/defaults/tcstrough_physical_singleowner.json'
                  weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
         self.cspModel = CSP
         self.financialModel = financial
-        self.Desalination = desalination
+        self.desalination = desalination
+        self.samPath = Path(__file__).resolve().parent
+        
+        # Use the user defined json file as input values
+        if json_value_filepath:
+            self.json_values = json_value_filepath
+            
+        # For internal use only, if no json file is given, use default values
+        else:
+            if self.financialModel:
+                Values = self.cspModel + "_" + self.financialModel + ".json"
+                self.json_values = Path(self.samPath / "defaults" /Values)
+            else: # if no finiancial model, just add CSP values
+                Values = self.cspModel + "_none" + ".json"
+                self.json_values = Path(self.samPath / "defaults" /Values)
+            
+            
         self.weatherFile = weatherfile
 
     def create_ssc_module(self):
@@ -29,24 +46,16 @@ class SamBaseClass(object):
         self.ssc = PySSC()
         self.create_ssc_module()
         self.data = self.ssc.data_create()
-
-        self.samPath = Path(__file__).resolve().parent
-        
-#        self.cspModel = "TcstroughPhysical_PhysicalTrough"
-#        self.financialModel = "SingleOwner"
-#        self.weatherFile = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
         self.varListCsp = self.collect_model_variables()
-        #self.varListCsp = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.cspModel + ".json")
-        self.set_data(self.varListCsp)
-        self.module_create_execute(self.cspModel)
-#        self.module_create_execute('tcstrough_physical')
 
-        #self.varListFin = self.collect_all_vars_from_json(samPath + "/models/inputs/" + self.financialModel + ".json")
-        #self.set_data(self.varListFin)
+        self.set_data(self.varListCsp)
+        # execute csp model
+        self.module_create_execute(self.cspModel)
+        # execute financial model, if any
         if self.financialModel:
             self.module_create_execute(self.financialModel)
-#        self.module_create_execute('singleowner')
-        if self.Desalination:
+        # execute desalination model, if any
+        if self.desalination:
             self.T_cond = self.P_T_conversion()
             self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
         
@@ -56,92 +65,82 @@ class SamBaseClass(object):
         
 
     def collect_model_variables(self):
-
+        # Add CSP variables
         json_files = []
         cspPath = self.cspModel + '_inputs.json'
-        finPath = self.financialModel + '_inputs.json'
         json_files.append(Path(self.samPath / "models" / "inputs" / cspPath))
-        json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
+        
+        if self.financialModel: # if there's a finiancial model
+            # Then add finiancial variables
+            finPath = self.financialModel + '_inputs.json'
+            json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
 
-        cspValues = self.cspModel + "_" + self.financialModel + ".json"
-        finValues = self.financialModel + "_" + self.cspModel + ".json"
-        json_values = []
-        json_values.append( Path(self.samPath / "defaults" /cspValues))
-        json_values.append( Path(self.samPath / "defaults" /finValues))
+            
         variableValues = []
-
-        i = 0
+        # Load variable values from JSON
+        with open(self.json_values, "r") as read_file:
+            values_json = json.load(read_file)
+            
+        # Load variable names from JSON
         for json_file in json_files:
             all_variables = []
             with open(json_file, "r") as read_file:
                 ssc_json = json.load(read_file)
-            with open(json_values[i], "r") as read_file:
-                values_json = json.load(read_file)
-            i = i + 1
             #ssc_json dictionary has all the data
             for model, items in ssc_json.items():
                 for item in items:
                     all_variables.append(item)
 
-            # for model, tabsOrVars in ssc_json.items():
-            #     #Tabs or variables present in the main json
-            #     for tabOrVar in tabsOrVars:
-            #         try:
-            #             tabs = tabOrVar['tabs']
-            #             # Iterate over all tabs in the json.
-            #             for tab in tabs:
-            #                 for tabName, sectsOrVars in tab.items():
-            #                     for sectOrVar in sectsOrVars:
-            #                         try:
-            #                             sects = sectOrVar['sections']
-            #                             # Iterate over all sections in the json.
-            #                             for sect in sects:
-            #                                 for sectName, subSectsOrVars in sect.items():
-            #                                     for subSectOrVar in subSectsOrVars:
-            #                                         try:
-            #                                             subSect = subSectOrVar['subsections']
-            #                                             # Iterate over all subsections in the json.
-            #                                             for subSector in subSect:
-            #                                                 for subSectName, variables in subSector.items():
-            #                                                     # Add variables in a subsection.
-            #                                                     for variable in variables:
-            #                                                         all_variables.append(variable)
-            #                                         # Add variables that does not belong to any subsection, but is in a section.
-            #                                         except KeyError:
-            #                                             all_variables.append(subSectOrVar)
-            #                         # Add variables that does not belong to any section, but is in a tab.
-            #                         except KeyError:
-            #                             all_variables.append(sectOrVar)
-            #         # Add variables that does not belong to any tab.
-            #         except KeyError:
-            #             all_variables.append(tabOrVar)
-
-
             for variable in all_variables:
-                if variable['Name'] == 'file_name':
+                # Set default value for non-specified variables
+                if variable['Name'] == 'file_name' or variable['Name'] == 'solar_resource_file':
                     varValue = self.weatherFile 
-                # elif variable['name'] not in values_json['defaults'][variable['group']] :
-                #     varValue = ""
-                elif variable['Name'] == 'T_ITD_des':
-                    varValue = 40
-                elif variable['Name'] not in values_json['defaults'][variable['Group']] and variable['DataType'] == 'SSC_NUMBER':
+
+                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':
                     if 'Require' in variable:
                         if variable['Require'] == "*":
                             varValue = 0
                         else:
-                            varValue = float(variable['Require'])
+                            varValue = float(variable['Require'][2:])
                     else:
-                        varValue = ""     
-                    # print(variable['Name'], varValue)
-                elif variable['Name'] not in values_json['defaults'][variable['Group']] and variable['DataType'] == 'SSC_ARRAY':
+                        continue
+   
+                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_ARRAY':
                     if 'Require' in variable:
-                        varValue = [0]
+                        if variable['Require'] == "*":
+                            varValue = [0]
+                        else:
+                            continue
                     else:
-                        varValue = ""
-                    # print(variable['Name'], varValue)
-                    
+                        continue
+                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_MATRIX':
+                    if 'Require' in variable:
+                        if variable['Require'] == "*":
+                            varValue = [[0]]
+                        else:
+                            continue
+                    else:
+                        continue     
+                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_TABLE':
+                    if 'Require' in variable:
+                        if variable['Require'] == "*":
+                            varValue = []
+                        else:
+                            continue
+                    else:
+                        continue  
+                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_STRING':
+                    if 'Require' in variable:
+                        if variable['Require'] == "*":
+                            varValue = []
+                        else:
+                            varValue = variable['Require'][2:]
+                    else:
+                        continue  
                 else:
-                    varValue = values_json['defaults'][variable['Group']][variable['Name']]
+                    varValue = values_json[variable['Name']]
+#                    print(variable['Name'], varValue)
+                    
                 try:
                     variableValues.append({'name': variable['Name'],
                                            'value': varValue,
@@ -151,8 +150,7 @@ class SamBaseClass(object):
                     variableValues.append({'name': variable['Name'],
                                            'value': varValue,
                                            'datatype': variable['DataType'] })
-                if variable['Name'] == 'real_discount_rate':
-                    print(varValue)
+    
             #variable.valu
         return variableValues 
 
@@ -168,7 +166,7 @@ class SamBaseClass(object):
         for ssc_var in variables:
             try:
                 #Checking if the variable value is present in the json and if value of the variable is a valid one.
-                if ("value" in ssc_var and ssc_var["value"] != "#N/A" and ssc_var["value"] != ""):
+                if ("value" in ssc_var and ssc_var["value"] != "#N/A" ):
                     # Add value to the dictionary.
                     
                     
@@ -192,21 +190,20 @@ class SamBaseClass(object):
 
                     elif (ssc_var["datatype"] == "SSC_NUMBER"):
                         varValue = ssc_var["value"] #ast.literal_eval( ssc_var["value"] )
-                        if "constraint" in ssc_var:
-                            if (ssc_var["constraint"] == "INTEGER"):
-                                self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
-                                added_variables[varName] = True
-                            if (ssc_var["constraint"] == "MAX=100"):
-                                #Verify if the variable is above 100
-                                if (varValue > 100 or varValue <0):
-                                    raise Exception("The value specified for '" + varName + "' is not within the specified range.")
-                                else:
-                                    self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
-                                    added_variables[varName] = True
-
-                        else:
-                            self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), float(varValue))
-                            added_variables[varName] = True
+#                        if "constraint" in ssc_var:
+#                        if (ssc_var["constraint"] == "INTEGER" or ssc_var["constraint"] == "BOOLEAN"  ):
+#                            self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
+#                            added_variables[varName] = True
+##                            if (ssc_var["constraint"] == "MAX=100"):
+##                                #Verify if the variable is above 100
+##                                if (varValue > 100 or varValue <0):
+##                                    raise Exception("The value specified for '" + varName + "' is not within the specified range.")
+##                                else:
+##                                    self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
+##                                    added_variables[varName] = True
+#                        else:
+                        self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
+                        added_variables[varName] = True
 
                     else:
                         # Add value to the dictionary.
@@ -217,7 +214,8 @@ class SamBaseClass(object):
                 self.logger.critical(error)
                 print(error)
                 print(ssc_var)
-                self.logger.info(stringsInJson)
+#                self.logger.info(stringsInJson)
+#        print(added_variables)
 
     def module_create_execute(self, module):
         module1 = self.ssc.module_create(b'' + module.encode("ascii", "backslashreplace"))	
@@ -291,11 +289,11 @@ class SamBaseClass(object):
                 GOR.append(0)
                 Md.append(0)
 #        print(Ms)
-        print('GOR:',max(GOR)) # GOR: Gained output ratio (%)
-        print('Md:',max(Md)) # Distillate water (m3/h)
+        print('GOR-Gained output ratio:',max(GOR)) # GOR: Gained output ratio 
+        print('Md-Distillate water (m3/h):',max(Md)) # Distillate water (m3/h)
         # Generate csv
-        np.savetxt("GOR.csv", GOR,delimiter=',')
-        np.savetxt("Md.csv",  Md, delimiter=',')
+        np.savetxt("GOR-Gained output ratio.csv", GOR,delimiter=',')
+        np.savetxt("Md-Distillate water.csv",  Md, delimiter=',')
         return GOR, Md
 
     def data_free(self):

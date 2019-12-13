@@ -6,7 +6,7 @@
             "Label": "local weather file path",
             "Group": "Weather",
             "Require": "*",
-            "Constraint": "LOCAL_FILE"
+            "Costraint": "LOCAL_FILE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -34,7 +34,7 @@
             "Name": "system_capacity",
             "Label": "Nameplate capacity",
             "Units": "kW",
-            "Group": "LinearFresnelr",
+            "Group": "linear fresnelr",
             "Require": "*"
         },
         {
@@ -58,7 +58,7 @@
             "Units": "hr",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "1"
+            "Tab": "0"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -66,8 +66,7 @@
             "Label": "Maximum heat rate of the auxiliary heater",
             "Units": "MW",
             "Group": "solarfield",
-            "Require": "*",
-            "Tab": "1"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -77,8 +76,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "Fossil backup boiler LHV efficiency"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -88,8 +86,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Boiler outlet steam quality"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -99,8 +96,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "High pressure turbine inlet pressure"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -110,8 +106,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Cold header pressure drop fraction"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -121,8 +116,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Boiler Pressure drop fraction"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -132,8 +126,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Pressure drop fraction between boiler and superheater"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -143,8 +136,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Design point pressure drop across the superheater fraction"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -154,8 +146,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Average design point hot header pressure drop fraction"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -165,8 +156,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "Design thermal input power"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -176,8 +166,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Operation",
-            "Name of field on UI": "Max over design operation fraction"
+            "Section": " Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -187,8 +176,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Operation",
-            "Name of field on UI": "Minimum operation fraction"
+            "Section": " Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -198,8 +186,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Operation",
-            "Name of field on UI": "Low resource standby period"
+            "Section": " Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -209,8 +196,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Operation",
-            "Name of field on UI": "Fraction of thermal power needed for standby"
+            "Section": " Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -220,8 +206,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Solar multiple"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -229,8 +214,7 @@
             "Label": "Pumping power required to move 1kg of HTF through power block flow",
             "Units": "kW/kg",
             "Group": "solarfield",
-            "Require": "*",
-            "Tab": "1"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -239,8 +223,7 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "Parasitics",
-            "Name of field on UI": "fraction of rated gross power consumed at all hours of the year"
+            "Tab": "Parasitics"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -249,8 +232,7 @@
             "Units": "-",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "Parasitics",
-            "Name of field on UI": "Balance of plant parasitic"
+            "Tab": "Parasitics"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -259,8 +241,7 @@
             "Units": "-",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "Parasitics",
-            "Name of field on UI": "Auxiliary heater, boiler parasitic"
+            "Tab": "Parasitics"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -269,10 +250,9 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Power Cycle ",
-            "Section": " Operation",
-            "Name of field on UI": "1 = Minimum backup level\r\n2 = Supplemental Operation\r\n3 = Topping mode"
+            "Section": " Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -282,8 +262,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Design point irradiation"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -292,8 +271,7 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
-            "Tab": "1"
+            "Costraint": "INTEGER"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -302,10 +280,9 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "1 - Once through\r\n2 - Recirculated boiler"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -314,10 +291,9 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Superheater has unique geometry (Check box)"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -326,10 +302,9 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Number of modules in the boiler section"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -338,10 +313,9 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Number of modules in the superheater section"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -351,9 +325,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Design Point",
-            "Name of field on UI": "Actual number of loops",
-            "Is Calculated on UI?": "1"
+            "Section": " Design Point"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -363,8 +335,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Field pump efficiency"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -374,8 +345,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Location and Resource ",
-            "Section": " Weather Data Information",
-            "Name of field on UI": "Latitude"
+            "Section": " Weather Data Information"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -385,8 +355,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Field Control",
-            "Name of field on UI": "Solar elevation for collector nighttime stow"
+            "Section": " Field Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -396,8 +365,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Field Control",
-            "Name of field on UI": "Solar elevation for collector morning deploy"
+            "Section": " Field Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -407,8 +375,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Field Control",
-            "Name of field on UI": "Min single loop flow rate"
+            "Section": " Field Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -418,8 +385,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Field Control",
-            "Name of field on UI": "Freeze protection temperature"
+            "Section": " Field Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -428,8 +394,7 @@
             "Units": "W/m2-K",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "Parasitics",
-            "Name of field on UI": "Piping thermal loss coefficient"
+            "Tab": "Parasitics"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -438,8 +403,7 @@
             "Units": "W/m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "Parasitics",
-            "Name of field on UI": "Tracking power"
+            "Tab": "Parasitics"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -449,8 +413,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Collector azimuth angle"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -460,8 +423,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Thermal inertia per unit area of solar field"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -471,8 +433,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Solar Field Parameters",
-            "Name of field on UI": "Design-point ambient temperature"
+            "Section": " Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -482,8 +443,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Field Control",
-            "Name of field on UI": "Stow wind speed"
+            "Section": " Field Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -493,8 +453,7 @@
             "Group": "heliostat",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Mirror Washing",
-            "Name of field on UI": "Water usage per wash"
+            "Section": " Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -503,8 +462,7 @@
             "Group": "heliostat",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Mirror Washing",
-            "Name of field on UI": "Washes per year"
+            "Section": " Mirror Washing"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -514,8 +472,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Dispatch Control",
-            "Name of field on UI": "Fossil fill fraction"
+            "Section": " Dispatch Control"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -525,8 +482,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Reflective aperture area"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -536,8 +492,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Length of collector module"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -547,8 +502,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Optical characterization characterization method\r\n1 = Solar position table\r\n2 = Collector incidence angle table\r\n3 = Incidence angle modifiers"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -558,8 +512,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Incidence Angle Modifier Coefficients",
-            "Name of field on UI": "Travnsverse incidence angel modifier"
+            "Section": " Incidence Angle Modifier Coefficients"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -569,8 +522,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Incidence Angle Modifier Coefficients",
-            "Name of field on UI": "Longitudinal incidence angel modifier"
+            "Section": " Incidence Angle Modifier Coefficients"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -580,8 +532,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Tracking error"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -591,8 +542,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Geometry effects"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -602,8 +552,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Mirror reflectivity"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -613,8 +562,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "Mirror soiling"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -624,8 +572,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Boiler Geometry and Optical Performance",
-            "Name of field on UI": "General optical error"
+            "Section": " Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -635,8 +582,7 @@
             "Group": "solarfield",
             "Require": "*",
             "Tab": "Collector and Receiver ",
-            "Section": " Receiver Geometry and Heat loss",
-            "Name of field on UI": "1 = Polynomial heat loss model\r\n2 = Evacuated tube model"
+            "Section": " Receiver Geometry and Heat loss"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -647,8 +593,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Polynomial fit heat loss model",
-            "Name of field on UI": "Steam temperature adjustment"
+            "Subsection": " Polynomial fit heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -659,8 +604,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Polynomial fit heat loss model",
-            "Name of field on UI": "Wind velocity adjustment"
+            "Subsection": " Polynomial fit heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -671,8 +615,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber tube inner diameter"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -683,8 +626,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber tube outer diameter"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -695,8 +637,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Glass envelope inner diameter"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -707,8 +648,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Glass envelope outer diameter"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -719,9 +659,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber flow plug diameter",
-            "Is Calculated on UI?": "Optional"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -732,8 +670,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Internal surface roughness"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -744,8 +681,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber flow pattern\r\n1 = Tube Flow\r\n2 = Annular flow"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -756,8 +692,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber material SH type\r\n1 = 304L\r\n2 = 216L\r\n3 = 321H\r\n4 = B42 Copper"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -768,8 +703,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Variant weighting fraction"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -780,8 +714,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorptance (4: # field Absorber fracs)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -792,8 +725,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -804,8 +736,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -816,8 +747,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -828,8 +758,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -840,8 +769,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -852,8 +780,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -864,8 +791,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -876,8 +802,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Absorber emittance temperature eps)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -888,8 +813,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Envelope Absorptance"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -900,8 +824,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Envelope emittance"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -912,8 +835,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Envelope transmittance"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -924,9 +846,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Broken Glass",
-            "Is Calculated on UI?": "Check box x 4"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -937,8 +857,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Annulus gas type\r\n1 = Air\r\n26 = Argon\r\n27 = Hydrogen"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -949,8 +868,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Annulus pressure (torr)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -961,8 +879,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Estimated avg. heat loss (W/m)"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -973,8 +890,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Bellows shadowing"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -985,8 +901,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Receiver Geometry and Heat loss ",
-            "Subsection": " Evacuated tube heat loss model",
-            "Name of field on UI": "Dirt on receiver"
+            "Subsection": " Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -997,8 +912,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Boiler Geometry and Optical Performance ",
-            "Subsection": " Solar Position/Collector Incidence Angle Table",
-            "Name of field on UI": "Optical efficiency the table"
+            "Subsection": " Solar Position/Collector Incidence Angle Table"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1009,8 +923,7 @@
             "Require": "*",
             "Tab": "Collector and Receiver ",
             "Section": " Boiler Geometry and Optical Performance ",
-            "Subsection": " Solar Position/Collector Incidence Angle Table",
-            "Name of field on UI": "Optical efficiency the table"
+            "Subsection": " Solar Position/Collector Incidence Angle Table"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1019,9 +932,7 @@
             "Units": "W/m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Beam + Diffuse",
-            "Is Calculated on UI?": "0"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1030,9 +941,7 @@
             "Units": "W/m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Beam",
-            "Is Calculated on UI?": "0"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1041,9 +950,7 @@
             "Units": "C",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Tdry",
-            "Is Calculated on UI?": "15"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1052,9 +959,7 @@
             "Units": "C",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Tdew",
-            "Is Calculated on UI?": "10"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1063,9 +968,7 @@
             "Units": "atm",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Pres",
-            "Is Calculated on UI?": "930.5"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1074,9 +977,7 @@
             "Units": "m/s",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "From weather file?",
-            "Name of field on UI": "Wspd",
-            "Is Calculated on UI?": "0"
+            "Tab": "From weather file?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1084,9 +985,7 @@
             "Label": "Reference HTF flow rate at design conditions",
             "Units": "kg/hr",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "At design rate conditions",
-            "Is Calculated on UI?": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1094,9 +993,7 @@
             "Label": "Demand htf flow from the power block",
             "Units": "kg/hr",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "The power from block",
-            "Is Calculated on UI?": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1104,9 +1001,7 @@
             "Label": "Shift in longitude from local standard meridian",
             "Units": "deg",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "Local standard from meridian",
-            "Is Calculated on UI?": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1114,9 +1009,7 @@
             "Label": "Solar azimuth angle",
             "Units": "deg",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "Solar azimuth angle angle",
-            "Is Calculated on UI?": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1124,9 +1017,7 @@
             "Label": "Solar zenith angle",
             "Units": "deg",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "Solar zenith angle angle",
-            "Is Calculated on UI?": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1134,8 +1025,7 @@
             "Label": "Fluid temperature from the power block",
             "Units": "C",
             "Group": "solarfield",
-            "Require": "*",
-            "Name of field on UI": "The power from block"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1145,8 +1035,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "Rated cycle efficiency"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1154,8 +1043,7 @@
             "Label": "Reference HTF outlet temperature at design",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Temperature at outlet design"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1165,8 +1053,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Reference condenser water dT"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1177,8 +1064,7 @@
             "Require": "*",
             "Tab": "Power Cycle ",
             "Section": " Plant Design ",
-            "Subsection": " Plant Cooling Mode",
-            "Name of field on UI": "Ambient temp at design"
+            "Subsection": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1188,9 +1074,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Tubine inlet pressure",
-            "Is Calculated on UI?": "Calculated"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1200,8 +1084,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "?High pressure turbine outlet pressure"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1211,8 +1094,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "Design reheat mass flow rate fraction"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1221,10 +1103,9 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Condenser type\r\n1 = Evaporative (Wet)\r\n2 = Air-cooled (Dry)\r\n3 = Hybrid"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1232,8 +1113,7 @@
             "Label": "Time needed for power block startup",
             "Units": "hr",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Power block for startup"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1241,8 +1121,7 @@
             "Label": "Fraction of design thermal power needed for startup",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Needed for power startup"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1252,8 +1131,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Approach temperature"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1263,8 +1141,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "ITD at design point"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1274,8 +1151,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Condenser pressure ration"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1285,8 +1161,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Design",
-            "Name of field on UI": "Steam cycle blowdown fraction"
+            "Section": " Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1296,8 +1171,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Minimum condenser pressure pressure"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1306,10 +1180,9 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Constraint": "INTEGER",
+            "Costraint": "INTEGER",
             "Tab": "Power Cycle ",
-            "Section": " Plant Cooling Mode",
-            "Name of field on UI": "Cooling system part load levels"
+            "Section": " Plant Cooling Mode"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1319,8 +1192,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle ",
-            "Section": " Dispatch Control",
-            "Name of field on UI": "Hybrid Cooling"
+            "Section": " Dispatch Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1328,8 +1200,7 @@
             "Label": "Cycle part load control, from plant controller",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "From plant control controller"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1339,8 +1210,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Solar Field ",
-            "Section": " Steam Conditions at Design",
-            "Name of field on UI": "Field outlet temperature"
+            "Section": " Steam Conditions at Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1356,8 +1226,7 @@
             "Label": "Ambient wet bulb temperature",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Wet bulb Ambient temperature"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1365,8 +1234,7 @@
             "Label": "Control signal indicating operational mode",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Indicating operational signal mode"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1374,8 +1242,7 @@
             "Label": "Control signal indicating standby mode",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Indicating standby signal mode"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1383,8 +1250,7 @@
             "Label": "Ambient dry bulb temperature",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Dry bulb Ambient temperature"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1400,8 +1266,7 @@
             "Label": "Relative humidity of the ambient air",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "The ambient of air"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1411,8 +1276,7 @@
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle",
-            "Section": "Operation",
-            "Name of field on UI": "Fraction of thermal power needed for startup"
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1420,8 +1284,7 @@
             "Label": "Pressure drop in boiler",
             "Units": "Pa",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Drop in Pressure boiler"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1429,8 +1292,7 @@
             "Label": "Pressure drop in superheater",
             "Units": "Pa",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Drop in Pressure superheater"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1438,26 +1300,16 @@
             "Label": "Pressure drop in reheater",
             "Units": "Pa",
             "Group": "powerblock",
-            "Require": "*",
-            "Name of field on UI": "Drop in Pressure reheater"
+            "Require": "*"
         },
-		{
+        {
             "DataType": "SSC_NUMBER",
             "Name": "adjust:constant",
             "Label": "Constant loss adjustment",
             "Units": "%",
-            "Group": "AdjustmentFactors",
+            "Group": "Loss Adjustments",
             "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Avaialability and Curtailment"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "adjust:periods",
-            "Label": "Period-based loss adjustments",
-            "Units": "%",
-            "Group": "AdjustmentFactors",
-            "Require": "*",
+            "Costraint": "MAX=100",
             "Tab": "Power Cycle",
             "Section": "Avaialability and Curtailment"
         },
@@ -1466,8 +1318,21 @@
             "Name": "adjust:hourly",
             "Label": "Hourly loss adjustments",
             "Units": "%",
-            "Group": "AdjustmentFactors",
-            "Require": "*",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Power Cycle",
+            "Section": "Avaialability and Curtailment"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
             "Tab": "Power Cycle",
             "Section": "Avaialability and Curtailment"
         }
