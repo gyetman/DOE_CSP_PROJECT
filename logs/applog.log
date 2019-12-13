@@ -103,3 +103,2022 @@
 2019-11-26 09:45:17,117 - SamBaseClass - INFO - Logger started.
 2019-11-26 09:45:17,119 - SamBaseClass - WARNING - Warning message! Be forewarned!
 2019-11-26 09:45:17,120 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 10:05:52,261 - SamBaseClass - INFO - Logger started.
+2019-11-26 10:05:52,265 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 10:05:52,265 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 10:08:59,607 - SamBaseClass - INFO - Logger started.
+2019-11-26 10:08:59,607 - SamBaseClass - INFO - Logger started.
+2019-11-26 10:08:59,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 10:08:59,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 10:08:59,610 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 10:08:59,610 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:25:46,350 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:25:46,350 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:25:46,350 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:25:46,354 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:25:46,354 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:25:46,354 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:25:46,355 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:25:46,355 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:25:46,355 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:26:57,596 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:26:57,596 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:26:57,596 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:26:57,596 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:26:57,599 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:26:57,599 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:26:57,599 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:26:57,599 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:26:57,602 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:26:57,602 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:26:57,602 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:26:57,602 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:28:29,867 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:28:29,867 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:28:29,867 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:28:29,867 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:28:29,867 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:28:29,871 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:28:29,871 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:28:29,871 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:28:29,871 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:28:29,871 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:28:29,873 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:28:29,873 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:28:29,873 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:28:29,873 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:28:29,873 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,844 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,849 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:30:07,852 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,160 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,166 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:32:23,169 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,568 - SamBaseClass - INFO - Logger started.
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,574 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 11:34:50,577 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:34:13,776 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:34:13,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:34:13,780 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:36:10,481 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:36:10,481 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:36:10,483 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:36:10,483 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:36:10,484 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:36:10,484 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:40:29,261 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:40:29,261 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:40:29,261 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:40:29,264 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:40:29,264 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:40:29,264 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:40:29,265 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:40:29,265 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:40:29,265 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:41:44,504 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:41:44,504 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:41:44,504 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:41:44,504 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:41:44,508 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:41:44,508 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:41:44,508 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:41:44,508 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:41:44,510 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:41:44,510 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:41:44,510 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:41:44,510 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:43:38,736 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:43:38,736 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:43:38,736 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:43:38,736 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:43:38,736 - SamBaseClass - INFO - Logger started.
+2019-11-26 15:43:38,741 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:43:38,741 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:43:38,741 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:43:38,741 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:43:38,741 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-11-26 15:43:38,743 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:43:38,743 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:43:38,743 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:43:38,743 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-11-26 15:43:38,743 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:12:29,350 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:12:29,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:12:29,353 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:13:36,780 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:13:36,780 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:13:36,782 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:13:36,782 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:13:36,783 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:13:36,783 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:19:29,395 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:19:29,395 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:19:29,395 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:19:29,398 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:19:29,398 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:19:29,398 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:19:29,400 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:19:29,400 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:19:29,400 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:22:48,811 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:22:48,811 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:22:48,811 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:22:48,811 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:22:48,815 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:22:48,815 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:22:48,815 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:22:48,815 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:22:48,817 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:22:48,817 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:22:48,817 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:22:48,817 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:24:35,787 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:24:35,787 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:24:35,787 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:24:35,787 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:24:35,787 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:24:35,791 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:24:35,791 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:24:35,791 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:24:35,791 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:24:35,791 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:24:35,793 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:24:35,793 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:24:35,793 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:24:35,793 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:24:35,793 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,081 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,086 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:05,089 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,287 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,293 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:27:12,295 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,419 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,426 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:32:38,429 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,587 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,594 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:33:02,597 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,501 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,511 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:35:10,516 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,270 - SamBaseClass - INFO - Logger started.
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,279 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-03 15:42:21,284 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 14:42:25,765 - SamBaseClass - INFO - Logger started.
+2019-12-09 14:42:25,769 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 14:42:25,770 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:05:22,307 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:05:22,307 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:05:22,310 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:05:22,310 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:05:22,311 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:05:22,311 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:49,931 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:49,931 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:49,931 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:49,934 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:49,934 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:49,934 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:49,936 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:49,936 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:49,936 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:55,064 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:55,064 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:55,064 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:55,064 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:10:55,068 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:55,068 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:55,068 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:55,068 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:10:55,070 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:55,070 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:55,070 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:10:55,070 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:11:13,784 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:11:13,784 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:11:13,784 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:11:13,784 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:11:13,784 - SamBaseClass - INFO - Logger started.
+2019-12-09 15:11:13,789 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:11:13,789 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:11:13,789 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:11:13,789 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:11:13,789 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-09 15:11:13,791 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:11:13,791 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:11:13,791 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:11:13,791 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-09 15:11:13,791 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 12:36:27,322 - SamBaseClass - INFO - Logger started.
+2019-12-10 12:36:27,325 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 12:36:27,326 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 12:37:27,850 - SamBaseClass - INFO - Logger started.
+2019-12-10 12:37:27,850 - SamBaseClass - INFO - Logger started.
+2019-12-10 12:37:27,852 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 12:37:27,852 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 12:37:27,854 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 12:37:27,854 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:03,732 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:03,732 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:03,732 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:03,735 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:03,735 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:03,735 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:03,736 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:03,736 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:03,736 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:44,284 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:44,284 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:44,284 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:44,284 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:08:44,287 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:44,287 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:44,287 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:44,287 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:08:44,289 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:44,289 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:44,289 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:08:44,289 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:23,774 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:23,774 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:23,774 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:23,774 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:23,774 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:23,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:23,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:23,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:23,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:23,779 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:23,781 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:23,781 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:23,781 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:23,781 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:23,781 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,132 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,137 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:09:29,140 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,513 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,519 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:22,523 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,200 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,207 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:38:35,211 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,001 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,007 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:52:58,011 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,828 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,835 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:07,840 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,641 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,650 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:55:17,654 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,845 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,854 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:12,859 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,534 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,544 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:21,549 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,120 - SamBaseClass - INFO - Logger started.
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,132 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 13:57:32,137 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,455 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,467 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:03:54,473 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,089 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,100 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:17:18,106 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,785 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,798 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:18:00,804 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,465 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,478 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:19:23,485 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,643 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,657 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:20:05,664 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,408 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,423 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:23:53,430 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,348 - SamBaseClass - INFO - Logger started.
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,363 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 14:28:55,370 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,875 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,892 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:54:58,900 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,222 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,238 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:55:43,246 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,442 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,459 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:16,467 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,940 - SamBaseClass - INFO - Logger started.
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,959 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 15:59:25,969 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,904 - SamBaseClass - INFO - Logger started.
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,921 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-10 16:00:34,931 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:40:35,676 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:40:35,679 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:40:35,680 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:41:06,006 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:41:06,006 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:41:06,009 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:41:06,009 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:41:06,010 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:41:06,010 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:41:59,137 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:41:59,137 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:41:59,137 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:41:59,140 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:41:59,140 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:41:59,140 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:41:59,142 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:41:59,142 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:41:59,142 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:46:06,555 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:46:06,555 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:46:06,555 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:46:06,555 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:46:06,560 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:46:06,560 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:46:06,560 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:46:06,560 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:46:06,563 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:46:06,563 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:46:06,563 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:46:06,563 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:08,469 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:08,469 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:08,469 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:08,469 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:08,469 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:08,474 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:08,474 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:08,474 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:08,474 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:08,474 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:08,476 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:08,476 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:08,476 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:08,476 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:08,476 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,124 - SamBaseClass - INFO - Logger started.
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,130 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 09:47:52,133 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,964 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,971 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:01:10,975 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,326 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,333 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:03:27,338 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,344 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,352 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:07:48,357 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,474 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,485 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:16:17,491 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,952 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,962 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:18,967 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,480 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,491 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:18:51,497 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,863 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,874 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:27:42,880 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,595 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,609 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:28:24,617 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,933 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,945 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:34:27,949 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,076 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,088 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:51:48,097 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,774 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,787 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:55:43,797 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,868 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,884 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:57:07,893 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,608 - SamBaseClass - INFO - Logger started.
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,629 - SamBaseClass - WARNING - Warning message! Be forewarned!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!
+2019-12-13 10:58:15,640 - SamBaseClass - CRITICAL - Critical error, omg!

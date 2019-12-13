@@ -8,7 +8,8 @@ from DesalinationModels.AGMD_PSA import AGMD_PSA
 from DesalinationModels.FO_Trevi import FO_Trevi
 
 # Initiate calculation from RO designing
-MD = AGMD_PSA(FFR_r= 317958.3, FeedC_r= 6)
+N = 317958.3 / 582.7
+MD = AGMD_PSA()
 MD.calculations()
 # Retreive system performance from RO model
 RO_feed = RO.Qf1*24

@@ -17,6 +17,7 @@ class FO_Trevi(object):
     
     # Define input variables
     def __init__(self,
+                 Salt_rej = 0.95   , # Salt rejection
                  Mprod    = 1      , # Product water flow rate (m3/day)
                  T_sw     = 13     , # Seawater temperature (oC)
                  NF_rcr   = 0.2    , # Nanofilter retentate recirculation rate 
@@ -148,6 +149,7 @@ class FO_Trevi(object):
 
                 ):
         # Assign instance variables
+        self.Salt_rej = Salt_rej
         self.T_sw = T_sw
         self.Mprod  = Mprod
         self.NF_rcr = NF_rcr
@@ -448,7 +450,7 @@ class FO_Trevi(object):
         if abs((T_hin - T_cout) - (T_hout - T_cin)) < 0.1:
             T_app = T_hin - T_cout
         else:
-            T_app = ((T_hout - T_cin)-(T_hin - T_cout)) / np.log((T_hout - T_cin)/(T_hin - T_cout))
+            T_app = ((T_hout - T_cin)-(T_hin - T_cout)) / np.log(abs((T_hout - T_cin)/(T_hin - T_cout)))
         # Heat load
         heat_h = f_h / 3600 / 24 * d_h * cp_h * (T_hin - T_hout)  # kW
         heat_c = f_c / 3600 / 24 * d_c * cp_c * (T_cin - T_cout)  # kW        

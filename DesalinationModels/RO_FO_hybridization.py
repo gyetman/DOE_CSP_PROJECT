@@ -24,7 +24,7 @@ FO_Mprod = RO_brine * FO_RR * (1-FO_ror)
 
 FO = FO_Trevi(Salt_rej = 0.962, T_sw = RO.T, salinity = RO_brine_salinity, RO_r = FO_ror, r=FO_RR, Mprod = FO_Mprod, f_sw_sup = FO_Mprod * 0.6 )
 FO.flow_rate_calculations()  
-FO.membrane_heat_calculations()      
+FO.membrane_heat_calculations()
 FO.system_calculations()
 
 Thermal_load = FO.HX1C['Hot side heat load(kW)'] + FO.HX2C['Hot side heat load(kW)']
@@ -32,9 +32,9 @@ FO_p_s = (1-FO.Salt_rej) * RO_brine_salinity *1000 * RO_brine / FO_Mprod
 FO_b_s = FO.Salt_rej * RO_brine_salinity *1000 * RO_brine / (RO_brine - FO_Mprod)
 
 
-print('Total feed water (m3/day): ', RO_feed)
-print('RO permeate (m3/day): ', RO_permeate)
-print('RO permeate salinity (mg/L): ', RO_p_s)
+print('Total feed water (m3/day): {:,.1f}'.format(RO_feed))
+print('RO permeate (m3/day):  {:,.1f}'.format(RO_permeate))
+print('RO permeate salinity (mg/L):  {:,.1f}'.format(RO_p_s))
 print('RO brine  (m3/day): ', RO_brine)
 print('RO brine salinity (mg/L): ', RO_brine_salinity*1000)
 
