@@ -7,8 +7,8 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcsdirect_steam',
-                 financial    = 'singleowner',
+                 CSP          = 'tcsMSLF',
+                 financial    = 'lcoefcr',
                  desalination =  None,
                  json_value_filepath = None, # Such as: 'D:/DOE_CSP_PROJECT/SAM_flatJSON/defaults/tcstrough_physical_singleowner.json'
                  weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
@@ -78,6 +78,8 @@ class SamBaseClass(object):
             json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
             if self.financialModel == 'utilityrate5':
                 json_files.append(Path(self.samPath / "models" / "inputs" / 'cashloan_inputs.json'))
+            elif self.financialModel == 'iph_to_lcoefcr':
+                json_files.append(Path(self.samPath / "models" / "inputs" / 'lcoefcr_inputs.json'))
 
             
         variableValues = []

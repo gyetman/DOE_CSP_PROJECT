@@ -1,0 +1,1134 @@
+{
+    "tcsiscc": [
+        {
+            "DataType": "SSC_STRING",
+            "Name": "solar_resource_file",
+            "Label": "local weather file path",
+            "Group": "Weather",
+            "Require": "*",
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "Nameplate capacity",
+            "Units": "kW",
+            "Group": "molten salt tower",
+            "Require": "*",
+            "Tab": "molten salt tower"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "run_type",
+            "Label": "Run type",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "helio_width",
+            "Label": "Heliostat width",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "helio_height",
+            "Label": "Heliostat height",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "helio_optical_error",
+            "Label": "Heliostat optical error",
+            "Units": "rad",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "helio_active_fraction",
+            "Label": "Heliostat active frac.",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dens_mirror",
+            "Label": "Ratio of Reflective Area to Profile",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "helio_reflectance",
+            "Label": "Heliostat reflectance",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_absorptance",
+            "Label": "Receiver absorptance",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_height",
+            "Label": "Receiver height",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_aspect",
+            "Label": "Receiver aspect ratio",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_hl_perm2",
+            "Label": "Receiver design heatloss",
+            "Units": "kW/m2",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "land_bound_type",
+            "Label": "Land boundary type",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "land_max",
+            "Label": "Land max boundary",
+            "Group": "heliostat",
+            "Require": "?=7.5",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "land_min",
+            "Label": "Land min boundary",
+            "Group": "heliostat",
+            "Require": "?=0.75",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "land_bound_table",
+            "Label": "Land boundary table",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "land_bound_list",
+            "Label": "Boundary table listing",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dni_des",
+            "Label": "Design-point DNI",
+            "Units": "W/m2",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "p_start",
+            "Label": "Heliostat startup energy",
+            "Units": "kWe-hr",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "p_track",
+            "Label": "Heliostat tracking energy",
+            "Units": "kWe",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hel_stow_deploy",
+            "Label": "Stow/deploy elevation",
+            "Units": "deg",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "v_wind_max",
+            "Label": "Max. wind velocity",
+            "Units": "m/s",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "interp_nug",
+            "Label": "Interpolation nugget",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "interp_beta",
+            "Label": "Interpolation beta coef.",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=1.99",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_flux_x",
+            "Label": "Flux map X resolution",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=12",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_flux_y",
+            "Label": "Flux map Y resolution",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=1",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "helio_positions",
+            "Label": "Heliostat position table",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "run_type=1",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "helio_aim_points",
+            "Label": "Heliostat aim point table",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "N_hel",
+            "Label": "Number of heliostats",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?=1",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "eta_map",
+            "Label": "Field efficiency array",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "flux_positions",
+            "Label": "Flux map sun positions",
+            "Units": "deg",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "flux_maps",
+            "Label": "Flux map intensities",
+            "Units": "-",
+            "Group": "heliostat",
+            "Require": "?",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "c_atm_0",
+            "Label": "Attenuation coefficient 0",
+            "Group": "heliostat",
+            "Require": "?=0.006789",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "c_atm_1",
+            "Label": "Attenuation coefficient 1",
+            "Group": "heliostat",
+            "Require": "?=0.1046",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "c_atm_2",
+            "Label": "Attenuation coefficient 2",
+            "Group": "heliostat",
+            "Require": "?=-0.0107",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "c_atm_3",
+            "Label": "Attenuation coefficient 3",
+            "Group": "heliostat",
+            "Require": "?=0.002845",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_facet_x",
+            "Label": "Number of heliostat facets - X",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_facet_y",
+            "Label": "Number of heliostat facets - Y",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "focus_type",
+            "Label": "Heliostat focus method",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cant_type",
+            "Label": "Heliostat cant method",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_flux_days",
+            "Label": "No. days in flux map lookup",
+            "Group": "heliostat",
+            "Require": "?=8",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "delta_flux_hrs",
+            "Label": "Hourly frequency in flux map lookup",
+            "Group": "heliostat",
+            "Require": "?=1",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tower",
+            "Label": "Tower height",
+            "Units": "m",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_design",
+            "Label": "Receiver thermal design power",
+            "Units": "MW",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "calc_fluxmaps",
+            "Label": "Include fluxmap calculations",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tower_fixed_cost",
+            "Label": "Tower fixed cost",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tower_exp",
+            "Label": "Tower cost scaling exponent",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_ref_cost",
+            "Label": "Receiver reference cost",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_ref_area",
+            "Label": "Receiver reference area for cost scale",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_cost_exp",
+            "Label": "Receiver cost scaling exponent",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "site_spec_cost",
+            "Label": "Site improvement cost",
+            "Units": "$/m2",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "heliostat_spec_cost",
+            "Label": "Heliostat field cost",
+            "Units": "$/m2",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "plant_spec_cost",
+            "Label": "Power cycle specific cost",
+            "Units": "$/kWe",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_spec_cost",
+            "Label": "BOS specific cost",
+            "Units": "$/kWe",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tes_spec_cost",
+            "Label": "Thermal energy storage cost",
+            "Units": "$/kWht",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "land_spec_cost",
+            "Label": "Total land area cost",
+            "Units": "$/acre",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "contingency_rate",
+            "Label": "Contingency for cost overrun",
+            "Units": "%",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sales_tax_rate",
+            "Label": "Sales tax rate",
+            "Units": "%",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sales_tax_frac",
+            "Label": "Percent of cost to which sales tax applies",
+            "Units": "%",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_sf_fixed",
+            "Label": "Solar field fixed cost",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fossil_spec_cost",
+            "Label": "Fossil system specific cost",
+            "Units": "$/kWe",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "is_optimize",
+            "Label": "Do SolarPILOT optimization",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "flux_max",
+            "Label": "Maximum allowable flux",
+            "Group": "heliostat",
+            "Require": "?=1000",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_init_step",
+            "Label": "Optimization initial step size",
+            "Group": "heliostat",
+            "Require": "?=0.05",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_max_iter",
+            "Label": "Max. number iteration steps",
+            "Group": "heliostat",
+            "Require": "?=200",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_conv_tol",
+            "Label": "Optimization convergence tol",
+            "Group": "heliostat",
+            "Require": "?=0.001",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_flux_penalty",
+            "Label": "Optimization flux overage penalty",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_algorithm",
+            "Label": "Optimization algorithm",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "check_max_flux",
+            "Label": "Check max flux at design point",
+            "Group": "heliostat",
+            "Require": "?=0",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.epc.per_acre",
+            "Label": "EPC cost per acre",
+            "Units": "$/acre",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.epc.percent",
+            "Label": "EPC cost percent of direct",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.epc.per_watt",
+            "Label": "EPC cost per watt",
+            "Units": "$/W",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.epc.fixed",
+            "Label": "EPC fixed",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.plm.per_acre",
+            "Label": "PLM cost per acre",
+            "Units": "$/acre",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.plm.percent",
+            "Label": "PLM cost percent of direct",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.plm.per_watt",
+            "Label": "PLM cost per watt",
+            "Units": "$/W",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.cost.plm.fixed",
+            "Label": "PLM fixed",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.sf.fixed_land_area",
+            "Label": "Fixed land area",
+            "Units": "acre",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "csp.pt.sf.land_overhead_factor",
+            "Label": "Land overhead factor",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "total_installed_cost",
+            "Label": "Total installed cost",
+            "Units": "$",
+            "Group": "heliostat",
+            "Require": "*",
+            "Tab": "heliostat"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "receiver_type",
+            "Label": "External=0, Cavity=1",
+            "Group": "receiver",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "N_panels",
+            "Label": "Number of individual panels on the receiver",
+            "Group": "receiver",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "D_rec",
+            "Label": "The overall outer diameter of the receiver",
+            "Units": "m",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "H_rec",
+            "Label": "The height of the receiver",
+            "Units": "m",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "THT",
+            "Label": "The height of the tower (hel. pivot to rec equator)",
+            "Units": "m",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "d_tube_out",
+            "Label": "The outer diameter of an individual receiver tube",
+            "Units": "mm",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "th_tube",
+            "Label": "The wall thickness of a single receiver tube",
+            "Units": "mm",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mat_tube",
+            "Label": "The material name of the receiver tubes",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_htf",
+            "Label": "The name of the HTF used in the receiver",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "field_fl_props",
+            "Label": "User defined field fluid property data",
+            "Units": "-",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Flow_type",
+            "Label": "A flag indicating which flow pattern is used",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "crossover_shift",
+            "Label": "No. panels shift in receiver crossover position",
+            "Group": "receiver",
+            "Require": "?=0",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "epsilon",
+            "Label": "The emissivity of the receiver surface coating",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hl_ffact",
+            "Label": "The heat loss factor (thermal loss fudge factor)",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_htf_hot_des",
+            "Label": "Hot HTF outlet temperature at design conditions",
+            "Units": "C",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_htf_cold_des",
+            "Label": "Cold HTF inlet temperature at design conditions",
+            "Units": "C",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "f_rec_min",
+            "Label": "Minimum receiver mass flow rate turn down fraction",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Q_rec_des",
+            "Label": "Design-point receiver thermal power output",
+            "Units": "MWt",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_su_delay",
+            "Label": "Fixed startup delay time for the receiver",
+            "Units": "hr",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_qf_delay",
+            "Label": "Energy-based rcvr startup delay (fraction of rated thermal power)",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htf_max",
+            "Label": "Maximum receiver mass flow rate",
+            "Units": "kg/hr",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "A_sf",
+            "Label": "Solar Field Area",
+            "Units": "m^2",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_pump",
+            "Label": "Receiver HTF pump efficiency",
+            "Group": "receiver",
+            "Require": "*",
+            "Tab": "receiver"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_pb_design",
+            "Label": "Design point power block thermal power",
+            "Units": "MWt",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "elev",
+            "Label": "Plant elevation",
+            "Units": "m",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ngcc_model",
+            "Label": "1: NREL, 2: GE",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pinch_point_hotside",
+            "Label": "Hot side temperature HX temperature difference",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pinch_point_coldside",
+            "Label": "Cold side HX pinch point",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_pump_coef",
+            "Label": "Required pumping power for HTF through power block",
+            "Units": "kJ/kg",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "piping_loss",
+            "Label": "Thermal loss per meter of piping",
+            "Units": "Wt/m",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "piping_length",
+            "Label": "Total length of exposed piping",
+            "Units": "m",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "piping_length_mult",
+            "Label": "Piping length multiplier",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "piping_length_const",
+            "Label": "Piping constant length",
+            "Units": "m",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Q_rec_des",
+            "Label": "Design point solar field thermal output",
+            "Units": "MW",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_fixed_par",
+            "Label": "Fixed parasitic load - runs at all times",
+            "Units": "MWe/MWcap",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_par",
+            "Label": "Balance of plant parasitic power fraction",
+            "Units": "MWe/MWcap",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_par_f",
+            "Label": "Balance of plant parasitic power fraction - mult frac",
+            "Units": "none",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_par_0",
+            "Label": "Balance of plant parasitic power fraction - const coeff",
+            "Units": "none",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_par_1",
+            "Label": "Balance of plant parasitic power fraction - linear coeff",
+            "Units": "none",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "bop_par_2",
+            "Label": "Balance of plant parasitic power fraction - quadratic coeff",
+            "Units": "none",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fossil_output",
+            "Label": "Fossil-only cycle output at design",
+            "Units": "MWe",
+            "Group": "parasitics",
+            "Require": "*",
+            "Tab": "parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "W_dot_solar_des",
+            "Label": "Solar contribution to cycle output at designMWe",
+            "Meta": "parasitics",
+            "Group": "*",
+            "Tab": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "adjust:constant",
+            "Label": "Constant loss adjustment",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "*",
+            "Costraint": "MAX=100",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "adjust:hourly",
+            "Label": "Hourly loss adjustments",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sf_adjust:constant",
+            "Label": "SF Constant loss adjustment",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "*",
+            "Costraint": "MAX=100",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "sf_adjust:hourly",
+            "Label": "SF Hourly loss adjustments",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "sf_adjust:periods",
+            "Label": "SF Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
+            "Tab": "Loss Adjustments"
+        }
+    ]
+}

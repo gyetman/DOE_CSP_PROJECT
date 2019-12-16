@@ -1,0 +1,1644 @@
+{
+    "tcsMSLF": [
+        {
+            "DataType": "SSC_STRING",
+            "Name": "file_name",
+            "Label": "local weather file path",
+            "Group": "Weather",
+            "Require": "*",
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "track_mode",
+            "Label": "Tracking mode",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tilt",
+            "Label": "Tilt angle of surface/axis",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "azimuth",
+            "Label": "Azimuth angle of surface/axis",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "Nameplate capacity",
+            "Units": "kW",
+            "Group": "mslf",
+            "Require": "*",
+            "Tab": "mslf"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "weekday_schedule",
+            "Label": "12x24 Time of Use Values for week days",
+            "Group": "tou_translator",
+            "Require": "*",
+            "Tab": "tou_translator"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "weekend_schedule",
+            "Label": "12x24 Time of Use Values for week end days",
+            "Group": "tou_translator",
+            "Require": "*",
+            "Tab": "tou_translator"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nMod",
+            "Label": "Number of collector modules in a loop",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nRecVar",
+            "Label": "Number of receiver variantions",
+            "Group": "controller",
+            "Require": "?=4",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nLoops",
+            "Label": "Number of loops in the field",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_pump",
+            "Label": "HTF pump efficiency",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "HDR_rough",
+            "Label": "Header pipe roughness",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_stow",
+            "Label": "stow angle",
+            "Units": "deg",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_dep",
+            "Label": "deploy angle",
+            "Units": "deg",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FieldConfig",
+            "Label": "Number of subfield headers",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_startup",
+            "Label": "Power block startup temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_rated_cap",
+            "Label": "Rated plant capacity",
+            "Units": "MWe",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmin",
+            "Label": "Minimum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmax",
+            "Label": "Maximum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_in_des",
+            "Label": "Design loop inlet temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_out",
+            "Label": "Target loop outlet temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Fluid",
+            "Label": "Field HTF fluid number",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_field_ini",
+            "Label": "Initial field temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "field_fl_props",
+            "Label": "Fluid property data",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_fp",
+            "Label": "Freeze protection temperature (heat trace activation temperature)",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "I_bn_des",
+            "Label": "Solar irradiation at design",
+            "Units": "W/m2",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_max",
+            "Label": "Maximum HTF velocity in the header at design",
+            "Units": "m/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_min",
+            "Label": "Minimum HTF velocity in the header at design",
+            "Units": "m/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pipe_hl_coef",
+            "Label": "Loss coefficient from the header - runner pipe - and non-HCE piping",
+            "Units": "W/m2-K",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "SCA_drives_elec",
+            "Label": "Tracking power in Watts per SCA drive",
+            "Units": "W/module",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fthrok",
+            "Label": "Flag to allow partial defocusing of the collectors",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fthrctrl",
+            "Label": "Defocusing strategy",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ColAz",
+            "Label": "Collector azimuth angle",
+            "Units": "deg",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_mult",
+            "Label": "Solar multiple",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_hot",
+            "Label": "The heat capacity of the balance of plant on the hot side",
+            "Units": "kWht/K-MWt",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_cold",
+            "Label": "The heat capacity of the balance of plant on the cold side",
+            "Units": "kWht/K-MWt",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_sca",
+            "Label": "Non-HTF heat capacity associated with each SCA - per meter basis",
+            "Units": "Wht/K-m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "water_per_wash",
+            "Label": "Water usage per wash",
+            "Units": "L/m2_aper",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "washes_per_year",
+            "Label": "Mirror washing frequency",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_model",
+            "Label": "The optical model",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "A_aperture",
+            "Label": "Reflective aperture area of the collector",
+            "Units": "m2",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "reflectivity",
+            "Label": "Solar-weighted mirror reflectivity value",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TrackingError",
+            "Label": "Tracking error derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "GeomEffects",
+            "Label": "Geometry effects derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Dirt_mirror",
+            "Label": "User-defined dirt on mirror derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Error",
+            "Label": "User-defined general optical error derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_mod",
+            "Label": "The length of the collector module",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "IAM_T_coefs",
+            "Label": "Incidence angle modifier coefficients - transversal plane",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "IAM_L_coefs",
+            "Label": "Incidence angle modifier coefficients - longitudinal plane",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "OpticalTable",
+            "Label": "Values of the optical efficiency table",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_model",
+            "Label": "Receiver model type (1=Polynomial ; 2=Evac tube)",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "HCE_FieldFrac",
+            "Label": "The fraction of the field occupied by this HCE type",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "D_abs_in",
+            "Label": "The inner absorber tube diameter",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "D_abs_out",
+            "Label": "The outer absorber tube diameter",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "D_glass_in",
+            "Label": "The inner glass envelope diameter",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "D_glass_out",
+            "Label": "The outer glass envelope diameter",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "D_plug",
+            "Label": "The diameter of the absorber flow plug (optional)",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Flow_type",
+            "Label": "The flow type through the absorber",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Rough",
+            "Label": "Roughness of the internal surface",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "alpha_env",
+            "Label": "Envelope absorptance",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_abs_1",
+            "Label": "Absorber emittance - HCE variation 1",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_abs_2",
+            "Label": "Absorber emittance - HCE variation 2",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_abs_3",
+            "Label": "Absorber emittance - HCE variation 3",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_abs_4",
+            "Label": "Absorber emittance - HCE variation 4",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "alpha_abs",
+            "Label": "Absorber absorptance",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Tau_envelope",
+            "Label": "Envelope transmittance",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "epsilon_glass",
+            "Label": "Glass envelope emissivity",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "GlazingIntactIn",
+            "Label": "The glazing intact flag",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "P_a",
+            "Label": "Annulus gas pressure",
+            "Units": "torr",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "AnnulusGas",
+            "Label": "Annulus gas type (1=air; 26=Ar; 27=H2)",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "AbsorberMaterial",
+            "Label": "Absorber material type",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Shadowing",
+            "Label": "Receiver bellows shadowing loss factor",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "dirt_env",
+            "Label": "Loss due to dirt on the receiver envelope",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Design_loss",
+            "Label": "Receiver heat loss at design",
+            "Units": "W/m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_mod_spacing",
+            "Label": "Piping distance between sequential modules in a loop",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_crossover",
+            "Label": "Length of crossover piping in a loop",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "HL_T_coefs",
+            "Label": "HTF temperature-dependent heat loss coefficients",
+            "Units": "W/m-K",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "HL_w_coefs",
+            "Label": "Wind-speed-dependent heat loss coefficients",
+            "Units": "W/m-(m/s)",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "DP_nominal",
+            "Label": "Pressure drop across a single collector assembly at design",
+            "Units": "bar",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "DP_coefs",
+            "Label": "Pressure drop mass flow based part-load curve",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rec_htf_vol",
+            "Label": "Volume of HTF in a single collector unit per unit aperture area",
+            "Units": "L/m2-ap",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_amb_sf_des",
+            "Label": "Ambient design-point temperature for the solar field",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_wind_des",
+            "Label": "Design-point wind velocity",
+            "Units": "m/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "I_b",
+            "Label": "Direct normal incident solar irradiation",
+            "Units": "kJ/m2-hr",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_db",
+            "Label": "Dry bulb air temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_wind",
+            "Label": "Ambient windspeed",
+            "Units": "m/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_amb",
+            "Label": "Ambient pressure",
+            "Units": "atm",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_dp",
+            "Label": "The dewpoint temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_cold_in",
+            "Label": "HTF return temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "defocus",
+            "Label": "Defocus control",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "field_fluid",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "store_fl_props",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "store_fluid",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tshours",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "is_hx",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt_hot",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt_cold",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hx_config",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_max_aux",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_set_aux",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_tank_hot_ini",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_tank_hot_ini",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_tank_cold_ini",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "vol_tank",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank_min",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "u_tank",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_pairs",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cold_tank_Thtr",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hot_tank_Thtr",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_max_heat",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_field_in_des",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_field_out_des",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_pb_design",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "W_pb_design",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cycle_max_frac",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cycle_cutoff_frac",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solarm",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_pump_coef",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tes_pump_coef",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_fixed_par",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "bop_array",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "aux_array",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tes_temp",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fossil_mode",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fthr_ok",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nSCA",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fc_on",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "t_standby_reset",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tes_type",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_a",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_b",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_c",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ffrac",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tc_fill",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tc_void",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "t_dis_out_min",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "t_ch_out_max",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nodes",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "f_tc_cold",
+            "Label": "Label",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_tes_des",
+            "Label": "Design-point velocity to size the TES pipe diameters",
+            "Units": "m/s",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "custom_tes_p_loss",
+            "Label": "TES pipe losses are based on custom lengths and coeffs",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "k_tes_loss_coeffs",
+            "Label": "Minor loss coeffs for the coll, gen, and bypass loops",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "custom_sgs_pipe_sizes",
+            "Label": "Use custom SGS pipe diams, wallthks, and lengths",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "sgs_diams",
+            "Label": "Custom SGS diameters",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "sgs_wallthicks",
+            "Label": "Custom SGS wall thicknesses",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "sgs_lengths",
+            "Label": "Custom SGS lengths",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "DP_SGS",
+            "Label": "Pressure drop within the steam generator",
+            "Units": "bar",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tanks_in_parallel",
+            "Label": "Tanks are in parallel, not in series, with solar field",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "has_hot_tank_bypass",
+            "Label": "Bypass valve connects field outlet to cold tank",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_tank_hot_inlet_min",
+            "Label": "Minimum hot tank htf inlet temperature",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "calc_design_pipe_vals",
+            "Label": "Calculate temps and pressures at design conditions for runners and headers",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pc_config",
+            "Label": "0: Steam Rankine (224), 1: user defined",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "?=0",
+            "Costraint": "INTEGER",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_ref",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_ref",
+            "Label": "Cycle thermal efficiency at design point",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "startup_time",
+            "Label": "Time needed for power block startup",
+            "Units": "hr",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "startup_frac",
+            "Label": "Fraction of design thermal power needed for startup",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_sby_frac",
+            "Label": "Fraction of thermal power required for standby mode",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_cw_ref",
+            "Label": "Reference condenser cooling water inlet/outlet T diff",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_amb_des",
+            "Label": "Reference ambient temperature at design point",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_boil",
+            "Label": "Boiler operating pressure",
+            "Units": "bar",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "CT",
+            "Label": "Flag for using dry cooling or wet cooling system",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_approach",
+            "Label": "Cooling tower approach temperature",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_ITD_des",
+            "Label": "ITD at design for dry system",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_cond_ratio",
+            "Label": "Condenser pressure ratio",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_bd_frac",
+            "Label": "Power block blowdown steam fraction ",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_cond_min",
+            "Label": "Minimum condenser pressure",
+            "Units": "inHg",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_pl_inc",
+            "Label": "Number of part-load increments for the heat rejection system",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "F_wc",
+            "Label": "Fraction indicating wet cooling use for hybrid system",
+            "Units": "none",
+            "Meta": "constant=[0,0,0,0,0,0,0,0,0]",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tech_type",
+            "Label": "Turbine inlet pressure control flag (sliding=user, fixed=trough)",
+            "Units": "1/2/03",
+            "Meta": "tower/trough/user",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_des",
+            "Label": "Ambient temperature at user-defined power cycle design point",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_f_W_dot_cool_des",
+            "Label": "Percent of user-defined power cycle design gross output consumed by cooling",
+            "Units": "%",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_water_cool_des",
+            "Label": "Mass flow rate of water required at user-defined power cycle design point",
+            "Units": "kg/s",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_htf_low",
+            "Label": "Low level HTF inlet temperature for T_amb parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_htf_high",
+            "Label": "High level HTF inlet temperature for T_amb parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_low",
+            "Label": "Low level ambient temperature for HTF mass flow rate parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_high",
+            "Label": "High level ambient temperature for HTF mass flow rate parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_htf_low",
+            "Label": "Low level normalized HTF mass flow rate for T_HTF parametric",
+            "Units": "-",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_htf_high",
+            "Label": "High level normalized HTF mass flow rate for T_HTF parametric",
+            "Units": "-",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_T_htf_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_htf_hot [C]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_T_amb_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_amb [C]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_m_dot_htf_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on m_dot_htf [ND]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_ind_od",
+            "Label": "Off design user-defined power cycle performance as function of T_htf, m_dot_htf [ND], and T_amb",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "user_defined_PC"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_lhv",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "enet",
+            "Require": "*",
+            "Tab": "enet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_tes_htr",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "enet",
+            "Require": "*",
+            "Tab": "enet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fp_mode",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "enet",
+            "Require": "*",
+            "Tab": "enet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_htf_hot_ref",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_htf_cold_ref",
+            "Label": "Label",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "powerblock"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "adjust:constant",
+            "Label": "Constant loss adjustment",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "*",
+            "Costraint": "MAX=100",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "adjust:hourly",
+            "Label": "Hourly loss adjustments",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
+            "Tab": "Loss Adjustments"
+        }
+    ]
+}
