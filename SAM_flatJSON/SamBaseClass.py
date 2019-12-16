@@ -7,7 +7,7 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcsmolten_salt',
+                 CSP          = 'tcsdirect_steam',
                  financial    = 'singleowner',
                  desalination =  None,
                  json_value_filepath = None, # Such as: 'D:/DOE_CSP_PROJECT/SAM_flatJSON/defaults/tcstrough_physical_singleowner.json'
@@ -54,6 +54,8 @@ class SamBaseClass(object):
         # execute financial model, if any
         if self.financialModel:
             self.module_create_execute(self.financialModel)
+            if self.financialModel == 'utilityrate5':
+                self.module_create_execute('cashloan')
         # execute desalination model, if any
         if self.desalination:
             self.T_cond = self.P_T_conversion()
@@ -74,6 +76,8 @@ class SamBaseClass(object):
             # Then add finiancial variables
             finPath = self.financialModel + '_inputs.json'
             json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
+            if self.financialModel == 'utilityrate5':
+                json_files.append(Path(self.samPath / "models" / "inputs" / 'cashloan_inputs.json'))
 
             
         variableValues = []

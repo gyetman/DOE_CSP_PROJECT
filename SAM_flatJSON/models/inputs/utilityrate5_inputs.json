@@ -1,0 +1,195 @@
+{
+    "utilityrate5": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "en_electricity_rates",
+            "Label": "Optionally enable/disable electricity_rate",
+            "Units": "years",
+            "Costraint": "INTEGER,MIN=0,MAX=1"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "analysis_period",
+            "Label": "Number of years in analysis",
+            "Units": "years",
+            "Require": "*",
+            "Costraint": "INTEGER,POSITIVE"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_use_lifetime_output",
+            "Label": "Lifetime hourly system outputs",
+            "Units": "0/1",
+            "Meta": "0=hourly first year,1=hourly lifetime",
+            "Require": "*",
+            "Costraint": "INTEGER,MIN=0,MAX=1"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TOU_demand_single_peak",
+            "Label": "Use single monthly peak for TOU demand charge",
+            "Units": "0/1",
+            "Meta": "0=use TOU peak,1=use flat peak",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=1"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "System power generated",
+            "Units": "kW",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "load",
+            "Label": "Electricity load (year 1)",
+            "Units": "kW",
+            "Group": "Time Series"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "inflation_rate",
+            "Label": "Inflation rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "*",
+            "Costraint": "MIN=-99"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "degradation",
+            "Label": "Annual energy degradation",
+            "Units": "%",
+            "Group": "AnnualOutput",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "load_escalation",
+            "Label": "Annual load escalation",
+            "Units": "%/year",
+            "Require": "?=0"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "rate_escalation",
+            "Label": "Annual electricity rate escalation",
+            "Units": "%/year",
+            "Require": "?=0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_metering_option",
+            "Label": "Metering options",
+            "Units": "0=Single meter with monthly rollover credits in kWh,1=Single meter with monthly rollover credits in $,2=Single meter with no monthly rollover credits (Net Billing),3=Single meter with monthly rollover credits in $ (Net Billing $),4=Two meters with all generation sold and all load purchased",
+            "Meta": "Net metering monthly excess",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=4"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_nm_yearend_sell_rate",
+            "Label": "Year end sell rate",
+            "Units": "$/kWh",
+            "Require": "?=0.0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_monthly_fixed_charge",
+            "Label": "Monthly fixed charge",
+            "Units": "$",
+            "Require": "?=0.0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_sell_eq_buy",
+            "Label": "Set sell rate equal to buy rate",
+            "Units": "0/1",
+            "Meta": "Optional override",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_monthly_min_charge",
+            "Label": "Monthly minimum charge",
+            "Units": "$",
+            "Require": "?=0.0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_annual_min_charge",
+            "Label": "Annual minimum charge",
+            "Units": "$",
+            "Require": "?=0.0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_en_ts_sell_rate",
+            "Label": "Enable time step sell rates",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ur_ts_sell_rate",
+            "Label": "Time step sell rates",
+            "Units": "0/1"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_ec_sched_weekday",
+            "Label": "Energy charge weekday schedule",
+            "Meta": "12x24",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_ec_sched_weekend",
+            "Label": "Energy charge weekend schedule",
+            "Meta": "12x24",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_ec_tou_mat",
+            "Label": "Energy rates table",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ur_dc_enable",
+            "Label": "Enable demand charge",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_dc_sched_weekday",
+            "Label": "Demand charge weekday schedule",
+            "Meta": "12x24"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_dc_sched_weekend",
+            "Label": "Demand charge weekend schedule",
+            "Meta": "12x24"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_dc_tou_mat",
+            "Label": "Demand rates (TOU) table",
+            "Require": "ur_dc_enable=1"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ur_dc_flat_mat",
+            "Label": "Demand rates (flat) table",
+            "Require": "ur_dc_enable=1"
+        }
+    ]
+}
