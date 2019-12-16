@@ -1,0 +1,959 @@
+{
+    "trough_physical_process_heat": [
+        {
+            "DataType": "SSC_STRING",
+            "Name": "file_name",
+            "Label": "Local weather file with path",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*",
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "track_mode",
+            "Label": "Tracking mode",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tilt",
+            "Label": "Tilt angle of surface/axis",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "azimuth",
+            "Label": "Azimuth angle of surface/axis",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*",
+            "Tab": "Weather"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "I_bn_des",
+            "Label": "Solar irradiation at design",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_mult",
+            "Label": "Solar multiple",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_in_des",
+            "Label": "Design loop inlet temperature",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_out",
+            "Label": "Target loop outlet temperature",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_pb_design",
+            "Label": "Design heat input to power block",
+            "Units": "MWt",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tshours",
+            "Label": "Equivalent full-load thermal storage hours",
+            "Units": "hr",
+            "Group": "system_design",
+            "Require": "*",
+            "Tab": "system_design"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nSCA",
+            "Label": "Number of SCAs in a loop",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHCEt",
+            "Label": "Number of HCE types",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nColt",
+            "Label": "Number of collector types",
+            "Units": "none",
+            "Meta": "constant=4",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHCEVar",
+            "Label": "Number of HCE variants per type",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nLoops",
+            "Label": "Number of loops in the field",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_pump",
+            "Label": "HTF pump efficiency",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "HDR_rough",
+            "Label": "Header pipe roughness",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_stow",
+            "Label": "Stow angle",
+            "Units": "deg",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_dep",
+            "Label": "Deploy angle",
+            "Units": "deg",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Row_Distance",
+            "Label": "Spacing between rows (centerline to centerline)",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FieldConfig",
+            "Label": "Number of subfield headers",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "is_model_heat_sink_piping",
+            "Label": "Should model consider piping through heat sink?",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_heat_sink_piping",
+            "Label": "Length of piping (full mass flow) through heat sink (if applicable)",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmin",
+            "Label": "Minimum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmax",
+            "Label": "Maximum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Fluid",
+            "Label": "Field HTF fluid ID number",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "wind_stow_speed",
+            "Label": "Trough wind stow speed",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "?=50",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "field_fl_props",
+            "Label": "User defined field fluid property data",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_fp",
+            "Label": "Freeze protection temperature (heat trace activation temperature)",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_max",
+            "Label": "Maximum HTF velocity in the header at design",
+            "Units": "W/m2",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_min",
+            "Label": "Minimum HTF velocity in the header at design",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pipe_hl_coef",
+            "Label": "Loss coefficient from the header, runner pipe, and non-HCE piping",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "SCA_drives_elec",
+            "Label": "Tracking power, in Watts per SCA drive",
+            "Units": "W/m2-K",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "water_usage_per_wash",
+            "Label": "Water usage per wash",
+            "Units": "L/m2_aper",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "washing_frequency",
+            "Label": "Mirror washing frequency",
+            "Units": "-/year",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_mode",
+            "Label": "Acceptance testing mode?",
+            "Units": "0/1",
+            "Meta": "no/yes",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_init",
+            "Label": "In acceptance testing mode - require steady-state startup",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_loc",
+            "Label": "In acceptance testing mode - temperature sensor location",
+            "Units": "2-Jan",
+            "Meta": "hx/loop",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_hot",
+            "Label": "Heat capacity of the balance of plant on the hot side",
+            "Units": "kWht/K-MWt",
+            "Meta": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_cold",
+            "Label": "Heat capacity of the balance of plant on the cold side",
+            "Units": "kWht/K-MWt",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_sca",
+            "Label": "Non-HTF heat capacity associated with each SCA - per meter basis",
+            "Units": "Wht/K-m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "W_aperture",
+            "Label": "The collector aperture width (Total structural area used for shadowing)",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "A_aperture",
+            "Label": "Reflective aperture area of the collector",
+            "Units": "m2",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "TrackingError",
+            "Label": "User-defined tracking error derate",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "GeomEffects",
+            "Label": "User-defined geometry effects derate",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Rho_mirror_clean",
+            "Label": "User-defined clean mirror reflectivity",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Dirt_mirror",
+            "Label": "User-defined dirt on mirror derate",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Error",
+            "Label": "User-defined general optical error derate ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Ave_Focal_Length",
+            "Label": "Average focal length of the collector ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "L_SCA",
+            "Label": "Length of the SCA ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "L_aperture",
+            "Label": "Length of a single mirror/HCE unit",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ColperSCA",
+            "Label": "Number of individual collector sections in an SCA ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "Distance_SCA",
+            "Label": "Piping distance between SCA's in the field",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "IAM_matrix",
+            "Label": "IAM coefficients, matrix for 4 collectors",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "HCE_FieldFrac",
+            "Label": "Fraction of the field occupied by this HCE type ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "D_2",
+            "Label": "Inner absorber tube diameter",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "D_3",
+            "Label": "Outer absorber tube diameter",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "D_4",
+            "Label": "Inner glass envelope diameter ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "D_5",
+            "Label": "Outer glass envelope diameter ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "D_p",
+            "Label": "Diameter of the absorber flow plug (optional) ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Flow_type",
+            "Label": "Flow type through the absorber",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Rough",
+            "Label": "Roughness of the internal surface ",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "alpha_env",
+            "Label": "Envelope absorptance ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_11",
+            "Label": "Absorber emittance for receiver type 1 variation 1",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_12",
+            "Label": "Absorber emittance for receiver type 1 variation 2",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_13",
+            "Label": "Absorber emittance for receiver type 1 variation 3",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_14",
+            "Label": "Absorber emittance for receiver type 1 variation 4",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_21",
+            "Label": "Absorber emittance for receiver type 2 variation 1",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_22",
+            "Label": "Absorber emittance for receiver type 2 variation 2",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_23",
+            "Label": "Absorber emittance for receiver type 2 variation 3",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_24",
+            "Label": "Absorber emittance for receiver type 2 variation 4",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_31",
+            "Label": "Absorber emittance for receiver type 3 variation 1",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_32",
+            "Label": "Absorber emittance for receiver type 3 variation 2",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_33",
+            "Label": "Absorber emittance for receiver type 3 variation 3",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_34",
+            "Label": "Absorber emittance for receiver type 3 variation 4",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_41",
+            "Label": "Absorber emittance for receiver type 4 variation 1",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_42",
+            "Label": "Absorber emittance for receiver type 4 variation 2",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_43",
+            "Label": "Absorber emittance for receiver type 4 variation 3",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "epsilon_3_44",
+            "Label": "Absorber emittance for receiver type 4 variation 4",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "alpha_abs",
+            "Label": "Absorber absorptance ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Tau_envelope",
+            "Label": "Envelope transmittance",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "EPSILON_4",
+            "Label": "Inner glass envelope emissivities (Pyrex) ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "EPSILON_5",
+            "Label": "Outer glass envelope emissivities (Pyrex) ",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "GlazingIntactIn",
+            "Label": "Glazing intact (broken glass) flag {1=true, else=false}",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "P_a",
+            "Label": "Annulus gas pressure",
+            "Units": "torr",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "AnnulusGas",
+            "Label": "Annulus gas type (1=air, 26=Ar, 27=H2)",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "AbsorberMaterial",
+            "Label": "Absorber material type",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Shadowing",
+            "Label": "Receiver bellows shadowing loss factor",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Dirt_HCE",
+            "Label": "Loss due to dirt on the receiver envelope",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "Design_loss",
+            "Label": "Receiver heat loss at design",
+            "Units": "W/m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "SCAInfoArray",
+            "Label": "Receiver (,1) and collector (,2) type for each assembly in loop",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "SCADefocusArray",
+            "Label": "Collector defocus order",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "solar_field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_pump_coef",
+            "Label": "Pumping power to move 1kg of HTF through PB loop",
+            "Units": "kW/kg",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "controller"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "init_hot_htf_percent",
+            "Label": "Initial fraction of avail. vol that is hot",
+            "Units": "%",
+            "Group": "TES",
+            "Require": "*",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank",
+            "Label": "Total height of tank (height of HTF when tank is full",
+            "Units": "m",
+            "Group": "TES",
+            "Require": "*",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cold_tank_max_heat",
+            "Label": "Rated heater capacity for cold tank heating",
+            "Units": "MW",
+            "Group": "TES",
+            "Require": "*",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "u_tank",
+            "Label": "Loss coefficient from the tank",
+            "Units": "W/m2-K",
+            "Group": "TES",
+            "Require": "*",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_pairs",
+            "Label": "Number of equivalent tank pairs",
+            "Units": "-",
+            "Group": "TES",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cold_tank_Thtr",
+            "Label": "Minimum allowable cold tank HTF temp",
+            "Units": "C",
+            "Group": "TES",
+            "Require": "*",
+            "Tab": "TES"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank_min",
+            "Label": "Minimum allowable HTF height in storage tank",
+            "Units": "m",
+            "Group": "TES_2tank",
+            "Require": "*",
+            "Tab": "TES_2tank"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hot_tank_Thtr",
+            "Label": "Minimum allowable hot tank HTF temp",
+            "Units": "C",
+            "Group": "TES_2tank",
+            "Require": "*",
+            "Tab": "TES_2tank"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hot_tank_max_heat",
+            "Label": "Rated heater capacity for hot tank heating",
+            "Units": "MW",
+            "Group": "TES_2tank",
+            "Require": "*",
+            "Tab": "TES_2tank"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "adjust:constant",
+            "Label": "Constant loss adjustment",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "*",
+            "Costraint": "MAX=100",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "adjust:hourly",
+            "Label": "Hourly loss adjustments",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Loss Adjustments"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
+            "Tab": "Loss Adjustments"
+        }
+    ]
+}

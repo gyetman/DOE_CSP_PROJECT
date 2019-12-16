@@ -1,0 +1,31 @@
+{
+    "iph_to_lcoefcr": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "annual_electricity_consumption",
+            "Label": "Annual electricity consumptoin w/ avail derate",
+            "Units": "kWe-hr",
+            "Group": "IPH_LCOH",
+            "Require": "*",
+            "Tab": "IPH_LCOH"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "electricity_rate",
+            "Label": "Cost of electricity used to operate pumps/trackers",
+            "Units": "$/kWe",
+            "Group": "IPH_LCOH",
+            "Require": "*",
+            "Tab": "IPH_LCOH"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fixed_operating_cost",
+            "Label": "Annual fixed operating cost",
+            "Units": "$/kW",
+            "Group": "Simple LCOE",
+            "Require": "*",
+            "Tab": "Simple LCOE"
+        }
+    ]
+}
