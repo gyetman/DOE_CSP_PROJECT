@@ -1,0 +1,1540 @@
+{
+    "cashloan": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "analysis_period",
+            "Label": "Analyis period",
+            "Units": "years",
+            "Group": "Financials",
+            "Require": "?=30",
+            "Costraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "federal_tax_rate",
+            "Label": "Federal income tax rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "*",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "state_tax_rate",
+            "Label": "State income tax rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "*",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "property_tax_rate",
+            "Label": "Property tax rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "?=0.0",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "prop_tax_cost_assessed_percent",
+            "Label": "Percent of pre-financing costs assessed",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "?=95",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "prop_tax_assessed_decline",
+            "Label": "Assessed value annual decline",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "?=5",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "real_discount_rate",
+            "Label": "Real discount rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "*",
+            "Costraint": "MIN=-99",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "inflation_rate",
+            "Label": "Inflation rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "*",
+            "Costraint": "MIN=-99",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance_rate",
+            "Label": "Insurance rate",
+            "Units": "%",
+            "Group": "Financials",
+            "Require": "?=0.0",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Financials"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "System nameplate capacity",
+            "Units": "kW",
+            "Group": "System",
+            "Require": "*",
+            "Costraint": "POSITIVE",
+            "Tab": "System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_heat_rate",
+            "Label": "System heat rate",
+            "Units": "MMBTus/MWh",
+            "Group": "System",
+            "Require": "?=0.0",
+            "Costraint": "MIN=0",
+            "Tab": "System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loan_term",
+            "Label": "Loan term",
+            "Units": "years",
+            "Group": "Loan",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Loan"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loan_rate",
+            "Label": "Loan rate",
+            "Units": "%",
+            "Group": "Loan",
+            "Require": "?=0",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Loan"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "debt_fraction",
+            "Label": "Debt percentage",
+            "Units": "%",
+            "Group": "Loan",
+            "Require": "?=0",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Loan"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_fixed",
+            "Label": "Fixed O&M annual amount",
+            "Units": "$/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_fixed_escal",
+            "Label": "Fixed O&M escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_production",
+            "Label": "Production-based O&M amount",
+            "Units": "$/MWh",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_production_escal",
+            "Label": "Production-based O&M escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_capacity",
+            "Label": "Capacity-based O&M amount",
+            "Units": "$/kWcap",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_capacity_escal",
+            "Label": "Capacity-based O&M escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_fuel_cost",
+            "Label": "Fuel cost",
+            "Units": "$/MMBtu",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_fuel_cost_escal",
+            "Label": "Fuel cost escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "annual_fuel_usage",
+            "Label": "Fuel usage",
+            "Units": "kWht",
+            "Group": "O&M",
+            "Require": "?=0",
+            "Costraint": "MIN=0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_1_usage",
+            "Label": "Biomass feedstock usage",
+            "Units": "unit",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_opt_fuel_1_cost",
+            "Label": "Biomass feedstock cost",
+            "Units": "$/unit",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_1_cost_escal",
+            "Label": "Biomass feedstock cost escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_2_usage",
+            "Label": "Coal feedstock usage",
+            "Units": "unit",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_opt_fuel_2_cost",
+            "Label": "Coal feedstock cost",
+            "Units": "$/unit",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_2_cost_escal",
+            "Label": "Coal feedstock cost escalation",
+            "Units": "%/year",
+            "Group": "O&M",
+            "Require": "?=0.0",
+            "Tab": "O&M"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_fed_type",
+            "Label": "Federal depreciation type",
+            "Meta": "0=none,1=macrs_half_year,2=sl,3=custom",
+            "Group": "Depreciation",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=3",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_fed_sl_years",
+            "Label": "Federal depreciation straight-line Years",
+            "Units": "years",
+            "Group": "Depreciation",
+            "Require": "depr_fed_type=2",
+            "Costraint": "INTEGER,POSITIVE",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "depr_fed_custom",
+            "Label": "Federal custom depreciation",
+            "Units": "%/year",
+            "Group": "Depreciation",
+            "Require": "depr_fed_type=3",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_sta_type",
+            "Label": "State depreciation type",
+            "Meta": "0=none,1=macrs_half_year,2=sl,3=custom",
+            "Group": "Depreciation",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=3",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_sta_sl_years",
+            "Label": "State depreciation straight-line years",
+            "Units": "years",
+            "Group": "Depreciation",
+            "Require": "depr_sta_type=2",
+            "Costraint": "INTEGER,POSITIVE",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "depr_sta_custom",
+            "Label": "State custom depreciation",
+            "Units": "%/year",
+            "Group": "Depreciation",
+            "Require": "depr_sta_type=3",
+            "Tab": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount",
+            "Label": "Federal amount-based ITC amount",
+            "Units": "$",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount_deprbas_fed",
+            "Label": "Federal amount-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount_deprbas_sta",
+            "Label": "Federal amount-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount",
+            "Label": "State amount-based ITC amount",
+            "Units": "$",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount_deprbas_fed",
+            "Label": "State amount-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount_deprbas_sta",
+            "Label": "State amount-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent",
+            "Label": "Federal percentage-based ITC percent",
+            "Units": "%",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_maxvalue",
+            "Label": "Federal percentage-based ITC maximum value",
+            "Units": "$",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1e99",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_deprbas_fed",
+            "Label": "Federal percentage-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_deprbas_sta",
+            "Label": "Federal percentage-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent",
+            "Label": "State percentage-based ITC percent",
+            "Units": "%",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_maxvalue",
+            "Label": "State percentage-based ITC maximum Value",
+            "Units": "$",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=1e99",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_deprbas_fed",
+            "Label": "State percentage-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_deprbas_sta",
+            "Label": "State percentage-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ptc_fed_amount",
+            "Label": "Federal PTC amount",
+            "Units": "$/kWh",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_fed_term",
+            "Label": "Federal PTC term",
+            "Units": "years",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=10",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_fed_escal",
+            "Label": "Federal PTC escalation",
+            "Units": "%/year",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ptc_sta_amount",
+            "Label": "State PTC amount",
+            "Units": "$/kWh",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_sta_term",
+            "Label": "State PTC term",
+            "Units": "years",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=10",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_sta_escal",
+            "Label": "State PTC escalation",
+            "Units": "%/year",
+            "Group": "Tax Credit Incentives",
+            "Require": "?=0",
+            "Tab": "Tax Credit Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount",
+            "Label": "Federal amount-based IBI amount",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_tax_fed",
+            "Label": "Federal amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_tax_sta",
+            "Label": "Federal amount-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_deprbas_fed",
+            "Label": "Federal amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_deprbas_sta",
+            "Label": "Federal amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount",
+            "Label": "State amount-based IBI amount",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_tax_fed",
+            "Label": "State amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_tax_sta",
+            "Label": "State amount-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_deprbas_fed",
+            "Label": "State amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_deprbas_sta",
+            "Label": "State amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount",
+            "Label": "Utility amount-based IBI amount",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_tax_fed",
+            "Label": "Utility amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_tax_sta",
+            "Label": "Utility amount-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_deprbas_fed",
+            "Label": "Utility amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_deprbas_sta",
+            "Label": "Utility amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount",
+            "Label": "Other amount-based IBI amount",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_tax_fed",
+            "Label": "Other amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_tax_sta",
+            "Label": "Other amount-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_deprbas_fed",
+            "Label": "Other amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_deprbas_sta",
+            "Label": "Other amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent",
+            "Label": "Federal percentage-based IBI percent",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_maxvalue",
+            "Label": "Federal percentage-based IBI maximum value",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_tax_fed",
+            "Label": "Federal percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_tax_sta",
+            "Label": "Federal percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_deprbas_fed",
+            "Label": "Federal percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_deprbas_sta",
+            "Label": "Federal percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent",
+            "Label": "State percentage-based IBI percent",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_maxvalue",
+            "Label": "State percentage-based IBI maximum value",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_tax_fed",
+            "Label": "State percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_tax_sta",
+            "Label": "State percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_deprbas_fed",
+            "Label": "State percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_deprbas_sta",
+            "Label": "State percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent",
+            "Label": "Utility percentage-based IBI percent",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_maxvalue",
+            "Label": "Utility percentage-based IBI maximum value",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_tax_fed",
+            "Label": "Utility percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_tax_sta",
+            "Label": "Utility percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_deprbas_fed",
+            "Label": "Utility percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_deprbas_sta",
+            "Label": "Utility percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent",
+            "Label": "Other percentage-based IBI percent",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_maxvalue",
+            "Label": "Other percentage-based IBI maximum value",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_tax_fed",
+            "Label": "Other percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_tax_sta",
+            "Label": "Other percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_deprbas_fed",
+            "Label": "Other percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_deprbas_sta",
+            "Label": "Other percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_amount",
+            "Label": "Federal CBI amount",
+            "Units": "$/Watt",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_maxvalue",
+            "Label": "Federal CBI maximum",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_tax_fed",
+            "Label": "Federal CBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_tax_sta",
+            "Label": "Federal CBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_deprbas_fed",
+            "Label": "Federal CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_deprbas_sta",
+            "Label": "Federal CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_amount",
+            "Label": "State CBI amount",
+            "Units": "$/Watt",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_maxvalue",
+            "Label": "State CBI maximum",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_tax_fed",
+            "Label": "State CBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_tax_sta",
+            "Label": "State CBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_deprbas_fed",
+            "Label": "State CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_deprbas_sta",
+            "Label": "State CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_amount",
+            "Label": "Utility CBI amount",
+            "Units": "$/Watt",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_maxvalue",
+            "Label": "Utility CBI maximum",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_tax_fed",
+            "Label": "Utility CBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_tax_sta",
+            "Label": "Utility CBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_deprbas_fed",
+            "Label": "Utility CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_deprbas_sta",
+            "Label": "Utility CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_amount",
+            "Label": "Other CBI amount",
+            "Units": "$/Watt",
+            "Group": "Payment Incentives",
+            "Require": "?=0.0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_maxvalue",
+            "Label": "Other CBI maximum",
+            "Units": "$",
+            "Group": "Payment Incentives",
+            "Require": "?=1e99",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_tax_fed",
+            "Label": "Other CBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_tax_sta",
+            "Label": "Other CBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_deprbas_fed",
+            "Label": "Other CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_deprbas_sta",
+            "Label": "Other CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_fed_amount",
+            "Label": "Federal PBI amount",
+            "Units": "$/kWh",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_term",
+            "Label": "Federal PBI term",
+            "Units": "years",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_escal",
+            "Label": "Federal PBI escalation",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_tax_fed",
+            "Label": "Federal PBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_tax_sta",
+            "Label": "Federal PBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_sta_amount",
+            "Label": "State PBI amount",
+            "Units": "$/kWh",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_term",
+            "Label": "State PBI term",
+            "Units": "years",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_escal",
+            "Label": "State PBI escalation",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_tax_fed",
+            "Label": "State PBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_tax_sta",
+            "Label": "State PBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_uti_amount",
+            "Label": "Utility PBI amount",
+            "Units": "$/kWh",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_term",
+            "Label": "Utility PBI term",
+            "Units": "years",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_escal",
+            "Label": "Utility PBI escalation",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_tax_fed",
+            "Label": "Utility PBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_tax_sta",
+            "Label": "Utility PBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_oth_amount",
+            "Label": "Other PBI amount",
+            "Units": "$/kWh",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_term",
+            "Label": "Other PBI term",
+            "Units": "years",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_escal",
+            "Label": "Other PBI escalation",
+            "Units": "%",
+            "Group": "Payment Incentives",
+            "Require": "?=0",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_tax_fed",
+            "Label": "Other PBI federal taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_tax_sta",
+            "Label": "Other PBI state taxable",
+            "Units": "0/1",
+            "Group": "Payment Incentives",
+            "Require": "?=1",
+            "Costraint": "BOOLEAN",
+            "Tab": "Payment Incentives"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "batt_bank_replacement",
+            "Label": "Battery bank replacements per year",
+            "Units": "number/year",
+            "Group": "Battery",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "batt_replacement_schedule",
+            "Label": "Battery bank replacements per year (user specified)",
+            "Units": "number/year",
+            "Group": "Battery",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "en_batt",
+            "Label": "Enable battery storage model",
+            "Units": "0/1",
+            "Group": "Battery",
+            "Require": "?=0",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_option",
+            "Label": "Enable battery replacement?",
+            "Units": "0=none,1=capacity based,2=user schedule",
+            "Group": "Battery",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=2",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "battery_per_kWh",
+            "Label": "Battery cost",
+            "Units": "$/kWh",
+            "Group": "Battery",
+            "Require": "?=0.0",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_computed_bank_capacity",
+            "Label": "Battery bank capacity",
+            "Units": "kWh",
+            "Group": "Battery",
+            "Require": "?=0.0",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_cost",
+            "Label": "Battery bank replacement cost",
+            "Units": "$/kWh",
+            "Group": "Battery",
+            "Require": "?=0.0",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_cost_escal",
+            "Label": "Battery bank replacement cost escalation",
+            "Units": "%/year",
+            "Group": "Battery",
+            "Require": "?=0.0",
+            "Tab": "Battery"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "market",
+            "Label": "Residential or Commercial Market",
+            "Units": "0/1",
+            "Meta": "0=residential,1=comm.",
+            "Group": "Cashloan",
+            "Require": "?=1",
+            "Costraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Cashloan"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mortgage",
+            "Label": "Use mortgage style loan (res. only)",
+            "Units": "0/1",
+            "Meta": "0=standard loan,1=mortgage",
+            "Group": "Cashloan",
+            "Require": "?=0",
+            "Costraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Cashloan"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "total_installed_cost",
+            "Label": "Total installed cost",
+            "Units": "$",
+            "Group": "Cashloan",
+            "Require": "*",
+            "Costraint": "MIN=0",
+            "Tab": "Cashloan"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "salvage_percentage",
+            "Label": "Salvage value percentage",
+            "Units": "%",
+            "Group": "Cashloan",
+            "Require": "?=0.0",
+            "Costraint": "MIN=0,MAX=100",
+            "Tab": "Cashloan"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "annual_energy_value",
+            "Label": "Energy value",
+            "Units": "$",
+            "Group": "Cashloan",
+            "Require": "*",
+            "Tab": "Cashloan"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "Power generated by renewable resource",
+            "Units": "kW",
+            "Require": "*",
+            "Tab": "0"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "degradation",
+            "Label": "Annual degradation",
+            "Units": "%",
+            "Group": "AnnualOutput",
+            "Require": "*",
+            "Tab": "AnnualOutput"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_use_lifetime_output",
+            "Label": "Lifetime hourly system outputs",
+            "Units": "0/1",
+            "Meta": "0=hourly first year,1=hourly lifetime",
+            "Group": "AnnualOutput",
+            "Require": "*",
+            "Costraint": "INTEGER,MIN=0",
+            "Tab": "AnnualOutput"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "elec_cost_with_system",
+            "Label": "Energy value",
+            "Units": "$",
+            "Group": "thirdpartyownership",
+            "Require": "*",
+            "Tab": "thirdpartyownership"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "elec_cost_without_system",
+            "Label": "Energy value",
+            "Units": "$",
+            "Group": "thirdpartyownership",
+            "Require": "*",
+            "Tab": "thirdpartyownership"
+        }
+    ]
+}
