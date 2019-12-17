@@ -7,7 +7,7 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcsMSLF',
+                 CSP          = 'tcstrough_physical',
                  financial    = 'lcoefcr',
                  desalination =  None,
                  json_value_filepath = None, # Such as: 'D:/DOE_CSP_PROJECT/SAM_flatJSON/defaults/tcstrough_physical_singleowner.json'
@@ -106,8 +106,10 @@ class SamBaseClass(object):
                     if 'Require' in variable:
                         if variable['Require'] == "*":
                             varValue = 0
-                        else:
+                        elif "?=" in variable['Require']:
                             varValue = float(variable['Require'][2:])
+                        else:
+                            varValue = 0
                     else:
                         continue
    
