@@ -18,7 +18,6 @@ from datetime import datetime
 from operator import itemgetter
 from pathlib import Path
 
-
 base_path = Path(__file__).resolve().parent.parent.absolute()
 sys.path.insert(0,str(base_path))
 #from SAM.SamBaseClass import SamBaseClass
@@ -38,48 +37,64 @@ json_outpath = base_path / 'app' / 'user-generated-inputs'
 weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 levels = ['sections','subsections'] #'tabs' is also a level but they will always exist
 
-
 # dict for desalination 'values' and 'labels'
-Desal = {'FOR':'Forward Osmosis                   ',
-         'MBD':'Membrane Distillation             ',
-         'MED':'Multi-Effect Distillation (MED)   ', 
-         'ABS':'MED with Absorption Heat Pumps    ',
-         'TLV':'MED with Thermal Vapor Compression',
-         'ROM':'Reverse Osmosis                   ', 
+Desal = {'FOR':'Forward Osmosis                          ',
+         'MED':'Low Temperature Multi-Effect Distillation', 
+         'ABS':'MED with Absorption Heat Pumps           ',
+         'TLV':'MED with Thermal Vapor Compression       ',
+         'MBD':'Membrane Distillation                    ',
+         'NUN':'No Desalination Model                    ',
+         'ROM':'Reverse Osmosis                          ', 
          }
 
 #dict for financial model 'values' and 'labels' 
 Financial = {'COMML':'Commercial (Distributed)                   ',
-             'LCOEH':'LCOE/LCOH Calculator                       ',
+             'LCOE' :'Levelized Cost of Electricity Calculator   ',
+             'LCOH' :'Levelized Cost of Heat Calculator          ',
+             'NONE' :'No Financial Model                         ',
              'PPFWD':'PPA Partnership Flip With Debt (Utility)   ',
              'PPFWO':'PPA Partnership Flip Without Debt (Utility)',
              'PPALS':'PPA Sale Leaseback (Utility)               ',
              'PPASO':'PPA Single Owner (Utility)                 ',
              }
 
-# dict for solar 'values' and 'labels'
-Solar = {'FPC' :'Flat-Plate Collector            ',
+# NOTE: make sure any changes in this table are also reflected in app.layout
+# dict for solar/CSP 'values' and 'labels'
+Solar = {'FPC ':'Flat-Plate Collector',
+         'IPHP':'Industrial Process Heat Parabolic Trough   ',
+         'IPHD':'Industrial Process Heat Linear Direct Steam',
          'ISCC':'Integrated Solar Combined Cycle ',
-         'LFDS':'Linear Fresnel Direct Steam     ',
-         'LFMS':'Linear Fresnel Molten Salt      ',
-         'PTDS':'Power Tower Direct Steam        ',
-         'PTMS':'Power Tower Molten Salt         ',
-         'PTP' :'Parabolic Trough Physical       ',
-         'PHPT':'Process Heat Parabolic Trough   ',
-         'PHDS':'Process Heat Linear Direct Steam',
-         }
+         'DSLF':'Linear Fresnel Direct Steam     ',
+         'MSLF':'Linear Fresnel Molten Salt      ',
+         'DSPT':'Power Tower Direct Steam        ',
+         'MSPT':'Power Tower Molten Salt         ',
+         'PT  ':'Parabolic Trough Physical       ',
+          }
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'LFDS': [('FOR',True),('MBD',True),('MED',False),('ABS',False),('TLV',True),('ROM',True)],
-    'PTP' : [('FOR',True),('MBD',True),('MED',False),('ABS',True),('TLV',False),('ROM',True)]
+    'FPC' : [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHP': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHD': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'ISCC': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSLF': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSLF': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSPT': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSPT': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'PT'  : [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
-desalToFinance = {
-    'ABS': [('COMML',True),('LCOEH',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
-    'MED': [('COMML',True),('LCOEH',True),('PPFWD',False),('PPFWO',True),('PPALS',True),('PPASO',True)],
-    'TLV': [('COMML',True),('LCOEH',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+solarToFinance = {
+    'FPC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'IPHP': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'IPHD': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'ISCC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',False)],
+    'DSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'MSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'DSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'MSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'PT'  : [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
     }
 
 #columns that will be used in data tables
@@ -367,15 +382,15 @@ model_selection_layout = html.Div([
                 id='select-solar',
                 options=[
                     {'label': 'Flat-Plate Collector            ', 'value': 'FPC',  'disabled': True},
-                    {'label': 'Integrated Solar Combined Cycle ', 'value': 'ISCC', 'disabled': True},
-                    {'label': 'Linear Fresnel Direct Steam     ', 'value': 'LFDS', 'disabled': False},
-                    {'label': 'Linear Fresnel Molten Salt      ', 'value': 'LFMS', 'disabled': True},
-                    {'label': 'Parabolic Trough Physical       ', 'value': 'PTP',  'disabled': False},
-                    {'label': 'Power Tower Direct Steam        ', 'value': 'PTDS', 'disabled': True},
-                    {'label': 'Power Tower Molten Salt         ', 'value': 'PTMS', 'disabled': True},
-                    {'label': 'Process Heat Parabolic Trough   ', 'value': 'PHPT', 'disabled': True},
-                    {'label': 'Process Heat Linear Direct Steam', 'value': 'PHDS', 'disabled': True}, 
-                ],value='LFDS',
+                    {'label': 'Integrated Solar Combined Cycle ', 'value': 'ISCC', 'disabled': False},
+                    {'label': 'Linear Fresnel Direct Steam     ', 'value': 'DSLF', 'disabled': False},
+                    {'label': 'Linear Fresnel Molten Salt      ', 'value': 'MSLF', 'disabled': False},
+                    {'label': 'Parabolic Trough Physical       ', 'value': 'PT'  , 'disabled': False},
+                    {'label': 'Power Tower Direct Steam        ', 'value': 'DSPT', 'disabled': False},
+                    {'label': 'Power Tower Molten Salt         ', 'value': 'MSPT', 'disabled': False},
+                    {'label': 'Process Heat Parabolic Trough   ', 'value': 'IPHP', 'disabled': False},
+                    {'label': 'Process Heat Linear Direct Steam', 'value': 'IPHD', 'disabled': False}, 
+                ],value='DSLF',
             )
         ]),
         html.P(),
@@ -448,12 +463,12 @@ def set_desal_options(solarModel):
 #TODO combine with select-desal above?
 @app.callback(
     Output('select-finance', 'options'),
-    [Input('select-desal', 'value')])
+    [Input('select-solar', 'value')])
 def set_finance_options(desalModel):
-    return [{'label': Financial[i[0]], 'value': i[0], 'disabled': i[1]} for i in desalToFinance[desalModel]]
+    return [{'label': Financial[i[0]], 'value': i[0], 'disabled': i[1]} for i in solarToFinance[desalModel]]
     
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8067)
+    app.run_server(debug=False, port=8068)
 
 
 
