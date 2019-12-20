@@ -381,9 +381,15 @@ for var in json_load[model]:
     tempdict=defaultdict(lambda:'000General')
     tempdict.update(var)
     #add the value from the model_values dict
-    #tempdict['Value']=model_values[var['Name']]
-    #rank = dict.get(key, 1.0)
     tempdict['Value']=model_values.get(var['Name'],None)
+    #clean up spaces in the tab, section, subsection names
+    tempdict['Tab']=tempdict['Tab'].strip()
+    tempdict['Section']=tempdict['Section'].strip()
+    tempdict['Subsection']=tempdict['Subsection'].strip()
+    #TODO these should be handled differently
+    #convert matrices and arrays to floats for display purposes
+    if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
+        tempdict['Value']=str(tempdict['Value'])
     model_vars.append(tempdict)
     
 # sort the list by hierarchy
@@ -397,8 +403,8 @@ for mv in model_vars:
 
 # update weather file_name
 wf_index = index_in_list_of_dicts(model_vars,'Name','file_name')
-model_vars[wf_index]['Value']=get_weather_file()
-            
+model_vars[wf_index]['Value']=str(get_weather_file())
+         
 # collect all unique tab names, sorting because set has no order
 model_tabs = sorted([*{*[t['Tab'] for t in model_vars]}])
 # move General to the front
