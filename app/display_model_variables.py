@@ -34,8 +34,8 @@ model_variables_file = json_infiles_dir/ '{}_inputs.json'.format(model)
 model_values_file = json_defaults_dir / '{}_{}.json'.format(model,finance)
 json_outpath = base_path / 'app' / 'user-generated-inputs'
 
-weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
-levels = ['sections','subsections'] #'tabs' is also a level but they will always exist
+default_weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+weather_file_path = json_outpath / 'weather-file-location.txt'
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FOR':'Forward Osmosis                          ',
@@ -95,6 +95,43 @@ solarToFinance = {
     'DSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
     'MSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
     'PT'  : [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    }
+
+#dict containing Solar / Finance combinations
+solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
+                 ('PT','PPFWD')  :'tcstrough_physical_levpartflip',
+                 ('PT','COMML')  :'tcstrough_physical_utilityrate5',
+                 ('PT','PPFWO')  :'tcstrough_physical_equpartflip',
+                 ('PT','LCOE')   :'tcstrough_physical_lcoefcr',
+                 ('PT','PPALS')  :'tcstrough_physical_saleleaseback',
+                 ('PT','NONE')   :'tcstrough_physical_none',
+                 ('DSLF','PPASO'):'tcslinear_fresnel_singleowner',
+                 ('DSLF','PPFWD'):'tcslinear_fresnel_levpartflip',
+                 ('DSLF','COMML'):'tcslinear_fresnel_utilityrate5',
+                 ('DSLF','PPFWO'):'tcslinear_fresnel_equpartflip',
+                 ('DSLF','LCOE') :'tcslinear_fresnel_lcoefcr',
+                 ('DSLF','PPALS'):'tcslinear_fresnel_saleleaseback',
+                 ('DSLF','NONE') :'tcslinear_fresnel_none',
+                 ('MSLF','PPASO'):'tcsMSLF_singleowner',
+                 ('MSLF','PPFWD'):'tcsMSLF_levpartflip',
+                 ('MSLF','COMML'):'tcsMSLF_utilityrate5',
+                 ('MSLF','PPFWO'):'tcsMSLF_equpartflip',
+                 ('MSLF','LCOE') :'tcsMSLF_lcoefcr',
+                 ('MSLF','PPALS'):'tcsMSLF_saleleaseback',
+                 ('MSLF','NONE') :'tcsMSLF_none',
+                 ('MSPT','PPASO'):'tcsmolten_salt_singleowner',
+                 ('MSPT','PPFWD'):'tcsmolten_salt_levpartflip',
+                 ('MSPT','PPFWO'):'tcsmolten_salt_equpartflip',
+                 ('MSPT','PPALS'):'tcsmolten_salt_saleleaseback',
+                 ('DSPT','PPASO'):'tcsdirect_steam_singleowner',
+                 ('DSPT','PPFWD'):'tcsdirect_steam_levpartflip',
+                 ('DSPT','PPFWO'):'tcsdirect_steam_equpartflip',
+                 ('DSPT','PPALS'):'tcsdirect_steam_saleleaseback',
+                 ('ISCC','PPASO'):'tcsiscc_singleowner',
+                 ('IPHP','LCOH') :'trough_physical_process_heat_iph_to_lcoefcr',
+                 ('IPHP','NONE') :'trough_physical_process_heat_none',
+                 ('IPHD','LCOH') :'linear_fresnel_dsg_iph_iph_to_lcoefcr',
+                 ('IPHD','NONE') :'linear_fresnel_dsg_iph_none',    
     }
 
 #columns that will be used in data tables
@@ -174,13 +211,16 @@ def create_callback_for_tables(variables):
             model_outfile_path = Path(json_outpath / model_outfile)
             with model_outfile_path.open('w') as write_file:
                 json.dump(model_vars, write_file)
-            
+        
+            index = index_in_list_of_dicts(model_vars,'Name','file_name')
+            weather_from_user=model_vars[index]['Value']
+
             #run the model
             run_model(csp=model,
                       desal=None,
                       finance=None,
-                      json_file=model_outfile_path,
-                      weather=weather_file)                
+                      json_file=model_outfile_path,               
+                      weather=weather_from_user)
             return (
                     dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
                     )
@@ -188,8 +228,7 @@ def create_callback_for_tables(variables):
             return 'Edit the variables in the tabs below and then Run Model'
                         
 def create_data_table(table_data, table_id):
-#    return html.Div([
-    x=html.Div([
+    return html.Div([
         html.P(),
         dash_table.DataTable(
             id=table_id,
@@ -225,10 +264,8 @@ def create_data_table(table_data, table_id):
         ),
         html.P(),
     ])
-    return x
 
 def create_model_variable_page(tab):
-    #NOTE may want to look in itertools groupby functionality
     '''
     for the provided tab, collects all variables under
     the same section+subsection combination
@@ -270,7 +307,7 @@ def run_model(csp='tcslinear_fresnel',
               desal=None,
               finance=None,
               json_file=None,
-              weather=weather_file):
+              weather=default_weather_file):
     '''
     runs solar thermal desal model
     currently only setup for SAM models
@@ -310,6 +347,20 @@ def index_in_list_of_dicts(array,key,value):
         if d[key] == value:
             return index
     return None
+
+def get_weather_file():
+    '''
+    checks to see if a weather file was written to the user directory and
+    returns it or the default weather file
+    
+    '''
+    if weather_file_path.is_file():
+        with open(weather_file_path, 'r') as f:
+            return f.readline().strip()
+    else:
+        return default_weather_file
+    
+        
 #
 #MAIN PROGRAM (TODO create main() after testing...)
 #
@@ -344,6 +395,10 @@ for mv in model_vars:
         if k == 'Tab' or k == 'Section' or k == 'Subsection':
             mv[k] = mv[k].replace('000General','General')
 
+# update weather file_name
+wf_index = index_in_list_of_dicts(model_vars,'Name','file_name')
+model_vars[wf_index]['Value']=get_weather_file()
+            
 # collect all unique tab names, sorting because set has no order
 model_tabs = sorted([*{*[t['Tab'] for t in model_vars]}])
 # move General to the front
@@ -451,6 +506,7 @@ def display_model_parameters(solar, desal, finance):
     if model and desal and finance:
         return html.Div([
             html.P(),
+            
             dcc.Link(html.Button('Next'), href='/model-variables'),
         ])
 
