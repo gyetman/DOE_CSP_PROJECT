@@ -5,6 +5,7 @@ Created on Tue Jun  4 13:55:35 2019
 @author: jsquires
 """
 
+import ast
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -136,7 +137,8 @@ solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
 
 #columns that will be used in data tables
 cols = [{'name':'Variable', 'id':'Label','editable':False},
-        {'name':'Value',    'id':'Value','editable':True, 'type':'numeric'},
+       # {'name':'Value',    'id':'Value','editable':True, 'type':'numeric'},
+        {'name':'Value',    'id':'Value','editable':True},
         {'name':'Units',    'id':'Units','editable':False}]
 
 
@@ -205,22 +207,26 @@ def create_callback_for_tables(variables):
                 if updated:
                     #overwrite the dict with the updated data from the table
                     _update_model_variables(tbl_data)  
+            #create a simple name:value dict from model variables
+            # to be used by SamBaseClass
+            output_vars = {}
+            for var in model_vars:
+                #arrays and matrices need to be converted back from string
+                if var['DataType']=='SSC_ARRAY' or var['DataType']=='SSC_MATRIX':
+                    output_vars[var['Name']] = ast.literal_eval(var['Value'])
+                else:
+                    output_vars[var['Name']] = var['Value']
             #create the json file that will be the input to the model
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             model_outfile = model+timestamp+'_inputs.json'
             model_outfile_path = Path(json_outpath / model_outfile)
             with model_outfile_path.open('w') as write_file:
-                json.dump(model_vars, write_file)
-        
-            index = index_in_list_of_dicts(model_vars,'Name','file_name')
-            weather_from_user=model_vars[index]['Value']
-
+                json.dump(output_vars, write_file)
             #run the model
             run_model(csp=model,
                       desal=None,
                       finance=None,
-                      json_file=model_outfile_path,               
-                      weather=weather_from_user)
+                      json_file=model_outfile_path)
             return (
                     dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
                     )
@@ -306,8 +312,7 @@ def create_model_variable_page(tab):
 def run_model(csp='tcslinear_fresnel',
               desal=None,
               finance=None,
-              json_file=None,
-              weather=default_weather_file):
+              json_file=None):
     '''
     runs solar thermal desal model
     currently only setup for SAM models
@@ -317,8 +322,7 @@ def run_model(csp='tcslinear_fresnel',
     stdm = SamBaseClass(CSP=csp,
                         desalination=desal,
                         financial=finance,
-                        json_value_filepath=json_file,
-                        weatherfile=weather)
+                        json_value_filepath=json_file)
     stdm.main()
 
 #copied from samJsonParser.py
@@ -386,8 +390,8 @@ for var in json_load[model]:
     tempdict['Tab']=tempdict['Tab'].strip()
     tempdict['Section']=tempdict['Section'].strip()
     tempdict['Subsection']=tempdict['Subsection'].strip()
-    #TODO these should be handled differently
-    #convert matrices and arrays to floats for display purposes
+    #TODO create a better way to display and edit arrays/matrices
+    #converting to string, otherwise array brackets are removed in tables
     if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
         tempdict['Value']=str(tempdict['Value'])
     model_vars.append(tempdict)
@@ -397,9 +401,11 @@ model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
 
 #fix 000General, which was a hack for sorting purposes
 for mv in model_vars:
-    for k in mv.keys():
-        if k == 'Tab' or k == 'Section' or k == 'Subsection':
-            mv[k] = mv[k].replace('000General','General')
+        for k in mv.keys():
+            try:
+                mv[k] = mv[k].replace('000General','General')
+            except:
+                pass
 
 # update weather file_name
 wf_index = index_in_list_of_dicts(model_vars,'Name','file_name')
@@ -469,14 +475,10 @@ model_selection_layout = html.Div([
             html.Div(id='model-parameters'),
         ]),
     ],className='three columns'),
-#    html.Div([
-#        html.Div(id='model-parameters'),
-#    ],className='four columns'),
 ])
             
 model_tables_layout = html.Div([
-    html.H6('{} Model Parameters'.format('TCS Linear Fresnel')), #TODO replace with a lookup and the model variable
-    
+#    html.H6(id='solar-tables-title'), #for dynamic title
     html.P(),
     dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default"),
     html.Div([html.Button('Run Model', id='model-button', title='Run the model after making changes to the variables in the tabs below')]),
@@ -528,9 +530,16 @@ def set_desal_options(solarModel):
     [Input('select-solar', 'value')])
 def set_finance_options(desalModel):
     return [{'label': Financial[i[0]], 'value': i[0], 'disabled': i[1]} for i in solarToFinance[desalModel]]
+
+#TODO Dynamic Table title based on model selection
+# @app.callback(
+#     Output('solar-tables-title', 'children'),
+#     [Input('select-solar','value')])
+# def set_tables_title(solar_value):
+#     return '{} Model Parameters'.format(Solar[solar_value])
     
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8068)
+    app.run_server(debug=False, port=8070)
 
 
 
