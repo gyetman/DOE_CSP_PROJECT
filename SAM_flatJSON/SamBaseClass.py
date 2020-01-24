@@ -7,11 +7,10 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP          = 'tcstrough_physical',
-                 financial    = 'lcoefcr',
+                 CSP = 'tcstrough_physical',
+                 financial = 'lcoefcr',
                  desalination =  None,
-                 json_value_filepath = None, # Such as: 'D:/DOE_CSP_PROJECT/SAM_flatJSON/defaults/tcstrough_physical_singleowner.json'
-                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'):
+                 json_value_filepath = None):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
         self.cspModel = CSP
@@ -31,9 +30,6 @@ class SamBaseClass(object):
             else: # if no finiancial model, just add CSP values
                 Values = self.cspModel + "_none" + ".json"
                 self.json_values = Path(self.samPath / "defaults" /Values)
-            
-            
-        self.weatherFile = weatherfile
 
     def create_ssc_module(self):
         try:
@@ -99,10 +95,7 @@ class SamBaseClass(object):
 
             for variable in all_variables:
                 # Set default value for non-specified variables
-                if variable['Name'] == 'file_name' or variable['Name'] == 'solar_resource_file':
-                    varValue = self.weatherFile 
-
-                elif variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':
+                if variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':
                     if 'Require' in variable:
                         if variable['Require'] == "*":
                             varValue = 0
@@ -377,10 +370,10 @@ class SamBaseClass(object):
         # test statements; note the use of "logger" instead of "logging";
         # using the latter will still work for the default logger but will not
         # write anything to a file. 
-        self.logger.info('Logger started.')
-        self.logger.debug('detailed statements here...')
-        self.logger.warning('Warning message! Be forewarned!')
-        self.logger.critical('Critical error, omg!')
+        #self.logger.info('Logger started.')
+        #self.logger.debug('detailed statements here...')
+        #self.logger.warning('Warning message! Be forewarned!')
+        #self.logger.critical('Critical error, omg!')
 
 
 if __name__ == '__main__':
