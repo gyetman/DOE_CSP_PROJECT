@@ -7,10 +7,11 @@ class SamBaseClass(object):
     """description of class"""
 
     def __init__(self,
-                 CSP = 'tcstrough_physical',
-                 financial = 'lcoefcr',
-                 desalination =  None,
-                 json_value_filepath = None):
+                 CSP = 'linear_fresnel_dsg_iph',
+                 financial = 'iph_to_lcoefcr',
+                 desalination =  'VAGMD',
+                 json_value_filepath = None,
+                 desal_json_value_filepath = None):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
         self.cspModel = CSP
@@ -30,6 +31,12 @@ class SamBaseClass(object):
             else: # if no finiancial model, just add CSP values
                 Values = self.cspModel + "_none" + ".json"
                 self.json_values = Path(self.samPath / "defaults" /Values)
+         # Add json value filepath for desal models, if any      
+        if json_value_filepath:
+            self.json_values = json_value_filepath
+        else:
+            desal_values = self.desalination + ".json"
+            self.desal_json_values = Path(self.samPath / "defaults" /desal_values)
 
     def create_ssc_module(self):
         try:
@@ -52,12 +59,27 @@ class SamBaseClass(object):
             self.module_create_execute(self.financialModel)
             if self.financialModel == 'utilityrate5':
                 self.module_create_execute('cashloan')
+            elif self.financialModel == 'iph_to_lcoefcr':
+                self.module_create_execute('lcoefcr')
         # execute desalination model, if any
+#        if self.desalination:
+#            self.T_cond = self.P_T_conversion()
+#            self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
+        
         if self.desalination:
-            self.T_cond = self.P_T_conversion()
-            self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
-        
-        
+            if self.desalination == 'VAGMD':
+                from DesalinationModels.VAGMD_PSA import VAGMD_PSA
+                with open(self.desal_json_values, "r") as read_file:
+                    desal_values_json = json.load(read_file)
+                self.AGMD = VAGMD_PSA(module = desal_values_json['module'], TEI_r = desal_values_json['TEI_r'],TCI_r  = desal_values_json['TCI_r'],FFR_r = desal_values_json['FFR_r'],FeedC_r = desal_values_json['FeedC_r'])
+                self.AGMD.calculations()
+                outputs = []
+                outputs.append({'Name':'PFlux','Value':self.AGMD.PFlux})
+                outputs.append({'Name':'STEC','Value':self.AGMD.STEC})
+                desal_json_outfile = 'VAGMD_output.json'
+                with open(desal_json_outfile, 'w') as outfile:
+                    json.dump(outputs, outfile)
+                
         self.print_impParams()
         self.data_free()
         
