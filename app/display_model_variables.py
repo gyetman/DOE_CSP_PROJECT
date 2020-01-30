@@ -26,6 +26,7 @@ from SAM_flatJSON.SamBaseClass import SamBaseClass
 
 # GLOBAL VARIABLES ###
 model = 'tcstrough_physical'
+desal = 'VAGMD'
 finance = 'none'
 json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
@@ -33,6 +34,11 @@ json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 #TODO: build this later based on model selection within the GUI
 model_variables_file = json_infiles_dir/ '{}_inputs.json'.format(model)
 model_values_file = json_defaults_dir / '{}_{}.json'.format(model,finance)
+##NEW TEMP CODE FOR DESAL
+desal_variables_file = json_infiles_dir/ '{}_inputs.json'.format(desal)
+desal_values_file = json_defaults_dir / '{}.json'.format(desal)
+##
+
 json_outpath = base_path / 'app' / 'user-generated-inputs'
 
 default_weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
@@ -40,6 +46,7 @@ weather_file_path = json_outpath / 'weather-file-location.txt'
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FOR':'Forward Osmosis                          ',
+         'VAM':'Vacuum Air Gap Membrane Distillation     ',
          'MED':'Low Temperature Multi-Effect Distillation', 
          'ABS':'MED with Absorption Heat Pumps           ',
          'TLV':'MED with Thermal Vapor Compression       ',
@@ -74,15 +81,15 @@ Solar = {'FPC ':'Flat-Plate Collector',
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'FPC' : [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'IPHP': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'IPHD': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'ISCC': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'DSLF': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'MSLF': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'DSPT': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'MSPT': [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'PT'  : [('FOR',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'FPC' : [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHP': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHD': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'ISCC': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'PT'  : [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
@@ -197,7 +204,15 @@ def create_callback_for_tables(variables):
                 unique_val=td['Name']
                 index = index_in_list_of_dicts(model_vars,'Name',unique_val)
                 model_vars[index].update(td)
-   
+        
+        def _convert_strings_to_literal(str_val):
+            '''converts string values to their literal values'''
+            #arrays and matrices need to be converted back from string
+            if str_val['DataType']=='SSC_ARRAY' or str_val['DataType']=='SSC_MATRIX':
+                return ast.literal_eval(str_val['Value'])
+            else:
+                return str_val['Value']
+            
         if n_clicks:
             #tableData states are in groups of threes
             #i is the table data_timestamp, i+1 is the id and i+2 is the data
@@ -207,26 +222,34 @@ def create_callback_for_tables(variables):
                 if updated:
                     #overwrite the dict with the updated data from the table
                     _update_model_variables(tbl_data)  
-            #create a simple name:value dict from model variables
+            #create simple name:value dicts from model variables
             # to be used by SamBaseClass
-            output_vars = {}
+            # sort by model type
+            solar_output_vars = {}
+            desal_output_vars = {}
             for var in model_vars:
-                #arrays and matrices need to be converted back from string
-                if var['DataType']=='SSC_ARRAY' or var['DataType']=='SSC_MATRIX':
-                    output_vars[var['Name']] = ast.literal_eval(var['Value'])
+                if var['Tab']=='Desalination':
+                    desal_output_vars[var['Name']] = _convert_strings_to_literal(var)
                 else:
-                    output_vars[var['Name']] = var['Value']
-            #create the json file that will be the input to the model
+                    solar_output_vars[var['Name']] = _convert_strings_to_literal(var)
+            #create the solar json file that will be the input to the model
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            model_outfile = model+timestamp+'_inputs.json'
-            model_outfile_path = Path(json_outpath / model_outfile)
-            with model_outfile_path.open('w') as write_file:
-                json.dump(output_vars, write_file)
+            solar_model_outfile = model+timestamp+'_inputs.json'
+            solar_model_outfile_path = Path(json_outpath / solar_model_outfile)
+            with solar_model_outfile_path.open('w') as write_file:
+                json.dump(solar_output_vars, write_file)
+            #create the desal json file that will be the input to the model
+            desal_model_outfile = desal+timestamp+'_inputs.json'
+            desal_model_outfile_path = Path(json_outpath / desal_model_outfile)
+            with desal_model_outfile_path.open('w') as write_file:
+                json.dump(desal_output_vars, write_file)    
+            
             #run the model
             run_model(csp=model,
                       desal=None,
                       finance=None,
-                      json_file=model_outfile_path)
+                      json_file=solar_model_outfile_path,
+                      desal_file=desal_model_outfile_path)
             return (
                     dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
                     )
@@ -312,17 +335,16 @@ def create_model_variable_page(tab):
 def run_model(csp='tcslinear_fresnel',
               desal=None,
               finance=None,
-              json_file=None):
+              json_file=None,
+              desal_file=None):
     '''
-    runs solar thermal desal model
-    currently only setup for SAM models
-    financial model is currently hardcoded
+    runs solar thermal desal system with financial model
     '''
-    #TODO run non-SAM models
     stdm = SamBaseClass(CSP=csp,
                         desalination=desal,
                         financial=finance,
-                        json_value_filepath=json_file)
+                        json_value_filepath=json_file,
+                        desal_json_value_filepath=desal_file)
     stdm.main()
 
 #copied from samJsonParser.py
@@ -366,18 +388,27 @@ def get_weather_file():
     
         
 #
-#MAIN PROGRAM (TODO create main() after testing...)
+#MAIN PROGRAM
+#TODO create main() after testing...
 #
     
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 # open and load the json variables file
 with open(model_variables_file, "r") as read_file:
-    json_load = json.load(read_file)
-    
+    json_load = json.load(read_file)    
 # open and load the json values file
 with open(model_values_file, "r") as read_file:
     model_values = json.load(read_file)
+
+##NEW TEMP DESAL CODE
+# open and load the json desal variables file
+with open(desal_variables_file, "r") as read_file:
+    desal_json_load = json.load(read_file)   
+# open and load the json desal values file
+with open(desal_values_file, "r") as read_file:
+    desal_model_values = json.load(read_file)
+##
     
 # creates a list of defaultdicts 
 model_vars=[]
@@ -395,6 +426,21 @@ for var in json_load[model]:
     if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
         tempdict['Value']=str(tempdict['Value'])
     model_vars.append(tempdict)
+## NEW TEMP CODE FOR DESAL
+for dvar in desal_json_load[desal]:
+    tempdict=defaultdict(lambda:'000General')
+    tempdict.update(dvar)
+    #add the value from the desal model_values dict
+    tempdict['Value']=desal_model_values.get(dvar['Name'],None)
+    #clean up spaces in the tab, section, subsection names
+    tempdict['Tab']='Desalination'
+    tempdict['Section']=tempdict['Section'].strip()
+    tempdict['Subsection']=tempdict['Subsection'].strip()
+    #converting to string, otherwise array brackets are removed in tables
+    if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
+        tempdict['Value']=str(tempdict['Value'])
+    model_vars.append(tempdict)
+##
     
 # sort the list by hierarchy
 model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
@@ -410,12 +456,17 @@ for mv in model_vars:
 # update weather file_name
 wf_index = index_in_list_of_dicts(model_vars,'Name','file_name')
 model_vars[wf_index]['Value']=str(get_weather_file())
-         
+
 # collect all unique tab names, sorting because set has no order
 model_tabs = sorted([*{*[t['Tab'] for t in model_vars]}])
 # move General to the front
 if 'General' in model_tabs:
     model_tabs.insert(0, model_tabs.pop(model_tabs.index('General')))
+##NEW TEMP CODE FOR DESAL
+# move Desalination to the end
+if 'Desalination' in model_tabs:
+    model_tabs.append(model_tabs.pop(model_tabs.index('Desalination')))
+##
         
 # run the app
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -522,7 +573,7 @@ def display_model_parameters(solar, desal, finance):
     Output('select-desal', 'options'),
     [Input('select-solar', 'value')])
 def set_desal_options(solarModel):
-    return [{'label': Desal[i[0]], 'value': i[0], 'disabled': i[1]} for i in solarToDesal[solarModel]]#,value='ABS'
+    return [{'label': Desal[i[0]], 'value': i[0], 'disabled': i[1]} for i in solarToDesal[solarModel]]
 
 #TODO combine with select-desal above?
 @app.callback(
@@ -539,7 +590,7 @@ def set_finance_options(desalModel):
 #     return '{} Model Parameters'.format(Solar[solar_value])
     
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8070)
+    app.run_server(debug=False, port=8071)
 
 
 
