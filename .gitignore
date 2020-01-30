@@ -1,0 +1,7 @@
+*__pycache__*
+*.py[cod]
+*__init__*
+app/user-generated-inputs/*
+#local copies of files can be ignored with _OLD in the name
+*_OLD
+
