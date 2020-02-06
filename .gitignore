@@ -2,6 +2,7 @@
 *.py[cod]
 *__init__*
 app/user-generated-inputs/*
+!app/user-generated-inputs/README.txt
 #local copies of files can be ignored with _OLD in the name
 *_OLD
 
