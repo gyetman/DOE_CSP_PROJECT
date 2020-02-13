@@ -8,6 +8,7 @@ Converted from PSA's AGMD model
 
 
 import numpy as np
+import math
 
 class VAGMD_PSA(object):
     # MD MODELS FOR AQUASTILL MODULES AS7C1.5L AND AS24C5L
@@ -24,14 +25,16 @@ class VAGMD_PSA(object):
     %  - STEC (kWh_th/m3)
     '''
     MNaCl = 58.44247
-    Area_small = 7.2
-    Area_big = 25.92
+
     def __init__(self,
+                 # Design parameters
                  module = 0,  # '0' for AS7C1.5L module and '1' for AS24C5L module
                  TEI_r  = 80, # Evaporator channel inlet temperature (ºC)
                  TCI_r  = 25, # Condenser channel inlet temperature (ºC)
                  FFR_r  = 582.7, # Feed flow rate (l/h)
                  FeedC_r= 35,  # Feed concentration (g/L)
+                 Capacity = 1000, # System Capcity (m3/day)
+                 
                  ):
         
         self.module  = module
@@ -39,9 +42,14 @@ class VAGMD_PSA(object):
         self.TCI_r   = TCI_r
         self.FFR_r   = FFR_r
         self.FeedC_r = FeedC_r
-                
-    def calculations(self):
+        self.Capacity = Capacity
+        self.Area_small = 7.2
+        self.Area_big = 25.92
+        
+    def design(self):
         if self.module == 0:
+            self.Area = self.Area_small
+            
             a0 = -5.92852056276695
             a1 = 0.0727051385344857
             a2 = 0.000171257319459785
@@ -93,18 +101,19 @@ class VAGMD_PSA(object):
             self.AHvP = self.SW_LatentHeat((self.TEI_r+self.TCI_r)/2, 0)
             
             # Permeate flow rate
-            self.F = self.PFlux * self.Area_small
+            self.F = self.PFlux * self.Area
             # Energy paramters
 
             # Thermal power (kWth)
             self.ThPower = (self.FFR_r * self.CpF * (self.TEI_r - self.TCO)) * (self.RhoF / (1000*3600*1000))
             # STEC (kWhth/m3)
-            self.STEC    = (self.ThPower) / ((self.PFlux * self.Area_small)/1000)
+            self.STEC    = (self.ThPower) / ((self.PFlux * self.Area)/1000)
             # GOR
-            self.GOR     = ((self.PFlux * self.Area_small) * self.AHvP * self.RhoP / self.ThPower) / (3600*1000*1000)
+            self.GOR     = ((self.PFlux * self.Area) * self.AHvP * self.RhoP / self.ThPower) / (3600*1000*1000)
         
         elif self.module == 1:
-
+            self.Area = self.Area_big
+            
             a0 = -4.58132767550252
             a1 = 0.0304572684711845
             a2 = 0.000499860996432572
@@ -162,16 +171,64 @@ class VAGMD_PSA(object):
             self.AHvP = self.SW_LatentHeat((self.TEI_r+self.TCI_r)/2, 0)
             
             # Permeate flow rate
-            self.F= self.PFlux* self.Area_big
+            self.F= self.PFlux* self.Area
             # Energy paramters
             
             # Thermal power (kWth)
             self.ThPower = (self.FFR_r * self.CpF * (self.TEI_r - self.TCO)) * (self.RhoF / (1000*3600*1000))
             # STEC (kWhth/m3)
-            self.STEC    = (self.ThPower) / ((self.PFlux * self.Area_big)/1000)
+            self.STEC    = (self.ThPower) / ((self.PFlux * self.Area)/1000)
             # GOR
-            self.GOR     = ((self.PFlux * self.Area_big) * self.AHvP * self.RhoP / self.ThPower) / (3600*1000*1000)
-   
+            self.GOR     = ((self.PFlux * self.Area) * self.AHvP * self.RhoP / self.ThPower) / (3600*1000*1000)
+        
+        
+        self.num_modules = math.ceil(self.Capacity *1000 / self.F /24 )
+        design_output = []
+        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
+        design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/h'})
+        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
+        design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules,'Unit':'l/h'})    
+        design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
+        design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
+        
+        return design_output
+    
+    def simulation(self, gen, storage):
+        self.thermal_load = self.ThPower * self.num_modules # kWh
+        self.max_prod = self.F /1000 * self.num_modules # m3/h
+        self.storage_cap = storage * self.thermal_load # kWh
+        
+        to_desal = [0 for i in range(len(gen))]
+        to_storage =  [0 for i in range(len(gen))]
+        storage_load =  [0 for i in range(len(gen))]
+        storage_cap_1 =  [0 for i in range(len(gen))]
+        storage_cap_2 = [0 for i in range(len(gen))]
+        storage_status =  [0 for i in range(len(gen))]
+        solar_loss =  [0 for i in range(len(gen))]
+        load =  [0 for i in range(len(gen))]
+        prod =  [0 for i in range(len(gen))]
+        
+        for i in range(len(gen)):
+            to_desal[i] = min(self.thermal_load, gen[i])
+            to_storage[i] = abs(gen[i] - to_desal[i])
+            storage_load[i] = gen[i] - self.thermal_load
+            if i != 0:
+                storage_cap_1[i] = storage_status[i-1]
+            storage_cap_2[i] = max(storage_load[i] + storage_cap_1[i], 0)
+            storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
+            solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
+            load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
+            prod[i] = load[i] / self.thermal_load * self.max_prod
+            
+        simu_output = []
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
+        simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
+        simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
+        
+        return simu_output
+            
+        
 
     def SW_Density(self, T, S, P): # T in oC, S in ppt, P in Pa
         P = P/1E6
@@ -235,14 +292,20 @@ class VAGMD_PSA(object):
         cp = cp_sw_P0 + cp_sw_P
         return cp
             
+        
+        
 #%% Model execution
 #Feed = [35.064,46.752,58.44,70.128,81.816,93.504,105.192]
 #Plux = []
 #STEC =[]
 #GOR =[]
 #for f in Feed:
-#    case = VAGMD_PSA(module =1,FFR_r=1100,FeedC_r=f)
-#    case.calculations()
+#case = VAGMD_PSA()
+#output = case.design()
+#a = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#simu = case.simulation(gen = a, storage = 6)
+#print(simu)
+
 #    Plux.append(case.PFlux)
 #    STEC.append(case.STEC)
 #    GOR.append(case.GOR)

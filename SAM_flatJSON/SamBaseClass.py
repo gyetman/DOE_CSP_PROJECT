@@ -11,7 +11,9 @@ class SamBaseClass(object):
                  financial = 'iph_to_lcoefcr',
                  desalination =  'VAGMD',
                  json_value_filepath = None,
-                 desal_json_value_filepath = None):
+                 desal_json_value_filepath = None,
+                 cost_json_value_filepath = None
+                 ):
         #Sets up logging for the SAM Modules
         self._setup_logging('SamBaseClass')
         self.cspModel = CSP
@@ -32,11 +34,17 @@ class SamBaseClass(object):
                 Values = self.cspModel + "_none" + ".json"
                 self.json_values = Path(self.samPath / "defaults" /Values)
          # Add json value filepath for desal models, if any      
-        if json_value_filepath:
-            self.json_values = json_value_filepath
+        if desal_json_value_filepath:
+            self.desal_json_values = desal_json_value_filepath
         else:
             desal_values = self.desalination + ".json"
             self.desal_json_values = Path(self.samPath / "defaults" /desal_values)
+            
+        if cost_json_value_filepath:
+            self.cost_json_values = cost_json_value_filepath
+        else:
+            cost_values = self.desalination + "_cost.json"
+            self.cost_json_values = Path(self.samPath / "defaults" /cost_values)        
 
     def create_ssc_module(self):
         try:
@@ -67,23 +75,47 @@ class SamBaseClass(object):
 #            self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
         
         if self.desalination:
-            if self.desalination == 'VAGMD':
-                from DesalinationModels.VAGMD_PSA import VAGMD_PSA
-                with open(self.desal_json_values, "r") as read_file:
-                    desal_values_json = json.load(read_file)
-                self.AGMD = VAGMD_PSA(module = desal_values_json['module'], TEI_r = desal_values_json['TEI_r'],TCI_r  = desal_values_json['TCI_r'],FFR_r = desal_values_json['FFR_r'],FeedC_r = desal_values_json['FeedC_r'])
-                self.AGMD.calculations()
-                outputs = []
-                outputs.append({'Name':'PFlux','Value':self.AGMD.PFlux})
-                outputs.append({'Name':'STEC','Value':self.AGMD.STEC})
-                desal_json_outfile = 'VAGMD_output.json'
-                with open(desal_json_outfile, 'w') as outfile:
-                    json.dump(outputs, outfile)
-                
+            self.desal_simulation(self.desalination)
+            self.cost(self.desalination)
+
         self.print_impParams()
         self.data_free()
-        
+    
 
+    
+    def desal_design(self, desal):
+        if desal == 'VAGMD':
+            from DesalinationModels.VAGMD_PSA import VAGMD_PSA
+            with open(self.desal_json_values, "r") as read_file:
+                self.desal_values_json = json.load(read_file)
+            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
+            self.design_output = self.VAGMD.design()
+            deign_json_outfile = 'VAGMD_design_output.json'
+            with open(deign_json_outfile, 'w') as outfile:
+                json.dump(self.design_output, outfile)
+    
+    def desal_simulation(self, desal):
+        if desal == 'VAGMD':
+            heat_gen = self.ssc.data_get_array(self.data, b'gen')
+            with open(self.json_values, "r") as read_file:
+                values_json = json.load(read_file)
+            self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = values_json['storage_hour'])
+            simu_json_outfile = 'VAGMD_simulation_output.json'
+            with open(simu_json_outfile, 'w') as outfile:
+                json.dump(self.simu_output, outfile)
+    
+    def cost(self, desal):
+        if desal == 'VAGMD':
+            from DesalinationModels.VAGMD_cost import VAGMD_cost
+            with open(self.cost_json_values, "r") as read_file:
+                self.cost_values_json = json.load(read_file)
+            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC,
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.ssc.data_get_number(self.data, b'lcoe_fcr'), solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
+            self.cost_output = self.LCOW.lcow()
+            cost_json_outfile = 'VAGMD_cost_output.json'
+            with open(cost_json_outfile, 'w') as outfile:
+                json.dump(self.cost_output, outfile)
+            
     def collect_model_variables(self):
         # Add CSP variables
         json_files = []
@@ -400,6 +432,7 @@ class SamBaseClass(object):
 
 if __name__ == '__main__':
     sam = SamBaseClass()
+    sam.desal_design(sam.desalination)
     sam.main()
     
     #Argument for the unit test makes sure the unit test does not fail if system_capacity 

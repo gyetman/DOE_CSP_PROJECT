@@ -1,0 +1,73 @@
+{
+    "VAGMD": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "yrs",
+            "Label": "Plant lifetime",
+            "Units": "none",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "int_rate",
+            "Label": "Average interest rate",
+            "Units": "ºC",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coe",
+            "Label": "Unit cost of electricity",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coh",
+            "Label": "Unit cost of heat",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_inlet",
+            "Label": "Heat source inlet temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_outletlet",
+            "Label": "Heat source outlet temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "HX_eff",
+            "Label": "Heat exchanger efficiency",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_module_re",
+            "Label": "Cost of module replacement",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        }
+    ]
+}
