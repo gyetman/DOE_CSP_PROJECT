@@ -36,6 +36,14 @@
             "Units": "g/L",
             "Require": "*",
             "Costraint": "<106,>34"
+        },
+		        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Costraint": ""
         }
     ]
 }

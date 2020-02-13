@@ -1,5 +1,14 @@
 {
     "linear_fresnel_dsg_iph": [
+	    {
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Storage hour",
+            "Group": "Storage",
+            "Require": "",
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Thermal storage"
+        },
         {
             "DataType": "SSC_STRING",
             "Name": "file_name",
