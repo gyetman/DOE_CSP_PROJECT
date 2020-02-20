@@ -177,7 +177,7 @@ app.layout = html.Div(children=[
     ], className='row'),
     html.Div([
         html.Div(id='next-button'),
-        dcc.Link('Next: Model Selection', href='http://127.0.0.1:8073/model-selection')
+        dcc.Link(html.Button('Select Models'), href='http://127.0.0.1:8073/model-selection')
     ], className='row'
     )
 
