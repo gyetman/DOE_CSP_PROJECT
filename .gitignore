@@ -1,8 +1,14 @@
 *__pycache__*
+# this doesn't seem to work
 *.py[cod]
+# added this line
+*.pyc
 *__init__*
 app/user-generated-inputs/*
 !app/user-generated-inputs/README.txt
 #local copies of files can be ignored with _OLD in the name
 *_OLD
+# ignore visual studio code settings
+app/.vscode/settings.json
 
+*.pyc
