@@ -271,8 +271,9 @@ app.layout = html.Div([
         )
 def update_graph(dropdownValue,timeAggValue):
     ''' updatge the figure object '''
-    print(timeAggValue)
-    print(dropdownValue)
+    # uncomment for debugging
+    #print(timeAggValue)
+    #print(dropdownValue)
     if timeAggValue == 'hourly':
         df_tmp = df
     elif timeAggValue == 'daily':
