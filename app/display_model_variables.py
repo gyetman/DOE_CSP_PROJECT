@@ -7,6 +7,7 @@ Created on Tue Jun  4 13:55:35 2019
 
 import ast
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
@@ -24,7 +25,10 @@ sys.path.insert(0,str(base_path))
 #from SAM.SamBaseClass import SamBaseClass
 from SAM_flatJSON.SamBaseClass import SamBaseClass
 
-# GLOBAL VARIABLES ###
+
+#
+### GLOBAL VARIABLES and pre-processing ###
+#
 model = 'tcstrough_physical'
 desal = 'VAGMD'
 finance = 'none'
@@ -32,11 +36,12 @@ json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 
 #TODO: build this later based on model selection within the GUI
-model_variables_file = json_infiles_dir/ '{}_inputs.json'.format(model)
-model_values_file = json_defaults_dir / '{}_{}.json'.format(model,finance)
-##NEW TEMP CODE FOR DESAL
+solar_variables_file = json_infiles_dir/ '{}_inputs.json'.format(model)
+solar_model_values_file = json_defaults_dir / '{}_{}.json'.format(model,finance)
 desal_variables_file = json_infiles_dir/ '{}_inputs.json'.format(desal)
 desal_values_file = json_defaults_dir / '{}.json'.format(desal)
+finance_variables_file = json_infiles_dir/ '{}_inputs.json'.format(desal)
+finance_values_file = json_defaults_dir / '{}.json'.format(desal)
 ##
 
 json_outpath = base_path / 'app' / 'user-generated-inputs'
@@ -148,8 +153,11 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
         {'name':'Value',    'id':'Value','editable':True},
         {'name':'Units',    'id':'Units','editable':False}]
 
+#
+### FUNCTIONS ###
+#
 
-def create_callback_for_tables(variables):
+def create_callback_for_tables(desal_variables,solar_variables):
     '''
     processes model variables and generates a table_id with the form:
     'Solar_Field_Mirror_WashingGeneral'
@@ -170,13 +178,20 @@ def create_callback_for_tables(variables):
         states.append(State(table_id,'data_timestamp'))
         #states.append(State(table_id,'id'))
         states.append(State(table_id,'data'))
-        
-    states = []
     
+    # loop through variables for each model, create table_ids and
+    # use those to create State lists
+    states = []
+    print('entered create_callback_for_tables')
+    #for model_vars in (desal_variables,solar_variables):
+    #for model_vars in solar_variables:
+        
     #Collect the table ids
-    table_ids = table_ids = [*{*[ '{}{}{}'.format(v['Tab'],v['Section'],v['Subsection'])\
+    table_ids = [*{*[ '{}{}{}'.format(v['Tab'],v['Section'],v['Subsection'])\
                                  .replace(' ','_').replace('(','').replace(')','')\
-                                 for v in model_vars]}]
+                                     for v in solar_variables]}]
+                                 #for v in model_vars]}]
+                                    
 
     #Create States for each table id
     for table_id in table_ids:
@@ -198,12 +213,14 @@ def create_callback_for_tables(variables):
         converted to json and used as input to run the model.
         Finally the model is run.
         '''
+        print('entered update_model_variables_and_run_model')
         def _update_model_variables(tbl_data):
-            '''find the dict with the unique value of Name and update that dict'''
+            print('entered _update_model_variables')
+            '''find the list with the dict containing the unique value of Name and update that dict'''
             for td in tbl_data:
                 unique_val=td['Name']
-                index = index_in_list_of_dicts(model_vars,'Name',unique_val)
-                model_vars[index].update(td)
+                mvars,index = index_in_list_of_dicts(model_vars_list,'Name',unique_val)
+                mvars[index].update(td)
         
         def _convert_strings_to_literal(str_val):
             '''converts string values to their literal values'''
@@ -212,10 +229,12 @@ def create_callback_for_tables(variables):
                 return ast.literal_eval(str_val['Value'])
             else:
                 return str_val['Value']
-            
+              
+        print('n_clicks is: {}'.format(n_clicks))
         if n_clicks:
-            #tableData states are in groups of threes
-            #i is the table data_timestamp, i+1 is the id and i+2 is the data
+            print('entered n_clicks')
+            #tableData states is in groups of twos
+            #i is the table data_timestamp, i+1 is the data
             for i in range(0,len(tableData),2):
                 updated = tableData[i]
                 tbl_data = tableData[i+1]
@@ -224,14 +243,16 @@ def create_callback_for_tables(variables):
                     _update_model_variables(tbl_data)  
             #create simple name:value dicts from model variables
             # to be used by SamBaseClass
-            # sort by model type
             solar_output_vars = {}
             desal_output_vars = {}
-            for var in model_vars:
-                if var['Tab']=='Desalination':
-                    desal_output_vars[var['Name']] = _convert_strings_to_literal(var)
-                else:
-                    solar_output_vars[var['Name']] = _convert_strings_to_literal(var)
+            # for dvar in desal_model_vars:
+            #         desal_output_vars[var['Name']] = _convert_strings_to_literal(var)
+            # for svar in solar_model_vars:
+            #         solar_output_vars[var['Name']] = _convert_strings_to_literal(var)
+            for dvar in desal_model_vars:
+                    desal_output_vars[dvar['Name']] = _convert_strings_to_literal(dvar)
+            for svar in solar_model_vars:
+                    solar_output_vars[svar['Name']] = _convert_strings_to_literal(svar)
             #create the solar json file that will be the input to the model
             timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             solar_model_outfile = model+timestamp+'_inputs.json'
@@ -243,6 +264,7 @@ def create_callback_for_tables(variables):
             desal_model_outfile_path = Path(json_outpath / desal_model_outfile)
             with desal_model_outfile_path.open('w') as write_file:
                 json.dump(desal_output_vars, write_file)    
+            print('attempting to run model')
             
             #run the model
             run_model(csp=model,
@@ -294,12 +316,13 @@ def create_data_table(table_data, table_id):
         html.P(),
     ])
 
-def create_model_variable_page(tab):
+def create_model_variable_page(tab,model_vars):
     '''
     for the provided tab, collects all variables under
     the same section+subsection combination
     and creates the corresponding model variable tables
     '''
+
     tab_page=[]
     tableData=[]
     sec = None
@@ -340,6 +363,7 @@ def run_model(csp='tcslinear_fresnel',
     '''
     runs solar thermal desal system with financial model
     '''
+    print('entered run_model')
     stdm = SamBaseClass(CSP=csp,
                         desalination=desal,
                         financial=finance,
@@ -363,16 +387,19 @@ def unpack_keys_from_array_of_dicts(array_of_dicts):
         keys.append(*k)
     return keys
 
-def index_in_list_of_dicts(array,key,value):
+def index_in_list_of_dicts(lists,key,value):
     '''
-    returns None or index of first dict 
-    containing the key and value
+    checks lists to see if a key value exists in it
+    returns the list and index of the first dict where the key and 
+    value was found, else returns None,None
+
     none: index 0 can be returned, so use explicit tests with result
     '''
-    for index, d in enumerate(array):
-        if d[key] == value:
-            return index
-    return None
+    for l in lists:
+        for index, d in enumerate(l):
+            if d[key] == value:
+                return l,index
+    return None,None
 
 def get_weather_file():
     '''
@@ -389,34 +416,30 @@ def get_weather_file():
         
 #
 #MAIN PROGRAM
-#TODO create main() after testing...
 #
     
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
 # open and load the json variables file
-with open(model_variables_file, "r") as read_file:
-    json_load = json.load(read_file)    
+with open(solar_variables_file, "r") as read_file:
+    solar_json_load = json.load(read_file)    
 # open and load the json values file
-with open(model_values_file, "r") as read_file:
-    model_values = json.load(read_file)
+with open(solar_model_values_file, "r") as read_file:
+    solar_model_values = json.load(read_file)
 
-##NEW TEMP DESAL CODE
 # open and load the json desal variables file
 with open(desal_variables_file, "r") as read_file:
     desal_json_load = json.load(read_file)   
 # open and load the json desal values file
 with open(desal_values_file, "r") as read_file:
     desal_model_values = json.load(read_file)
-##
+
     
 # creates a list of defaultdicts 
-model_vars=[]
-for var in json_load[model]:
+solar_model_vars=[]
+for var in solar_json_load[model]:
     tempdict=defaultdict(lambda:'000General')
     tempdict.update(var)
-    #add the value from the model_values dict
-    tempdict['Value']=model_values.get(var['Name'],None)
+    #add the value from the solar_model_values dict
+    tempdict['Value']=solar_model_values.get(var['Name'],None)
     #clean up spaces in the tab, section, subsection names
     tempdict['Tab']=tempdict['Tab'].strip()
     tempdict['Section']=tempdict['Section'].strip()
@@ -425,8 +448,10 @@ for var in json_load[model]:
     #converting to string, otherwise array brackets are removed in tables
     if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
         tempdict['Value']=str(tempdict['Value'])
-    model_vars.append(tempdict)
-## NEW TEMP CODE FOR DESAL
+    solar_model_vars.append(tempdict)
+    
+# now do the same for desalination
+desal_model_vars=[]
 for dvar in desal_json_load[desal]:
     tempdict=defaultdict(lambda:'000General')
     tempdict.update(dvar)
@@ -439,36 +464,55 @@ for dvar in desal_json_load[desal]:
     #converting to string, otherwise array brackets are removed in tables
     if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
         tempdict['Value']=str(tempdict['Value'])
-    model_vars.append(tempdict)
-##
-    
-# sort the list by hierarchy
-model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
+    desal_model_vars.append(tempdict)
 
-#fix 000General, which was a hack for sorting purposes
-for mv in model_vars:
-        for k in mv.keys():
-            try:
-                mv[k] = mv[k].replace('000General','General')
-            except:
-                pass
+for modelVars in (desal_model_vars,solar_model_vars):
+    # sort the lists by hierarchy
+    modelVars.sort(key=itemgetter('Tab','Section','Subsection'))
+
+    #fix 000General, which was a hack for sorting purposes
+    for mv in modelVars:
+            for k in mv.keys():
+                try:
+                    mv[k] = mv[k].replace('000General','General')
+                except:
+                    pass
 
 # update weather file_name
-wf_index = index_in_list_of_dicts(model_vars,'Name','file_name')
-model_vars[wf_index]['Value']=str(get_weather_file())
+l,wf_index = index_in_list_of_dicts([solar_model_vars],'Name','file_name')
+solar_model_vars[wf_index]['Value']=str(get_weather_file())
 
-# collect all unique tab names, sorting because set has no order
-model_tabs = sorted([*{*[t['Tab'] for t in model_vars]}])
+# collect all unique solar tab names, sorting because set has no order
+solar_tabs = sorted([*{*[t['Tab'] for t in solar_model_vars]}])
 # move General to the front
-if 'General' in model_tabs:
-    model_tabs.insert(0, model_tabs.pop(model_tabs.index('General')))
-##NEW TEMP CODE FOR DESAL
-# move Desalination to the end
-if 'Desalination' in model_tabs:
-    model_tabs.append(model_tabs.pop(model_tabs.index('Desalination')))
-##
-        
-# run the app
+if 'General' in solar_tabs:
+    solar_tabs.insert(0, solar_tabs.pop(solar_tabs.index('General')))
+    
+# now do the same for desal tabs
+desal_tabs = sorted([*{*[t['Tab'] for t in desal_model_vars]}])
+# move General to the front
+if 'General' in desal_tabs:
+    desal_tabs.insert(0, solar_tabs.pop(desal_tabs.index('General')))
+
+# references to which tabs and variables to use based on the button that was pressed
+models = ['Desalination System','Solar Thermal System','Financial Model']
+
+#NOTE! using desal variables in place of financial until finance in place 
+Model_tabs = {models[0]:desal_tabs,
+              models[2]:desal_tabs,
+              models[1]:solar_tabs}
+Model_vars = {models[0]:desal_model_vars,
+              models[2]:desal_model_vars,
+              models[1]:solar_model_vars}
+
+model_vars_list = [desal_model_vars,solar_model_vars]
+
+
+#
+### APP LAYOUTS ###
+#
+external_stylesheets = [dbc.themes.FLATLY]
+#external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css',]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
 
@@ -527,23 +571,69 @@ model_selection_layout = html.Div([
         ]),
     ],className='three columns'),
 ])
-            
-model_tables_layout = html.Div([
-#    html.H6(id='solar-tables-title'), #for dynamic title
+
+# not used at the moment but keeping in case we can figure out how
+# to make a collaspible button group
+button_group = dbc.ButtonGroup(
+    [dbc.Button("Desalination System",id='desal-button'), 
+     dbc.Button("Solar Thermal System",id='solar-button'),
+     dbc.Button("Financial Model",id='finance-button')]
+)
+
+loading = html.Div([
     html.P(),
-    dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default"),
-    html.Div([html.Button('Run Model', id='model-button', title='Run the model after making changes to the variables in the tabs below')]),
-    html.Div([
-        dcc.Tabs(id='tabs', value='Model-Tabs', children=[
-            dcc.Tab(label=i, value=i, style=tab_style, 
-                    selected_style=tab_selected_style, 
-                    children=create_model_variable_page(i)
-            )for i in model_tabs
-        ]),
-    ],id='tabs-container'),
+    dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default")]
+)
+
+model_vars_title = html.H6('Model Variables')
+
+model_buttons = html.Div([
+    dbc.Row([
+        dbc.Col(button_group),
+        #dbc.Col(dbc.Button('Run Model', id='model-button')),
+        #dbc.Tooltip('Run the model after making changes to the variables in the tabs below',
+        #target='model-button')
+     ],justify="between")
 ])
-            
-create_callback_for_tables(model_vars)
+
+run_model_button = html.Div([html.Button('Run Model', id='model-button', title='Run the model after making changes to the variables in the tabs below')])
+
+tabs = html.Div(id='tabs-container')
+
+def make_tabs_in_collapse(i):
+    return dbc.Card(
+        [
+            dbc.Button(
+                f"{i}",
+                color="primary",
+                id=f"{i}-toggle".replace(' ','_'),
+            ),
+            dbc.Collapse(
+                dbc.CardBody(
+                    [dcc.Tabs(id='tabs', value='General', children=[
+                        dcc.Tab(label=j, value=j, style=tab_style, 
+                                selected_style=tab_selected_style, 
+                                children=create_model_variable_page(j,Model_vars[i])
+                                )for j in Model_tabs[i]
+                    ])]
+                ),
+                id=f"collapse-{i}".replace(' ','_'),
+            ),
+        ]
+    )
+    
+tabs_accordion = html.Div(
+    [make_tabs_in_collapse(models[0]), make_tabs_in_collapse(models[1]), make_tabs_in_collapse(models[2])], className="accordion"
+)
+    
+model_tables_layout = html.Div([model_vars_title,loading,run_model_button,tabs_accordion])
+
+#
+### CALLBACKS
+#     
+    
+# the table callbacks are defined in a function above
+create_callback_for_tables(desal_model_vars,solar_model_vars)
 
 # Update the index
 @app.callback(Output('page-content', 'children'),
@@ -555,7 +645,9 @@ def display_page(pathname):
         return model_tables_layout
     else:
         return html.H5('404 URL not found')
-    
+  
+# Once all three models have been selected,
+# create a button to navigate to the model variables page
 @app.callback(
     Output('model-parameters', 'children'),
     [Input('select-solar', 'value'),
@@ -569,6 +661,64 @@ def display_model_parameters(solar, desal, finance):
             dcc.Link(html.Button('Next'), href='/model-variables'),
         ])
 
+# Displays tabs depending on what model type button is pushed
+# @app.callback(Output('tabs-container','children'),
+#               [Input('desal-button','n_clicks'),
+#                Input('solar-button','n_clicks'),
+#                Input('finance-button','n_clicks')])
+# def display_model_tabs(solar,desal,finance):
+#     ctx = dash.callback_context
+#     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    
+#     if button_id == 'finance-button':
+#         #until finance tabs are implemented,
+#         #then we can remove the if statement
+#         return('Finance Tabs go here')
+#     else: 
+#         return(
+#             [dcc.Tabs(id='tabs', value='General', children=[
+#             dcc.Tab(label=i, value=i, style=tab_style, 
+#                     selected_style=tab_selected_style, 
+#                     children=create_model_variable_page(i,Model_vars[button_id])
+#             )for i in Model_tabs[button_id]
+#         ])])
+## models = ['Desalination System','Solar Thermal System','Financial Model']
+@app.callback(
+    [Output(f"collapse-{i}".replace(' ','_'), "is_open") for i in models],
+    [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
+    [State(f"collapse-{i}".replace(' ','_'), "is_open") for i in models],
+)
+def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
+    ctx = dash.callback_context
+
+    if not ctx.triggered:
+        return ""
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+   
+    if button_id == f"{models[0]}-toggle".replace(' ','_') and n1:
+        return not is_open1, False, False
+    elif button_id == f"{models[1]}-toggle".replace(' ','_') and n2:
+        return False, not is_open2, False
+    elif button_id == f"{models[2]}-toggle".replace(' ','_') and n3:
+        return False, False, not is_open3
+    return False, False, False
+  
+    
+    if button_id == 'finance-button':
+        #until finance tabs are implemented,
+        #then we can remove the if statement
+        return('Finance Tabs go here')
+    else: 
+        return(
+            [dcc.Tabs(id='tabs', value='General', children=[
+            dcc.Tab(label=i, value=i, style=tab_style, 
+                    selected_style=tab_selected_style, 
+                    children=create_model_variable_page(i,Model_vars[button_id])
+            )for i in Model_tabs[button_id]
+        ])])
+    
+# display desal model options after solar model has been selected
 @app.callback(
     Output('select-desal', 'options'),
     [Input('select-solar', 'value')])
@@ -590,7 +740,7 @@ def set_finance_options(desalModel):
 #     return '{} Model Parameters'.format(Solar[solar_value])
     
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8071)
+    app.run_server(debug=False, port=8073)
 
 
 
