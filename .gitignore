@@ -12,3 +12,4 @@ app/user-generated-inputs/*
 app/.vscode/settings.json
 
 *.pyc
+app/display-results-app_old.py
