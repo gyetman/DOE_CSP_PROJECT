@@ -29,9 +29,9 @@ from SAM_flatJSON.SamBaseClass import SamBaseClass
 #
 ### GLOBAL VARIABLES and pre-processing ###
 #
-model = 'tcstrough_physical'
+model = 'linear_fresnel_dsg_iph'
 desal = 'VAGMD'
-finance = 'none'
+finance = 'iph_to_lcoefcr'
 json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 
@@ -268,7 +268,7 @@ def create_callback_for_tables(desal_variables,solar_variables):
             
             #run the model
             run_model(csp=model,
-                      desal=None,
+                      desal=desal,
                       finance=None,
                       json_file=solar_model_outfile_path,
                       desal_file=desal_model_outfile_path)
@@ -610,7 +610,7 @@ def make_tabs_in_collapse(i):
             ),
             dbc.Collapse(
                 dbc.CardBody(
-                    [dcc.Tabs(id='tabs', value='General', children=[
+                    [dcc.Tabs(id='tabs', value=Model_tabs[i][0], children=[
                         dcc.Tab(label=j, value=j, style=tab_style, 
                                 selected_style=tab_selected_style, 
                                 children=create_model_variable_page(j,Model_vars[i])
@@ -711,7 +711,7 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
         return('Finance Tabs go here')
     else: 
         return(
-            [dcc.Tabs(id='tabs', value='General', children=[
+            [dcc.Tabs(id='tabs', value=Model_tabs[button_id][0], children=[
             dcc.Tab(label=i, value=i, style=tab_style, 
                     selected_style=tab_selected_style, 
                     children=create_model_variable_page(i,Model_vars[button_id])
