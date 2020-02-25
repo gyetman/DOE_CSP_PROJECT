@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Feb 25 02:38:36 2020
-
+RO COST MODEL
+Following a structure similar to VAGMD_cost.py
 @author: adama
 """
 
