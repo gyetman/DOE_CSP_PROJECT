@@ -62,6 +62,8 @@ class RODesign(object):
         self.Cf=Cf  
         self.Pfp=Pfp
         self.T=T
+        self.Am1=Am1
+        self.Qpnom1=Qpnom1
         vhfactor =2
         MW_nacl = 58.443
         Ru = 0.0831
@@ -78,7 +80,7 @@ class RODesign(object):
         i_nel=cumprod(repmat((1-Rel),(Nel1-1),1))
         i_nel=insert(i_nel,0,1)
         R1_max=sum(Rel*(i_nel))
-        NV1=ceil(nominal_daily_cap_tmp/24/17/R1)
+        NV1=ceil(nominal_daily_cap_tmp/24/maxQf/R1)
         nominal_daily_cap=Qpnom1*Nel1*NV1*24
         self.Qp1=nominal_daily_cap_tmp/24
         NDP1=self.Qp1/(Nel1*NV1*Am1*A1)
@@ -91,6 +93,7 @@ class RODesign(object):
         Pf1=NDP1 + Posm_avgmem + Pd*0.5 - Posm_perm
         Pb1=Pf1-Pd
         Pbp=Pf1-nERD*Pb1
+        self.NV1=NV1
 
         self.Qf1=self.Qp1/R1
         self.Qb1=self.Qf1-self.Qp1
@@ -113,8 +116,8 @@ class RODesign(object):
         FP_power=self.Qf1*Pfp/nFP/36
         PowerTotal=FP_power+HP_power+BP_power
         self.PowerRO=HP_power+BP_power
-        SEC=PowerTotal/self.Qp1
-        SEC_RO=self.PowerRO/self.Qp1
+        self.SEC=PowerTotal/self.Qp1
+        self.SEC_RO=self.PowerRO/self.Qp1
         
 
 
