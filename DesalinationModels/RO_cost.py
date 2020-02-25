@@ -20,6 +20,7 @@ class RO_cost(object):
                  NV=7,
                  Nel=8,
                  membrane_cost=30, # cost per unit area of membrane (USD/m2)
+                 
                  pressure_vessel_cost= 1000, # cost per pressure vessel (USD/vessel)-- just guessing 1000 to fill value for now: 2/25/2020 
 #                 FFR  = 17, # Feed flow rate per module (m3/h/module)
 #                 GOR = 10.475,  # Gained output ratio
@@ -29,6 +30,7 @@ class RO_cost(object):
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
+                 equip_cost_method='general', # Option 1:'general' capex breakdown by cost factor; Option 2: 'specify' equipment costs
                  sec= 2.5 # specific energy consumption (kwh/m3)
                  #coh = 0.01 , # Unit cost of heat ($/kWh)
                  #sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
@@ -50,6 +52,8 @@ class RO_cost(object):
         self.pressure_vessel_cost=pressure_vessel_cost
         self.NV=NV
         self.SEC=sec
+        self.capacity=Capacity
+        self.equip_cost_method=equip_cost_method
 #        self.HX_eff = HX_eff
 
 #        self.th_module = th_module
@@ -64,20 +68,25 @@ class RO_cost(object):
         self.int_rate = int_rate
         
     def lcow(self):
-        self.total_module_cost = self.total_area*self.membrane_cost + self.NV*self.pressure_vessel_cost
-#        self.HPpump_cost=
-#        self.BPpump_cost=
-#        self.ERD_cost=
-#        
+        if self.equip_cost_method=='specify':
+            self.total_module_cost = self.total_area*self.membrane_cost + self.NV*self.pressure_vessel_cost
+    #        self.HPpump_cost=
+    #        self.BPpump_cost=
+    #        self.ERD_cost=
+#            self.other_equip_cost=
+#            self.equip_cost=self.HPpump_cost + self.BPpump_cost +self.ERD_cost + self.other_equip_cost
+            self.CAPEX = self.total_module_cost*CR_factor(self.yrs,self.int_rate) / self.Prod
+#           (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
+            self.unit_capex=self.total_module_cost/self.capacity  
+#        elif self.equip_cost_method=='general':
+        else:    
+            self.total_capex=1100  # total EPC cost, USD/(m3/day)
+            self.CAPEX =self.total_capex*CR_factor(self.yrs,self.int_rate) / self.Prod
+#           self.equip_cost=
 #        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
 #        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
-        self.CAPEX = self.total_module_cost*CR_factor(self.yrs,self.int_rate) / self.Prod
-#        (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
-        
         self.cost_elec = self.SEC * self.coe
-#        self.other_OM = self.cost_sys *1000 *0.018 / self.Prod +0.1
-#        self.cost_th = self.STEC * self.coh
-        self.OPEX = self.cost_elec+self.chem_cost +self.labor_cost# + self.cost_module_re + self.other_OM
+        self.OPEX = self.cost_elec+self.chem_cost +self.labor_cost #maintenance and membrane replacement
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -87,3 +96,10 @@ class RO_cost(object):
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         
         return cost_output
+    
+#    def cost_method(self):
+    
+    #%%
+#    rocost=RO_cost()
+#    rocost.lcow()
+    
