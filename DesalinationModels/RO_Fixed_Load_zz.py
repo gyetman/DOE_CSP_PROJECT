@@ -30,7 +30,7 @@ class RODesign(object):
 
 
                 #RO Plant Design Specifications
-                nominal_daily_cap_tmp=550000,
+                nominal_daily_cap_tmp=1000,
                 Nel1=8,              #number elements per vessel in stage 1
                 R1=.4,               #Desired overall recovery rate
 
@@ -91,14 +91,16 @@ class RODesign(object):
         self.Cp=Bs1*Cm_avg*Nel1*NV1*Am1/self.Qp1
         Posm_perm=vhfactor*Ru*T/MW_nacl*self.Cp
         Pf1=NDP1 + Posm_avgmem + Pd*0.5 - Posm_perm
-        Pb1=Pf1-Pd
-        Pbp=Pf1-nERD*Pb1
+        self.Pb=Pf1-Pd
+        Pbp=Pf1-nERD*self.Pb
         self.NV1=NV1
 
         self.Qf1=self.Qp1/R1
         self.Qb1=self.Qf1-self.Qp1
-        Qbp=self.Qb1
-        Qhp=self.Qp1
+        self.Qbp=self.Qb1
+        self.Qhp=self.Qp1
+        self.Pf=Pf1
+        self.Pbp=Pbp
 
         # if(self.Qb1>minQb*NV1)==0:
         #     print("\nConcentrate flow rate is %s m3/h but should be greater than %s m3/h" % (self.Qb1,(2.7*NV1)))
@@ -111,13 +113,17 @@ class RODesign(object):
         #     print("\nFeed temperature is %s K but should be less than %s K" % (T,(Tmax)))
 
 
-        BP_power=Qbp*Pbp/nBP/36
-        HP_power=Qhp*Pf1/nHP/36
+        BP_power=self.Qbp*Pbp/nBP/36
+        HP_power=self.Qhp*Pf1/nHP/36
         FP_power=self.Qf1*Pfp/nFP/36
         PowerTotal=FP_power+HP_power+BP_power
         self.PowerRO=HP_power+BP_power
         self.SEC=PowerTotal/self.Qp1
         self.SEC_RO=self.PowerRO/self.Qp1
+        self.BP_power=BP_power
+        self.HP_power=HP_power
+        self.FP_power=FP_power
+        self.PowerTotal=PowerTotal
         
 
 
