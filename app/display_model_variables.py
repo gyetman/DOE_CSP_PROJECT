@@ -22,9 +22,7 @@ from pathlib import Path
 
 base_path = Path(__file__).resolve().parent.parent.absolute()
 sys.path.insert(0,str(base_path))
-#from SAM.SamBaseClass import SamBaseClass
 from SAM_flatJSON.SamBaseClass import SamBaseClass
-
 
 #
 ### GLOBAL VARIABLES and pre-processing ###
@@ -40,8 +38,11 @@ solar_variables_file = json_infiles_dir/ '{}_inputs.json'.format(model)
 solar_model_values_file = json_defaults_dir / '{}_{}.json'.format(model,finance)
 desal_variables_file = json_infiles_dir/ '{}_inputs.json'.format(desal)
 desal_values_file = json_defaults_dir / '{}.json'.format(desal)
-finance_variables_file = json_infiles_dir/ '{}_inputs.json'.format(desal)
-finance_values_file = json_defaults_dir / '{}.json'.format(desal)
+finance_variables_file = json_infiles_dir/ f'{finance}_inputs.json'
+finance_values_file = json_defaults_dir / f'{model}_{finance}.json'
+desal_finance_variables_file = json_infiles_dir/ f'{desal}_cost_inputs.json'
+desal_finance_values_file = json_defaults_dir/ f'{desal}_cost.json'
+desal_design_infile = base_path / 'app' / f'{desal}_design_output.json'
 ##
 
 json_outpath = base_path / 'app' / 'user-generated-inputs'
@@ -276,7 +277,7 @@ def create_callback_for_tables(desal_variables,solar_variables):
                     dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
                     )
         else:
-            return 'Edit the variables in the tabs below and then Run Model'
+            return ""
                         
 def create_data_table(table_data, table_id):
     return html.Div([
@@ -345,7 +346,8 @@ def create_model_variable_page(tab,model_vars):
                 tableData=[dict(tv)]
             if tv['Section']!=sec:
                 sec=tv['Section']
-                tab_page.append(html.H6(sec))
+                #tab_page.append(html.Div([html.P(),html.H6(sec)]))
+                tab_page.append(html.Div(html.H6(sec)))
             if tv['Subsection']!=subsec:
                 subsec=tv['Subsection']
                 if tv['Subsection']!='General':
@@ -511,9 +513,10 @@ model_vars_list = [desal_model_vars,solar_model_vars]
 #
 ### APP LAYOUTS ###
 #
-external_stylesheets = [dbc.themes.FLATLY]
+#external_stylesheets = [dbc.themes.FLATLY]
 #external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css',]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 app.config.suppress_callback_exceptions = True
 
 tab_style = {
@@ -574,31 +577,30 @@ model_selection_layout = html.Div([
 
 # not used at the moment but keeping in case we can figure out how
 # to make a collaspible button group
-button_group = dbc.ButtonGroup(
-    [dbc.Button("Desalination System",id='desal-button'), 
-     dbc.Button("Solar Thermal System",id='solar-button'),
-     dbc.Button("Financial Model",id='finance-button')]
-)
+# button_group = dbc.ButtonGroup(
+#     [dbc.Button("Desalination System",id='desal-button'), 
+#      dbc.Button("Solar Thermal System",id='solar-button'),
+#      dbc.Button("Financial Model",id='finance-button')]
+# )
 
 loading = html.Div([
     html.P(),
     dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default")]
 )
 
-model_vars_title = html.H6('Model Variables')
+model_vars_title = html.H3('Model Variables', className='page-header')
 
-model_buttons = html.Div([
-    dbc.Row([
-        dbc.Col(button_group),
-        #dbc.Col(dbc.Button('Run Model', id='model-button')),
-        #dbc.Tooltip('Run the model after making changes to the variables in the tabs below',
-        #target='model-button')
-     ],justify="between")
-])
+# used when the button_group was in place,
+# keeping code in case we want to bring it back
 
-run_model_button = html.Div([html.Button('Run Model', id='model-button', title='Run the model after making changes to the variables in the tabs below')])
-
-tabs = html.Div(id='tabs-container')
+# model_buttons = html.Div([
+#     dbc.Row([
+#         dbc.Col(button_group),
+#         #dbc.Col(dbc.Button('Run Model', id='model-button')),
+#         #dbc.Tooltip('Run the model after making changes to the variables in the tabs below',
+#         #target='model-button')
+#      ],justify="between")
+# ])
 
 def make_tabs_in_collapse(i):
     return dbc.Card(
@@ -613,20 +615,96 @@ def make_tabs_in_collapse(i):
                     [dcc.Tabs(id='tabs', value=Model_tabs[i][0], children=[
                         dcc.Tab(label=j, value=j, style=tab_style, 
                                 selected_style=tab_selected_style, 
-                                children=create_model_variable_page(j,Model_vars[i])
+                                children=dbc.CardBody(      create_model_variable_page(j,Model_vars[i]))
                                 )for j in Model_tabs[i]
                     ])]
                 ),
                 id=f"collapse-{i}".replace(' ','_'),
             ),
-        ]
+        ],style={'padding':0} #TODO need to figure out how to properly override the padding
     )
-    
-tabs_accordion = html.Div(
-    [make_tabs_in_collapse(models[0]), make_tabs_in_collapse(models[1]), make_tabs_in_collapse(models[2])], className="accordion"
+
+tabs_accordion = dbc.Card(
+    [make_tabs_in_collapse(models[0]), make_tabs_in_collapse(models[1]), make_tabs_in_collapse(models[2])], className="accordion h-100"
+) 
+
+primary_card = dbc.Card(
+    dbc.CardBody([
+        html.Blockquote([
+            html.H4("SIDE PANEL", className="card-title"),
+            html.P(
+                "Instructions and design model output can go here.",
+                className="card-text"),
+            html.Small("'Run Desal Design Model' and"
+                        "'Run Model' buttons here?",
+                        className="card-text"),
+        ],className="blockquote"),
+        # add a Spinner (and remove dcc.Loading)
+        # when we figure out how to toggle it
+        # dbc.Button(
+        #     [dbc.Spinner(size="sm"), " Run Model"],
+        #     color="primary",
+        #     id='model-button'),
+        dbc.Button("Run Model",color="primary",id="model-button"),
+        dbc.Tooltip(
+            "Run the model after reviewing and editing the Desalination, Solar Thermal and Financial variables",
+            # "Run the Desal Design Model after editing and approving the variables "
+            # "under Desalination System ",
+            target="model-button"),
+    ]),color="secondary", className="text-white"
 )
-    
-model_tables_layout = html.Div([model_vars_title,loading,run_model_button,tabs_accordion])
+
+desal_side_panel = dbc.CardBody([
+    html.H6("DESALINATION SYSTEM INSTRUCTIONS", className="card-title"),
+    html.P("blah blah blah", className='card-text'),
+    dbc.Button('Run Desal Design', 
+        color="primary", 
+        id='run-desal-design'),
+    dbc.Tooltip(
+        "Run the Desal Design Model after editing and approving the variables under Desalination System",
+        target="run-desal-design"),
+    html.P(),
+    html.Div(id='desal-design-results')
+])
+
+solar_side_panel = dbc.CardBody([
+    html.H6("SOLAR THERMAL SYSTEM INSTRUCTIONS", className="card-title"),
+    html.P("blah blah blah", className='card-text')
+])
+finance_side_panel = dbc.CardBody([
+    html.H6("FINANCE MODEL INSTRUCTIONS", className="card-title"),
+    html.P("blah blah blah", className='card-text')
+])
+
+model_card = dbc.Card(children=desal_side_panel,id='model-card',color="secondary", className="text-white")
+
+side_panel = dbc.Card([model_card,primary_card,],className="h-100", color="secondary")
+
+# side_panel = dbc.Card(
+#     dbc.CardBody([
+#         html.Blockquote([
+#             html.H4("SIDE PANEL", className="card-title"),
+#             html.P(
+#                 "Instructions and design model output can go here.",
+#                 className="card-text"),
+#             html.Small("'Run Desal Design Model' and"
+#                        "'Run Model' buttons here?",
+#                        className="card-text"),
+#         ],className="blockquote"),
+#         dbc.Button('Run Desal Design', color="primary", id='run-desal-design'),
+#         dbc.Tooltip(
+#             "Run the Desal Design Model after editing and approving the variables "
+#             "under Desalination System ",
+#             target="run-desal-design"),
+#         html.P(),
+#         html.Div(id='desal-design-results')
+#     ]),color="secondary", className="text-white h-100"
+# )
+
+# tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9)],no_gutters=True)
+tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9)],no_gutters=True)
+
+model_tables_layout = html.Div([model_vars_title, loading, tabs])
 
 #
 ### CALLBACKS
@@ -683,11 +761,48 @@ def display_model_parameters(solar, desal, finance):
 #             )for i in Model_tabs[button_id]
 #         ])])
 ## models = ['Desalination System','Solar Thermal System','Financial Model']
+        
+@app.callback(
+    Output('desal-design-results', 'children'),
+    [Input('run-desal-design', 'n_clicks')])
+def run_desal_design(desalDesign):
+    ctx = dash.callback_context
+    
+    if not ctx.triggered:
+        return ""
+    else:
+        stdm = SamBaseClass()
+        stdm.desal_design(desal=desal)
+        with open(desal_design_infile, "r") as read_file:
+            desal_design_load = json.load(read_file)
+        dd_outputs = []
+        for dd in desal_design_load:
+            dd_outputs.append(html.Div(f"{dd['Name']}: {dd['Value']} {dd['Unit']}"))
+        return dbc.Alert(dd_outputs)
+
+@app.callback(
+    Output('model-card','children'),
+    [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
+)
+def toggle_model_side_panel(m1,m2,m3):
+    ctx = dash.callback_context
+
+    if ctx.triggered:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    else:
+        button_id = 'default'
+
+    if button_id == 'Solar_Thermal_System-toggle':
+        return solar_side_panel
+    elif button_id == 'Financial_Model-toggle':
+        return finance_side_panel
+    else: #default and 'Desalination_System-toggle'
+        return desal_side_panel
+
 @app.callback(
     [Output(f"collapse-{i}".replace(' ','_'), "is_open") for i in models],
     [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
-    [State(f"collapse-{i}".replace(' ','_'), "is_open") for i in models],
-)
+    [State(f"collapse-{i}".replace(' ','_'), "is_open") for i in models])
 def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     ctx = dash.callback_context
 
@@ -705,18 +820,18 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     return False, False, False
   
     
-    if button_id == 'finance-button':
-        #until finance tabs are implemented,
-        #then we can remove the if statement
-        return('Finance Tabs go here')
-    else: 
-        return(
-            [dcc.Tabs(id='tabs', value=Model_tabs[button_id][0], children=[
-            dcc.Tab(label=i, value=i, style=tab_style, 
-                    selected_style=tab_selected_style, 
-                    children=create_model_variable_page(i,Model_vars[button_id])
-            )for i in Model_tabs[button_id]
-        ])])
+    # if button_id == 'finance-button':
+    #     #until finance tabs are implemented,
+    #     #then we can remove the if statement
+    #     return('Finance Tabs go here')
+    # else: 
+    #     return(
+    #         [dcc.Tabs(id='tabs', value=Model_tabs[button_id][0], children=[
+    #         dcc.Tab(label=i, value=i, style=tab_style, 
+    #                 selected_style=tab_selected_style, 
+    #                 children=create_model_variable_page(i,Model_vars[button_id])
+    #         )for i in Model_tabs[button_id]
+    #     ])])
     
 # display desal model options after solar model has been selected
 @app.callback(
@@ -740,7 +855,7 @@ def set_finance_options(desalModel):
 #     return '{} Model Parameters'.format(Solar[solar_value])
     
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8073)
+    app.run_server(debug=True, port=8073)
 
 
 
