@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 Created on Sun Aug  4 20:25:27 2019
 Display results from SAM model output (Linear Fresnel)
