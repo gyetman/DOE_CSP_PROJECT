@@ -13,3 +13,4 @@ app/.vscode/settings.json
 
 *.pyc
 app/display-results-app_old.py
+.vscode/settings.json
