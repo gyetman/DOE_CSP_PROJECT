@@ -127,12 +127,29 @@ def output_site_attributes(clicks):
         minIndRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_ind_rate'].values[0]
         avgIndRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_ind_rate'].values[0]
 
+        maxCommRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_comm_rate'].values[0]
+        minCommRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_comm_rate'].values[0]
+        avgCommRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_comm_rate'].values[0]
+
+        maxResRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_res_rate'].values[0]
+        minResRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_res_rate'].values[0]
+        avgResRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_res_rate'].values[0]
+
         mdText = "#### Site Details\n\n"
         mdText += 'Minimum Industrial Rate: ${0.4f}/kWH'.format(minIndRate)
         mdText += 'Average Industrial Rate: ${0.4f}/kWH'.format(avgIndRate)
         mdText += 'Maximum Industrial Rate: ${0.4f}/kWH'.format(maxIndRate)
+
+        mdText += 'Minimum Commercial Rate: ${0.4f}/kWH'.format(minCommRate)
+        mdText += 'Average Commercial Rate: ${0.4f}/kWH'.format(avgCommRate)
+        mdText += 'Maximum Commercial Rate: ${0.4f}/kWH'.format(maxCommRate)
+
+        mdText += 'Minimum Residential Rate: ${0.4f}/kWH'.format(minResRate)
+        mdText += 'Average Residential Rate: ${0.4f}/kWH'.format(avgResRate)
+        mdText += 'Maximum Residential Rate: ${0.4f}/kWH'.format(maxResRate)
+
         return(dcc.Markdown(mdText))
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8067)
+    app.run_server(debug=True, port=8058)
     
