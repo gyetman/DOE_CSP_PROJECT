@@ -15,3 +15,4 @@ app/.vscode/settings.json
 app/display-results-app_old.py
 .vscode/settings.json
 app/GISdata/zcta.geojson.metadata.xml
+app/GISdata/electric_prices_zcta.csv.xml
