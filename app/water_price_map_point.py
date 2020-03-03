@@ -58,7 +58,8 @@ df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res']
 # solarData is the polygon layer (squares) that are not visible, but used for click events
 # note that in testing, if marker_opacity is set to zero, the click events don't seem to be 
 # fired! Also, if visible is set to False, the click events are not fired! 
-solarData = go.Choroplethmapbox(
+## Using point data now, I hope! 
+""" solarData = go.Choroplethmapbox(
     geojson=geojSolar,
     locations=df_solar.ID,
     z=df_solar.ANN_DNI,
@@ -68,6 +69,20 @@ solarData = go.Choroplethmapbox(
     hoverinfo='none',
     visible=True, # not available for click when this is False
     showscale=False,
+) """
+
+solarData = go.Scattermapbox(
+    lat=df_solar.CENTROID_Y,
+    lon=df_solar.CENTROID_X,
+    hoverinfo='text',
+    hovertext='point!',
+    #hovertextsrc=df_solar.Max_Water_Price_perKgal_Comm.astype('str'),
+    mode='markers',
+    marker=dict(
+        size=0,
+    ),
+    showlegend=False,
+    visible=True
 )
 
 # canalData = go.Scattermapbox(
@@ -191,14 +206,15 @@ app.layout = html.Div(children=[
 def output_site_attributes(clicks):
     # grab the attributes to show in the click data in the second div
     if clicks is None:
+        print('empty click')
         raise PreventUpdate
     if 'points' not in set(clicks.keys()):
         raise PreventUpdate
-    ptID = clicks['points'][0]['location']
+    ##ptID = clicks['points'][0]['location']
     print(clicks)
     print(ptID)
     # TODO: make one temp df and get values from that
-    solar = df_solar.loc[df_solar.ID == int(ptID)]['ANN_DNI'].values[0]
+"""     solar = df_solar.loc[df_solar.ID == int(ptID)]['ANN_DNI'].values[0]
     network = df_solar.loc[df_solar.ID == int(ptID)]['Name'].values[0]
     networkOp = df_solar.loc[df_solar.ID == int(ptID)]['Operator'].values[0]
     networkDist = df_solar.loc[df_solar.ID == int(ptID)]['NEAR_DIST'].values[0]/1000
@@ -224,7 +240,7 @@ def output_site_attributes(clicks):
     mdText += "Residential usage: {:,.1f} gal\n\n".format(resUsage)
     mdText += "Approximate number of customers: {:,.0f}\n\n".format(customers)
     return(dcc.Markdown(mdText))
-
+    """
 @app.callback(
     Output(component_id='map', component_property='figure'),
     [Input(component_id='map', component_property='clickData')]
