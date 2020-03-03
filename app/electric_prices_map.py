@@ -77,8 +77,7 @@ layout = go.Layout(
     )
 )
 
-#TODO: figure out how to update markdownText so it's interpreted as such! 
-# Think it's when it's returned as an object
+# placeholder for output text
 markdownText = '''
 
  
@@ -129,9 +128,10 @@ def output_site_attributes(clicks):
         avgIndRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_ind_rate'].values[0]
 
         mdText = "#### Site Details\n\n"
-        mdText += 'Minimum Industrial Rate: {}'.format(minIndRate)
-
-        return(mdText)
+        mdText += 'Minimum Industrial Rate: ${0.4f}/kWH'.format(minIndRate)
+        mdText += 'Average Industrial Rate: ${0.4f}/kWH'.format(avgIndRate)
+        mdText += 'Maximum Industrial Rate: ${0.4f}/kWH'.format(maxIndRate)
+        return(dcc.Markdown(mdText))
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8067)
