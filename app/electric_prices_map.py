@@ -123,6 +123,9 @@ def output_site_attributes(clicks):
         raise PreventUpdate
     else:
         ptID = clicks['points'][0]['location']
+        # TODO: add the vars to a dict as keys, then iterate to get values
+        # convert formatting to function and return string for markdown. 
+        
         maxIndRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_ind_rate'].values[0]
         minIndRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_ind_rate'].values[0]
         avgIndRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_ind_rate'].values[0]
@@ -136,17 +139,17 @@ def output_site_attributes(clicks):
         avgResRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_res_rate'].values[0]
 
         mdText = "#### Site Details\n\n"
-        mdText += 'Minimum Industrial Rate: ${0.4f}/kWH'.format(minIndRate)
-        mdText += 'Average Industrial Rate: ${0.4f}/kWH'.format(avgIndRate)
-        mdText += 'Maximum Industrial Rate: ${0.4f}/kWH'.format(maxIndRate)
+        mdText += 'Minimum Industrial Rate: ${:0.4f}/kWH\n\n'.format(minIndRate)
+        mdText += 'Average Industrial Rate: ${:0.4f}/kWH\n\n'.format(avgIndRate)
+        mdText += 'Maximum Industrial Rate: ${:0.4f}/kWH\n\n'.format(maxIndRate)
 
-        mdText += 'Minimum Commercial Rate: ${0.4f}/kWH'.format(minCommRate)
-        mdText += 'Average Commercial Rate: ${0.4f}/kWH'.format(avgCommRate)
-        mdText += 'Maximum Commercial Rate: ${0.4f}/kWH'.format(maxCommRate)
+        mdText += 'Minimum Commercial Rate: ${:0.4f}/kWH\n\n'.format(minCommRate)
+        mdText += 'Average Commercial Rate: ${:0.4f}/kWH\n\n'.format(avgCommRate)
+        mdText += 'Maximum Commercial Rate: ${:0.4f}/kWH\n\n'.format(maxCommRate)
 
-        mdText += 'Minimum Residential Rate: ${0.4f}/kWH'.format(minResRate)
-        mdText += 'Average Residential Rate: ${0.4f}/kWH'.format(avgResRate)
-        mdText += 'Maximum Residential Rate: ${0.4f}/kWH'.format(maxResRate)
+        mdText += 'Minimum Residential Rate: ${:0.4f}/kWH\n\n'.format(minResRate)
+        mdText += 'Average Residential Rate: ${:0.4f}/kWH\n\n'.format(avgResRate)
+        mdText += 'Maximum Residential Rate: ${:0.4f}/kWH\n\n'.format(maxResRate)
 
         return(dcc.Markdown(mdText))
 
