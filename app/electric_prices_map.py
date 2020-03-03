@@ -41,11 +41,12 @@ userPoint = go.Scattermapbox(
 priceData = go.Choroplethmapbox(
     name='Industrial Electric Prices',
     geojson=geoj, 
-    locations=df.ZCTA, 
-    z=df.Mean_ind_rate,
+    locations=df.ZCTA5CE10, 
+    # featureidkey='ZCTA5CE10',
+    z=df.MEAN_ind_rate,
     colorscale="Viridis", 
     colorbar=dict(
-        title='Price $/kWH, 2018',
+        title='Price $/kWH',
     ),
     marker_opacity=1, 
     marker_line_width=0,
@@ -54,3 +55,76 @@ priceData = go.Choroplethmapbox(
     visible=True,
     # TODO: add year to map GUI (year of data)
     )
+
+data = [priceData,userPoint] # sets the order
+
+layout = go.Layout(
+    height=600,
+    width=800,
+    autosize=True,
+    #hovermode='closest',
+    #clickmode='text',
+    title='Average Industrial Electric Rate by Zip Code, 2018',
+    showlegend=True,
+    legend_orientation='h',
+    mapbox=dict(
+            accesstoken=mapbox_key,
+            zoom=5,
+            center=dict(
+                lat=CENTER_LAT,
+                lon=CENTER_LON
+            ),
+    )
+)
+
+#TODO: figure out how to update markdownText so it's interpreted as such! 
+# Think it's when it's returned as an object
+markdownText = '''
+
+ 
+
+'''
+
+fig = go.Figure(dict(data=data, layout=layout))
+app.title = 'Electric Rates'
+app.layout = html.Div(children=[
+    html.Div([
+        html.Div([
+            html.H3(children='Site Exploration and Selection'),
+             dcc.Graph(
+                id='map', figure=fig
+            )], className='row'
+        ),
+        html.Div([
+            html.Div(id='callback-div'),
+            dcc.Markdown(children=markdownText)
+            ], className='row'
+        )
+
+    ], className='row'),
+    html.Div([
+        html.Div(id='next-button'),
+        dcc.Link(html.Button('Select Models'), href='http://127.0.0.1:8073/model-selection')
+    ], className='row'
+    )
+
+])
+
+
+@app.callback(
+    Output(component_id='callback-div', component_property='children'),
+    [Input(component_id='map', component_property='clickData')]
+)
+def output_site_attributes(clicks):
+    # grab the attributes to show in the click data in the second div
+    if clicks is None:
+        print('empty click')
+        raise PreventUpdate
+    if 'points' not in set(clicks.keys()):
+        raise PreventUpdate
+    ##ptID = clicks['points'][0]['location']
+    print(clicks)
+
+if __name__ == '__main__':
+    app.run_server(debug=True, port=8067)
+    
