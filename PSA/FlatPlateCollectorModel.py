@@ -5,7 +5,7 @@ Created on Thu Feb 27 17:06:21 2020
 @author: adama
 """
 import numpy as np
-from math import pi
+from math import pi,sqrt
 #%% Number of columns in collector field
 def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
 
@@ -372,9 +372,11 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
     return fraccion_solar
 #%% dot product 
 def dot_product(vector1,vector2):
-
-    producto_escalar = vector1(:,1).*vector2(:,1)+vector1(:,2).*vector2(:,2)+vector1(:,3).*vector2(:,3)
-
+    producto_escalar=np.empty([np.shape(vector1)[0],1])
+    if np.shape(vector1)[0]!=np.size(vector1):
+        producto_escalar = vector1[:,0]*vector2[:,0]+vector1[:,1]*vector2[:,1]+vector1[:,2]*vector2[:,2]
+    else:
+        producto_escalar = vector1[0]*vector2[0]+vector1[1]*vector2[1]+vector1[2]*vector2[2]
     return producto_escalar 
 #%% converts angles to cartesian coordinates
 def cartesianas(v_theta,v_azim):
@@ -385,10 +387,10 @@ def cartesianas(v_theta,v_azim):
     v_azim_rad=v_azim*rad
     
     
-    vx=sin(v_theta_rad).*sin(v_azim_rad)
-    vy=sin(v_theta_rad).*cos(v_azim_rad)
-    vz=cos(v_theta_rad);
-    return [vx vy vz]
+    vx=np.sin(v_theta_rad)*np.sin(v_azim_rad)
+    vy=np.sin(v_theta_rad)*np.cos(v_azim_rad)
+    vz=np.cos(v_theta_rad)
+    return [vx ,vy ,vz]
 #%% uses zenith and azimuth angles to compute sun vector
 def sunvector(cenit,acimut):
 
@@ -545,9 +547,10 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
     
 #    % Calculate the incidence angle modifier
     
-    switch (tipo_col)
-    
-        case {'1'} #% FPC
+#    switch (tipo_col)
+#    
+#        case {'1'} #% FPC
+    if tipo_col=='1':
            
           ang_inc_D=ang_inc_staticcol(Time,[Long Lat],[inc_captador v_azim])
           Ang_incid_rad=varargin{1}*rad
@@ -557,7 +560,8 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
           condicion1 = ang_inc_D_rad<Ang_incid_rad_max
           f_theta = (condicion1).*(1-bo.*(1./cos(ang_inc_D_rad)-1))+(~condicion1).*0
           
-       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
+#       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
+    elif tipo_col=='2':
         
          if ang_incid<90:
             Mod_L=interp1(varargin{1},varargin{2},incidence_angle_long_deg,'cubic')   
@@ -565,6 +569,7 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
             f_theta = Mod_L*Mod_T
          else:
               f_theta=0
+
          
                                                                      
     
@@ -660,7 +665,7 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
 #        for k in range(1,num_filas_vector):
 #            if E_campo_D[k]>E_term_kWh:
 #               E_almac=E_campo_D[k]-E_term_kWh
-    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)
+    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)+ ~(E_campo_D>E_term_kWh)*0
             
             
         
@@ -675,3 +680,15 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
     
     x=0
     return Capacidad_m3
+#%% Obtain Normal vector
+def normalize(vector):
+
+    d_modulo = np.sqrt(sum(vector.T**2))
+#    d_modulo = np.tile(d_modulo,(1,3))
+#    normal_vector=vector/d_modulo
+    normal_vector=np.empty(np.shape(vector))
+    normal_vector[:,0] = vector[:,0] / d_modulo
+    normal_vector[:,1] = vector[:,1] / d_modulo
+    normal_vector[:,2] = vector[:,2] / d_modulo
+    
+    return normal_vector
