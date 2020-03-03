@@ -122,8 +122,16 @@ def output_site_attributes(clicks):
         raise PreventUpdate
     if 'points' not in set(clicks.keys()):
         raise PreventUpdate
-    ##ptID = clicks['points'][0]['location']
-    print(clicks)
+    else:
+        ptID = clicks['points'][0]['location']
+        maxIndRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_ind_rate'].values[0]
+        minIndRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_ind_rate'].values[0]
+        avgIndRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_ind_rate'].values[0]
+
+        mdText = "#### Site Details\n\n"
+        mdText += 'Minimum Industrial Rate: {}'.format(minIndRate)
+
+        return(mdText)
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8067)
