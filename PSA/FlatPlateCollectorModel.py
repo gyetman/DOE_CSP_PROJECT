@@ -4,8 +4,14 @@ Created on Thu Feb 27 17:06:21 2020
 
 @author: adama
 """
+weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+
 import numpy as np
-from math import pi
+from math import pi,sqrt
+import pandas as pd
+import datetime as dt
+import pvlib
+#from scipy.interpolate import CubicSpline
 #%% Number of columns in collector field
 def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
 
@@ -60,12 +66,12 @@ def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v
     
     num_col=Increm_fila/Increm_capt
     
-    resto=num_col-floor(num_col)
-    
+    resto=num_col-np.floor(num_col)
+
     if (resto>=0.3):
-        num_col=floor(num_col)+1
+        num_col=np.floor(num_col)+1
     else:
-        num_col=floor(num_col)
+        num_col=np.floor(num_col)
         
     
     x=0;
@@ -117,32 +123,52 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     rad=pi/180;
     Interv_horas=Interv/60;    #% Time interval of the data, hours
     
-    #% Open the meteo data file and upload the data 
-    [FileName, PathName]=uigetfile('*.*', 'Select the.mat File');
-    
-    NombreFichero=[PathName FileName];
-    #eval(['load ''' NombreFichero '''']);
+#    #% Open the meteo data file and upload the data 
+#    [FileName, PathName]=uigetfile('*.*', 'Select the.mat File');
+#    
+#    NombreFichero=[PathName FileName];
+#    #eval(['load ''' NombreFichero '''']);
+    datacols=list(range(0,14))
+    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
     
     #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
-    julian_date_inicio=juliano(fecha_inicio);
-    julian_date_fin=juliano(fecha_fin);
+    # AAA- major changes to this segment for pulling data from TMY
+    datetimes=np.asarray(data.iloc[:,0:6])
+#    Julian_Date=pd.to_datetime(datetimes)
+#    julian_date_inicio=pd.to_datetime(fecha_inicio)
+    
+#    julian_date_inicio=juliano(fecha_inicio);
+#    julian_date_fin=juliano(fecha_fin);
+#    initialdate=dt.datetime(fecha_inicio[0],fecha_inicio[1],fecha_inicio[2],fecha_inicio[3],fecha_inicio[4],fecha_inicio[5],)
+#    ts=pd.to_datetime(initialdate)
+#    julian_date_inicio=str(ts)
     
     #% Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
-    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
-    
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
+    rowstart=data.loc[(data['Month']==fecha_inicio[1]) & (data['Day']==fecha_inicio[2]) & (data['Hour']==fecha_inicio[3])].index.values
+    rowend=data.loc[(data['Month']==fecha_fin[1]) & (data['Day']==fecha_fin[2]) & (data['Hour']==fecha_fin[3])].index.values
+    rows=list(range(rowstart[0],rowend[0]+1))
     #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
-    Julian_date_D=Julian_Date(rows);
-    temp_amb_D=temp_amb(rows);
-    Rad_sol_global_D=Rad_Global_inclin(rows);
+#    Julian_date_D=Julian_Date(rows);
+    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
+    dni=data['DNI'].iloc[rows]
+    ghi=data['GHI'].iloc[rows]
+    dhi=data['DHI'].iloc[rows]
+    surfalbedo=data['Surface Albedo'].iloc[rows]
+#    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
+    
+    solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
+    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
+    Rad_sol_global_D=np.asarray(poa.iloc[:,0])
     
     #% Calculation of the inlet temperature to the collector, assuming that it is the average between the inlet and outlet water temperatures in the solar field
     Te=(Tent_campo+Tsal_campo)/2;
     
     #% Number of collectors per row
-    num_col=num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin{:});
+    num_col=num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args);
     
     #% Determine the number of rows of the vector Julian_Date_D to establish the indicator of FOR loop
-    num_instantes=size(Julian_date_D,1);
+    num_instantes=np.shape(rows)[0]
     
     #% Create the matrix of zeros
     Julian_date_vec=np.zeros((num_instantes,6))
@@ -158,15 +184,17 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the thermal energy delivered by one row. E_term_fila_kWh, kWh
     #% If the thermal energy is positive (higher than zero), keep the values in a vector called E_term_fila_valida
     
-        for k=1:num_instantes:
-            Julian_date_vec(k,:)=jul2calg(Julian_date_D(k,1));
-            Ts(k,1)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te,temp_amb_D(k,1),qm,a,b,c,d,Rad_sol_global_D(k,1),A,varargin{:});
-            Pot_capt(k,1)=qm*(d*(Ts(k,1)-Te));
-            Pot_fila(k,1)=Pot_capt(k,1)*num_col;                      
-            E_term_fila_kWh(k,1)= Pot_fila(k,1)*Interv_horas;
-            if E_term_fila_kWh(k,1)>0:
-               E_term_fila_valida(k,1)=E_term_fila_kWh(k,1);         
-            
+    for k in range(num_instantes):
+        Julian_date_vec[k]=datetimes[rows[k]]#jul2calg(Julian_date_D[k]);
+        Ts[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te,temp_amb_D[k],qm,a,b,c,d,Rad_sol_global_D[k],A,*args);
+        print('MADE IT')
+
+        Pot_capt[k]=qm*(d*(Ts[k]-Te));
+        Pot_fila[k]=Pot_capt[k]*num_col;                      
+        E_term_fila_kWh[k]= Pot_fila[k]*Interv_horas;
+        if E_term_fila_kWh[k]>0:
+           E_term_fila_valida[k]=E_term_fila_kWh[k];         
+        
          
         
     #% Calculate the useful thermal energy supplied by one row of collectors during the design day, kWh
@@ -181,12 +209,12 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the decimal part of the resulting number of rows
     #% If the decimal part is higher than 0.5, then sum 1 to the number of rows obtained before
     #% If the decimal part is lower than 0.5, then rest 1 to the number of rows obtained before
-    resto=num_fila-floor(num_fila);
+    resto=num_fila-np.floor(num_fila);
     
-        if (resto>=0.5):
-            num_fila=floor(num_fila)+1
-        else:
-            num_fila=floor(num_fila)-1;
+    if (resto>=0.5):
+        num_fila=np.floor(num_fila)+1
+    else:
+        num_fila=np.floor(num_fila)-1
         
     
     #% Calculate the total number of collectors (num_total_col) and the total aperture area (area_total_captacion)
@@ -194,14 +222,13 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     area_total_captacion=num_total_col*A;        #m2
     
     #% Save the data
-    FileNuevo='numfilas';
-    [FileName, PathName, FilterIndex]=uiputfile('*.mat', 'Save variables in .mat file', FileNuevo);
-    NombreFichero=[PathName FileName];
+#    FileNuevo='numfilas';
+#    [FileName, PathName, FilterIndex]=uiputfile('*.mat', 'Save variables in .mat file', FileNuevo);
+#    NombreFichero=[PathName FileName];
     #eval(['save ''' NombreFichero ''' num_fila num_total_col area_total_captacion']);
 
         
     return num_fila, num_total_col, area_total_captacion
-
 #%% Determines solar fraction of static collector field and gives annual thermal power profile on hourly basis
 def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,varargin):
 
@@ -314,7 +341,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
       for k=1:num_instantes
           Julian_date_vec(k,:)=jul2calg(Julian_Date(k,1));
           ang_inc(k,1)= ang_inc_staticcol(Julian_date_vec(k,:),[Long Lat],[inc_captador v_azim]);
-          [sun_cenit(k,1) sun_acimut(k,1)]=psasunpos(Julian_date_vec(k,:),Long,Lat);
+          sun_cenit(k,1),sun_acimut(k,1)=psasunpos(Julian_date_vec(k,:),Long,Lat);
         if num_col~=1  
           for n=1:num_col-1
               Ts(k,n)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te(k,n),temp_amb(k,1),qm(k,1),a,b,c,d,Rad_Global_inclin(k,1),A,varargin{:});
@@ -372,9 +399,11 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
     return fraccion_solar
 #%% dot product 
 def dot_product(vector1,vector2):
-
-    producto_escalar = vector1(:,1).*vector2(:,1)+vector1(:,2).*vector2(:,2)+vector1(:,3).*vector2(:,3)
-
+    producto_escalar=np.empty([np.shape(vector1)[0],1])
+    if np.shape(vector1)[0]!=np.size(vector1):
+        producto_escalar = vector1[:,0]*vector2[:,0]+vector1[:,1]*vector2[:,1]+vector1[:,2]*vector2[:,2]
+    else:
+        producto_escalar = vector1[0]*vector2[0]+vector1[1]*vector2[1]+vector1[2]*vector2[2]
     return producto_escalar 
 #%% converts angles to cartesian coordinates
 def cartesianas(v_theta,v_azim):
@@ -385,10 +414,10 @@ def cartesianas(v_theta,v_azim):
     v_azim_rad=v_azim*rad
     
     
-    vx=sin(v_theta_rad).*sin(v_azim_rad)
-    vy=sin(v_theta_rad).*cos(v_azim_rad)
-    vz=cos(v_theta_rad);
-    return [vx vy vz]
+    vx=np.sin(v_theta_rad)*np.sin(v_azim_rad)
+    vy=np.sin(v_theta_rad)*np.cos(v_azim_rad)
+    vz=np.cos(v_theta_rad)
+    return [vx ,vy ,vz]
 #%% uses zenith and azimuth angles to compute sun vector
 def sunvector(cenit,acimut):
 
@@ -399,10 +428,10 @@ def sunvector(cenit,acimut):
     rad=pi/180;
     cenit=cenit*rad;
     acimut=acimut*rad;
-    sx=sin(cenit).*cos(acimut);
-    sy=sin(cenit).*sin(acimut);
-    sz=cos(cenit);
-    sunvec=[sx sy sz];
+    sx=np.sin(cenit).*np.cos(acimut);
+    sy=np.sin(cenit).*np.sin(acimut);
+    sz=np.cos(cenit);
+    sunvec=[sx, sy, sz];
 
     return sunvec
 #%% Gets zenith and azimuth angles based on time, longitude and latitude 
@@ -419,15 +448,22 @@ def psasunpos(Time,Longitude,Latitude):
     AstronomicalUnit=149597890;
     
     
-    
+    if np.shape(Time)[0]!=np.size(Time):
     #% Calculate difference in days between the current Julian Day and JD 2451545.0, which is 
     #% noon 1 January 2000 Universal Time
     #
     #% Calculate time of the day in UT decimal hours
-    DecimalHours=Time(:,4)+(Time(:,5)+Time(:,6)/60)/60;
-    #% Calculate current Julian Day
-    Aux1=fix((Time(:,2)-14)/12);
-    Aux2=fix((1461*(Time(:,1)+4800+Aux1))/4)+fix((367*(Time(:,2)-2-12*Aux1))/12)-fix((3*(fix((Time(:,1)+4900+Aux1)/100)))/4)+Time(:,3)-32075;
+        DecimalHours=Time[:,3]+(Time[:,4]+Time[:,5]/60)/60
+        #% Calculate current Julian Day
+        Aux1=np.fix((Time[:,1]-14)/12);
+        Aux2=np.fix((1461*(Time[:,0]+4800+Aux1))/4)+np.fix((367*(Time[:,1]-2-12*Aux1))/12)-np.fix((3*(np.fix((Time[:,0]+4900+Aux1)/100)))/4)+Time[:,2]-32075
+    else:
+        DecimalHours=Time[3]+(Time[4]+Time[5]/60)/60
+        #% Calculate current Julian Day
+        Aux1=np.fix((Time[1]-14)/12);
+        Aux2=np.fix((1461*(Time[0]+4800+Aux1))/4)+np.fix((367*(Time[1]-2-12*Aux1))/12)-np.fix((3*(np.fix((Time[0]+4900+Aux1)/100)))/4)+Time[2]-32075
+    
+    
     JulianDate=Aux2-0.5+DecimalHours/24;
     #% Calculate difference between current Julian Day and JD 2451545.0
     ElapsedJulianDays=JulianDate-2451545;
@@ -439,20 +475,20 @@ def psasunpos(Time,Longitude,Latitude):
     Omega=2.1429-0.0010394594*ElapsedJulianDays;
     MeanLongitude=4.8950630+0.017202791698*ElapsedJulianDays;
     MeanAnomaly=6.2400600+0.0172019699*ElapsedJulianDays;
-    EclipticLongitude=MeanLongitude+0.03341607*sin(MeanAnomaly)+0.00034894*sin(2*MeanAnomaly)-0.0001134-0.0000203*sin(Omega);
-    EclipticObliquity=0.4090928-6.2140e-9*ElapsedJulianDays+0.0000396*cos(Omega);
+    EclipticLongitude=MeanLongitude+0.03341607*np.sin(MeanAnomaly)+0.00034894*np.sin(2*MeanAnomaly)-0.0001134-0.0000203*np.sin(Omega);
+    EclipticObliquity=0.4090928-6.2140e-9*ElapsedJulianDays+0.0000396*np.cos(Omega);
     
     #% Calculate celestial coordinates (right ascension and declination) in radians
     #% but without limiting the angle to be less than 2*Pi (i.e., the result may be greater
     #% than 2*Pi)
     
-    Sin_EclipticLongitude=sin(EclipticLongitude);
-    Y=cos(EclipticObliquity).*Sin_EclipticLongitude;
-    X=cos(EclipticLongitude);
-    RightAscension=atan2(Y,X);
+    Sin_EclipticLongitude=np.sin(EclipticLongitude);
+    Y=np.cos(EclipticObliquity)*Sin_EclipticLongitude;
+    X=np.cos(EclipticLongitude);
+    RightAscension=np.arctan2(Y,X);
     Temp=(RightAscension<0);
-    RightAscension=(Temp).*(RightAscension+twopi)+(~Temp).*RightAscension;
-    Declination=asin(sin(EclipticObliquity).*Sin_EclipticLongitude);
+    RightAscension=(Temp)*(RightAscension+twopi)+(~Temp)*RightAscension;
+    Declination=np.arcsin(np.sin(EclipticObliquity)*Sin_EclipticLongitude);
     
     #% Calculate local coordinates (azimuth and zenith angle) in degrees
     
@@ -461,20 +497,20 @@ def psasunpos(Time,Longitude,Latitude):
     HourAngle=LocalMeanSiderealTime-RightAscension;
     EOT=MeanLongitude-RightAscension;
     LatitudeInRadians=Latitude*rad;
-    Cos_Latitude=cos(LatitudeInRadians);
-    Sin_Latitude=sin(LatitudeInRadians);
-    Cos_HourAngle=cos(HourAngle);
-    ZenithAngle=acos(Cos_Latitude.*Cos_HourAngle.*cos(Declination)+sin(Declination).*Sin_Latitude);
-    Y=-sin(HourAngle);
-    X=tan(Declination).*Cos_Latitude-Sin_Latitude.*Cos_HourAngle;
-    Azimuth=atan2(Y,X);
+    Cos_Latitude=np.cos(LatitudeInRadians);
+    Sin_Latitude=np.sin(LatitudeInRadians);
+    Cos_HourAngle=np.cos(HourAngle);
+    ZenithAngle=np.arccos(Cos_Latitude*Cos_HourAngle*np.cos(Declination)+np.sin(Declination)*Sin_Latitude);
+    Y=-np.sin(HourAngle);
+    X=np.tan(Declination)*Cos_Latitude-Sin_Latitude*Cos_HourAngle;
+    Azimuth=np.arctan2(Y,X);
     Temp=(Azimuth<0);
-    Azimuth=(Temp).*(Azimuth+twopi)+(~Temp).*(Azimuth);
+    Azimuth=(Temp)*(Azimuth+twopi)+(~Temp)*(Azimuth);
     Azimuth=Azimuth/rad;
-    Parallax=EarthMeanRadius/AstronomicalUnit*sin(ZenithAngle);
+    Parallax=EarthMeanRadius/AstronomicalUnit*np.sin(ZenithAngle);
     ZenithAngle=(ZenithAngle+Parallax)/rad;
     
-    return [ZenithAngle, Azimuth]
+    return ZenithAngle, Azimuth
 
 #%% Determines incidence angle modifier of the collector
 def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
@@ -506,65 +542,71 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
     rad = pi/180
       
 #    % Calculate the normal vector to the collector 
-    [nx ny nz]=cartesianas(inc_captador,v_azim)
+    nx, ny, nz=cartesianas(inc_captador,v_azim)
     
 #    % Calculate the solar vector
-    [cenit,acimut]=psasunpos(Time,Long,Lat)
-    [sx sy sz]=cartesianas(cenit,acimut)
+    cenit,acimut=psasunpos(Time,Long,Lat)
+    sx,sy,sz=cartesianas(cenit,acimut)
     
 #    % Calculate the incidence angle of the sun 
-    prod_escalar=dot_product([sx sy sz],[nx ny nz])
-    ang_incid=acos(prod_escalar)/rad;
+    prod_escalar=dot_product([sx, sy, sz],[nx, ny, nz])
+    ang_incid=np.arccos(prod_escalar)/rad;
     
 #    % Calculate the projection planes
 #    % Normal vector to the transversal plane
     
-    normal_vec_transv_u = [-ny./sqrt(ny.^2+ nx.^2) nz./sqrt(ny.^2+ nx.^2) 0]
+    normal_vec_transv_u = [-ny/np.sqrt(ny**2+ nx**2), nz/np.sqrt(ny**2+ nx**2), 0]
     
 #    % Normal vector to the longitudinal plane
     
-    normal_vec_long_u = cross([nx ny nz],normal_vec_transv_u)
+    normal_vec_long_u = np.cross([nx, ny, nz],normal_vec_transv_u)
     
 #    % Calculate the projection of the solar vector over the transversal plane and its unit vector
     
-    sunvector_trans = cross(cross(normal_vec_transv_u,[sx sy sz]),normal_vec_transv_u)
+    sunvector_trans = np.cross(np.cross(normal_vec_transv_u,[sx, sy, sz]),normal_vec_transv_u)
     sunvector_trans_unit = normalize(sunvector_trans)
     
 #    % Calculate the projection of the solar vector over the transversal plane and its unit vector
     
-    sunvector_long = cross(cross(normal_vec_long_u,[sx sy sz]),normal_vec_long_u)
+    sunvector_long = np.cross(np.cross(normal_vec_long_u,[sx, sy, sz]),normal_vec_long_u)
     sunvector_long_unit = normalize(sunvector_long)
     
 #    % Calculate the incidence angle longitudinal and transversal 
     
-    incidence_angle_long_rad = acos(dot_product(sunvector_long_unit,[nx ny nz]))
+    incidence_angle_long_rad = np.arccos(dot_product(sunvector_long_unit,[nx, ny, nz]))
     incidence_angle_long_deg=incidence_angle_long_rad/rad
     
-    incidence_angle_trans_rad = acos(dot_product(sunvector_trans_unit,[nx ny nz]))
+    incidence_angle_trans_rad = np.arccos(dot_product(sunvector_trans_unit,[nx, ny, nz]))
     incidence_angle_trans_deg=incidence_angle_trans_rad/rad
     
 #    % Calculate the incidence angle modifier
     
-    switch (tipo_col)
-    
-        case {'1'} #% FPC
+#    switch (tipo_col)
+#    
+#        case {'1'} #% FPC
+    if tipo_col=='1':
            
-          ang_inc_D=ang_inc_staticcol(Time,[Long Lat],[inc_captador v_azim])
-          Ang_incid_rad=varargin{1}*rad
-          bo=(1-varargin{2})/((1/cos(Ang_incid_rad)-1))
-          Ang_incid_rad_max = acos(1/((1/bo)+1))
+          ang_inc_D=ang_inc_staticcol(Time,[Long, Lat],[inc_captador,v_azim])
+          Ang_incid_rad=args[0]*rad
+          bo=(1-args[1])/((1/np.cos(Ang_incid_rad)-1))
+          Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
           ang_inc_D_rad=ang_inc_D*rad
           condicion1 = ang_inc_D_rad<Ang_incid_rad_max
-          f_theta = (condicion1).*(1-bo.*(1./cos(ang_inc_D_rad)-1))+(~condicion1).*0
+          f_theta = (condicion1)*(1-bo*(1/np.cos(ang_inc_D_rad)-1))+(~condicion1)*0
           
-       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
-        
+#       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
+    elif tipo_col=='2':
+
          if ang_incid<90:
-            Mod_L=interp1(varargin{1},varargin{2},incidence_angle_long_deg,'cubic')   
-            Mod_T=interp1(varargin{1},varargin{3},incidence_angle_trans_deg,'cubic')         
-            f_theta = Mod_L*Mod_T
+            Mod_L=np.interp(incidence_angle_long_deg,args[0],args[1])   
+            Mod_T=np.interp(incidence_angle_trans_deg,args[0],args[2])   
+#             Mod_L=CubicSpline(args[0],args[1])
+#             Mod_T=CubicSpline(args[0],args[2])
+#             f_theta = Mod_L(incidence_angle_long_deg)*Mod_T(incidence_angle_trans_deg)
+             f_theta=Mod_L*Mod_T
          else:
-              f_theta=0
+             f_theta=0
+
          
                                                                      
     
@@ -604,7 +646,7 @@ def temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,
     
     
 #    % Call the function that calculates the incidence angle modifier
-    [f_theta]= k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args)
+    f_theta= k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args)
     
 #    % Calculate the water outlet temperature from the solar collector         
     Ts= -(A*b - 2*((A**2*b**2)/4 + 1000000*d**2*qm**2 + 1000*A*b*d*qm - 2000*A*Tamb_D*c*d*qm + 2000*A*Te*c*d*qm + A**2*G*a*c*f_theta)**(1/2) + 2000*d*qm - 2*A*Tamb_D*c + A*Te*c)/(A*c)
@@ -660,7 +702,7 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
 #        for k in range(1,num_filas_vector):
 #            if E_campo_D[k]>E_term_kWh:
 #               E_almac=E_campo_D[k]-E_term_kWh
-    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)
+    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)+ ~(E_campo_D>E_term_kWh)*0
             
             
         
@@ -675,3 +717,22 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
     
     x=0
     return Capacidad_m3
+#%% Obtain Normal vector
+def normalize(vector):
+
+    d_modulo = np.sqrt(sum(vector.T**2))
+#    d_modulo = np.tile(d_modulo,(1,3))
+#    normal_vector=vector/d_modulo
+    
+    normal_vector=np.empty(np.shape(vector))
+    if np.shape(vector1)[0]!=np.size(vector1):
+    
+        normal_vector[:,0] = vector[:,0] / d_modulo
+        normal_vector[:,1] = vector[:,1] / d_modulo
+        normal_vector[:,2] = vector[:,2] / d_modulo
+    else:
+        normal_vector[0] = vector[0] / d_modulo
+        normal_vector[1] = vector[1] / d_modulo
+        normal_vector[2] = vector[2] / d_modulo
+    
+    return normal_vector
