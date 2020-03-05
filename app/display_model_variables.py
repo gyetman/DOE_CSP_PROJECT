@@ -364,6 +364,10 @@ finance_model_vars = create_variable_lists(
     model_name=cfg.finance, 
     json_vars=cfg.finance_variables_file,
     json_vals=cfg.finance_values_file)
+#process desal_finance_vars =
+# then append to finance model vars
+# PULL SORT functions out of create_variable_lists
+# create new SORT function
 
 # update weather file_name
 l,wf_index = index_in_list_of_dicts([solar_model_vars],'Name','file_name')
@@ -416,10 +420,10 @@ app.layout = html.Div([
 app.title = 'Model and Parameter Selection'
 
 model_selection_layout = html.Div([
-    html.Div([
-        html.Div([    
-            html.B(html.Label('Solar Thermal System')),
-            dcc.RadioItems(
+    dbc.FormGroup([
+        dbc.Label("Solar Thermal System", width=2, size='lg',color='warning',style={'text-align':'center'}),
+        dbc.Col(
+            dbc.RadioItems(
                 id='select-solar',
                 options=[
                     {'label': 'Flat-Plate Collector            ', 'value': 'FPC',  'disabled': True},
@@ -431,40 +435,57 @@ model_selection_layout = html.Div([
                     {'label': 'Power Tower Molten Salt         ', 'value': 'MSPT', 'disabled': False},
                     {'label': 'Process Heat Parabolic Trough   ', 'value': 'IPHP', 'disabled': False},
                     {'label': 'Process Heat Linear Direct Steam', 'value': 'IPHD', 'disabled': False}, 
-                ],value='DSLF',
-            )
-        ]),
-        html.P(),
-        html.Div([
-            html.B(html.Label('Desalination System')),
-            dcc.RadioItems(id='select-desal',value='ABS'),
-        ]),
-        html.P(),
-        html.Div([
-            html.B(html.Label('Financial Model')),
-            dcc.RadioItems(id='select-finance'),
-        ]),
-        html.P(),
-        html.Div([
-            html.Div(id='model-parameters'),
-        ]),
-    ],className='three columns'),
+                ],
+                value='DSLF',
+            ),width=10,
+        ),
+    ],row=True),
+    dbc.FormGroup([
+        #dbc.Label("Desalination System", width=2, size='lg',color='success',style={'text-align':'center'}),
+        dbc.Label("Desalination System",width=2, size='lg',color='success',style={'text-align':'center'}),
+        dbc.Col(
+            dbc.RadioItems(
+                id='select-desal',
+            ),width=10,
+        ),
+    ],row=True,),
+    dbc.FormGroup([
+        dbc.Label("Financial Model",width=2, size='lg',color='primary',style={'text-align':'center'}),
+        dbc.Col(
+            dbc.RadioItems(
+                id='select-finance',
+            ),width=10,
+        ),
+    ],row=True,),
 ])
 
-# not used at the moment but keeping in case we can figure out how
-# to make a collaspible button group
-# button_group = dbc.ButtonGroup(
-#     [dbc.Button("Desalination System",id='desal-button'), 
-#      dbc.Button("Solar Thermal System",id='solar-button'),
-#      dbc.Button("Financial Model",id='finance-button')]
+# @app.callback(
+#     Output('Desalination_System-toggle', 'children'), 
+#     [Input('select-desal','value')],
 # )
+# def label_tables(l_desal):
+#     return cfg.Desal[l_desal]
+
+# @app.callback(
+#     Output('model-card','children'),
+#     [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
+# )
+# def toggle_model_side_panel(m1,m2,m3):
+
+# # not used at the moment but keeping in case we can figure out how
+# # to make a collaspible button group
+# # button_group = dbc.ButtonGroup(
+# #     [dbc.Button("Desalination System",id='desal-button'), 
+# #      dbc.Button("Solar Thermal System",id='solar-button'),
+# #      dbc.Button("Financial Model",id='finance-button')]
+# # )
 
 loading = html.Div([
     html.P(),
     dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default")]
 )
 
-model_vars_title = html.H3('Model Variables', className='page-header')
+model_vars_title = html.H3('System Configuration', className='page-header')
 
 def make_tabs_in_collapse(i):
     return dbc.Card(
@@ -494,33 +515,30 @@ tabs_accordion = dbc.Card(
 
 primary_card = dbc.Card(
     dbc.CardBody([
-        html.Blockquote([
-            html.H4("SIDE PANEL", className="card-title"),
-            html.P(
-                "Instructions and design model output can go here.",
-                className="card-text"),
-            html.Small("More instructions go here",
-                        className="card-text"),
-        ],className="blockquote"),
+        html.H4(
+            "System Performance Simulation", 
+            className="card-title"),
+        html.P(
+            "Simulate the hourly performance of the solar field and desalination components, and estimate the cost of the system.",
+            className="card-text"),
         # add a Spinner (and remove dcc.Loading)
         # when we figure out how to toggle it
         # dbc.Button(
         #     [dbc.Spinner(size="sm"), " Run Model"],
         #     color="primary",
         #     id='model-button'),
-        dbc.Button("Run Model",color="primary",id="model-button"),
+        dbc.Button("Run Simulation Model",color="primary",id="model-button"),
         dbc.Tooltip(
-            "Run the model after reviewing and editing the Desalination, Solar Thermal and Financial variables",
-            # "Run the Desal Design Model after editing and approving the variables "
-            # "under Desalination System ",
+            "Run the model after reviewing and editing the Desalination, Solar Thermal and Financial variables. The model takes 1-2 minutes to run.",
             target="model-button"),
+        loading,
     ]),color="secondary", className="text-white"
 )
 
 desal_side_panel = dbc.CardBody([
-    html.H6("DESALINATION SYSTEM INSTRUCTIONS", className="card-title"),
-    html.P("blah blah blah", className='card-text'),
-    dbc.Button('Run Desal Design', 
+    html.H4("Desalination Design Model", className="card-title"),
+    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. Please run the design model first and specify the thermal load in the solar thermal model accordingly.", className='card-text'),
+    dbc.Button('Run Design Model', 
         color="primary", 
         id='run-desal-design'),
     dbc.Tooltip(
@@ -545,6 +563,7 @@ side_panel = dbc.Card([model_card,primary_card,],className="h-100", color="secon
 
 tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9)],no_gutters=True)
 
+#model_tables_layout = html.Div([model_vars_title, loading, tabs])
 model_tables_layout = html.Div([model_vars_title, loading, tabs])
 
 #
