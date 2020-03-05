@@ -46,11 +46,12 @@ wellLocation = go.Scattermapbox(
     name='Well Location',
     lat=df.dec_lat_va,
     lon=df.dec_long_va,
-    hovertextsrc=df['text'],
     mode='markers',
+    text=df.TDS_mgL,
     marker=dict(
-        size=9,
+        size=7,
     ),
+    visible=False
 
 )
 
@@ -81,7 +82,7 @@ layout = go.Layout(
     autosize=True,
     #hovermode='closest',
     #clickmode='text',
-    title='Average Industrial Electric Rate by Zip Code, 2018',
+    title='Average TDS per county and Wells',
     showlegend=True,
     legend_orientation='h',
     mapbox=dict(
@@ -130,6 +131,7 @@ app.layout = html.Div(children=[
     [Input(component_id='map', component_property='clickData')]
 )
 def output_site_attributes(clicks):
+    wellLocation.visible = True
     # grab the attributes to show in the click data in the second div
     if clicks is None:
         print('empty click')
@@ -144,9 +146,12 @@ def output_site_attributes(clicks):
 
         mdText = "###### Produced Water Measurements for {} County, ST\n\n".format(countyName)
         mdText += 'Source: USGS Produced Waters Database\n\n'
-        mdText += 'Average TDS: {:0.1f} mg/L\n\n'.format(avgTDS)
+        mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
         mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
         return(dcc.Markdown(mdText))
+
+# TODO: add callback for layer visibility
+# add callback for point attributes
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)
