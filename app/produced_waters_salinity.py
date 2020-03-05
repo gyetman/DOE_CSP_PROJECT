@@ -52,7 +52,7 @@ wellLocation = go.Scattermapbox(
     marker=dict(
         size=5,
     ),
-    visible=True
+    visible=False
 
 )
 
@@ -69,7 +69,7 @@ tdsData = go.Choroplethmapbox(
     ),
     marker_opacity=1, 
     marker_line_width=0,
-    hoverinfo='text'
+    #hoverinfo='skip',
     text=df.text,
     visible=True,
     # TODO: add year to map GUI (year of data)
@@ -139,7 +139,8 @@ def output_site_attributes(clicks):
     if 'points' not in set(clicks.keys()):
         raise PreventUpdate
     else:
-        print(clicks['points'][0].keys())
+        ptKeys = clicks['points'][0].keys()
+
         ptID = clicks['points'][0]['location']
         countyName = df_county.loc[df_county.IDField == ptID]['NAME'].values[0]
         avgTDS = df_county.loc[df_county.IDField == ptID]['TDS_mgL'].values[0]
@@ -150,6 +151,8 @@ def output_site_attributes(clicks):
         mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
         mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
         return(dcc.Markdown(mdText))
+
+
 
 # TODO: add callback for layer visibility
 # add callback for point attributes
