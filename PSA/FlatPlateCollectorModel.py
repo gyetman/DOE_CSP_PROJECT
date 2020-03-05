@@ -8,6 +8,9 @@ weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042
 
 import numpy as np
 from math import pi,sqrt
+import pandas as pd
+import datetime as dt
+import pvlib
 #from scipy.interpolate import CubicSpline
 #%% Number of columns in collector field
 def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
@@ -63,12 +66,12 @@ def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v
     
     num_col=Increm_fila/Increm_capt
     
-    resto=num_col-floor(num_col)
-    
+    resto=num_col-np.floor(num_col)
+
     if (resto>=0.3):
-        num_col=floor(num_col)+1
+        num_col=np.floor(num_col)+1
     else:
-        num_col=floor(num_col)
+        num_col=np.floor(num_col)
         
     
     x=0;
@@ -120,32 +123,52 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     rad=pi/180;
     Interv_horas=Interv/60;    #% Time interval of the data, hours
     
-    #% Open the meteo data file and upload the data 
-    [FileName, PathName]=uigetfile('*.*', 'Select the.mat File');
-    
-    NombreFichero=[PathName FileName];
-    #eval(['load ''' NombreFichero '''']);
+#    #% Open the meteo data file and upload the data 
+#    [FileName, PathName]=uigetfile('*.*', 'Select the.mat File');
+#    
+#    NombreFichero=[PathName FileName];
+#    #eval(['load ''' NombreFichero '''']);
+    datacols=list(range(0,14))
+    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
     
     #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
-    julian_date_inicio=juliano(fecha_inicio);
-    julian_date_fin=juliano(fecha_fin);
+    # AAA- major changes to this segment for pulling data from TMY
+    datetimes=np.asarray(data.iloc[:,0:6])
+#    Julian_Date=pd.to_datetime(datetimes)
+#    julian_date_inicio=pd.to_datetime(fecha_inicio)
+    
+#    julian_date_inicio=juliano(fecha_inicio);
+#    julian_date_fin=juliano(fecha_fin);
+#    initialdate=dt.datetime(fecha_inicio[0],fecha_inicio[1],fecha_inicio[2],fecha_inicio[3],fecha_inicio[4],fecha_inicio[5],)
+#    ts=pd.to_datetime(initialdate)
+#    julian_date_inicio=str(ts)
     
     #% Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
-    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
-    
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
+    rowstart=data.loc[(data['Month']==fecha_inicio[1]) & (data['Day']==fecha_inicio[2]) & (data['Hour']==fecha_inicio[3])].index.values
+    rowend=data.loc[(data['Month']==fecha_fin[1]) & (data['Day']==fecha_fin[2]) & (data['Hour']==fecha_fin[3])].index.values
+    rows=list(range(rowstart[0],rowend[0]+1))
     #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
-    Julian_date_D=Julian_Date(rows);
-    temp_amb_D=temp_amb(rows);
-    Rad_sol_global_D=Rad_Global_inclin(rows);
+#    Julian_date_D=Julian_Date(rows);
+    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
+    dni=data['DNI'].iloc[rows]
+    ghi=data['GHI'].iloc[rows]
+    dhi=data['DHI'].iloc[rows]
+    surfalbedo=data['Surface Albedo'].iloc[rows]
+#    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
+    
+    solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
+    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
+    Rad_sol_global_D=np.asarray(poa.iloc[:,0])
     
     #% Calculation of the inlet temperature to the collector, assuming that it is the average between the inlet and outlet water temperatures in the solar field
     Te=(Tent_campo+Tsal_campo)/2;
     
     #% Number of collectors per row
-    num_col=num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin{:});
+    num_col=num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args);
     
     #% Determine the number of rows of the vector Julian_Date_D to establish the indicator of FOR loop
-    num_instantes=size(Julian_date_D,1);
+    num_instantes=np.shape(rows)[0]
     
     #% Create the matrix of zeros
     Julian_date_vec=np.zeros((num_instantes,6))
@@ -161,15 +184,17 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the thermal energy delivered by one row. E_term_fila_kWh, kWh
     #% If the thermal energy is positive (higher than zero), keep the values in a vector called E_term_fila_valida
     
-        for k=1:num_instantes:
-            Julian_date_vec(k,:)=jul2calg(Julian_date_D(k,1));
-            Ts(k,1)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te,temp_amb_D(k,1),qm,a,b,c,d,Rad_sol_global_D(k,1),A,varargin{:});
-            Pot_capt(k,1)=qm*(d*(Ts(k,1)-Te));
-            Pot_fila(k,1)=Pot_capt(k,1)*num_col;                      
-            E_term_fila_kWh(k,1)= Pot_fila(k,1)*Interv_horas;
-            if E_term_fila_kWh(k,1)>0:
-               E_term_fila_valida(k,1)=E_term_fila_kWh(k,1);         
-            
+    for k in range(num_instantes):
+        Julian_date_vec[k]=datetimes[rows[k]]#jul2calg(Julian_date_D[k]);
+        Ts[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te,temp_amb_D[k],qm,a,b,c,d,Rad_sol_global_D[k],A,*args);
+        print('MADE IT')
+
+        Pot_capt[k]=qm*(d*(Ts[k]-Te));
+        Pot_fila[k]=Pot_capt[k]*num_col;                      
+        E_term_fila_kWh[k]= Pot_fila[k]*Interv_horas;
+        if E_term_fila_kWh[k]>0:
+           E_term_fila_valida[k]=E_term_fila_kWh[k];         
+        
          
         
     #% Calculate the useful thermal energy supplied by one row of collectors during the design day, kWh
@@ -184,12 +209,12 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the decimal part of the resulting number of rows
     #% If the decimal part is higher than 0.5, then sum 1 to the number of rows obtained before
     #% If the decimal part is lower than 0.5, then rest 1 to the number of rows obtained before
-    resto=num_fila-floor(num_fila);
+    resto=num_fila-np.floor(num_fila);
     
-        if (resto>=0.5):
-            num_fila=floor(num_fila)+1
-        else:
-            num_fila=floor(num_fila)-1;
+    if (resto>=0.5):
+        num_fila=np.floor(num_fila)+1
+    else:
+        num_fila=np.floor(num_fila)-1
         
     
     #% Calculate the total number of collectors (num_total_col) and the total aperture area (area_total_captacion)
@@ -197,14 +222,13 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     area_total_captacion=num_total_col*A;        #m2
     
     #% Save the data
-    FileNuevo='numfilas';
-    [FileName, PathName, FilterIndex]=uiputfile('*.mat', 'Save variables in .mat file', FileNuevo);
-    NombreFichero=[PathName FileName];
+#    FileNuevo='numfilas';
+#    [FileName, PathName, FilterIndex]=uiputfile('*.mat', 'Save variables in .mat file', FileNuevo);
+#    NombreFichero=[PathName FileName];
     #eval(['save ''' NombreFichero ''' num_fila num_total_col area_total_captacion']);
 
         
     return num_fila, num_total_col, area_total_captacion
-
 #%% Determines solar fraction of static collector field and gives annual thermal power profile on hourly basis
 def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,varargin):
 
@@ -317,7 +341,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
       for k=1:num_instantes
           Julian_date_vec(k,:)=jul2calg(Julian_Date(k,1));
           ang_inc(k,1)= ang_inc_staticcol(Julian_date_vec(k,:),[Long Lat],[inc_captador v_azim]);
-          [sun_cenit(k,1) sun_acimut(k,1)]=psasunpos(Julian_date_vec(k,:),Long,Lat);
+          sun_cenit(k,1),sun_acimut(k,1)=psasunpos(Julian_date_vec(k,:),Long,Lat);
         if num_col~=1  
           for n=1:num_col-1
               Ts(k,n)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te(k,n),temp_amb(k,1),qm(k,1),a,b,c,d,Rad_Global_inclin(k,1),A,varargin{:});
@@ -424,7 +448,7 @@ def psasunpos(Time,Longitude,Latitude):
     AstronomicalUnit=149597890;
     
     
-    if np.shape(vector1)[0]!=np.size(vector1):
+    if np.shape(Time)[0]!=np.size(Time):
     #% Calculate difference in days between the current Julian Day and JD 2451545.0, which is 
     #% noon 1 January 2000 Universal Time
     #
