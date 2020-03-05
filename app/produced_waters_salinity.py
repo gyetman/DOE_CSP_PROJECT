@@ -11,6 +11,9 @@ import numpy as np
 CENTER_LAT=32.7767
 CENTER_LON=-96.7970
 
+# TODO: add code for user-selected point, 
+# then dump TDS value for use in software. 
+
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 mapbox_key = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
 app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
@@ -27,6 +30,11 @@ df_county['text'] = df_county['TDS_mgL'].round(1).astype(str) + ' mg/L'
 df_desal = pd.read_csv('./GISData/desal_plants.csv')
 df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
 
+# load power plants
+df_power = pd.read_csv('./GISData/power_plants.csv')
+df_power['text'] = 'Plant Type: ' + df_power['primary_fuel']
+
+
 #load geoJSON geometries for county data (average TDS)
 with open('./gisData/county_tds.geojson','r') as f:
     geoj = json.load(f)
@@ -40,6 +48,7 @@ userPoint = go.Scattermapbox(
     mode='markers',
     marker=dict(
         size=13,
+        color='red',
     ),
     showlegend=False,
     visible=False,
@@ -73,14 +82,31 @@ desalLocation = go.Scattermapbox(
     hoverinfo='text',
     text=df_desal.text,
     marker=dict(
-        size=9,
-        color='green',
+        size=7,
+        color='red',
     ),
     visible=True
     # TODO: duplicate this layer to have cutoffs:
     # 5,000
     # 10,000
     # 20,000
+    
+)
+
+
+plantLocation = go.Scattermapbox(
+    name='Power Plants',
+    lat=df_power.latitude,
+    lon=df_power.longitude,
+    mode='markers',
+    hoverinfo='text',
+    text=df_power.text,
+    marker=dict(
+        size=9,
+        color='green',
+    ),
+    visible=True
+    # TODO: filter to show only coal, gas & nuclear
     
 )
 
@@ -101,7 +127,7 @@ tdsData = go.Choroplethmapbox(
     visible=True,
     )
 
-data = [tdsData,wellLocation,desalLocation,userPoint] # sets the order
+data = [tdsData,wellLocation,plantLocation,desalLocation,userPoint] # sets the order
 
 layout = go.Layout(
     height=600,
