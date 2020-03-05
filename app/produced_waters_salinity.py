@@ -21,7 +21,7 @@ df['text'] = df['TDS_mgL'].round(1).astype(str) + ' mg/L'
 
 # load county attributes
 df_county = pd.read_csv('./GISData/county_tds.csv')
-df['text'] = df_county['TDS_mgL'].round(1).astype(str) + ' mg/L'
+df_county['text'] = df_county['TDS_mgL'].round(1).astype(str) + ' mg/L'
 
 #load geoJSON geometries for county data (average TDS)
 with open('./gisData/county_tds.geojson','r') as f:
@@ -47,11 +47,12 @@ wellLocation = go.Scattermapbox(
     lat=df.dec_lat_va,
     lon=df.dec_long_va,
     mode='markers',
-    text=df.TDS_mgL,
+    hoverinfo='text',
+    text=df_county.text,
     marker=dict(
-        size=7,
+        size=5,
     ),
-    visible=False
+    visible=True
 
 )
 
@@ -68,8 +69,8 @@ tdsData = go.Choroplethmapbox(
     ),
     marker_opacity=1, 
     marker_line_width=0,
+    hoverinfo='text'
     text=df.text,
-    hoverinfo='text',
     visible=True,
     # TODO: add year to map GUI (year of data)
     )
@@ -82,7 +83,7 @@ layout = go.Layout(
     autosize=True,
     #hovermode='closest',
     #clickmode='text',
-    title='Average TDS per county and Wells',
+    title='Average TDS per county and Well Location Data',
     showlegend=True,
     legend_orientation='h',
     mapbox=dict(
@@ -131,7 +132,6 @@ app.layout = html.Div(children=[
     [Input(component_id='map', component_property='clickData')]
 )
 def output_site_attributes(clicks):
-    wellLocation.visible = True
     # grab the attributes to show in the click data in the second div
     if clicks is None:
         print('empty click')
@@ -139,6 +139,7 @@ def output_site_attributes(clicks):
     if 'points' not in set(clicks.keys()):
         raise PreventUpdate
     else:
+        print(clicks['points'][0].keys())
         ptID = clicks['points'][0]['location']
         countyName = df_county.loc[df_county.IDField == ptID]['NAME'].values[0]
         avgTDS = df_county.loc[df_county.IDField == ptID]['TDS_mgL'].values[0]
