@@ -23,6 +23,10 @@ df['text'] = df['TDS_mgL'].round(1).astype(str) + ' mg/L'
 df_county = pd.read_csv('./GISData/county_tds.csv')
 df_county['text'] = df_county['TDS_mgL'].round(1).astype(str) + ' mg/L'
 
+# load desal plants
+df_desal = pd.read_csv('./GISData/desal_plants.csv')
+df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
+
 #load geoJSON geometries for county data (average TDS)
 with open('./gisData/county_tds.geojson','r') as f:
     geoj = json.load(f)
@@ -53,12 +57,35 @@ wellLocation = go.Scattermapbox(
         size=5,
     ),
     visible=False
+    # TODO: duplicate this layer to have cutoffs:
+    # 5,000
+    # 10,000
+    # 20,000
 
 )
 
 
+desalLocation = go.Scattermapbox(
+    name='Desalination Plants',
+    lat=df_desal.Latitude,
+    lon=df_desal.Longitude,
+    mode='markers',
+    hoverinfo='text',
+    text=df_desal.text,
+    marker=dict(
+        size=9,
+        color='green',
+    ),
+    visible=True
+    # TODO: duplicate this layer to have cutoffs:
+    # 5,000
+    # 10,000
+    # 20,000
+    
+)
+
 tdsData = go.Choroplethmapbox(
-    name='Mean TDS per county',
+    name='Mean TDS',
     geojson=geoj, 
     locations=df_county.IDField, 
     # featureidkey='ZCTA5CE10',
@@ -72,10 +99,9 @@ tdsData = go.Choroplethmapbox(
     #hoverinfo='skip',
     text=df.text,
     visible=True,
-    # TODO: add year to map GUI (year of data)
     )
 
-data = [tdsData,wellLocation,userPoint] # sets the order
+data = [tdsData,wellLocation,desalLocation,userPoint] # sets the order
 
 layout = go.Layout(
     height=600,
@@ -102,7 +128,7 @@ markdownText = '''
 '''
 
 fig = go.Figure(dict(data=data, layout=layout))
-app.title = 'Electric Rates'
+app.title = 'Produced Waters'
 app.layout = html.Div(children=[
     html.Div([
         html.Div([
