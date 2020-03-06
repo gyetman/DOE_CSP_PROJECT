@@ -80,8 +80,6 @@ layout = go.Layout(
 # placeholder for output text
 markdownText = '''
 
- 
-
 '''
 
 fig = go.Figure(dict(data=data, layout=layout))
@@ -125,31 +123,38 @@ def output_site_attributes(clicks):
         ptID = clicks['points'][0]['location']
         # TODO: add the vars to a dict as keys, then iterate to get values
         # convert formatting to function and return string for markdown. 
-        
-        maxIndRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_ind_rate'].values[0]
-        minIndRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_ind_rate'].values[0]
+
+        # TODO: Show only mean. Figure out why the variance. 
+        # Can we link directly to the database? 
+
+        # TODO: add zip code to pop-up, and name, and state abbreviation
+
+        # TODO: replace "Site Details" with description & data source (hyperlink)
+
+        #maxIndRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_ind_rate'].values[0]
+        #minIndRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_ind_rate'].values[0]
         avgIndRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_ind_rate'].values[0]
 
-        maxCommRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_comm_rate'].values[0]
-        minCommRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_comm_rate'].values[0]
+        #maxCommRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_comm_rate'].values[0]
+        #minCommRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_comm_rate'].values[0]
         avgCommRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_comm_rate'].values[0]
 
-        maxResRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_res_rate'].values[0]
-        minResRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_res_rate'].values[0]
+        #maxResRate = df.loc[df.ZCTA5CE10 == ptID]['MAX_res_rate'].values[0]
+        #minResRate = df.loc[df.ZCTA5CE10 == ptID]['MIN_res_rate'].values[0]
         avgResRate = df.loc[df.ZCTA5CE10 == ptID]['MEAN_res_rate'].values[0]
 
-        mdText = "#### Site Details\n\n"
-        mdText += 'Minimum Industrial Rate: ${:0.4f}/kWH\n\n'.format(minIndRate)
+        mdText = "###### Site Details\n\n"
+        #mdText += 'Minimum Industrial Rate: ${:0.4f}/kWH\n\n'.format(minIndRate)
         mdText += 'Average Industrial Rate: ${:0.4f}/kWH\n\n'.format(avgIndRate)
-        mdText += 'Maximum Industrial Rate: ${:0.4f}/kWH\n\n'.format(maxIndRate)
+        #mdText += 'Maximum Industrial Rate: ${:0.4f}/kWH\n\n'.format(maxIndRate)
 
-        mdText += 'Minimum Commercial Rate: ${:0.4f}/kWH\n\n'.format(minCommRate)
+        #mdText += 'Minimum Commercial Rate: ${:0.4f}/kWH\n\n'.format(minCommRate)
         mdText += 'Average Commercial Rate: ${:0.4f}/kWH\n\n'.format(avgCommRate)
-        mdText += 'Maximum Commercial Rate: ${:0.4f}/kWH\n\n'.format(maxCommRate)
+        #mdText += 'Maximum Commercial Rate: ${:0.4f}/kWH\n\n'.format(maxCommRate)
 
-        mdText += 'Minimum Residential Rate: ${:0.4f}/kWH\n\n'.format(minResRate)
+        #mdText += 'Minimum Residential Rate: ${:0.4f}/kWH\n\n'.format(minResRate)
         mdText += 'Average Residential Rate: ${:0.4f}/kWH\n\n'.format(avgResRate)
-        mdText += 'Maximum Residential Rate: ${:0.4f}/kWH\n\n'.format(maxResRate)
+        #mdText += 'Maximum Residential Rate: ${:0.4f}/kWH\n\n'.format(maxResRate)
 
         return(dcc.Markdown(mdText))
 

@@ -19,3 +19,6 @@ app/GISdata/electric_prices_zcta.csv.xml
 app/GISdata/county_tds.csv.xml
 app/GISdata/county_tds.geojson.metadata.xml
 *.ini
+app/GISdata/desal_plants.csv.xml
+app/GISdata/power_plants.csv.xml
+app/GISdata/schema.ini
