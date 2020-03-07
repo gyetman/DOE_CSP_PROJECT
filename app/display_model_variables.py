@@ -54,9 +54,7 @@ def create_callback_for_tables(model_vars_list):
      
     Then creates states for each table_id. These store changes to the tables.
     Finally, creates a callback that fires when the Run Model button is hit.
-        
     '''        
-
     def _create_state(table_id):
         ''' 
         creates states for each table by appending
@@ -72,9 +70,9 @@ def create_callback_for_tables(model_vars_list):
 
     for mVs in model_vars_list:
         #Collect the table ids
-        table_ids = [*{*[ '{}{}{}'.format(v['Tab'],v['Section'],v['Subsection'])\
-                                    .replace(' ','_').replace('(','').replace(')','')\
-                                        for v in mVs]}]
+        table_ids = [*{*[ f"{v['Tab']}{v['Section']}{v['Subsection']}"\
+                    .replace(' ','_').replace('(','').replace(')','')\
+                    for v in mVs]}]
                                         
         #Create States for each table id
         for table_id in table_ids:
@@ -121,9 +119,9 @@ def create_callback_for_tables(model_vars_list):
                     _update_model_variables(tbl_data)  
             #create simple name:value dicts from model variables
             # to be used by SamBaseClass
-            solar_output_vars = {}
-            desal_output_vars = {}
-            finance_output_vars = {}
+            solar_output_vars = dict()
+            desal_output_vars = dict()
+            finance_output_vars = dict()
             for dvar in desal_model_vars:
                 desal_output_vars[dvar['Name']] = _convert_strings_to_literal(dvar)
             for svar in solar_model_vars:
@@ -252,8 +250,7 @@ def create_variable_lists(model_name, json_vars, json_vals):
     cleans up the values, removing spaces
     sorts the values by hierarchy
     returns: a list of default dicts
-    '''
-    
+    '''  
     model_vars = []
     # open and load the json variables file
     with open(json_vars, "r") as read_file:
@@ -287,6 +284,51 @@ def create_variable_lists(model_name, json_vars, json_vals):
                     pass
     return model_vars
 
+def json_update(data, filename):
+    '''
+    updates dict in json file
+    @data dict: data to update json dict
+    @filename str: json file path containing dict to update
+    '''
+    tmp = json_load(filename)
+    tmp.update(data)
+    with open(filename,'w') as json_file:
+        json.dump(tmp, json_file) 
+
+def json_load(filename):
+    '''returns contents of json file'''
+    try: 
+        with open(filename) as json_file: 
+            return json.load(json_file)
+    except FileNotFoundError:
+        return {}
+    
+def get_weather_file():
+    '''
+    checks to see if a weather file was written to the user directory and
+    returns it or the default weather file
+    
+    '''
+    if cfg.weather_file_path.is_file():
+        with open(cfg.weather_file_path, 'r') as f:
+            return f.readline().strip()
+    else:
+        return cfg.default_weather_file
+
+def index_in_list_of_dicts(lists,key,value):
+    '''
+    checks lists to see if a key value exists in it
+    returns the list and index of the first dict where the key and 
+    value was found, else returns None,None
+
+    none: index 0 can be returned, so use explicit tests with result
+    '''
+    for l in lists:
+        for index, d in enumerate(l):
+            if d[key] == value:
+                return l,index
+    return None,None
+
 def run_model(csp='tcslinear_fresnel',
               desal=None,
               finance=None,
@@ -319,38 +361,13 @@ def unpack_keys_from_array_of_dicts(array_of_dicts):
     for k in array_of_dicts:
         keys.append(*k)
     return keys
-
-def index_in_list_of_dicts(lists,key,value):
-    '''
-    checks lists to see if a key value exists in it
-    returns the list and index of the first dict where the key and 
-    value was found, else returns None,None
-
-    none: index 0 can be returned, so use explicit tests with result
-    '''
-    for l in lists:
-        for index, d in enumerate(l):
-            if d[key] == value:
-                return l,index
-    return None,None
-
-def get_weather_file():
-    '''
-    checks to see if a weather file was written to the user directory and
-    returns it or the default weather file
-    
-    '''
-    if cfg.weather_file_path.is_file():
-        with open(cfg.weather_file_path, 'r') as f:
-            return f.readline().strip()
-    else:
-        return cfg.default_weather_file
-    
         
 #
 #MAIN PROGRAM
 #
 
+# first prime the app_json
+json_update(cfg.app_json_init,cfg.app_json)
 
 solar_model_vars = create_variable_lists(
     model_name=cfg.solar, 
@@ -377,10 +394,9 @@ solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
 desal_tabs = collect_and_sort_model_tabs(desal_model_vars)
 finance_tabs = collect_and_sort_model_tabs(finance_model_vars)
 
-# references which tabs and variables to use based on the button that was pressed
-models = ['Desalination System','Solar Thermal System','Financial Model']
+# references for tabs and variables to use based on selcted button
+models = ['desal','solar','finance']
 
-#NOTE! using desal variables in place of financial until finance in place 
 Model_tabs = {models[0]:desal_tabs,
               models[2]:finance_tabs,
               models[1]:solar_tabs}
@@ -413,10 +429,14 @@ tab_selected_style = {
     #'padding': '6px'
 }
 
-app.layout = html.Div([
+def serve_layout():
+    return application_layout
+
+application_layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
 ])
+app.layout = serve_layout
 app.title = 'Model and Parameter Selection'
 
 model_selection_layout = html.Div([
@@ -457,41 +477,26 @@ model_selection_layout = html.Div([
             ),width=10,
         ),
     ],row=True,),
+    dbc.Col(id='model-parameters',
+    width=2, 
+    style={'horizontal-align':'center'})
 ])
-
-# @app.callback(
-#     Output('Desalination_System-toggle', 'children'), 
-#     [Input('select-desal','value')],
-# )
-# def label_tables(l_desal):
-#     return cfg.Desal[l_desal]
-
-# @app.callback(
-#     Output('model-card','children'),
-#     [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
-# )
-# def toggle_model_side_panel(m1,m2,m3):
-
-# # not used at the moment but keeping in case we can figure out how
-# # to make a collaspible button group
-# # button_group = dbc.ButtonGroup(
-# #     [dbc.Button("Desalination System",id='desal-button'), 
-# #      dbc.Button("Solar Thermal System",id='solar-button'),
-# #      dbc.Button("Financial Model",id='finance-button')]
-# # )
 
 loading = html.Div([
     html.P(),
-    dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default")]
+    dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default", color="#18BC9C")]
 )
 
-model_vars_title = html.H3('System Configuration', className='page-header')
+model_vars_title = html.Div([
+    html.H3('System Configuration', className='page-header'),
+    html.P()])
 
 def make_tabs_in_collapse(i):
+    # return the tabs belonging to the collapse button
     return dbc.Card(
         [
             dbc.Button(
-                f"{i}",
+                html.Div("Title Here",id=f'collapse-title-{i}'),
                 color="primary",
                 id=f"{i}-toggle".replace(' ','_'),
             ),
@@ -506,12 +511,12 @@ def make_tabs_in_collapse(i):
                 ),
                 id=f"collapse-{i}".replace(' ','_'),
             ),
-        ],style={'padding':0} #TODO need to figure out how to properly override the padding
+        ],id='tabs-card', style={'padding':0} #TODO need to figure out how to properly override the padding
     )
 
 tabs_accordion = dbc.Card(
-    [make_tabs_in_collapse(models[0]), make_tabs_in_collapse(models[1]), make_tabs_in_collapse(models[2])], className="accordion h-100"
-) 
+    [make_tabs_in_collapse(m) for m in models], className="accordion h-100"
+)
 
 primary_card = dbc.Card(
     dbc.CardBody([
@@ -563,8 +568,7 @@ side_panel = dbc.Card([model_card,primary_card,],className="h-100", color="secon
 
 tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9)],no_gutters=True)
 
-#model_tables_layout = html.Div([model_vars_title, loading, tabs])
-model_tables_layout = html.Div([model_vars_title, loading, tabs])
+model_tables_layout = html.Div([model_vars_title, tabs])
 
 #
 ### CALLBACKS
@@ -584,20 +588,22 @@ def display_page(pathname):
     else:
         return html.H5('404 URL not found')
   
-# Once all three models have been selected,
-# create a button to navigate to the model variables page
 @app.callback(
     Output('model-parameters', 'children'),
     [Input('select-solar', 'value'),
      Input('select-desal', 'value'),
      Input('select-finance', 'value')])
 def display_model_parameters(solar, desal, finance):
+    '''
+    After all 3 models are selected updates app JSON file and 
+    creates button to navigate to model variables page
+    '''
     if solar and desal and finance:
+        json_update(data={'solar':solar, 'desal':desal, 'finance':finance},  
+                    filename=cfg.app_json)
         return html.Div([
             html.P(),
-            
-            dcc.Link(html.Button('Next'), href='/model-variables'),
-        ])
+            dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/model-variables')])
         
 @app.callback(
     Output('desal-design-results', 'children'),
@@ -622,6 +628,16 @@ def run_desal_design(desalDesign):
             dd_outputs.append(html.Div(f"{dd['Name']}: {dd_val} {dd['Unit']}"))
         return dbc.Alert(dd_outputs)
 
+@app.callback([Output(f"collapse-title-{i}", 'children') for i in models],
+            [Input('tabs-card','children')])
+def title_collapse_buttons(x):
+    '''Titles the collapse buttons based on values stored in JSON file'''
+    app_vals = json_load(cfg.app_json)
+    d = f"{cfg.Desal[app_vals['desal']].rstrip()} Desalination System"
+    s = cfg.Solar[app_vals['solar']].rstrip()
+    f = cfg.Financial[app_vals['finance']].rstrip()
+    return d,s,f
+
 @app.callback(
     Output('model-card','children'),
     [Input(f"{i}-toggle".replace(' ','_'), "n_clicks") for i in models],
@@ -634,9 +650,9 @@ def toggle_model_side_panel(m1,m2,m3):
     else:
         button_id = 'default'
 
-    if button_id == 'Solar_Thermal_System-toggle':
+    if button_id == 'solar-toggle':
         return solar_side_panel
-    elif button_id == 'Financial_Model-toggle':
+    elif button_id == 'finance-toggle':
         return finance_side_panel
     else: #default and 'Desalination_System-toggle'
         return desal_side_panel
