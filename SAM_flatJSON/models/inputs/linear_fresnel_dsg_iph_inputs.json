@@ -4,10 +4,12 @@
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",
             "Label": "Storage hour",
+			"Units": "hour",
             "Group": "Storage",
             "Require": "",
             "Costraint": "LOCAL_FILE",
-            "Tab": "Thermal storage"
+            "Tab": "System Design",
+			"Section": "Thermal storage"
         },
         {
             "DataType": "SSC_STRING",
@@ -25,89 +27,105 @@
             "Units": "W/m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_cold_ref",
-            "Label": "Reference HTF outlet temperature at design",
+            "Label": "Field inlet temperature",
             "Units": "C",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_turb_des",
-            "Label": "Design-point turbine inlet pressure",
+            "Label": "Heat sink inlet pressure",
             "Units": "bar",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Heat Sink"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_hot",
-            "Label": "Hot HTF inlet temperature, from storage tank",
+            "Label": "Field outlet temperature",
             "Units": "C",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "x_b_des",
-            "Label": "Design point boiler outlet steam quality",
+            "Label": "Field outlet steam quality",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "q_pb_des",
-            "Label": "Design heat input to the power block",
+            "Label": "Heat sink power",
             "Units": "MW",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Heat Sink"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "fP_hdr_c",
-            "Label": "Average design-point cold header pressure drop fraction",
+            "Label": "Cold header pressure drop fraction",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Steam Design Conditions"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "fP_sf_boil",
-            "Label": "Design-point pressure drop across the solar field boiler fraction",
+            "Label": "Boiler pressure drop fraction",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Steam Design Conditions"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "fP_hdr_h",
-            "Label": "Average design-point hot header pressure drop fraction",
+            "Label": "Average design point hot header pressure drop fraction",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Steam Design Conditions"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nModBoil",
-            "Label": "Number of modules in the boiler section",
+            "Label": "Number of modules in boiler section",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
             "Costraint": "INTEGER",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -116,61 +134,68 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "eta_pump",
-            "Label": "Feedwater pump efficiency",
+            "Label": "Field pump efficiency",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Steam Design Conditions"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "theta_stow",
-            "Label": "stow angle",
+            "Label": "Solar elevation for collector nighttime stow",
             "Units": "deg",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "theta_dep",
-            "Label": "deploy angle",
+            "Label": "Solar elevation for collector morning deploy",
             "Units": "deg",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_fp",
-            "Label": "Freeze protection temperature (heat trace activation temperature)",
+            "Label": "Freeze protection temperature",
             "Units": "C",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Steam Design Conditions"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "Pipe_hl_coef",
-            "Label": "Loss coefficient from the header.. runner pipe.. and non-HCE pipin",
+            "Label": "Piping thermal loss coefficient",
             "Units": "W/m2-K",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "SCA_drives_elec",
-            "Label": "Tracking power.. in Watts per m2",
+            "Label": "Tracking power",
             "Units": "W/m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -179,34 +204,38 @@
             "Units": "deg",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "e_startup",
-            "Label": "Thermal inertia contribution per sq meter of solar field",
+            "Label": "Thermal inertia per unit area of solar field",
             "Units": "kJ/K-m2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Plant Heat Capacity"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_amb_des_sf",
-            "Label": "Design-point ambient temperature",
+            "Label": "Design point ambient temperature",
             "Units": "C",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "V_wind_max",
-            "Label": "Maximum allowable wind velocity before safety stow",
+            "Label": "Stow wind speed",
             "Units": "m/s",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -215,385 +244,460 @@
             "Units": "L/m2_aper",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Solar Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "csp.lf.sf.washes_per_year",
-            "Label": "Mirror washing frequency",
+            "Label": "Washes per year",
             "Units": "-/year",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Solar Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "A_aperture",
-            "Label": "(boiler, SH) Reflective aperture area of the collector module",
+            "Label": "Reflective aperture area",
             "Units": "m^2",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "L_col",
-            "Label": "(boiler, SH) Active length of the superheater section collector module",
+            "Label": "Length of collector module",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "OptCharType",
-            "Label": "(boiler, SH) The optical characterization method",
+            "Label": "Optical characterization method ('1' for Soalr possition table, '2' for Collector incidence angle table, '3' for Incidence angle modifiers",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "IAM_T",
-            "Label": "(boiler, SH) Transverse Incident angle modifiers (0,1,2,3,4 order terms)",
+            "Label": "Transverse Incident angle modifiers (0,1,2,3,4 order terms)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance",
+            "Subsection": "Incidence Angle Modifier Coefficients"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "IAM_L",
-            "Label": "(boiler, SH) Longitudinal Incident angle modifiers (0,1,2,3,4 order terms)",
+            "Label": "Longitudinal Incident angle modifiers (0,1,2,3,4 order terms)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance",
+            "Subsection": "Incidence Angle Modifier Coefficients"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "TrackingError",
-            "Label": "(boiler, SH) User-defined tracking error derate",
+            "Label": "Tracking error",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "GeomEffects",
-            "Label": "(boiler, SH) User-defined geometry effects derate",
+            "Label": "Geometry effects",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "rho_mirror_clean",
-            "Label": "(boiler, SH) User-defined clean mirror reflectivity",
+            "Label": "Mirror reflectivity",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dirt_mirror",
-            "Label": "(boiler, SH) User-defined dirt on mirror derate",
+            "Label": "Mirror soiling",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "error",
-            "Label": "(boiler, SH) User-defined general optical error derate",
+            "Label": "General optical error",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "HLCharType",
-            "Label": "(boiler, SH) Flag indicating the heat loss model type {1=poly.; 2=Forristall}",
+            "Label": "Heat loss model type {1=poly.; 2=Forristall}",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "HL_dT",
-            "Label": "(boiler, SH) Heat loss coefficient - HTF temperature (0,1,2,3,4 order terms)",
+            "Label": "Steam temperature adjustment",
             "Units": "W/m-K^order",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Polynomial fit heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "HL_W",
-            "Label": "(boiler, SH) Heat loss coef adj wind velocity (0,1,2,3,4 order terms)",
+            "Label": "Wind velocity adjustment ",
             "Units": "1/(m/s)^order",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Polynomial fit heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "D_2",
-            "Label": "(boiler, SH) The inner absorber tube diameter",
+            "Label": "Absorber tube inner diameter",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "D_3",
-            "Label": "(boiler, SH) The outer absorber tube diameter",
+            "Label": "Absorber tube outer diameter",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "D_4",
-            "Label": "(boiler, SH) The inner glass envelope diameter",
+            "Label": "Glass envelope inner diameter",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "D_5",
-            "Label": "(boiler, SH) The outer glass envelope diameter",
+            "Label": "Glass envelope outer diameter",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "D_p",
-            "Label": "(boiler, SH) The diameter of the absorber flow plug (optional)",
+            "Label": "Absorber flow plug diameter",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Rough",
-            "Label": "(boiler, SH) Roughness of the internal surface",
+            "Label": "Internal surface roughness",
             "Units": "m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Flow_type",
-            "Label": "(boiler, SH) The flow type through the absorber",
+            "Label": "Absorber flow pattern ('1' for Tube flow, '2' for Annular flow)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "AbsorberMaterial",
-            "Label": "(boiler, SH) Absorber material type",
+            "Label": "Absorber material type ('1' for 304L, '2' for 216L, '3' for 321H, '4' for B42 Copper)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "HCE_FieldFrac",
-            "Label": "(boiler, SH) The fraction of the field occupied by this HCE type (4: # field fracs)",
+            "Label": "Variant weighting fraction (4 types are allowed)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "alpha_abs",
-            "Label": "(boiler, SH) Absorber absorptance (4: # field fracs)",
+            "Label": "Absorber absorptance",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "b_eps_HCE1",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "Absorber emittance_1",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "b_eps_HCE2",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "Absorber emittance_2",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "b_eps_HCE3",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "Absorber emittance_3",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "b_eps_HCE4",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "Absorber emittance_4",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sh_eps_HCE1",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "(Table) Absorber emittance_1",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sh_eps_HCE2",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "(Table) Absorber emittance_2",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sh_eps_HCE3",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "(Table) Absorber emittance_3",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sh_eps_HCE4",
-            "Label": "(temperature) Absorber emittance (eps)",
+            "Label": "(Table) Absorber emittance_4",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "alpha_env",
-            "Label": "(boiler, SH) Envelope absorptance (4: # field fracs)",
+            "Label": "Envelope absorptance",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "EPSILON_4",
-            "Label": "(boiler, SH) Inner glass envelope emissivities (Pyrex) (4: # field fracs)",
+            "Label": "Envelope emittance",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Tau_envelope",
-            "Label": "(boiler, SH) Envelope transmittance (4: # field fracs)",
+            "Label": "Envelope transmittance",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "GlazingIntactIn",
-            "Label": "(boiler, SH) The glazing intact flag {true=0; false=1} (4: # field fracs)",
+            "Label": "Broken Glass {true=0; false=1} ",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "AnnulusGas",
-            "Label": "(boiler, SH) Annulus gas type {1=air; 26=Ar; 27=H2} (4: # field fracs)",
+            "Label": " Annulus gas type {1=air; 26=Ar; 27=H2} ",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "P_a",
-            "Label": "(boiler, SH) Annulus gas pressure (4: # field fracs)",
+            "Label": "Annulus gas pressure (torr)",
             "Units": "torr",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Design_loss",
-            "Label": "(boiler, SH) Receiver heat loss at design (4: # field fracs)",
+            "Label": "Estimated avg. heat loss",
             "Units": "W/m",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Shadowing",
-            "Label": "(boiler, SH) Receiver bellows shadowing loss factor (4: # field fracs)",
+            "Label": "Bellows shadowing",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "Dirt_HCE",
-            "Label": "(boiler, SH) Loss due to dirt on the receiver envelope (4: # field fracs)",
+            "Label": "Dirt on receiver",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss",
+            "Subsection": "Evacuated tube heat loss model"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "b_OpticalTable",
-            "Label": "Values of the optical efficiency table",
+            "Label": "Solar Position/Collector Incidence Angle Table",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance",
+            "Subsection": "Values of solar position/collector incidence angle table"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -602,15 +706,18 @@
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
-            "Tab": "solarfield"
+            "Tab": "Collector and Receiver",
+            "Section": "Boiler Geometry and Optical Performance"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "heat_sink_dP_frac",
-            "Label": "Fractional pressure drop through heat sink",
+            "Label": "Heat sink fractional pressure drop",
             "Group": "heat_sink",
             "Require": "*",
-            "Tab": "heat_sink"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Heat Sink"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -620,7 +727,9 @@
             "Group": "Loss Adjustments",
             "Require": "*",
             "Costraint": "MAX=100",
-            "Tab": "Loss Adjustments"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "System Availability and Curtailment"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -630,7 +739,9 @@
             "Group": "Loss Adjustments",
             "Require": "?",
             "Costraint": "LENGTH=8760",
-            "Tab": "Loss Adjustments"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "System Availability and Curtailment"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -641,7 +752,9 @@
             "Group": "Loss Adjustments",
             "Require": "?",
             "Costraint": "COLS=3",
-            "Tab": "Loss Adjustments"
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "System Availability and Curtailment"
         }
     ]
 }
