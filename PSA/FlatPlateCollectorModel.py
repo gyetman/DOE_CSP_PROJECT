@@ -11,8 +11,9 @@ from math import pi,sqrt
 import pandas as pd
 import datetime as dt
 import pvlib
+import iapws
 #from scipy.interpolate import CubicSpline
-#%% Number of columns in collector field
+#%% Number of collectors per row in collector field
 def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
 
 #    % num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin)
@@ -65,16 +66,19 @@ def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v
     Increm_capt=Ts-Te
     
     num_col=Increm_fila/Increm_capt
-    
-    resto=num_col-np.floor(num_col)
-
-    if (resto>=0.3):
-        num_col=np.floor(num_col)+1
-    else:
-        num_col=np.floor(num_col)
+    ################### AAA- NOT SURE WHY THRESHOLD FOR ROUND IS 0.3, BUT WILL REPLACE WITH ONE TWO LINES
+#    resto=num_col-np.floor(num_col)
+#
+#    if (resto>=0.3):
+#        num_col=np.floor(num_col)+1
+#    else:
+#        num_col=np.floor(num_col)
         
     
-    x=0;
+#    x=0;
+    threshold=0.3
+    num_col=int(np.round(num_col - threshold + 0.5))
+    
     return num_col
 
 
@@ -186,9 +190,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     
     for k in range(num_instantes):
         Julian_date_vec[k]=datetimes[rows[k]]#jul2calg(Julian_date_D[k]);
-        Ts[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te,temp_amb_D[k],qm,a,b,c,d,Rad_sol_global_D[k],A,*args);
-        print('MADE IT')
-
+        Ts[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te,temp_amb_D[k],qm,a,b,c,d,Rad_sol_global_D[k],A,*args)
         Pot_capt[k]=qm*(d*(Ts[k]-Te));
         Pot_fila[k]=Pot_capt[k]*num_col;                      
         E_term_fila_kWh[k]= Pot_fila[k]*Interv_horas;
@@ -204,18 +206,20 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     E_term_total=Pot_term_kW*tiempo_oper;
     
     #% Calculate the number of rows
-    num_fila=E_term_total/E_term_fila_total;
-    
+    num_fila=int(np.round(E_term_total/E_term_fila_total))
+
+# AAA- this segement is unnecessary since we can just use the round function; not sure why we'd subtract one if fraction<0.5#################################
+
     #% Calculate the decimal part of the resulting number of rows
     #% If the decimal part is higher than 0.5, then sum 1 to the number of rows obtained before
     #% If the decimal part is lower than 0.5, then rest 1 to the number of rows obtained before
-    resto=num_fila-np.floor(num_fila);
-    
-    if (resto>=0.5):
-        num_fila=np.floor(num_fila)+1
-    else:
-        num_fila=np.floor(num_fila)-1
-        
+#    resto=num_fila-np.floor(num_fila);
+#    
+#    if (resto>=0.5):
+#        num_fila=np.floor(num_fila)+1
+#    else:
+#        num_fila=np.floor(num_fila)-1
+#############################################################################################################        
     
     #% Calculate the total number of collectors (num_total_col) and the total aperture area (area_total_captacion)
     num_total_col=num_col*num_fila;
@@ -230,7 +234,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
         
     return num_fila, num_total_col, area_total_captacion
 #%% Determines solar fraction of static collector field and gives annual thermal power profile on hourly basis
-def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,varargin):
+def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,*args):
 
 #    % fraccion_solar_DOE(tipo_col,Pot_term_kW, qmo,coord_geo, orient_captador,Tent_campo, Tsal_campo,a,b,c,d,A,pressure,Interv,tiempo_oper,varargin) 
 #    % tipo_col '1' '2'
@@ -265,25 +269,41 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
 #         % varargin{3}: Incidence angle modifier for the theta T. Example: [1 1 1.05 1.15 1.3 1.35 1.30 1.05 0.6 0] 
 #    
 #    % Constants 
-    rad=pi/180;
+#    rad=pi/180;
     D=37;                    # in mm
     Interv_horas=Interv/60;
     
 #    % Select the meteo data file.mat and load the file 
-    [FileName, PathName]=uigetfile('*.*', 'Select the data.mat File');
+#    [FileName, PathName]=uigetfile('*.*', 'Select the data.mat File');
     
-    NombreFichero=[PathName FileName];
+#    NombreFichero=[PathName FileName];
     #eval(['load ''' NombreFichero '''']);
+    datacols=list(range(0,14))
+    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
     
+    #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
+    # AAA- major changes to this segment for pulling data from TMY
+    datetimes=np.asarray(data.iloc[:,0:6])
+#
+    #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
+#    Julian_date_D=Julian_Date(rows);
+    temp_amb=np.asarray(data['Temperature'])
+    dni=data['DNI']
+    ghi=data['GHI']
+    dhi=data['DHI']
+    surfalbedo=data['Surface Albedo']
+    solar_zenith,solar_azimuth=psasunpos(datetimes,Lat,Long)
+    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
+    Rad_Global_inclin=np.asarray(poa.iloc[:,0])
 #    % Determine the number of rows of the Julian_Date vector to establish the FOR loop 
-    num_instantes=size(Julian_Date,1);
+    num_instantes=np.shape(data)[0];
     
 #    % Calculate the maximum and minimum water mass flow rate, kg/s
 #    % If the certificate given by the manufacturer does not provide the minimum and maximum water mass flow rates, assume qm_min=0.3 L/m2min and maximum water
 #    % velocity in the collectors at 2 m/s
     qm_min=0.3;                                   # L/m2min
     Tm=(Tent_campo+Tsal_campo)/2;                 # ºC
-    density_water = densW(Tm,pressure);           # kg/m3
+    density_water = iapws.iapws97.IAPWS97(T=Tm+273.15,P=pressure*.1).rho          # kg/m3
     qm_min=(qm_min*A*density_water)/(60*1000);    # kg/s
     v_max=2;                                      # m/s
     Seccion=(pi/4)*((D/1000)**2);                 # m2
@@ -296,24 +316,26 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
     
     
 #    % Create matrix of zeros
-    Julian_date_vec=zeros(num_instantes,6);
-    ang_inc=zeros(num_instantes,1);
-    Ts=zeros(num_instantes,num_col-1);
-    Te=zeros(num_instantes,num_col);
-    Ts_fila=zeros(num_instantes,1);
-    Pot_fila=zeros(num_instantes,1);
-    Pot_campo=zeros(num_instantes,1);
-    qm_recalc=zeros(num_instantes,1);
-    E_campo=zeros(num_instantes,1);
+    Julian_date_vec=np.zeros((num_instantes,6))
+    ang_inc=np.zeros((num_instantes,1))
+    Ts=np.zeros((num_instantes+1,num_col))
+    Te=np.zeros((num_instantes+1,num_col))
+    Ts_fila=np.zeros(num_instantes)
+    Pot_fila=np.zeros(num_instantes)
+    Pot_campo=np.zeros(num_instantes)
+    qm_recalc=np.zeros(num_instantes)
+    E_campo=np.zeros(num_instantes)
+    qm=np.zeros(num_instantes+1)
+   
     
 #    % Initialize the water mass flow rate and the inlet temperature of the first collector in the first instant
-    Te(1,1)=temp_amb(1,1);
-    qm(1,1)=qmo;                    #% The water mass flow rate is initially equal to the nominal mass flow rate (qmo)
+    Te[0]=temp_amb[0]
+    qm[0]=qmo         #% The water mass flow rate is initially equal to the nominal mass flow rate (qmo)
     
 #    % FOR loop
 #    
 #        % Calculation of the date in the format[year month day hour minute second] from the data vector of the julian day 
-#        % Call function ang_inc_staticcol to determine the incidence angle
+#        % Call function ang_inc_stnum_colaticcol to determine the incidence angle
 #        % Calculation of the sun_cenit and sun_acimut by the function "psasunpos"
 #        
 #             % FOR loop for each collector 
@@ -338,52 +360,56 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
 #        % rate such that the outlet temperature of the row is equal to the water outlet temperature from the solar field
        
     
-      for k=1:num_instantes
-          Julian_date_vec(k,:)=jul2calg(Julian_Date(k,1));
-          ang_inc(k,1)= ang_inc_staticcol(Julian_date_vec(k,:),[Long Lat],[inc_captador v_azim]);
-          sun_cenit(k,1),sun_acimut(k,1)=psasunpos(Julian_date_vec(k,:),Long,Lat);
-        if num_col~=1  
-          for n=1:num_col-1
-              Ts(k,n)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te(k,n),temp_amb(k,1),qm(k,1),a,b,c,d,Rad_Global_inclin(k,1),A,varargin{:});
-              Te(k,n+1)=Ts(k,n);
-          end
-        end
-          Ts_fila(k,1)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te(k,num_col),temp_amb(k,1),qm(k,1),a,b,c,d,Rad_Global_inclin(k,1),A,varargin{:});   
-          Ts_fila(k,1)=real(Ts_fila(k,1));
-          Pot_fila(k,1)=qm(k,1)*(d*(Ts_fila(k,1)-Te(k,1)));
-          Pot_campo(k,1)=Pot_fila(k,1)*num_fila;      
-          if Ts_fila(k,1)<Tsal_campo 
-             qm_recalc(k,1)=Pot_fila(k,1)/(d*(Tsal_campo-Te(k,1)));
-             if qm_recalc(k,1)>qm_min
-                Te(k+1,1)=Tent_campo;
-                Pot_fila(k,1)=qm_recalc(k,1)*(d*(Tsal_campo-Te(k,1)));
-                Pot_campo(k,1)=Pot_fila(k,1)*num_fila;
-                qm(k+1,1)=qm_recalc(k,1);
-             elseif qm_recalc(k,1)<qm_min
-                 qm(k+1,1)=qmo;
-                 Te(k+1,1)=Ts_fila(k,1);
-             end
-          elseif Ts_fila(k,1)>Tsal_campo
-              qm_recalc(k,1)=Pot_fila(k,1)/(d*(Tsal_campo-Te(k,1)));
-              if qm_recalc(k,1)<qm_max
-                 Ts_fila(k,1)=Tsal_campo;
-                 Te(k+1,1)=Tent_campo;
-                 Pot_fila(k,1)=qm_recalc(k,1)*(d*(Tsal_campo-Te(k,1)));
-                 Pot_campo(k,1)=Pot_fila(k,1)*num_fila;
-                 qm(k+1,1)=qm_recalc(k,1);
-              elseif qm_recalc(k,1)>qm_max
-                 Ts_fila(k,1)=temp_salida_DOE(tipo_col,Julian_date_vec(k,:),Long,Lat,inc_captador,v_azim,Te(k,num_col),temp_amb(k,1),qm_max,a,b,c,d,Rad_Global_inclin(k,1),A,varargin{:});
-                 Pot_fila(k,1)=qm_max*(d*(Ts_fila(k,1)-Te(k,1)));
-                 Pot_campo(k,1)=Pot_fila(k,1)*num_fila;
-                 Te(k+1,1)=Tent_campo;
-                 qm(k+1,1)=qm_max;
-              end
-          end
+    for k in range(num_instantes):
+          Julian_date_vec[k]=datetimes[k]
+          ang_inc[k]= pvlib.irradiance.aoi(inc_captador,v_azim,solar_zenith[k],solar_azimuth[k])   #ang_inc_staticcol(Julian_date_vec[k],[Long, Lat],[inc_captador, v_azim]);
+          if num_col!=1:  
+              for n in range(num_col-1):
+                  Ts[k,n]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)
+                  Te[k,n+1]=Ts[k,n]
+          
+#          print(Julian_date_vec[k])
+#          print(Te)
+#          print(temp_amb[k])
+#          print(qm[k])
+#          print(Rad_Global_inclin[k])
+#          print(n)
+          Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)   
+          Ts_fila[k]=np.real(Ts_fila[k])
+          Pot_fila[k]=qm[k]*(d*(Ts_fila[k]-Te[k,0]))
+          Pot_campo[k]=Pot_fila[k]*num_fila      
+          if Ts_fila[k]<Tsal_campo: 
+             qm_recalc[k]=Pot_fila[k]/(d*(Tsal_campo-Te[k,0]));
+             if qm_recalc[k]>qm_min:
+                Te[k+1,1]=Tent_campo
+                Pot_fila[k]=qm_recalc[k]*(d*(Tsal_campo-Te[k,0]))
+                Pot_campo[k]=Pot_fila[k]*num_fila;
+                qm[k+1]=qm_recalc[k]
+             elif qm_recalc[k]<qm_min:
+                 qm[k+1]=qmo;
+                 Te[k+1]=Ts_fila[k]
+             
+          elif Ts_fila[k]>Tsal_campo:
+              qm_recalc[k]=Pot_fila[k]/(d*(Tsal_campo-Te[k,0]))
+              if qm_recalc[k]<qm_max:
+                 Ts_fila[k]=Tsal_campo
+                 Te[k+1]=Tent_campo
+                 Pot_fila[k]=qm_recalc[k]*(d*(Tsal_campo-Te[k,0]));
+                 Pot_campo[k]=Pot_fila[k]*num_fila;
+                 qm[k+1]=qm_recalc[k];
+              elif qm_recalc[k]>qm_max:
+                 Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm_max,a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)
+                 Pot_fila[k]=qm_max*(d*(Ts_fila[k]-Te[k,0]));
+                 Pot_campo[k]=Pot_fila[k]*num_fila;
+                 Te[k+1]=Tent_campo;
+                 qm[k+1]=qm_max
+              
+          
     
-          if Pot_campo(k,1)>0
-              E_campo(k,1)=Pot_campo(k,1)*Interv_horas;
-          end
-      end
+          if Pot_campo[k]>0:
+              E_campo[k]=Pot_campo[k]*Interv_horas
+          
+      
       
       
 #    % Calculate the total energy delivered by the solar field (E_total_campo) by the sum of the thermal energy delivered in every instant
@@ -395,8 +421,8 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW, qmo,Tent_campo, 
 #    % Calculate the solar fraction
     fraccion_solar=Etotal_campo/E_nominal;
     
-    x=0
-    return fraccion_solar
+    #x=0
+    return fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo
 #%% dot product 
 def dot_product(vector1,vector2):
     producto_escalar=np.empty([np.shape(vector1)[0],1])
@@ -428,10 +454,10 @@ def sunvector(cenit,acimut):
     rad=pi/180;
     cenit=cenit*rad;
     acimut=acimut*rad;
-    sx=np.sin(cenit).*np.cos(acimut);
-    sy=np.sin(cenit).*np.sin(acimut);
-    sz=np.cos(cenit);
-    sunvec=[sx, sy, sz];
+    sx=np.sin(cenit)*np.cos(acimut);
+    sy=np.sin(cenit)*np.sin(acimut);
+    sz=np.cos(cenit)
+    sunvec=[sx, sy, sz]
 
     return sunvec
 #%% Gets zenith and azimuth angles based on time, longitude and latitude 
@@ -586,7 +612,7 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #        case {'1'} #% FPC
     if tipo_col=='1':
            
-          ang_inc_D=ang_inc_staticcol(Time,[Long, Lat],[inc_captador,v_azim])
+          ang_inc_D=pvlib.irradiance.aoi(inc_captador,v_azim,cenit,acimut) 
           Ang_incid_rad=args[0]*rad
           bo=(1-args[1])/((1/np.cos(Ang_incid_rad)-1))
           Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
@@ -603,9 +629,9 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #             Mod_L=CubicSpline(args[0],args[1])
 #             Mod_T=CubicSpline(args[0],args[2])
 #             f_theta = Mod_L(incidence_angle_long_deg)*Mod_T(incidence_angle_trans_deg)
-             f_theta=Mod_L*Mod_T
+            f_theta=Mod_L*Mod_T
          else:
-             f_theta=0
+            f_theta=0
 
          
                                                                      
@@ -653,8 +679,8 @@ def temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,
     return Ts
 #%% Determines storage capacity of water tanks according to selected design date.
 
-def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
-
+def Almacenamiento_cpc_DOE (E_campo,Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
+#
 #    % Capacidad_m3=Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv)
 #    
 #    % fecha_inicio is the initial date of the design day [year month day hour minute second]
@@ -669,34 +695,67 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
 #    % Calculate the vector of data of nominal thermal energy required by the desalination plant every instant
     Interv_horas=Interv/60
     E_term_kWh=Pot_term_kW*Interv_horas                  # % kWth 
+#    
+##    % Select the file with the meteo data and upload the data 
+#    [FileName, PathName]=uigetfile('*.*', 'Select the meteo data.mat File')
+#    
+#    NombreFichero=[PathName FileName]
+#    eval(['load ','', NombreFichero, '',''])
+#    
+##    % Select the file with the data saved of fraccion_solar and upload the data
+#    [FileName, PathName]=uigetfile('*.*', 'Select the fraccion_solar.mat File')
+#    
+#    NombreFichero=[PathName FileName]
+#    eval(['load ','', NombreFichero, '',''])
     
-#    % Select the file with the meteo data and upload the data 
-    [FileName, PathName]=uigetfile('*.*', 'Select the meteo data.mat File')
+##    % Calculate the julian day of "fecha_inicio" and "fecha_fin"
+#    julian_date_inicio=juliano(Fecha_inicio)
+#    julian_date_fin=juliano(Fecha_fin)
+#    
+##    % Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin))
     
-    NombreFichero=[PathName FileName]
-    eval(['load ','', NombreFichero, '',''])
+    datacols=list(range(0,14))
+    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
     
-#    % Select the file with the data saved of fraccion_solar and upload the data
-    [FileName, PathName]=uigetfile('*.*', 'Select the fraccion_solar.mat File')
+    #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
+    # AAA- major changes to this segment for pulling data from TMY
+    datetimes=np.asarray(data.iloc[:,0:6])
+#    Julian_Date=pd.to_datetime(datetimes)
+#    julian_date_inicio=pd.to_datetime(fecha_inicio)
     
-    NombreFichero=[PathName FileName]
-    eval(['load ','', NombreFichero, '',''])
+#    julian_date_inicio=juliano(fecha_inicio);
+#    julian_date_fin=juliano(fecha_fin);
+#    initialdate=dt.datetime(fecha_inicio[0],fecha_inicio[1],fecha_inicio[2],fecha_inicio[3],fecha_inicio[4],fecha_inicio[5],)
+#    ts=pd.to_datetime(initialdate)
+#    julian_date_inicio=str(ts)
     
-#    % Calculate the julian day of "fecha_inicio" and "fecha_fin"
-    julian_date_inicio=juliano(Fecha_inicio)
-    julian_date_fin=juliano(Fecha_fin)
-    
-#    % Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
-    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin))
+    #% Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
+    rowstart=data.loc[(data['Month']==fecha_inicio[1]) & (data['Day']==fecha_inicio[2]) & (data['Hour']==fecha_inicio[3])].index.values
+    rowend=data.loc[(data['Month']==fecha_fin[1]) & (data['Day']==fecha_fin[2]) & (data['Hour']==fecha_fin[3])].index.values
+    rows=list(range(rowstart[0],rowend[0]+1))
+    #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
+#    Julian_date_D=Julian_Date(rows);
+#    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
+#    dni=data['DNI'].iloc[rows]
+#    ghi=data['GHI'].iloc[rows]
+#    dhi=data['DHI'].iloc[rows]
+#    surfalbedo=data['Surface Albedo'].iloc[rows]
+##    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
+#    
+#    solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
+#    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
+#    Rad_sol_global_D=np.asarray(poa.iloc[:,0])
     
 #    % Extract the data (from the fraccion_solar.mat file)of thermal energy provided by the solar field corresponding to the rows
-    E_campo_D=E_campo(rows)
+    E_campo_D=E_campo[rows]
     
 #    % Determine the number of rows of the vector Julian_Date_D to establish the indicator of FOR loop
-    num_filas_vector=np.size(E_campo_D)
+#    num_filas_vector=np.size(E_campo_D)
     
 #    % Create the matrix of zeros
-    E_almac=np.zeros(num_filas_vector)
+    E_almac=np.zeros(len(rows))
     
 #    % Calculate the total thermal energy stored------- TRY REPLACING WITH VECTORIZATION
 #        for k in range(1,num_filas_vector):
@@ -709,13 +768,13 @@ def Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Inter
     E_total_almac=np.sum(E_almac)   # kWh
     
 #    % Calculate the capacity of the thermal storage tank
-    T=(Tst+Tamb)/2                                   # ºC
+    Tav=(Tst+Tamb)/2                                   # ºC
     E_total_almac_kJ=E_total_almac*3600              # kJ
     Capacidad_kg=E_total_almac_kJ/(Cp*(Tst-Tamb))    # kg
-    density_water = densW(T,pressure)                # kg/m3
+    density_water = iapws.iapws97.IAPWS97(T=Tav+273.15,P=pressure*.1).rho                # kg/m3
     Capacidad_m3=Capacidad_kg/density_water          # m3
     
-    x=0
+#    x=0
     return Capacidad_m3
 #%% Obtain Normal vector
 def normalize(vector):
@@ -725,7 +784,7 @@ def normalize(vector):
 #    normal_vector=vector/d_modulo
     
     normal_vector=np.empty(np.shape(vector))
-    if np.shape(vector1)[0]!=np.size(vector1):
+    if np.shape(vector)[0]!=np.size(vector):
     
         normal_vector[:,0] = vector[:,0] / d_modulo
         normal_vector[:,1] = vector[:,1] / d_modulo
@@ -736,3 +795,4 @@ def normalize(vector):
         normal_vector[2] = vector[2] / d_modulo
     
     return normal_vector
+
