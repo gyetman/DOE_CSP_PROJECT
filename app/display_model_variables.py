@@ -72,7 +72,7 @@ def create_callback_for_tables(model_vars_list):
         #Collect the table ids
         table_ids = [*{*[ f"{v['Tab']}{v['Section']}{v['Subsection']}"\
                     .replace(' ','_').replace('(','').replace(')','')\
-                    for v in mVs]}]
+                    .replace('/','') for v in mVs]}]
                                         
         #Create States for each table id
         for table_id in table_ids:
@@ -223,7 +223,7 @@ def create_model_variable_page(tab,model_vars):
             tableData.append(dict(tv))
         else:
             if sec:
-                tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','')
+                tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
                 tab_page.append(create_data_table(tableData,tableID))
                 tableData=[dict(tv)]
             if tv['Section']!=sec:
@@ -235,7 +235,7 @@ def create_model_variable_page(tab,model_vars):
                 if tv['Subsection']!='General':
                     tab_page.append(subsec)
     #add the final table
-    tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','')
+    tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
     tab_page.append(create_data_table(tableData,tableID))
     return tab_page
 
@@ -381,8 +381,17 @@ finance_model_vars = create_variable_lists(
     model_name=cfg.finance, 
     json_vars=cfg.finance_variables_file,
     json_vals=cfg.finance_values_file)
+desal_finance_model_vars = create_variable_lists(
+    model_name=cfg.desal, 
+    json_vars=cfg.desal_finance_variables_file,
+    json_vals=cfg.desal_finance_values_file)
+
+# append the desal_finance variables to the finance variables
+finance_model_vars += desal_finance_model_vars
+
 #process desal_finance_vars =
 # then append to finance model vars
+
 # PULL SORT functions out of create_variable_lists
 # create new SORT function
 
@@ -394,7 +403,7 @@ solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
 desal_tabs = collect_and_sort_model_tabs(desal_model_vars)
 finance_tabs = collect_and_sort_model_tabs(finance_model_vars)
 
-# references for tabs and variables to use based on selcted button
+# references for tabs and variables to use based on selected button
 models = ['desal','solar','finance']
 
 Model_tabs = {models[0]:desal_tabs,
@@ -511,11 +520,13 @@ def make_tabs_in_collapse(i):
                 ),
                 id=f"collapse-{i}".replace(' ','_'),
             ),
-        ],id='tabs-card', style={'padding':0} #TODO need to figure out how to properly override the padding
+        ],style={'padding':0} #TODO need to figure out how to properly override the padding
     )
 
 tabs_accordion = dbc.Card(
-    [make_tabs_in_collapse(m) for m in models], className="accordion h-100"
+    [make_tabs_in_collapse(m) for m in models],
+    className="accordion h-100", 
+    id='tabs-card'
 )
 
 primary_card = dbc.Card(
