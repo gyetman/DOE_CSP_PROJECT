@@ -96,6 +96,11 @@ class SamBaseClass(object):
     
     def desal_simulation(self, desal):
         if desal == 'VAGMD':
+            from DesalinationModels.VAGMD_PSA import VAGMD_PSA
+            with open(self.desal_json_values, "r") as read_file:
+                self.desal_values_json = json.load(read_file)
+            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
+            self.design_output = self.VAGMD.design()
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
             with open(self.json_values, "r") as read_file:
                 values_json = json.load(read_file)
@@ -128,8 +133,8 @@ class SamBaseClass(object):
             json_files.append(Path(self.samPath / "models" / "inputs" / finPath))
             if self.financialModel == 'utilityrate5':
                 json_files.append(Path(self.samPath / "models" / "inputs" / 'cashloan_inputs.json'))
-            elif self.financialModel == 'iph_to_lcoefcr':
-                json_files.append(Path(self.samPath / "models" / "inputs" / 'lcoefcr_inputs.json'))
+#            elif self.financialModel == 'iph_to_lcoefcr':
+#                json_files.append(Path(self.samPath / "models" / "inputs" / 'lcoefcr_inputs.json'))
 
             
         variableValues = []
