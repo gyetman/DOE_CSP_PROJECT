@@ -17,10 +17,7 @@ import iapws
 def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
 
 #    % num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin)
-#    
-#    
-#    
-#    
+#        
 #    % tipo_col '1' '2'
 #    
 #    % tipo_col '1': Flat Plate Collectors (FPC)
@@ -124,7 +121,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #     % varargin{3}: Incidence angle modifier for the theta T. Example: [1 1 1.05 1.15 1.3 1.35 1.30 1.05 0.6 0] 
     #  
     #% Constants
-    rad=pi/180;
+    rad=pi/180
     Interv_horas=Interv/60;    #% Time interval of the data, hours
     
 #    #% Open the meteo data file and upload the data 
@@ -206,7 +203,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     E_term_total=Pot_term_kW*tiempo_oper;
     
     #% Calculate the number of rows
-    num_fila=int(np.round(E_term_total/E_term_fila_total))
+    num_fila=int(np.round(E_term_total/E_term_fila_total)*(E_term_total%E_term_fila_total>=0.5) + (np.round(E_term_total/E_term_fila_total)-1)*(E_term_total%E_term_fila_total<0.5))
 
 # AAA- this segement is unnecessary since we can just use the round function; not sure why we'd subtract one if fraction<0.5#################################
 
