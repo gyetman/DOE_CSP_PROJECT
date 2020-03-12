@@ -12,75 +12,6 @@ import pandas as pd
 import datetime as dt
 import pvlib
 import iapws
-#from scipy.interpolate import CubicSpline
-#%% Number of collectors per row in collector field
-def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
-
-#    % num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin)
-#        
-#    % tipo_col '1' '2'
-#    
-#    % tipo_col '1': Flat Plate Collectors (FPC)
-#    % tipo_col '2': Evacuated Tube Collectors(ETC) or Compound Parabolic Collectors (CPC)
-#    
-#    % Tent_campo is the inlet water temperature in the solar field, ºC
-#    % Tsal campo is the outlet water temperature in the solar field, ºC
-#    % Time is the date of the design point [Year Month Day Hour Minute Second],
-#    % Example [2010 3 18 12 0 0] (Normally at solar noon)
-#    % qm is the water mass flow rate in the collector, given by the manufacturer, kg/s
-#    % a, b, c are the performance parameters of the collector, which can be found in the Certificate delivered by the manufacturer (the first one is
-#    % whithout units, the second one in W/ºCm2, and the third one in W/m2ºC2)
-#    % d is the specific heat of water, 4.18189 kJ/kgºC
-#    % A is the aperture area of the collector, m2
-#    % Long is the Longitude of the location, º
-#    % Lat is the Latitude of the location, º
-#    % inc_captador is the inclination of the collectors
-#    % v_azim is the azimut, which is 180º 
-#    % Tamb_D is the ambient temperature in the design point
-#    % G is the beam global radiation at the design point, W/m2
-#    % A is the aperture area of the collector, m2
-#    
-#    % VARARGIN:
-#    
-#    % tipo_col '1':
-#         % varargin{1}: incidence angle in the certificate of the manufacturer
-#         % varargin{2}: incidence angle modifier for the incidence angle of the manufacturer
-#    % tipo_col '2'
-#         % varargin{1}: Longitudinal and transversal incidence angles (theta L y theta T) in the certificate of the manufacturer. Example: [0 10 20 30 40 50 60 70 80 90] 
-#         % varargin{2}: Incidence angle modifier for the theta L in the certificate. Example: [1 1 1 0.99 0.98 0.95 0.90 0.70 0.48 0] 
-#         % varargin{3}: Incidence angle modifier for the theta T. Example: [1 1 1.05 1.15 1.3 1.35 1.30 1.05 0.6 0] 
-#    
-#             
-#    % Calculate the inlet water temperature to the collector
-    Te=(Tent_campo+Tsal_campo)/2
-    
-#    % Calculate the outlet water temperature from the collector
-    Ts=temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,c,d,G,A,*args)
-    
-    
-#    % Calculate the number of collectors per row
-    Increm_fila=Tsal_campo-Tent_campo
-    Increm_capt=Ts-Te
-    
-    num_col=Increm_fila/Increm_capt
-    ################### AAA- NOT SURE WHY THRESHOLD FOR ROUND IS 0.3, BUT WILL REPLACE WITH ONE TWO LINES
-#    resto=num_col-np.floor(num_col)
-#
-#    if (resto>=0.3):
-#        num_col=np.floor(num_col)+1
-#    else:
-#        num_col=np.floor(num_col)
-        
-    
-#    x=0;
-    threshold=0.3
-    num_col=int(np.round(num_col - threshold + 0.5))
-    
-    return num_col
-
-
-
-
 
 #%% Determines the number of rows for the solar field
 def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,*args):
@@ -202,14 +133,14 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the total thermal energy that the desalination plant needs to operate a number of hours of operation, kWh 
     E_term_total=Pot_term_kW*tiempo_oper;
     
-    #% Calculate the number of rows
+    #% Calculate the number of rows  -AAA- DOUBLE-CHECK THE SUBTRACTION OF 1
     num_fila=int(np.round(E_term_total/E_term_fila_total)*(E_term_total%E_term_fila_total>=0.5) + (np.round(E_term_total/E_term_fila_total)-1)*(E_term_total%E_term_fila_total<0.5))
 
 # AAA- this segement is unnecessary since we can just use the round function; not sure why we'd subtract one if fraction<0.5#################################
 
     #% Calculate the decimal part of the resulting number of rows
-    #% If the decimal part is higher than 0.5, then sum 1 to the number of rows obtained before
-    #% If the decimal part is lower than 0.5, then rest 1 to the number of rows obtained before
+#    % If the decimal part is higher than 0.5, then sum 1 to the number of rows obtained before
+#    % If the decimal part is lower than 0.5, then rest 1 to the number of rows obtained before
 #    resto=num_fila-np.floor(num_fila);
 #    
 #    if (resto>=0.5):
@@ -229,7 +160,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #eval(['save ''' NombreFichero ''' num_fila num_total_col area_total_captacion']);
 
         
-    return num_fila, num_total_col, area_total_captacion
+    return num_col,num_fila, num_total_col, area_total_captacion 
 #%% Determines solar fraction of static collector field and gives annual thermal power profile on hourly basis
 def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,*args):
 
@@ -362,7 +293,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
           ang_inc[k]= pvlib.irradiance.aoi(inc_captador,v_azim,solar_zenith[k],solar_azimuth[k])   #ang_inc_staticcol(Julian_date_vec[k],[Long, Lat],[inc_captador, v_azim]);
           if num_col!=1:  
               for n in range(num_col-1):
-                  Ts[k,n]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)
+                  Ts[k,n]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)
                   Te[k,n+1]=Ts[k,n]
           
 #          print(Julian_date_vec[k])
@@ -371,7 +302,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 #          print(qm[k])
 #          print(Rad_Global_inclin[k])
 #          print(n)
-          Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)   
+          Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)   
           Ts_fila[k]=np.real(Ts_fila[k])
           Pot_fila[k]=qm[k]*(d*(Ts_fila[k]-Te[k,0]))
           Pot_campo[k]=Pot_fila[k]*num_fila      
@@ -395,7 +326,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
                  Pot_campo[k]=Pot_fila[k]*num_fila;
                  qm[k+1]=qm_recalc[k];
               elif qm_recalc[k]>qm_max:
-                 Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm_max,a,b,c,d,Rad_Global_inclin[k],A,v1,v2,v3)
+                 Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm_max,a,b,c,d,Rad_Global_inclin[k],A,*args)
                  Pot_fila[k]=qm_max*(d*(Ts_fila[k]-Te[k,0]));
                  Pot_campo[k]=Pot_fila[k]*num_fila;
                  Te[k+1]=Tent_campo;
@@ -420,6 +351,176 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
     
     #x=0
     return fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo
+
+#%% (DOESN"T SEEM TO BE INCORPORATED IN CALCULATING SOLAR FRACTION) Determines storage capacity of water tanks according to selected design date.
+
+def Almacenamiento_cpc_DOE (E_campo,Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
+#
+#    % Capacidad_m3=Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv)
+#    
+#    % fecha_inicio is the initial date of the design day [year month day hour minute second]
+#    % fecha_fin is the final date of the design day [year month day hour minute second]
+#    % Tst is the maximum water temperature achieved by the solar field 
+#    % pressure is the water pressure in the solar field, bar
+#    
+#    
+#    % Constants
+    Cp=4.1819 #% Specific heat of water
+    
+#    % Calculate the vector of data of nominal thermal energy required by the desalination plant every instant
+    Interv_horas=Interv/60
+    E_term_kWh=Pot_term_kW*Interv_horas                  # % kWth 
+#    
+##    % Select the file with the meteo data and upload the data 
+#    [FileName, PathName]=uigetfile('*.*', 'Select the meteo data.mat File')
+#    
+#    NombreFichero=[PathName FileName]
+#    eval(['load ','', NombreFichero, '',''])
+#    
+##    % Select the file with the data saved of fraccion_solar and upload the data
+#    [FileName, PathName]=uigetfile('*.*', 'Select the fraccion_solar.mat File')
+#    
+#    NombreFichero=[PathName FileName]
+#    eval(['load ','', NombreFichero, '',''])
+    
+##    % Calculate the julian day of "fecha_inicio" and "fecha_fin"
+#    julian_date_inicio=juliano(Fecha_inicio)
+#    julian_date_fin=juliano(Fecha_fin)
+#    
+##    % Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin))
+    
+    datacols=list(range(0,14))
+    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
+    
+    #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
+    # AAA- major changes to this segment for pulling data from TMY
+    datetimes=np.asarray(data.iloc[:,0:6])
+#    Julian_Date=pd.to_datetime(datetimes)
+#    julian_date_inicio=pd.to_datetime(fecha_inicio)
+    
+#    julian_date_inicio=juliano(fecha_inicio);
+#    julian_date_fin=juliano(fecha_fin);
+#    initialdate=dt.datetime(fecha_inicio[0],fecha_inicio[1],fecha_inicio[2],fecha_inicio[3],fecha_inicio[4],fecha_inicio[5],)
+#    ts=pd.to_datetime(initialdate)
+#    julian_date_inicio=str(ts)
+    
+    #% Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
+#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
+    rowstart=data.loc[(data['Month']==fecha_inicio[1]) & (data['Day']==fecha_inicio[2]) & (data['Hour']==fecha_inicio[3])].index.values
+    rowend=data.loc[(data['Month']==fecha_fin[1]) & (data['Day']==fecha_fin[2]) & (data['Hour']==fecha_fin[3])].index.values
+    rows=list(range(rowstart[0],rowend[0]+1))
+    #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
+#    Julian_date_D=Julian_Date(rows);
+#    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
+#    dni=data['DNI'].iloc[rows]
+#    ghi=data['GHI'].iloc[rows]
+#    dhi=data['DHI'].iloc[rows]
+#    surfalbedo=data['Surface Albedo'].iloc[rows]
+##    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
+#    
+#    solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
+#    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
+#    Rad_sol_global_D=np.asarray(poa.iloc[:,0])
+    
+#    % Extract the data (from the fraccion_solar.mat file)of thermal energy provided by the solar field corresponding to the rows
+    E_campo_D=E_campo[rows]
+    
+#    % Determine the number of rows of the vector Julian_Date_D to establish the indicator of FOR loop
+#    num_filas_vector=np.size(E_campo_D)
+    
+#    % Create the matrix of zeros
+    E_almac=np.zeros(len(rows))
+    
+#    % Calculate the total thermal energy stored------- TRY REPLACING WITH VECTORIZATION
+#        for k in range(1,num_filas_vector):
+#            if E_campo_D[k]>E_term_kWh:
+#               E_almac=E_campo_D[k]-E_term_kWh
+    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)+ ~(E_campo_D>E_term_kWh)*0
+            
+            
+        
+    E_total_almac=np.sum(E_almac)   # kWh
+    
+#    % Calculate the capacity of the thermal storage tank
+    Tav=(Tst+Tamb)/2                                   # ºC
+    E_total_almac_kJ=E_total_almac*3600              # kJ
+    Capacidad_kg=E_total_almac_kJ/(Cp*(Tst-Tamb))    # kg
+    density_water = iapws.iapws97.IAPWS97(T=Tav+273.15,P=pressure*.1).rho                # kg/m3
+    Capacidad_m3=Capacidad_kg/density_water          # m3
+    
+#    x=0
+    return Capacidad_m3    
+
+#%% Number of collectors per row in collector field
+def num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,*args):
+
+#    % num_col_fila_DOE(tipo_col,Tent_campo,Tsal_campo,Time,Long,Lat,inc_captador,v_azim,Tamb_D,qm,a,b,c,d,G,A,varargin)
+#        
+#    % tipo_col '1' '2'
+#    
+#    % tipo_col '1': Flat Plate Collectors (FPC)
+#    % tipo_col '2': Evacuated Tube Collectors(ETC) or Compound Parabolic Collectors (CPC)
+#    
+#    % Tent_campo is the inlet water temperature in the solar field, ºC
+#    % Tsal campo is the outlet water temperature in the solar field, ºC
+#    % Time is the date of the design point [Year Month Day Hour Minute Second],
+#    % Example [2010 3 18 12 0 0] (Normally at solar noon)
+#    % qm is the water mass flow rate in the collector, given by the manufacturer, kg/s
+#    % a, b, c are the performance parameters of the collector, which can be found in the Certificate delivered by the manufacturer (the first one is
+#    % without units, the second one in W/ºCm2, and the third one in W/m2ºC2)
+#    % d is the specific heat of water, 4.18189 kJ/kgºC
+#    % A is the aperture area of the collector, m2
+#    % Long is the Longitude of the location, º
+#    % Lat is the Latitude of the location, º
+#    % inc_captador is the inclination of the collectors
+#    % v_azim is the azimut, which is 180º 
+#    % Tamb_D is the ambient temperature in the design point
+#    % G is the beam global radiation at the design point, W/m2
+#    % A is the aperture area of the collector, m2
+#    
+#    % VARARGIN:
+#    
+#    % tipo_col '1':
+#         % varargin{1}: incidence angle in the certificate of the manufacturer
+#         % varargin{2}: incidence angle modifier for the incidence angle of the manufacturer
+#    % tipo_col '2'
+#         % varargin{1}: Longitudinal and transversal incidence angles (theta L y theta T) in the certificate of the manufacturer. Example: [0 10 20 30 40 50 60 70 80 90] 
+#         % varargin{2}: Incidence angle modifier for the theta L in the certificate. Example: [1 1 1 0.99 0.98 0.95 0.90 0.70 0.48 0] 
+#         % varargin{3}: Incidence angle modifier for the theta T. Example: [1 1 1.05 1.15 1.3 1.35 1.30 1.05 0.6 0] 
+#    
+#             
+#    % Calculate the inlet water temperature to the collector
+    Te=(Tent_campo+Tsal_campo)/2
+    
+#    % Calculate the outlet water temperature from the collector
+    Ts=temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,c,d,G,A,*args)
+    
+    
+#    % Calculate the number of collectors per row
+    Increm_fila=Tsal_campo-Tent_campo
+    Increm_capt=Ts-Te
+    
+    num_col=Increm_fila/Increm_capt
+    ################### AAA- NOT SURE WHY THRESHOLD FOR ROUND IS 0.3, BUT WILL REPLACE WITH ONE TWO LINES
+#    resto=num_col-np.floor(num_col)
+#
+#    if (resto>=0.3):
+#        num_col=np.floor(num_col)+1
+#    else:
+#        num_col=np.floor(num_col)
+        
+    
+#    x=0;
+    threshold=0.3
+    num_col=int(np.round(num_col - threshold + 0.5))
+    
+    return num_col
+
+
+
+
+
 #%% dot product 
 def dot_product(vector1,vector2):
     producto_escalar=np.empty([np.shape(vector1)[0],1])
@@ -608,14 +709,13 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #    
 #        case {'1'} #% FPC
     if tipo_col=='1':
-           
-          ang_inc_D=pvlib.irradiance.aoi(inc_captador,v_azim,cenit,acimut) 
-          Ang_incid_rad=args[0]*rad
-          bo=(1-args[1])/((1/np.cos(Ang_incid_rad)-1))
-          Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
-          ang_inc_D_rad=ang_inc_D*rad
-          condicion1 = ang_inc_D_rad<Ang_incid_rad_max
-          f_theta = (condicion1)*(1-bo*(1/np.cos(ang_inc_D_rad)-1))+(~condicion1)*0
+        ang_inc_D=pvlib.irradiance.aoi(inc_captador,v_azim,cenit,acimut) 
+        Ang_incid_rad=args[0]*rad
+        bo=(1-args[1])/((1/np.cos(Ang_incid_rad)-1))
+        Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
+        ang_inc_D_rad=ang_inc_D*rad
+        condicion1 = ang_inc_D_rad<Ang_incid_rad_max
+        f_theta = (condicion1)*(1-bo*(1/np.cos(ang_inc_D_rad)-1))+(~condicion1)*0
           
 #       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
     elif tipo_col=='2':
@@ -674,105 +774,7 @@ def temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,
 #    % Calculate the water outlet temperature from the solar collector         
     Ts= -(A*b - 2*((A**2*b**2)/4 + 1000000*d**2*qm**2 + 1000*A*b*d*qm - 2000*A*Tamb_D*c*d*qm + 2000*A*Te*c*d*qm + A**2*G*a*c*f_theta)**(1/2) + 2000*d*qm - 2*A*Tamb_D*c + A*Te*c)/(A*c)
     return Ts
-#%% Determines storage capacity of water tanks according to selected design date.
 
-def Almacenamiento_cpc_DOE (E_campo,Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
-#
-#    % Capacidad_m3=Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv)
-#    
-#    % fecha_inicio is the initial date of the design day [year month day hour minute second]
-#    % fecha_fin is the final date of the design day [year month day hour minute second]
-#    % Tst is the maximum water temperature achieved by the solar field 
-#    % pressure is the water pressure in the solar field, bar
-#    
-#    
-#    % Constants
-    Cp=4.1819 #% Specific heat of water
-    
-#    % Calculate the vector of data of nominal thermal energy required by the desalination plant every instant
-    Interv_horas=Interv/60
-    E_term_kWh=Pot_term_kW*Interv_horas                  # % kWth 
-#    
-##    % Select the file with the meteo data and upload the data 
-#    [FileName, PathName]=uigetfile('*.*', 'Select the meteo data.mat File')
-#    
-#    NombreFichero=[PathName FileName]
-#    eval(['load ','', NombreFichero, '',''])
-#    
-##    % Select the file with the data saved of fraccion_solar and upload the data
-#    [FileName, PathName]=uigetfile('*.*', 'Select the fraccion_solar.mat File')
-#    
-#    NombreFichero=[PathName FileName]
-#    eval(['load ','', NombreFichero, '',''])
-    
-##    % Calculate the julian day of "fecha_inicio" and "fecha_fin"
-#    julian_date_inicio=juliano(Fecha_inicio)
-#    julian_date_fin=juliano(Fecha_fin)
-#    
-##    % Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
-#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin))
-    
-    datacols=list(range(0,14))
-    data=pd.read_csv(weatherfile,skiprows=2,usecols=datacols)
-    
-    #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
-    # AAA- major changes to this segment for pulling data from TMY
-    datetimes=np.asarray(data.iloc[:,0:6])
-#    Julian_Date=pd.to_datetime(datetimes)
-#    julian_date_inicio=pd.to_datetime(fecha_inicio)
-    
-#    julian_date_inicio=juliano(fecha_inicio);
-#    julian_date_fin=juliano(fecha_fin);
-#    initialdate=dt.datetime(fecha_inicio[0],fecha_inicio[1],fecha_inicio[2],fecha_inicio[3],fecha_inicio[4],fecha_inicio[5],)
-#    ts=pd.to_datetime(initialdate)
-#    julian_date_inicio=str(ts)
-    
-    #% Find the rows between the julian date corresponding to "fecha_inicio" and "fecha_fin"
-#    rows=find((julian_date_inicio<=Julian_Date) & (Julian_Date<=julian_date_fin));
-    rowstart=data.loc[(data['Month']==fecha_inicio[1]) & (data['Day']==fecha_inicio[2]) & (data['Hour']==fecha_inicio[3])].index.values
-    rowend=data.loc[(data['Month']==fecha_fin[1]) & (data['Day']==fecha_fin[2]) & (data['Hour']==fecha_fin[3])].index.values
-    rows=list(range(rowstart[0],rowend[0]+1))
-    #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
-#    Julian_date_D=Julian_Date(rows);
-#    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
-#    dni=data['DNI'].iloc[rows]
-#    ghi=data['GHI'].iloc[rows]
-#    dhi=data['DHI'].iloc[rows]
-#    surfalbedo=data['Surface Albedo'].iloc[rows]
-##    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
-#    
-#    solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
-#    poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
-#    Rad_sol_global_D=np.asarray(poa.iloc[:,0])
-    
-#    % Extract the data (from the fraccion_solar.mat file)of thermal energy provided by the solar field corresponding to the rows
-    E_campo_D=E_campo[rows]
-    
-#    % Determine the number of rows of the vector Julian_Date_D to establish the indicator of FOR loop
-#    num_filas_vector=np.size(E_campo_D)
-    
-#    % Create the matrix of zeros
-    E_almac=np.zeros(len(rows))
-    
-#    % Calculate the total thermal energy stored------- TRY REPLACING WITH VECTORIZATION
-#        for k in range(1,num_filas_vector):
-#            if E_campo_D[k]>E_term_kWh:
-#               E_almac=E_campo_D[k]-E_term_kWh
-    E_almac=(E_campo_D>E_term_kWh)*(E_campo_D-E_term_kWh)+ ~(E_campo_D>E_term_kWh)*0
-            
-            
-        
-    E_total_almac=np.sum(E_almac)   # kWh
-    
-#    % Calculate the capacity of the thermal storage tank
-    Tav=(Tst+Tamb)/2                                   # ºC
-    E_total_almac_kJ=E_total_almac*3600              # kJ
-    Capacidad_kg=E_total_almac_kJ/(Cp*(Tst-Tamb))    # kg
-    density_water = iapws.iapws97.IAPWS97(T=Tav+273.15,P=pressure*.1).rho                # kg/m3
-    Capacidad_m3=Capacidad_kg/density_water          # m3
-    
-#    x=0
-    return Capacidad_m3
 #%% Obtain Normal vector
 def normalize(vector):
 
@@ -792,4 +794,45 @@ def normalize(vector):
         normal_vector[2] = vector[2] / d_modulo
     
     return normal_vector
+#%% Default inputs and execution
+tipo_col='1'  # Collector Type- for type 1, v1 and v2 vals should be scalar; type 2- supply three vectors: v1,v2,v3
+Time=[2010, 3 ,18 ,12, 0, 0] # Date of design point
+fecha_inicio=[2010, 3 ,18, 9, 0, 0]
+fecha_fin=[2010, 3, 18, 17, 0 ,0] 
+Pot_term_kW=1000
+Tent_campo=25
+Tsal_campo=80
+qm=0.02
+Tamb_D=25
+G=1000
+a=0.64
+b=1.494
+c=0.012
+d=4.18189
+A=2.83
+Long=-2.460
+Lat=36.838
+inc_captador=Lat
+v_azim=180
+Interv=60
+tiempo_oper=10
+pressure=1
 
+if tipo_col=='1':
+    v1=30
+    v2=0.99
+######### EXECUTION EXAMPLE FOR TYPE 1 COLLECTOR (EVACUATED TUBE)
+    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2)
+    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2)
+
+### THERMAL STORAGE CAPACITY, WHICH DOESN"T SEEM TO BE INTEGRATED WITH CALCULATION OF SOLAR FRACTION.....
+    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
+
+elif tipo_col=='2':
+    v1=[10 ,20 ,30, 40 ,50, 60, 70]
+    v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68]     # Longitudinal incidence angle modifiers from datasheet
+    v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08]
+    
+    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2,v3)
+    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2,v3)
+    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
