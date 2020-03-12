@@ -831,7 +831,7 @@ if tipo_col=='1':
 elif tipo_col=='2':
     v1=[10 ,20 ,30, 40 ,50, 60, 70]
     v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68]     # Longitudinal incidence angle modifiers from datasheet
-    v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08]
+    v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08] # Transversal incidence angle modifiers from datasheet
     
     num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2,v3)
     fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2,v3)
