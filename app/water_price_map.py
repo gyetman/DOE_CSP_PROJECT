@@ -34,9 +34,15 @@ df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
 df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
 
 
-#df_canals = pd.read_csv('./gisData/canals_update.csv')
-#df_
-# s['']
+df_canals = pd.read_csv('./gisData/canals.csv')
+tmp = df_canals.lat.str.split(',')
+canalLats = []
+for i in tmp:
+    canalLats.append([float(j) for j in i])
+tmp = df_canals.lon.str.split(',')
+canalLongs = []
+for i in tmp:
+    canalLongs.append([float(j) for j in i])
 
 # load geoJSON geometries for solar resource (location proxy)
 with open('./gisData/solar_resources3.geojson','r') as f:
@@ -70,19 +76,23 @@ solarData = go.Choroplethmapbox(
     showscale=False,
 )
 
-# canalData = go.Scattermapbox(
-#     name='Canals and Aqueducts',    
-#     #lon=df_canals.lon_conv.values.tolist(),
-#     #lat=df_canals.lat_conv.values.tolist(),
-#     lon = [[-117,-116],[-115,-113]],
-#     lat=[[33,34],[35,36]],
-#     mode = "markers+lines",
-#     marker=dict(
-#         size=10,
-#         color='red',
+canalData = go.Scattermapbox(
+     name='Canals and Aqueducts',    
+     
+     lat = canalLats[0],
+     lon = canalLongs[0],
+     #lat=df_canals.lat_conv.values.tolist(),
+     #lon = [-117,-116,-115,-113],
+     #lat=[33,34,35,36],
+     mode = "lines",
+     marker=dict(
+         size=10,
+         color='red',
 
-#     )
-    
+     ),
+)
+
+
 
 userPoint = go.Scattermapbox(
     name='Selected Site',
@@ -131,7 +141,7 @@ globalData = go.Scattermapbox(
     )
     )
 
-data = [countyData,globalData,solarData,userPoint] # sets the order, I think. 
+data = [countyData,globalData,canalData,solarData,userPoint] # sets the order, I think. 
 
 layout = go.Layout(
     height=600,
@@ -301,5 +311,5 @@ def update_user_point(input_value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8067)
+    app.run_server(debug=True, port=8067)
     
