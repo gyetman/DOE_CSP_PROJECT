@@ -1,5 +1,5 @@
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import dash_core_components as dcc
 import dash_html_components as html
@@ -22,6 +22,10 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
 df = pd.read_csv('./GISData/dissolved_solids.csv')
 df['text'] = df['TDS_mgL'].round(1).astype(str) + ' mg/L'
 
+# TODO: add waste heat for power plants from Jason's data
+# 
+# TODO: add plant names
+
 # load county attributes
 df_county = pd.read_csv('./GISData/county_tds.csv')
 df_county['text'] = df_county['TDS_mgL'].round(1).astype(str) + ' mg/L'
@@ -31,8 +35,8 @@ df_desal = pd.read_csv('./GISData/desal_plants.csv')
 df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
 
 # load power plants
-df_power = pd.read_csv('./GISData/power_plants.csv')
-df_power['text'] = 'Plant Type: ' + df_power['primary_fuel']
+df_power = pd.read_csv('./GISData/power_plants_energy.csv')
+df_power['text'] = 'Plant Type: ' + df_power['Plant_prim']
 
 
 #load geoJSON geometries for county data (average TDS)
@@ -96,8 +100,8 @@ desalLocation = go.Scattermapbox(
 
 plantLocation = go.Scattermapbox(
     name='Power Plants',
-    lat=df_power.latitude,
-    lon=df_power.longitude,
+    lat=df_power.Plant_lati,
+    lon=df_power.Plant_long,
     mode='markers',
     hoverinfo='text',
     text=df_power.text,
@@ -131,13 +135,14 @@ data = [tdsData,wellLocation,plantLocation,desalLocation,userPoint] # sets the o
 
 layout = go.Layout(
     height=600,
-    width=800,
+    width=900,
     autosize=True,
     #hovermode='closest',
     #clickmode='text',
     title='Average TDS per county and Well Location Data',
     showlegend=True,
     legend_orientation='h',
+    uirevision='Change to reload whole map',
     mapbox=dict(
             accesstoken=mapbox_key,
             zoom=5,
@@ -178,6 +183,8 @@ app.layout = html.Div(children=[
 
 ])
 
+# TODO:
+# add texas specific data on plant capacity, type, etc. 
 
 @app.callback(
     Output(component_id='callback-div', component_property='children'),
@@ -189,25 +196,75 @@ def output_site_attributes(clicks):
         print('empty click')
         raise PreventUpdate
     if 'points' not in set(clicks.keys()):
+        print(clicks.keys())
+        ptID = clicks['curveNumber']
+        print(ptID)
         raise PreventUpdate
     else:
         ptKeys = clicks['points'][0].keys()
+        print(ptKeys)
+        if 'location' in ptKeys:
 
-        ptID = clicks['points'][0]['location']
-        countyName = df_county.loc[df_county.IDField == ptID]['NAME'].values[0]
-        avgTDS = df_county.loc[df_county.IDField == ptID]['TDS_mgL'].values[0]
-        avgPH = df_county.loc[df_county.IDField == ptID]['ph'].values[0]
+            ptID = clicks['points'][0]['location']
+            countyName = df_county.loc[df_county.IDField == ptID]['NAME'].values[0]
+            avgTDS = df_county.loc[df_county.IDField == ptID]['TDS_mgL'].values[0]
+            avgPH = df_county.loc[df_county.IDField == ptID]['ph'].values[0]
 
-        mdText = "###### Produced Water Measurements for {} County, ST\n\n".format(countyName)
-        mdText += 'Source: USGS Produced Waters Database\n\n'
-        mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
-        mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
-        return(dcc.Markdown(mdText))
+            mdText = "###### Produced Water Measurements for {} County, ST\n\n".format(countyName)
+            mdText += 'Source: USGS Produced Waters Database\n\n'
+            mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
+            mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
+            return(dcc.Markdown(mdText))
+        else:
+            txt = clicks['points'][0]['text']
+            print('Plant Type' in txt)
+            print(txt)
+
 
 
 
 # TODO: add callback for layer visibility
 # add callback for point attributes
+@app.callback(
+    Output(component_id='map', component_property='figure'),
+    [Input(component_id='map', component_property='config')],
+    [State(component_id='map', component_property='relayoutData')]
+)
+def updateDisplay(restyleData,relayoutData):
+    print(relayoutData)
+    print(restyleData)
+    # update display if zoom level tripped and map not already visible
+    if not relayoutData:
+        raise PreventUpdate
+    else:
+        print(relayoutData)
+        print(restyleData)
+        # TODO: pull zoom level from relayData and update map if 
+        # passing zoom level X AND layer is not already on! 
+"""         if relayData['mapbox.zoom'] <= 5 and not relayData['']wellLocation.visible:
+            wellLocation.visible = True
+            wellLocation = go.Scattermapbox(
+                name='Well Location',
+                lat=df.dec_lat_va,
+                lon=df.dec_long_va,
+                mode='markers',
+                hoverinfo='text',
+                text=df_county.text,
+                marker=dict(
+                    size=5,
+                ),
+                visible=True
+            )
+            return(
+                (go.Figure(data=[tdsData,wellLocation,plantLocation,desalLocation,userPoint],layout= layout))
+            )
+
+        elif relayData['mapbox.zoom'] > 5 and wellLocation.visible:
+            wellLocation.visible = False
+            #return new map, keep zoom & zoom
+        else:          
+            raise PreventUpdate
+"""
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)
