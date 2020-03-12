@@ -795,7 +795,7 @@ def normalize(vector):
     
     return normal_vector
 #%% Default inputs and execution
-tipo_col='1'  # Collector Type- for type 1, v1 and v2 vals should be scalar; type 2- supply three vectors: v1,v2,v3
+tipo_col='2'  # Collector Type- for type 1, v1 and v2 vals should be scalar; type 2- supply three vectors: v1,v2,v3
 Time=[2010, 3 ,18 ,12, 0, 0] # Date of design point
 fecha_inicio=[2010, 3 ,18, 9, 0, 0]
 fecha_fin=[2010, 3, 18, 17, 0 ,0] 
@@ -819,8 +819,8 @@ tiempo_oper=10
 pressure=1
 
 if tipo_col=='1':
-    v1=30
-    v2=0.99
+    v1=30   ### Made up value - should use a flat-plate collector datasheet to get this
+    v2=0.99 ### Made up value - should use a flat-plate collector datasheet to get this
 ######### EXECUTION EXAMPLE FOR TYPE 1 COLLECTOR (EVACUATED TUBE)
     num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2)
     fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2)
