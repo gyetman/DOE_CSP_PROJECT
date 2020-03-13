@@ -22,3 +22,7 @@ app/GISdata/county_tds.geojson.metadata.xml
 app/GISdata/desal_plants.csv.xml
 app/GISdata/power_plants.csv.xml
 app/GISdata/schema.ini
+.ipynb_checkpoints/Untitled-checkpoint.ipynb
+*.xml
+*.ini
+*.ini

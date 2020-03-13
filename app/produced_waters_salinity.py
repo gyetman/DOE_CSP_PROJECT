@@ -105,6 +105,9 @@ plantLocation = go.Scattermapbox(
     mode='markers',
     hoverinfo='text',
     text=df_power.text,
+    #marker = go.scattermapbox.Marker(
+    #    symbol='industry',
+    #),
     marker=dict(
         size=9,
         color='green',
@@ -197,15 +200,17 @@ def output_site_attributes(clicks):
         raise PreventUpdate
     if 'points' not in set(clicks.keys()):
         print(clicks.keys())
-        ptID = clicks['curveNumber']
-        print(ptID)
         raise PreventUpdate
     else:
-        ptKeys = clicks['points'][0].keys()
-        print(ptKeys)
+        ptDict = clicks['points'][0]
+        ptKeys = ptDict.keys()
+        #print(type(ptDict))
+        #for key, value in ptDict.items():
+        #    print('{}: {}'.format(key, value))
+
         if 'location' in ptKeys:
 
-            ptID = clicks['points'][0]['location']
+            ptID = ptDict['location']
             countyName = df_county.loc[df_county.IDField == ptID]['NAME'].values[0]
             avgTDS = df_county.loc[df_county.IDField == ptID]['TDS_mgL'].values[0]
             avgPH = df_county.loc[df_county.IDField == ptID]['ph'].values[0]
@@ -215,10 +220,32 @@ def output_site_attributes(clicks):
             mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
             mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
             return(dcc.Markdown(mdText))
+        # handle point clicks
         else:
-            txt = clicks['points'][0]['text']
-            print('Plant Type' in txt)
-            print(txt)
+            if 'Capacity' in ptDict['text']:
+                print(ptDict.keys())
+                ptID = ptDict['pointNumber']
+                plantName = df_power[ptID]['Plant_name']
+                plantFuel = df_power[ptID]['Plant_prim']
+                plantCapacity = df_power[ptID]['Plant_annu']
+                wasteHeat = df_power[ptID]['Total_Pote']
+
+                mdText = '###### Details for Power Plant {}\n\n'.format(plantName)
+                mdText += 'Fuel Type: {}\n\n'.format(plantFuel)
+                mdText += 'Annual Capacity: {} <units>\n\n'.format(plantCapacity)
+                mdText += 'Potential Waste Heat: {} <units>\n\n'.format(wasteHeat)
+
+                return(dcc.Markdown(mdText))
+
+            elif 'Plant Type' in ptDict['text']:
+                print(ptDict.keys())
+                ptID = ptDict['pointNumber']
+                plantName = df_desal['Project_name']
+                mdText = '###### Details for Desalination Plant {}\n\n'.format(plantName)
+
+                return(dcc.Markdown(mdText))
+
+
 
 
 
