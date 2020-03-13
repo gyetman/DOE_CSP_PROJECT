@@ -32,13 +32,14 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
 #
 ### FUNCTIONS ###
 #
+
 def collect_and_sort_model_tabs(model_variable_list):
     '''
     @model_variable_lists = list of model variable dicts
         to pull tabs from
     Returns sorted unique tabs list
     '''
-    mv_tabs = sorted([*{*[t['Tab'] for t in model_variable_list]}])
+    mv_tabs = [*(dict.fromkeys([t['Tab'] for t in model_variable_list]).keys())]
     # move General to the front
     if 'General' in mv_tabs:
         mv_tabs.insert(0, mv_tabs.pop(mv_tabs.index('General')))
@@ -47,10 +48,10 @@ def collect_and_sort_model_tabs(model_variable_list):
 def create_callback_for_tables(model_vars_list):
     '''
     processes model variables and generates a table_id with the form:
-    'Solar_Field_Mirror_WashingGeneral'
+    'Solar_FieldMirror_WashingGeneral'
     
     where Solar_Field, Mirror_Washing, and General are the
-    tab, section and subsection names with spaces replaced with underscores.
+    tab, section and subsection names with spaces replaced by underscores.
      
     Then creates states for each table_id. These store changes to the tables.
     Finally, creates a callback that fires when the Run Model button is hit.
@@ -229,11 +230,11 @@ def create_model_variable_page(tab,model_vars):
             if tv['Section']!=sec:
                 sec=tv['Section']
                 #tab_page.append(html.Div([html.P(),html.H6(sec)]))
-                tab_page.append(html.Div(html.H6(sec)))
+                tab_page.append(html.H5(sec))
             if tv['Subsection']!=subsec:
                 subsec=tv['Subsection']
                 if tv['Subsection']!='General':
-                    tab_page.append(subsec)
+                    tab_page.append(html.H6(subsec))
     #add the final table
     tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
     tab_page.append(create_data_table(tableData,tableID))
@@ -274,7 +275,7 @@ def create_variable_lists(model_name, json_vars, json_vals):
             tempdict['Value']=str(tempdict['Value'])
         model_vars.append(tempdict)
     # sort the lists by hierarchy
-    model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
+    #model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
     #fix 000General, which was a hack for sorting purposes
     for mv in model_vars:
             for k in mv.keys():
@@ -434,7 +435,7 @@ tab_selected_style = {
     'borderRight': '1px solid #300C2D',
     #'borderBottom': '1px solid #d6d6d6',
     #'backgroundColor': '#119DFF',
-    'color': '#300C2D',
+    'color': '#0C300F',
     #'padding': '6px'
 }
 
@@ -513,7 +514,7 @@ def make_tabs_in_collapse(i):
                 dbc.CardBody(
                     [dcc.Tabs(id='tabs', value=Model_tabs[i][0], children=[
                         dcc.Tab(label=j, value=j, style=tab_style, 
-                                selected_style=tab_selected_style, 
+                                selected_style=tab_selected_style,
                                 children=dbc.CardBody(      create_model_variable_page(j,Model_vars[i]))
                                 )for j in Model_tabs[i]
                     ])]
