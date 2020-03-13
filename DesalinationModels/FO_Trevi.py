@@ -295,7 +295,7 @@ class FO_Trevi(object):
             v2 = self.W_viscosity_v   
         elif v == 'Water conductivity':
             v1 = self.W_cond_t4
-            v2 = self.W_cond_t4 
+            v2 = self.W_cond_cond 
             
             
         f = interp1d(v1, v2)

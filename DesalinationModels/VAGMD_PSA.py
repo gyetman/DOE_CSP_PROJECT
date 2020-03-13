@@ -34,7 +34,7 @@ class VAGMD_PSA(object):
                  FFR_r  = 582.7, # Feed flow rate (l/h)
                  FeedC_r= 35,  # Feed concentration (g/L)
                  Capacity = 1000, # System Capcity (m3/day)
-                 
+                 Fossil_f = 1 # Fossil fuel fraction
                  ):
         
         self.module  = module
@@ -45,6 +45,7 @@ class VAGMD_PSA(object):
         self.Capacity = Capacity
         self.Area_small = 7.2
         self.Area_big = 25.92
+        self.Fossil_f = Fossil_f
         
     def design(self):
         if self.module == 0:
@@ -187,7 +188,7 @@ class VAGMD_PSA(object):
         design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
         design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/h'})
         design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
-        design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules,'Unit':'l/h'})    
+        design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
         design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
         design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
@@ -208,6 +209,7 @@ class VAGMD_PSA(object):
         solar_loss =  [0 for i in range(len(gen))]
         load =  [0 for i in range(len(gen))]
         prod =  [0 for i in range(len(gen))]
+        fuel =  [0 for i in range(len(gen))]
         
         for i in range(len(gen)):
             to_desal[i] = min(self.thermal_load, gen[i])
@@ -219,12 +221,19 @@ class VAGMD_PSA(object):
             storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
             solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
-            prod[i] = load[i] / self.thermal_load * self.max_prod
+            if load[i] / self.thermal_load < self.Fossil_f:
+                fuel[i] = self.thermal_load - load[i]
+                
+            
+            prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
             
         simu_output = []
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
+        simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        
+        # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output
             
