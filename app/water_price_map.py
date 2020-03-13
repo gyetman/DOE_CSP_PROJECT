@@ -64,6 +64,10 @@ df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res']
 # solarData is the polygon layer (squares) that are not visible, but used for click events
 # note that in testing, if marker_opacity is set to zero, the click events don't seem to be 
 # fired! Also, if visible is set to False, the click events are not fired! 
+
+# list of data as we need to add multiple traces
+data = []
+
 solarData = go.Choroplethmapbox(
     geojson=geojSolar,
     locations=df_solar.ID,
@@ -92,6 +96,20 @@ canalData = go.Scattermapbox(
      ),
 )
 
+data.append(canalData)
+
+for i, _ in enumerate(canalLats[1:]):
+    data.append(go.Scattermapbox(
+        showlegend=False,
+        lat = canalLats[i],
+        lon = canalLongs[i],
+        mode = 'lines',
+        marker = dict(
+            size=10,
+            color='red',
+        ),
+
+    ))
 
 
 userPoint = go.Scattermapbox(
@@ -141,7 +159,10 @@ globalData = go.Scattermapbox(
     )
     )
 
-data = [countyData,globalData,canalData,solarData,userPoint] # sets the order, I think. 
+data.append(countyData)
+data.append(globalData)
+data.append(solarData)
+#data.append(userPoint) # sets the order, I think. 
 
 layout = go.Layout(
     height=600,
@@ -159,7 +180,8 @@ layout = go.Layout(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
             ),
-    )
+    ),
+    uirevision='change to reload'
 )
 
 #TODO: figure out how to update markdownText so it's interpreted as such! 
@@ -266,7 +288,11 @@ def update_user_point(input_value):
             )
             print(userPoint['lat'])
     # TODO: instead of returning figure, need to update (extend) the userPoint, not replace it.     
-    return go.Figure(dict(data=[countyData,globalData,solarData,userPoint], layout=layout))
+
+    # TODO: debug this return
+    # TODO: add rivers. 
+    # TODO: add agricultural drainage water (mgd)
+    return go.Figure(dict(data=data.append(userPoint), layout=layout))
 
 
 # @app.callback(
