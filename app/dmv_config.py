@@ -6,6 +6,7 @@ solar = 'linear_fresnel_dsg_iph'
 desal = 'VAGMD'
 finance = 'iph_to_lcoefcr'
 base_path = Path(__file__).resolve().parent.parent.absolute()
+app_json = base_path / 'app' / 'app-data.json'
 json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 
@@ -25,6 +26,8 @@ json_outpath = base_path / 'app' / 'user-generated-inputs'
 
 default_weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 weather_file_path = json_outpath / 'weather-file-location.txt'
+
+app_json_init = {'solar':'Solar','desal':'Desal','finance':'Finance'}
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FOR':'Forward Osmosis                          ',
@@ -50,7 +53,7 @@ Financial = {'COMML':'Commercial (Distributed)                   ',
 
 # NOTE: make sure any changes in this table are also reflected in app.layout
 # dict for solar/CSP 'values' and 'labels'
-Solar = {'FPC ':'Flat-Plate Collector',
+Solar = {'FPC' :'Flat-Plate Collector',
          'IPHP':'Industrial Process Heat Parabolic Trough   ',
          'IPHD':'Industrial Process Heat Linear Direct Steam',
          'ISCC':'Integrated Solar Combined Cycle ',
@@ -58,14 +61,14 @@ Solar = {'FPC ':'Flat-Plate Collector',
          'MSLF':'Linear Fresnel Molten Salt      ',
          'DSPT':'Power Tower Direct Steam        ',
          'MSPT':'Power Tower Molten Salt         ',
-         'PT  ':'Parabolic Trough Physical       ',
+         'PT'  :'Parabolic Trough Physical       ',
           }
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
     'FPC' : [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'IPHP': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'IPHD': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHD': [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'ISCC': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'DSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'MSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
