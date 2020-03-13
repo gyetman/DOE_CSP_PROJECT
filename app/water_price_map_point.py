@@ -42,7 +42,7 @@ df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(st
 with open('./gisData/solar_resources3.geojson','r') as f:
     geojSolar = json.load(f)
 # load the data frame of solar resources
-df_solar = pd.read_csv('./gisData/solar_data.csv')
+df_solar = pd.read_csv('./gisData/solar_sw.csv')
 
 #load geoJSON geometries for price data
 with open('./gisData/tx_county_water_prices.geojson','r') as f:
@@ -59,7 +59,7 @@ df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res']
 # note that in testing, if marker_opacity is set to zero, the click events don't seem to be 
 # fired! Also, if visible is set to False, the click events are not fired! 
 ## Using point data now, I hope! 
-""" solarData = go.Choroplethmapbox(
+solarData = go.Choroplethmapbox(
     geojson=geojSolar,
     locations=df_solar.ID,
     z=df_solar.ANN_DNI,
@@ -69,8 +69,8 @@ df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res']
     hoverinfo='none',
     visible=True, # not available for click when this is False
     showscale=False,
-) """
-
+)
+'''
 solarData = go.Scattermapbox(
     lat=df_solar.CENTROID_Y,
     lon=df_solar.CENTROID_X,
@@ -84,7 +84,7 @@ solarData = go.Scattermapbox(
     showlegend=False,
     visible=True
 )
-
+'''
 # canalData = go.Scattermapbox(
 #     name='Canals and Aqueducts',    
 #     #lon=df_canals.lon_conv.values.tolist(),
@@ -154,6 +154,7 @@ layout = go.Layout(
     autosize=True,
     #hovermode='closest',
     #clickmode='text',
+    # TODO: update title, add month & year to price data. 
     title='Maximum Residential Water Price per County; Global City Water Prices',
     showlegend=True,
     legend_orientation='h',
@@ -164,7 +165,8 @@ layout = go.Layout(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
             ),
-    )
+    ),
+    uirevision='change value to reload whole map'
 )
 
 #TODO: figure out how to update markdownText so it's interpreted as such! 
@@ -210,37 +212,37 @@ def output_site_attributes(clicks):
         raise PreventUpdate
     if 'points' not in set(clicks.keys()):
         raise PreventUpdate
-    ##ptID = clicks['points'][0]['location']
+    ptID = clicks['points'][0]['location']
     print(clicks)
     print(ptID)
-    # TODO: make one temp df and get values from that
-"""     solar = df_solar.loc[df_solar.ID == int(ptID)]['ANN_DNI'].values[0]
+    # TODO: make one df and get values from that
+    solar = df_solar.loc[df_solar.ID == int(ptID)]['ANN_DNI'].values[0]
     network = df_solar.loc[df_solar.ID == int(ptID)]['Name'].values[0]
     networkOp = df_solar.loc[df_solar.ID == int(ptID)]['Operator'].values[0]
     networkDist = df_solar.loc[df_solar.ID == int(ptID)]['NEAR_DIST'].values[0]/1000
-    wxStation = df_solar.loc[df_solar.ID == int(ptID)]['City'].values[0]
+    wxStation = df_solar.loc[df_solar.ID == int(ptID)]['City'].astype(str).values[0]
     resWater = df_solar.loc[df_solar.ID == int(ptID)]['Avg_F5000gal_res_perKgal'].values[0]
-    resUsage = df_solar.loc[df_solar.ID == int(ptID)]['Avg_Average_Usage_Residentia_13'].values[0]
+    resUsage = df_solar.loc[df_solar.ID == int(ptID)]['Avg_Average_Usage_Residentia_14'].values[0]
     customers = df_solar.loc[df_solar.ID == int(ptID)]['Avg_Total_Customers'].values[0]
     #TODO: Improve markdown or use a table.
-
+    print(networkDist)
     if resWater is np.nan:
         resWater = -1
     if network is np.nan: 
         network = '-'
-        networkDist = -1.0
+    if networkOp is np.nan:
         networkOp = '-'
     mdText = "#### Site Details\n\n"
     mdText += "Annual DNI: {:,.1f}kWh\n\n".format(solar)
-    mdText += "Network Name: {}\n\n".format(network)
-    mdText += "Network Operator: {}\n\n".format(networkOp)
-    mdText += "Distance to network: {:.1f}km\n\n".format(networkDist)
+    mdText += "Water Network Name: {}\n\n".format(network)
+    mdText += "Water Network Operator: {}\n\n".format(networkOp)
+    mdText += "Distance to water network: {:.1f}km\n\n".format(networkDist)
     mdText += "Weather station file: {}\n\n".format(wxStation)
     mdText += "Average county residential price: ${:,.2f}/Kgal\n\n".format(resWater)
     mdText += "Residential usage: {:,.1f} gal\n\n".format(resUsage)
     mdText += "Approximate number of customers: {:,.0f}\n\n".format(customers)
     return(dcc.Markdown(mdText))
-    """
+    
 @app.callback(
     Output(component_id='map', component_property='figure'),
     [Input(component_id='map', component_property='clickData')]
@@ -317,5 +319,5 @@ def update_user_point(input_value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8067)
+    app.run_server(debug=True, port=8067)
     
