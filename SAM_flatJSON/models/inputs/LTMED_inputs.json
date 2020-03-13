@@ -1,5 +1,5 @@
 {
-    "VAGMD": [
+    "LTMED": [
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Capacity",
@@ -18,9 +18,9 @@
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "storage_hour",
-            "Label": "Thermal storage hour",
-            "Units": "hour",
+            "Name": "Ts",
+            "Label": "The temperature of the steam at the inlet",
+            "Units": "C",
             "Require": "*",
             "Costraint": ">0"
         },
@@ -34,32 +34,25 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "module",
-            "Label": "0' for AS7C1.5L module and '1' for AS26C5L module",
+            "Name": "Tcwin",
+            "Label": "Seawater inlet temperature in the condenser",
             "Units": "none",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "TEI_r",
-            "Label": "Evaporator channel inlet temperature",
-            "Units": "°C",
+            "Name": "Nef",
+            "Label": "Number of effects",
+            "Units": "",
             "Require": "*"
         },
-        {
+		{
             "DataType": "SSC_NUMBER",
-            "Name": "TCI_r",
-            "Label": "Condenser channel inlet temperature",
-            "Units": "°C",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "FFR_r",
-            "Label": "Feed flow rate",
-            "Units": "l/h",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hour",
+            "Units": "hour",
             "Require": "*",
-            "Costraint": "<1111,>399"
+            "Costraint": ">0"
         }
     ]
 }
