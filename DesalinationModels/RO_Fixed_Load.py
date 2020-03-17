@@ -10,7 +10,7 @@ from numpy import array,cumprod,insert
 from numpy.matlib import repmat
 from math import ceil, exp
 from warnings import warn
-
+#%%
 class RO(object):
 #
     def __init__(self,
@@ -144,12 +144,28 @@ class RO(object):
     #            design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         return design_output
 
-    def ROSimulation(self):
-        return
+    def simulation(self, gen, storage=None):
+        if not isinstance(gen,np.ndarray):
+            count_hours= np.asarray(gen)>=self.PowerTotal
+        else:
+            count_hours= gen>=self.PowerTotal
 
-#%%
-test = RO()
-r = test.RODesign()
+        self.Qp_hourly_sim=np.zeros(8760)
+        self.Qp_hourly_sim=count_hours.reshape(1,-1)*repmat(self.Qp1,1,8760)
+        self.Qp_annual_total= np.sum(count_hours)*self.Qp1
+        
+        simu_output = []
+        simu_output.append({'Name':'Water production','Value': self.Qp_hourly_sim,'Unit':'m3/h'})
+        simu_output.append({'Name':'Annual total water production','Value':self.Qp_annual_total,'Unit':'m3/year'})
+        
+        
+        return simu_output
+
+#%% EXAMPLE
+gen=[100,110]*4380
+r = RO()
+r.RODesign()
+r.simulation(gen)
         
 
 
