@@ -1,33 +1,24 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun  4 13:55:35 2019
-
-@author: jsquires
-"""
-
 import ast
+import json
+import sys
+from collections import defaultdict
+from datetime import datetime
+from operator import itemgetter
+from pathlib import Path
+
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
-import dmv_config as cfg
-import json
-import sys
-
-from collections import defaultdict
 from dash.dependencies import Input, Output, State
-from datetime import datetime
-from operator import itemgetter
-from pathlib import Path
 
+import app_config as cfg
 sys.path.insert(0,str(cfg.base_path))
-from SAM_flatJSON.SamBaseClass import SamBaseClass
 
-#define columns used in data tables
-cols = [{'name':'Variable', 'id':'Label','editable':False},
-        {'name':'Value',    'id':'Value','editable':True},
-        {'name':'Units',    'id':'Units','editable':False}]
+import helpers
+from app import app
+from SAM_flatJSON.SamBaseClass import SamBaseClass
 
 #
 ### FUNCTIONS ###
@@ -98,16 +89,20 @@ def create_callback_for_tables(model_vars_list):
             '''find the list with the dict containing the unique value of Name and update that dict'''
             for td in tbl_data:
                 unique_val=td['Name']
-                mvars,index = index_in_list_of_dicts(model_vars_list,'Name',unique_val)
+                mvars,index = helpers.index_in_list_of_dicts(model_vars_list,'Name',unique_val)
                 mvars[index].update(td)
         
-        def _convert_strings_to_literal(str_val):
-            '''converts string values to their literal values'''
+        def _convert_strings_to_literal(v):
+            '''converts some string values to their literal values'''
             #arrays and matrices need to be converted back from string
-            if str_val['DataType']=='SSC_ARRAY' or str_val['DataType']=='SSC_MATRIX':
-                return ast.literal_eval(str_val['Value'])
+            if v['DataType']=='SSC_ARRAY' or v['DataType']=='SSC_MATRIX':
+                return ast.literal_eval(v['Value'])
+            #SSC_NUMBER, now represented as string after user edited in table
+            #need to be changed back to numbers
+            elif v['DataType']=='SSC_NUMBER' and isinstance(v['Value'],str):
+                return ast.literal_eval(v['Value'])
             else:
-                return str_val['Value']
+                return v['Value']
 
         if n_clicks:
             #tableData states is in groups of twos
@@ -285,25 +280,6 @@ def create_variable_lists(model_name, json_vars, json_vals):
                     pass
     return model_vars
 
-def json_update(data, filename):
-    '''
-    updates dict in json file
-    @data dict: data to update json dict
-    @filename str: json file path containing dict to update
-    '''
-    tmp = json_load(filename)
-    tmp.update(data)
-    with open(filename,'w') as json_file:
-        json.dump(tmp, json_file) 
-
-def json_load(filename):
-    '''returns contents of json file'''
-    try: 
-        with open(filename) as json_file: 
-            return json.load(json_file)
-    except FileNotFoundError:
-        return {}
-    
 def get_weather_file():
     '''
     checks to see if a weather file was written to the user directory and
@@ -315,20 +291,6 @@ def get_weather_file():
             return f.readline().strip()
     else:
         return cfg.default_weather_file
-
-def index_in_list_of_dicts(lists,key,value):
-    '''
-    checks lists to see if a key value exists in it
-    returns the list and index of the first dict where the key and 
-    value was found, else returns None,None
-
-    none: index 0 can be returned, so use explicit tests with result
-    '''
-    for l in lists:
-        for index, d in enumerate(l):
-            if d[key] == value:
-                return l,index
-    return None,None
 
 def run_model(csp='tcslinear_fresnel',
               desal=None,
@@ -347,28 +309,7 @@ def run_model(csp='tcslinear_fresnel',
                         cost_json_value_filepath=finance_file)
     stdm.main()
 
-#copied from samJsonParser.py
-#TODO seperate dict functions into separate module
-def search_array_for_dict_with_key(s_array,key):
-    '''
-    returns False if dict is not found in array
-    otherwise returns array index
-    note: index 0 can be returned, so use explicit tests with result
-    '''
-    return next((i for i,item in enumerate(s_array) if key in item), False)
 
-def unpack_keys_from_array_of_dicts(array_of_dicts):
-    keys = []
-    for k in array_of_dicts:
-        keys.append(*k)
-    return keys
-        
-#
-#MAIN PROGRAM
-#
-
-# first prime the app_json
-json_update(cfg.app_json_init,cfg.app_json)
 
 solar_model_vars = create_variable_lists(
     model_name=cfg.solar, 
@@ -390,14 +331,8 @@ desal_finance_model_vars = create_variable_lists(
 # append the desal_finance variables to the finance variables
 finance_model_vars += desal_finance_model_vars
 
-#process desal_finance_vars =
-# then append to finance model vars
-
-# PULL SORT functions out of create_variable_lists
-# create new SORT function
-
 # update weather file_name
-l,wf_index = index_in_list_of_dicts([solar_model_vars],'Name','file_name')
+l,wf_index = helpers.index_in_list_of_dicts([solar_model_vars],'Name','file_name')
 solar_model_vars[wf_index]['Value']=str(get_weather_file())
 
 solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
@@ -417,13 +352,15 @@ Model_vars = {models[0]:desal_model_vars,
 model_vars_list = [desal_model_vars,solar_model_vars,finance_model_vars]
 
 
+
 #
 ### APP LAYOUTS ###
 #
-external_stylesheets = [dbc.themes.FLATLY]
-#external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.config.suppress_callback_exceptions = True
+
+#define columns used in data tables
+cols = [{'name':'Variable', 'id':'Label','editable':False},
+        {'name':'Value',    'id':'Value','editable':True},
+        {'name':'Units',    'id':'Units','editable':False}]
 
 tab_style = {
     'borderBottom': '1px solid #300C2D',
@@ -439,58 +376,7 @@ tab_selected_style = {
     #'padding': '6px'
 }
 
-def serve_layout():
-    return application_layout
-
-application_layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
-])
-app.layout = serve_layout
-app.title = 'Model and Parameter Selection'
-
-model_selection_layout = html.Div([
-    dbc.FormGroup([
-        dbc.Label("Solar Thermal System", width=2, size='lg',color='warning',style={'text-align':'center'}),
-        dbc.Col(
-            dbc.RadioItems(
-                id='select-solar',
-                options=[
-                    {'label': 'Flat-Plate Collector            ', 'value': 'FPC',  'disabled': True},
-                    {'label': 'Integrated Solar Combined Cycle ', 'value': 'ISCC', 'disabled': False},
-                    {'label': 'Linear Fresnel Direct Steam     ', 'value': 'DSLF', 'disabled': False},
-                    {'label': 'Linear Fresnel Molten Salt      ', 'value': 'MSLF', 'disabled': False},
-                    {'label': 'Parabolic Trough Physical       ', 'value': 'PT'  , 'disabled': False},
-                    {'label': 'Power Tower Direct Steam        ', 'value': 'DSPT', 'disabled': False},
-                    {'label': 'Power Tower Molten Salt         ', 'value': 'MSPT', 'disabled': False},
-                    {'label': 'Process Heat Parabolic Trough   ', 'value': 'IPHP', 'disabled': False},
-                    {'label': 'Process Heat Linear Direct Steam', 'value': 'IPHD', 'disabled': False}, 
-                ],
-                value='DSLF',
-            ),width=10,
-        ),
-    ],row=True),
-    dbc.FormGroup([
-        #dbc.Label("Desalination System", width=2, size='lg',color='success',style={'text-align':'center'}),
-        dbc.Label("Desalination System",width=2, size='lg',color='success',style={'text-align':'center'}),
-        dbc.Col(
-            dbc.RadioItems(
-                id='select-desal',
-            ),width=10,
-        ),
-    ],row=True,),
-    dbc.FormGroup([
-        dbc.Label("Financial Model",width=2, size='lg',color='primary',style={'text-align':'center'}),
-        dbc.Col(
-            dbc.RadioItems(
-                id='select-finance',
-            ),width=10,
-        ),
-    ],row=True,),
-    dbc.Col(id='model-parameters',
-    width=2, 
-    style={'horizontal-align':'center'})
-])
+app.title = 'Model Parameters'
 
 loading = html.Div([
     html.P(),
@@ -589,34 +475,6 @@ model_tables_layout = html.Div([model_vars_title, tabs])
 # the table callbacks are defined in a function above
 create_callback_for_tables(model_vars_list)
 
-# Update the index
-@app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/model-selection':
-        return model_selection_layout
-    elif pathname == '/model-variables':
-        return model_tables_layout
-    else:
-        return html.H5('404 URL not found')
-  
-@app.callback(
-    Output('model-parameters', 'children'),
-    [Input('select-solar', 'value'),
-     Input('select-desal', 'value'),
-     Input('select-finance', 'value')])
-def display_model_parameters(solar, desal, finance):
-    '''
-    After all 3 models are selected updates app JSON file and 
-    creates button to navigate to model variables page
-    '''
-    if solar and desal and finance:
-        json_update(data={'solar':solar, 'desal':desal, 'finance':finance},  
-                    filename=cfg.app_json)
-        return html.Div([
-            html.P(),
-            dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/model-variables')])
-        
 @app.callback(
     Output('desal-design-results', 'children'),
     [Input('run-desal-design', 'n_clicks')])
@@ -644,7 +502,7 @@ def run_desal_design(desalDesign):
             [Input('tabs-card','children')])
 def title_collapse_buttons(x):
     '''Titles the collapse buttons based on values stored in JSON file'''
-    app_vals = json_load(cfg.app_json)
+    app_vals = helpers.json_load(cfg.app_json)
     d = f"{cfg.Desal[app_vals['desal']].rstrip()} Desalination System"
     s = cfg.Solar[app_vals['solar']].rstrip()
     f = cfg.Financial[app_vals['finance']].rstrip()
@@ -688,20 +546,5 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     elif button_id == f"{models[2]}-toggle".replace(' ','_') and n3:
         return False, False, not is_open3
     return False, False, False
-    
-# display desal model options after solar model has been selected
-@app.callback(
-    Output('select-desal', 'options'),
-    [Input('select-solar', 'value')])
-def set_desal_options(solarModel):
-    return [{'label': cfg.Desal[i[0]], 'value': i[0], 'disabled': i[1]} for i in cfg.solarToDesal[solarModel]]
 
-#TODO combine with select-desal above?
-@app.callback(
-    Output('select-finance', 'options'),
-    [Input('select-solar', 'value')])
-def set_finance_options(desalModel):
-    return [{'label': cfg.Financial[i[0]], 'value': i[0], 'disabled': i[1]} for i in cfg.solarToFinance[desalModel]]
- 
-if __name__ == '__main__':
-    app.run_server(debug=True, port=8074)
+
