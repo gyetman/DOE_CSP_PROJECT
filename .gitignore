@@ -25,3 +25,7 @@ app/GISdata/schema.ini
 SAM/__pycache__/__init__.cpython-37.pyc
 SAM/__pycache__/PySSC.cpython-37.pyc
 SAM_flatJSON/__pycache__/__init__.cpython-37.pyc
+.ipynb_checkpoints/Untitled-checkpoint.ipynb
+*.xml
+*.ini
+*.ini

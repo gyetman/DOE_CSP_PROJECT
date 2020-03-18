@@ -1,0 +1,70 @@
+{
+    "RO": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "nominal_daily_cap_tmp",
+            "Label": "Capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Tab": "Plant Design Specifications"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Cf",
+            "Label": "Feed TDS",
+            "Units": "g/L",
+            "Require": "*",
+            "Tab": "Plant Design Specifications"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T",
+            "Label": "Feedwater Temperature",
+            "Units": "C",
+            "Require": "*",
+            "Tab": "Plant Design Specifications"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Nel1",
+            "Label": "Number of elements per vessel",
+            "Require": "*",
+            "Tab": "Plant Design Specifications"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "R1",
+            "Label": "Desired overall recovery rate",
+            "Require": "*",
+            "Tab": "Plant Design Specifications"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nERD",
+            "Label": "Energy recovery device efficiency",
+            "Require": "*",
+            "Tab": "Pump and ERD Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nBP",
+            "Label": "Boost pump efficiency",
+            "Require": "*",
+            "Tab": "Pump and ERD Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHP",
+            "Label": "High presssure pump efficiency",
+            "Require": "*",
+            "Tab": "Pump and ERD Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nFP",
+            "Label": "Feed pump efficiency",
+            "Require": "*",
+            "Tab": "Pump and ERD Parameters"
+        }
+    ]
+}
