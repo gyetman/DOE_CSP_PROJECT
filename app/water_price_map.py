@@ -34,9 +34,15 @@ df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
 df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
 
 
-#df_canals = pd.read_csv('./gisData/canals_update.csv')
-#df_
-# s['']
+df_canals = pd.read_csv('./gisData/canals.csv')
+tmp = df_canals.lat.str.split(',')
+canalLats = []
+for i in tmp:
+    canalLats.append([float(j) for j in i])
+tmp = df_canals.lon.str.split(',')
+canalLongs = []
+for i in tmp:
+    canalLongs.append([float(j) for j in i])
 
 # load geoJSON geometries for solar resource (location proxy)
 with open('./gisData/solar_resources3.geojson','r') as f:
@@ -58,6 +64,10 @@ df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res']
 # solarData is the polygon layer (squares) that are not visible, but used for click events
 # note that in testing, if marker_opacity is set to zero, the click events don't seem to be 
 # fired! Also, if visible is set to False, the click events are not fired! 
+
+# list of data as we need to add multiple traces
+data = []
+
 solarData = go.Choroplethmapbox(
     geojson=geojSolar,
     locations=df_solar.ID,
@@ -70,19 +80,37 @@ solarData = go.Choroplethmapbox(
     showscale=False,
 )
 
-# canalData = go.Scattermapbox(
-#     name='Canals and Aqueducts',    
-#     #lon=df_canals.lon_conv.values.tolist(),
-#     #lat=df_canals.lat_conv.values.tolist(),
-#     lon = [[-117,-116],[-115,-113]],
-#     lat=[[33,34],[35,36]],
-#     mode = "markers+lines",
-#     marker=dict(
-#         size=10,
-#         color='red',
+canalData = go.Scattermapbox(
+     name='Canals and Aqueducts',    
+     
+     lat = canalLats[0],
+     lon = canalLongs[0],
+     #lat=df_canals.lat_conv.values.tolist(),
+     #lon = [-117,-116,-115,-113],
+     #lat=[33,34,35,36],
+     mode = "lines",
+     marker=dict(
+         size=10,
+         color='red',
 
-#     )
-    
+     ),
+)
+
+data.append(canalData)
+
+for i, _ in enumerate(canalLats[1:]):
+    data.append(go.Scattermapbox(
+        showlegend=False,
+        lat = canalLats[i],
+        lon = canalLongs[i],
+        mode = 'lines',
+        marker = dict(
+            size=10,
+            color='red',
+        ),
+
+    ))
+
 
 userPoint = go.Scattermapbox(
     name='Selected Site',
@@ -131,7 +159,10 @@ globalData = go.Scattermapbox(
     )
     )
 
-data = [countyData,globalData,solarData,userPoint] # sets the order, I think. 
+data.append(countyData)
+data.append(globalData)
+data.append(solarData)
+#data.append(userPoint) # sets the order, I think. 
 
 layout = go.Layout(
     height=600,
@@ -149,7 +180,8 @@ layout = go.Layout(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
             ),
-    )
+    ),
+    uirevision='change to reload'
 )
 
 #TODO: figure out how to update markdownText so it's interpreted as such! 
@@ -256,7 +288,11 @@ def update_user_point(input_value):
             )
             print(userPoint['lat'])
     # TODO: instead of returning figure, need to update (extend) the userPoint, not replace it.     
-    return go.Figure(dict(data=[countyData,globalData,solarData,userPoint], layout=layout))
+
+    # TODO: debug this return
+    # TODO: add rivers. 
+    # TODO: add agricultural drainage water (mgd)
+    return go.Figure(dict(data=data.append(userPoint), layout=layout))
 
 
 # @app.callback(
@@ -301,5 +337,5 @@ def update_user_point(input_value):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8067)
+    app.run_server(debug=True, port=8067)
     

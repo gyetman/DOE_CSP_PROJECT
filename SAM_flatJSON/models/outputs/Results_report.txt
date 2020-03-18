@@ -1,0 +1,39 @@
+Analysis Report
+
+The simulation of <csp> <desal> has been completed. The annual water prodction is <prod> m3, and the LCOW is <lcow> $/m3. The detailed description is listed below:
+
+1. System description
+
+1.1 Local condition
+Location: <county>, <state>
+Annual average DNI: <average DNI>
+Feedwater salinity: <salinity>
+Water price: <water price>
+
+1.2 Desalination system configuration
+Application: <desal>
+Design capacity: <capacity>
+Thermal storage hour: <storage_hour>
+Thermal storage capacity: <storage_capacity>
+*Waste heat/fossil fuel enabled: Yes/No
+
+1.3 Solar field configuration
+Application: <csp>
+Design thermal energy production: <P_design>
+Solar field area: <A_aperture>
+
+2. Simulation results
+2.1 System performance
+Gained output ratio: <GOR>
+Specific energy consumption: <STEC>
+Annual water production: <prod>
+Monthly water production: [TABLE_of_months_from_an_array]
+Brine production: <*brine>
+Brine concentration: <*x_b>
+
+2.2 Cost analysis
+LCOW: <lcow>
+LCOH: <lcoh>
+LCOE: <lcoe>
+Capital cost: <capex>
+Operational and Maintenance: <opex>

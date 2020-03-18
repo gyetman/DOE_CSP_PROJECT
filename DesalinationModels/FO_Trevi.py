@@ -7,6 +7,16 @@ Michael Greene, Director of Manufacturing
 It's a model used to size heat exhcangeers for the systems, design
 heat exchangers and system flows
 
+AAA- March 13, 2020
+To apply a cost model for this system, we should modify this code to return output
+parameters such as:
+--design capacity of FO 
+--permeate flux per FO module
+--FO membrane area
+
+
+
+
 @author: zzrfl
 """
 import numpy as np
@@ -295,7 +305,7 @@ class FO_Trevi(object):
             v2 = self.W_viscosity_v   
         elif v == 'Water conductivity':
             v1 = self.W_cond_t4
-            v2 = self.W_cond_t4 
+            v2 = self.W_cond_cond 
             
             
         f = interp1d(v1, v2)

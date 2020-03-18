@@ -68,7 +68,7 @@ class lt_med_general(object):
         
     def __init__(self,
                  Tb1      = 76     , # The brine temperature in the first effect, ºC
-                 Xf       = 35000  , # The feed water salinity, ppm
+                 FeedC_r  = 35  , # The feed water salinity, ppm
                  Ms       = 1.023  , # The mass flow rate of the steam entering the bundle tube of the first effect, kg/s
                  Ts       = 80     , # The temperature of the steam at the inlet of the first bundle tube, ºC
                  Tcwin    = 25     , # Seawater inlet temperature in the condenser, ºC
@@ -80,10 +80,13 @@ class lt_med_general(object):
                  BPE      = 0.5    , # The Boiling Point Elevation, ºC
                  NEA      = 0.5    , # The Non Equilibrium Allowance, ºC
                  Tol      = 0.0001 , # The tolarance applied to get equal area in the effects)
+                 Capacity = 971.96,    # Capacity of the plant (m3/day)
+                 storage_hour = 6, # Thermal storage hour (hr)
+                 Fossil_f = 1 # Fossil fuel fraction
                  ):
         
         self.Tb1 = Tb1 
-        self.Xf = Xf
+        self.FeedC_r = FeedC_r*1000
         self.Ms = Ms
         self.Ts = Ts 
         self.Tcwin = Tcwin 
@@ -248,7 +251,7 @@ class lt_med_general(object):
             self.Mfv[0]  = (self.Mgb[0] + self.Mgf[0]) * 3600
             self.Mgt[0]  = (self.Mgb[0] + self.Mgf[0] + self.Mdf[0])
             self.Mb[0]   = self.Mf - self.Mgb[0]
-            self.Xb[0]   = self.Xf * self.Mf / self.Mb[0]
+            self.Xb[0]   = self.FeedC_r * self.Mf / self.Mb[0]
             
             self.Sum_A = self.Aef[0]
             
