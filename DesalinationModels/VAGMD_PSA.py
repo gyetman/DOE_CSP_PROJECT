@@ -232,6 +232,7 @@ class VAGMD_PSA(object):
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
