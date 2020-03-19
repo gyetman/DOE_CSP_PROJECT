@@ -79,8 +79,11 @@ def display_model_parameters(solar, desal, finance):
     creates button to navigate to model variables page
     '''
     if solar and desal and finance:
-        helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance},  
-                    filename=cfg.app_json)
+        try:
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
+        except FileNotFoundError:
+            helpers.initialize_json(cfg.app_json_init,cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
         return html.Div([
             html.P(),
             dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/model-variables')])

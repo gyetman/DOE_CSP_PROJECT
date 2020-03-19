@@ -17,20 +17,29 @@ def index_in_list_of_dicts(lists,key,value):
     return None,None
 
 def json_load(filename):
-    '''returns contents of json file'''
+    '''returns contents of JSON file'''
     with open(filename) as json_file: 
         return json.load(json_file)
 
 def json_update(data, filename):
     '''
-    updates dict in json file
+    updates dict in JSON file
     @data dict: data to update json dict
-    @filename str: json file path containing dict to update
+    @filename str: JSON file path containing dict to update
     '''
     tmp = json_load(filename)
     tmp.update(data)
     with open(filename,'w') as json_file:
-        json.dump(tmp, json_file) 
+        json.dump(tmp, json_file)
+
+def initialize_json(data, filename):
+    '''
+    create a new JSON file with data
+    @data JSON data: to initialize file with 
+    @ filename str: path of file
+    '''
+    with open(filename, 'w') as json_file:
+        json.dump(data, json_file)
 
 def search_array_for_dict_with_key(s_array,key):
     '''
