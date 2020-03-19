@@ -94,7 +94,7 @@
             "Require": "*",
             "Costraint": "",
 			"Tab": "Desalination"
-        }
+        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Miscellaneous",
