@@ -12,7 +12,7 @@ class LTMED_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  f_HEX = 0.4, # Cost fraction of the evaporator 
-                 HEX_area = 4400, # Heat exchanger area (m2)
+                 HEX_area = 8800, # Heat exchanger area (m2)
                  STEC = 60 , # Thermal energy consumption (kW)
                  SEEC = 1.5, # Specifc Electricity energy consumption (kWh/m3)
                  
@@ -70,9 +70,9 @@ class LTMED_cost(object):
         self.LCOW = self.CAPEX + self.OPEX
         
         cost_output = []
-        cost_output.append({'Name':'Desal CAPEX','Value':f'{self.CAPEX*self.Prod:,.2f}','Unit':'m3'})
-        cost_output.append({'Name':'Desal OPEX','Value':f'{self.OPEX:,.2f}','Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of water','Value':f'{self.LCOW:,.2f},'Unit':'$/m3'})
+        cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX*self.Prod,'Unit':'m3'})
+        cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         
         return cost_output
 #%%

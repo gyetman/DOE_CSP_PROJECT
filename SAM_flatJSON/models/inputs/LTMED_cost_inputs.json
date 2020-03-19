@@ -52,6 +52,15 @@
         },
 		{
             "DataType": "SSC_NUMBER",
+            "Name": "SEEC",
+            "Label": "Specific electric energy consumption",
+            "Units": "kWh/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
             "Name": "Chemicals",
             "Label": "Chemical unit cost",
             "Units": "$/kWh",
@@ -82,6 +91,15 @@
             "Name": "Maintenance",
             "Label": "Maintenance cost (percentage to the capital cost)",
             "Units": "%",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        }
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Miscellaneous",
+            "Label": "Miscellaneous cost ",
+            "Units": "$/m3",
             "Require": "*",
             "Costraint": "",
 			"Tab": "Desalination"
