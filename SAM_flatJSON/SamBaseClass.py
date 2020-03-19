@@ -94,7 +94,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
             self.design_output = self.VAGMD.design()
-            design_json_outfile = 'SAM_flatJSON/results/VAGMD_design_output.json'
+            design_json_outfile = self.samPath / 'results' / 'VAGMD_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
         
