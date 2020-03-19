@@ -1,9 +1,6 @@
 {
 	"Ts" : 80,
-	"Nef" : 16,
-	"Tcwin" : 25,
-	"FeedC_r" : 35,
-	"Capacity": 1000,
-	"Fossil_f": 1,
-	"storage_hour": 6
+	"Nef" : 14,
+	"Capacity": 2000,
+	"Fossil_f": 1
 }

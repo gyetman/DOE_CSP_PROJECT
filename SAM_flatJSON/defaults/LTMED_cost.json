@@ -9,5 +9,6 @@
 	"Labor": 0.033,
 	"Miscellaneous": 0.1,
 	"Discharge": 0.02,
-	"Maintenance": 2
+	"Maintenance": 2,
+	"SEEC": 1.5
 }
