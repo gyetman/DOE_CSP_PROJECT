@@ -9,7 +9,7 @@ class SamBaseClass(object):
     def __init__(self,
                  CSP = 'linear_fresnel_dsg_iph',
                  financial = 'iph_to_lcoefcr',
-                 desalination =  'LTMED',
+                 desalination =  'VAGMD',
                  json_value_filepath = None,
                  desal_json_value_filepath = None,
                  cost_json_value_filepath = None
@@ -90,7 +90,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
             self.design_output = self.VAGMD.design()
-            deign_json_outfile = 'VAGMD_design_output.json'
+            deign_json_outfile = 'SAM_flatJSON/models/outputs/VAGMD_design_output.json'
             with open(deign_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
         
@@ -100,7 +100,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.design_output = self.LTMED.design()
-            design_json_outfile = 'LTMED_design_output.json'
+            design_json_outfile = 'SAM_flatJSON/models/outputs/LTMED_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
                 
@@ -116,7 +116,7 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 values_json = json.load(read_file)
             self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = values_json['storage_hour'])
-            simu_json_outfile = 'VAGMD_simulation_output.json'
+            simu_json_outfile = 'SAM_flatJSON/models/outputs/VAGMD_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)
         
@@ -130,7 +130,7 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 values_json = json.load(read_file)
             self.simu_output = self.LTMED.simulation(gen = heat_gen, storage = values_json['storage_hour'])
-            simu_json_outfile = 'LTMED_simulation_output.json'
+            simu_json_outfile = 'SAM_flatJSON/models/outputs/LTMED_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)
     
@@ -142,7 +142,7 @@ class SamBaseClass(object):
             self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC,
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.ssc.data_get_number(self.data, b'lcoe_fcr'), solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
             self.cost_output = self.LCOW.lcow()
-            cost_json_outfile = 'VAGMD_cost_output.json'
+            cost_json_outfile = 'SAM_flatJSON/models/outputs/VAGMD_cost_output.json'
             with open(cost_json_outfile, 'w') as outfile:
                 json.dump(self.cost_output, outfile)
                 
@@ -154,7 +154,7 @@ class SamBaseClass(object):
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.ssc.data_get_number(self.data, b'lcoe_fcr'), cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
-            cost_json_outfile = 'LTMED_cost_output.json'
+            cost_json_outfile = 'SAM_flatJSON/models/outputs/LTMED_cost_output.json'
             with open(cost_json_outfile, 'w') as outfile:
                 json.dump(self.cost_output, outfile)
             
@@ -475,7 +475,7 @@ class SamBaseClass(object):
 if __name__ == '__main__':
     sam = SamBaseClass()
     sam.desal_design(sam.desalination)
-    sam.main()
+#    sam.main()
     
     #Argument for the unit test makes sure the unit test does not fail if system_capacity 
     #system_capacity is passed as a first argument on command line.
