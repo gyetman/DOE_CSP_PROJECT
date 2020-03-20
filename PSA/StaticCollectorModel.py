@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 27 17:06:21 2020
-
+PSA Static Solar Collector functions transcribed from Matlab and modified for Python
 @author: adama
 """
 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
@@ -354,7 +354,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 
 #%% (DOESN"T SEEM TO BE INCORPORATED IN CALCULATING SOLAR FRACTION) Determines storage capacity of water tanks according to selected design date.
 
-def Almacenamiento_cpc_DOE (E_campo,Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
+def Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
 #
 #    % Capacidad_m3=Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv)
 #    
@@ -795,44 +795,44 @@ def normalize(vector):
     
     return normal_vector
 #%% Default inputs and execution
-tipo_col='2'  # Collector Type- for type 1, v1 and v2 vals should be scalar; type 2- supply three vectors: v1,v2,v3
-Time=[2010, 3 ,18 ,12, 0, 0] # Date of design point
-fecha_inicio=[2010, 3 ,18, 9, 0, 0]
-fecha_fin=[2010, 3, 18, 17, 0 ,0] 
-Pot_term_kW=1000
-Tent_campo=25
-Tsal_campo=80
-qm=0.02
-Tamb_D=25
-G=1000
-a=0.64
-b=1.494
-c=0.012
-d=4.18189
-A=2.83
-Long=-2.460
-Lat=36.838
-inc_captador=Lat
-v_azim=180
-Interv=60
-tiempo_oper=10
-pressure=1
-
-if tipo_col=='1':
-    v1=30   ### Made up value - should use a flat-plate collector datasheet to get this
-    v2=0.99 ### Made up value - should use a flat-plate collector datasheet to get this
-######### EXECUTION EXAMPLE FOR TYPE 1 COLLECTOR (EVACUATED TUBE)
-    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2)
-    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2)
-
-### THERMAL STORAGE CAPACITY, WHICH DOESN"T SEEM TO BE INTEGRATED WITH CALCULATION OF SOLAR FRACTION.....
-    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
-
-elif tipo_col=='2':
-    v1=[10 ,20 ,30, 40 ,50, 60, 70]
-    v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68]     # Longitudinal incidence angle modifiers from datasheet
-    v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08] # Transversal incidence angle modifiers from datasheet
-    
-    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2,v3)
-    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2,v3)
-    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
+#tipo_col='2'  # Collector Type- for type 1, v1 and v2 vals should be scalar; type 2- supply three vectors: v1,v2,v3
+#Time=[2010, 3 ,18 ,12, 0, 0] # Date of design point
+#fecha_inicio=[2010, 3 ,18, 9, 0, 0]
+#fecha_fin=[2010, 3, 18, 17, 0 ,0] 
+#Pot_term_kW=1000
+#Tent_campo=25
+#Tsal_campo=80
+#qm=0.02
+#Tamb_D=25
+#G=1000
+#a=0.64
+#b=1.494
+#c=0.012
+#d=4.18189
+#A=2.83
+#Long=-2.460
+#Lat=36.838
+#inc_captador=Lat
+#v_azim=180
+#Interv=60
+#tiempo_oper=10
+#pressure=1
+#
+#if tipo_col=='1':
+#    v1=30   ### Made up value - should use a flat-plate collector datasheet to get this
+#    v2=0.99 ### Made up value - should use a flat-plate collector datasheet to get this
+########## EXECUTION EXAMPLE FOR TYPE 1 COLLECTOR (EVACUATED TUBE)
+#    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2)
+#    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2)
+#
+#### THERMAL STORAGE CAPACITY, WHICH DOESN"T SEEM TO BE INTEGRATED WITH CALCULATION OF SOLAR FRACTION.....
+#    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
+#
+#elif tipo_col=='2':
+#    v1=[10 ,20 ,30, 40 ,50, 60, 70]
+#    v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68]       # Longitudinal incidence angle modifiers from datasheet
+#    v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08] # Transversal incidence angle modifiers from datasheet
+#    
+#    num_col,num_fila, num_total_col, area_total_captacion = design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,v1,v2,v3)
+#    fraccion_solar,Te, Ts_fila, Ts, qm, Pot_fila, Pot_campo, E_campo=fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qm,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,v1,v2,v3)
+#    thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tsal_campo, Tent_campo,Pot_term_kW,Interv, pressure)
