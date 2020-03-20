@@ -1,0 +1,39 @@
+{
+    "TcslinearFresnel_LFDS": [
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "PFlux",
+            "Label": "Permeate flux",
+            "Units": "l/h/m2",
+            "Group": "Desalination",
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "TCO",
+            "Label": "Condenser outlet temperatrue",
+            "Units": "oC",
+            "Group": "Desalination",
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "ThPower",
+            "Label": "Thermal power consumption",
+            "Units": "kW(th)",
+            "Group": "Desalination",
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "STEC",
+            "Label": "Specific thermal energy consumption",
+            "Units": "kWh(th)/m3",
+            "Group": "Desalination",
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "GOR",
+            "Label": "Gained output ratio",
+            "Units": "",
+            "Group": "Desalination",
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "LTMED": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Constraint": ">2000,<10000"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Nef",
+            "Label": "Number of effects",
+            "Units": "none",
+            "Require": "*"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Ts",
+            "Label": "The temperature of the steam at the inlet",
+            "Units": "C",
+            "Require": "*",
+            "Constraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        }
+    ]
+}

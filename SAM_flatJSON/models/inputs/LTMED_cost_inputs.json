@@ -1,0 +1,108 @@
+{
+    "LTMED": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "yrs",
+            "Label": "Plant lifetime",
+            "Units": "none",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "int_rate",
+            "Label": "Average interest rate",
+            "Units": "",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "f_HEX",
+            "Label": "Cost fraction of the evaporator",
+            "Units": "",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coe",
+            "Label": "Unit cost of electricity",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coh",
+            "Label": "Unit cost of heat",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_storage",
+            "Label": "Cost of thermal storage",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "SEEC",
+            "Label": "Specific electric energy consumption",
+            "Units": "kWh/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Chemicals",
+            "Label": "Chemical unit cost",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Labor",
+            "Label": "Labor unit cost",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Discharge",
+            "Label": "Water discharge/disposal cost",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Maintenance",
+            "Label": "Maintenance cost (percentage to the capital cost)",
+            "Units": "%",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Miscellaneous",
+            "Label": "Miscellaneous cost ",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        }
+    ]
+}

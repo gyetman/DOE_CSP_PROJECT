@@ -1,5 +1,37 @@
 {
     "VAGMD": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Costraint": "<106,>34"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hour",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        },
         {
             "DataType": "SSC_NUMBER",
             "Name": "module",
@@ -11,14 +43,14 @@
             "DataType": "SSC_NUMBER",
             "Name": "TEI_r",
             "Label": "Evaporator channel inlet temperature",
-            "Units": "ºC",
+            "Units": "°C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TCI_r",
             "Label": "Condenser channel inlet temperature",
-            "Units": "ºC",
+            "Units": "°C",
             "Require": "*"
         },
         {
@@ -28,22 +60,6 @@
             "Units": "l/h",
             "Require": "*",
             "Costraint": "<1111,>399"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "FeedC_r",
-            "Label": "Feed concentration",
-            "Units": "g/L",
-            "Require": "*",
-            "Costraint": "<106,>34"
-        },
-		        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Capacity",
-            "Label": "Plant capacity",
-            "Units": "m3/day",
-            "Require": "*",
-            "Costraint": ""
         }
     ]
 }
