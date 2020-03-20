@@ -217,33 +217,35 @@ def output_site_attributes(clicks):
 
             mdText = "###### Produced Water Measurements for {} County, ST\n\n".format(countyName)
             mdText += 'Source: USGS Produced Waters Database\n\n'
-            mdText += 'Average TDS: {:,.1f} mg/L\n\n'.format(avgTDS)
+            mdText += 'Average TDS: {:,.0f} mg/L\n\n'.format(avgTDS)
             mdText += 'Average PH: {:0.1f}\n\n'.format(avgPH)
             return(dcc.Markdown(mdText))
         # handle point clicks
         else:
             if 'Capacity' in ptDict['text']:
                 print(ptDict.keys())
-                ptID = ptDict['pointNumber']
-                plantName = df_power[ptID]['Plant_name']
-                plantFuel = df_power[ptID]['Plant_prim']
-                plantCapacity = df_power[ptID]['Plant_annu']
-                wasteHeat = df_power[ptID]['Total_Pote']
+                for key, value in ptDict.items():
+                    print('{}: {}'.format(key,value))
+                #ptID = ptDict['curveNumber']
+                #plantName = df_power[ptID]['Plant_name']
+                #plantFuel = df_power[ptID]['Plant_prim']
+                #plantCapacity = df_power[ptID]['Plant_annu']
+                #wasteHeat = df_power[ptID]['Total_Pote']
 
-                mdText = '###### Details for Power Plant {}\n\n'.format(plantName)
-                mdText += 'Fuel Type: {}\n\n'.format(plantFuel)
-                mdText += 'Annual Capacity: {} <units>\n\n'.format(plantCapacity)
-                mdText += 'Potential Waste Heat: {} <units>\n\n'.format(wasteHeat)
+                #mdText = '###### Details for Power Plant {}\n\n'.format(plantName)
+                #mdText += 'Fuel Type: {}\n\n'.format(plantFuel)
+                #mdText += 'Annual Capacity: {} <units>\n\n'.format(plantCapacity)
+                #mdText += 'Potential Waste Heat: {} <units>\n\n'.format(wasteHeat)
 
-                return(dcc.Markdown(mdText))
+                #return(dcc.Markdown(mdText))
 
             elif 'Plant Type' in ptDict['text']:
                 print(ptDict.keys())
-                ptID = ptDict['pointNumber']
-                plantName = df_desal['Project_name']
-                mdText = '###### Details for Desalination Plant {}\n\n'.format(plantName)
+                #ptID = ptDict['curveNumber']
+                #plantName = df_desal['Project_name']
+                #mdText = '###### Details for Desalination Plant {}\n\n'.format(plantName)
 
-                return(dcc.Markdown(mdText))
+                #return(dcc.Markdown(mdText))
 
 
 

@@ -22,6 +22,8 @@ import numpy as np
 # TODO: add line features (water network) in California. Line features should be easy
 # but the json file is not formatted right, I think. 
 
+# Add existing desal plants
+
 CENTER_LAT=32.7767
 CENTER_LON=-96.7970
 
@@ -273,6 +275,7 @@ def update_user_point(input_value):
             print('bad data')
             raise PreventUpdate
         else:
+            print(input_value)
             ptID = input_value['points'][0]['location']
             userPoint = go.Scattermapbox(
                 name='Selected Site',
@@ -291,8 +294,8 @@ def update_user_point(input_value):
 
     # TODO: debug this return
     # TODO: add rivers. 
-    # TODO: add agricultural drainage water (mgd)
-    return go.Figure(dict(data=data.append(userPoint), layout=layout))
+    # TODO: add agricultural drainage water (Mgd)
+    return go.Figure(dict(data=[countyData,canalData,globalData,userPoint],layout=layout))
 
 
 # @app.callback(
