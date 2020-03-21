@@ -7,9 +7,6 @@ TO DO:
 -Need to modify fraccion_solar to take thermal storage as input. For now, placing thermal storage under simulation method,
 but will change so that it can be executed as its own design method. 
 
-- Need to recheck the logic from StaticCollectorModel.py in the fraccion_solar function; something may be wrong with the indexing
-of Ts, which is supposed to be the outlet temperature for each collector within a row. Right now, the result does not yield the outlet temp
-of the last collector in the row (although Ts_fila result does supposedly give that outlet temp).
 @author: adama
 """
 from PSA.StaticCollectorModel import *
