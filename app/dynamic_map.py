@@ -76,8 +76,8 @@ layout = go.Layout(
 fig = go.Figure(dict(data=data, layout=layout))
 app.title = 'Site Selection'
 app.layout = html.Div(children=[
-    html.Div([
-        dcc.Dropdown(
+        html.Div([
+            dcc.Dropdown(
             id='select-map',
             options = [
                 {'label':'Solar Resource', 'value':'solar'},
@@ -87,7 +87,14 @@ app.layout = html.Div(children=[
                 {'label':'Legal Framework', 'value':'legal'}
             ],
             value='solar',
-            className='row'
+            className='row',
+            clearable=False,
+            persistence=True,
+            style= {
+                'position': 'relative',
+                'display': 'inline-block',
+                'min-width': '150px'
+            }
         ),
         html.Div([
             html.H3(children='Site Exploration and Selection'),
@@ -114,25 +121,37 @@ app.layout = html.Div(children=[
 ])
 
 # callback for dropdown theme choice
-
+# @app.callback(
+#     Output(component_id='map', component_property='figure'),
+#     []
+# )
+# def loadNewMap(fig):
+#     ''' Update map based on dropdown event '''
+#     print('clicked')
+#     raise PreventUpdate
 
 # callback for the button
-""" @app.callback(
-    Output(component_id='next-button',component_property='href'),
-    [Input('next-button','n_clicks')]
-) """
-def nextStep(n_clicks):
-    return('http://127.0.0.1:8073/model-selection')
-# callback for updating geometries
+# @app.callback(
+#     Output(component_id='next-button',component_property='href'),
+#     [Input('next-button','n_clicks')]
+# )
+# def nextStep(n_clicks):
+#     return('http://127.0.0.1:8073/model-selection')
+# # callback for updating geometries
+
+""" callback to handle click events. Capturing map info with the click 
+event (figure, relayoutData) for clicks that are not close enough to a 
+point (zoomed in too far). """
 @app.callback(
     Output(component_id='map', component_property='figure'),
-    [Input(component_id='map', component_property='clickData')],
+    [Input(component_id='map', component_property='clickData'),
+    Input(component_id='select-map', component_property='value')],
     [State('map','relayoutData'),
     State('map','figure')]
 
 )
-def clickPoint(clicks,relay,fig):
-    if not any([clicks,relay,fig]):
+def clickPoint(clicks,dropDown,relay,fig):
+    if not any([clicks,dropDown,relay,fig]):
         print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
@@ -143,20 +162,6 @@ def clickPoint(clicks,relay,fig):
             print('fig')
         # get geom from nearest point and add user point
         # user-selected point placeholder
-        """         newUserPoint = go.Scattermapbox(
-            name='Selected Site',
-            lat=[clicks['points'][0]['lat']],
-            lon=[clicks['points'][0]['lon']],
-            # replaced None object with 'none', confusing but that turns it off!  
-            #hoverinfo='none',
-            mode='markers',
-            marker=dict(
-                size=13,
-                color='red',
-            ),
-            showlegend=True,
-            visible=True,
-        ), """
         newUserPoint = fig['data'][1]
         newUserPoint['lat'] = [clicks['points'][0]['lat']]
         newUserPoint['lon'] = [clicks['points'][0]['lon']]
@@ -167,14 +172,11 @@ def clickPoint(clicks,relay,fig):
         print(relay)
         raise PreventUpdate
     elif fig:
-        print(len(fig))
+        print(fig.keys())
         raise PreventUpdate
-    """     if fig:
-        #print(fig)
+    elif dropDown:
+        print(dropDown)
         raise PreventUpdate
-    if relay:
-        print(relay)
-        raise PreventUpdate """
 
 
 
