@@ -34,14 +34,18 @@ class StaticCollector(object):
                  outlet_water_temp=80, # outlet water temperature in the solar field, ºC
                  qm=0.02,   # mass flow rate of collector 
                  Tamb_D=25, # design point ambient temperature, C
+                 
                  G=1000,    # irradiance from collector datasheet
                  a=0.64,    # datasheet 
                  b=1.494,   # datasheet 
                  c=0.012,   # datasheet 
                  d=4.18189, # datasheet 
                  A=2.83,    # aperture area of collector from datasheet 
+                
                  Long=-2.460, # Longitude
                  Lat=36.838,  # Latitude
+                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv',
+                 
                  tilt_angle=36.838, # tilt angle of collector
                  v_azim=180,     # surface azimuth angle, 180 degrees facing south
                  Interv=60,      # temporal resolution of simulation/data in # of minutes
@@ -77,16 +81,17 @@ class StaticCollector(object):
         self.v1=v1
         self.v2=v2
         self.v3=v3
+        self.weatherfile=weatherfile
         
  #% 
     def design(self):
         if self.collector_type=='1':
             #v1=30   ### Made up value - should use a flat-plate collector datasheet to get this and should only be a single value
             #v2=0.99 ### Made up value - should use a flat-plate collector datasheet to get this  and should only be a single value
-            self.num_col,self.num_fila, self.num_total_col, self.area_total_captacion = design_cpc_DOE(self.collector_type,self.design_point_date, self.initial_date, self.final_date, self.desal_thermal_power_req,self.initial_water_temp,self.outlet_water_temp,self.qm,self.Tamb_D,self.G,self.a,self.b,self.c,self.d,self.A,self.Long,self.Lat,self.tilt_angle,self.v_azim,self.Interv,self.tiempo_oper,self.v1,self.v2)        
+            self.num_col,self.num_fila, self.num_total_col, self.area_total_captacion = design_cpc_DOE(self.collector_type,self.design_point_date, self.initial_date, self.final_date, self.desal_thermal_power_req,self.initial_water_temp,self.outlet_water_temp,self.qm,self.Tamb_D,self.G,self.a,self.b,self.c,self.d,self.A,self.Long,self.Lat,self.weatherfile,self.tilt_angle,self.v_azim,self.Interv,self.tiempo_oper,self.v1,self.v2)        
             
         elif self.collector_type=='2':
-            self.num_col,self.num_fila, self.num_total_col, self.area_total_captacion = design_cpc_DOE(self.collector_type,self.design_point_date, self.initial_date, self.final_date, self.desal_thermal_power_req,self.initial_water_temp,self.outlet_water_temp,self.qm,self.Tamb_D,self.G,self.a,self.b,self.c,self.d,self.A,self.Long,self.Lat,self.tilt_angle,self.v_azim,self.Interv,self.tiempo_oper,self.v1,self.v2,self.v3)        
+            self.num_col,self.num_fila, self.num_total_col, self.area_total_captacion = design_cpc_DOE(self.collector_type,self.design_point_date, self.initial_date, self.final_date, self.desal_thermal_power_req,self.initial_water_temp,self.outlet_water_temp,self.qm,self.Tamb_D,self.G,self.a,self.b,self.c,self.d,self.A,self.Long,self.Lat,self.weatherfile,self.tilt_angle,self.v_azim,self.Interv,self.tiempo_oper,self.v1,self.v2,self.v3)        
         
         
         design_output = []
@@ -100,12 +105,12 @@ class StaticCollector(object):
 
     def simulation(self):
         if self.collector_type=='1':
-            self.solar_fraction,self.Te, self.Ts_fila, self.Ts, self.qm, self.Pot_fila, self.Pot_campo, self.E_campo=fraccion_solar_DOE(self.collector_type,self.num_col, self.num_fila, self.desal_thermal_power_req,self.qm,self.initial_water_temp, self.outlet_water_temp,self.Long,self.Lat,self.tilt_angle, self.v_azim,self.a,self.b,self.c,self.d,self.A,self.pressure,self.Interv,self.tiempo_oper,self.v1,self.v2)
-            self.thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (self.E_campo,self.initial_date, self.final_date, self.outlet_water_temp, self.initial_water_temp,self.desal_thermal_power_req,self.Interv, self.pressure)
+            self.solar_fraction,self.Te, self.Ts_fila, self.Ts, self.qm, self.Pot_fila, self.Pot_campo, self.E_campo=fraccion_solar_DOE(self.collector_type,self.num_col, self.num_fila, self.desal_thermal_power_req,self.qm,self.initial_water_temp, self.outlet_water_temp,self.Long,self.Lat,self.weatherfile,self.tilt_angle, self.v_azim,self.a,self.b,self.c,self.d,self.A,self.pressure,self.Interv,self.tiempo_oper,self.v1,self.v2)
+            self.thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (self.E_campo,self.initial_date, self.final_date, self.outlet_water_temp, self.initial_water_temp,self.desal_thermal_power_req,self.Interv, self.pressure,self.weatherfile)
 
         elif self.collector_type=='2':
-            self.solar_fraction,self.Te, self.Ts_fila, self.Ts, self.qm, self.Pot_fila, self.Pot_campo, self.E_campo=fraccion_solar_DOE(self.collector_type,self.num_col, self.num_fila, self.desal_thermal_power_req,self.qm,self.initial_water_temp, self.outlet_water_temp,self.Long,self.Lat,self.tilt_angle, self.v_azim,self.a,self.b,self.c,self.d,self.A,self.pressure,self.Interv,self.tiempo_oper,self.v1,self.v2,self.v3)
-            self.thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (self.E_campo,self.initial_date, self.final_date, self.outlet_water_temp, self.initial_water_temp,self.desal_thermal_power_req,self.Interv, self.pressure)
+            self.solar_fraction,self.Te, self.Ts_fila, self.Ts, self.qm, self.Pot_fila, self.Pot_campo, self.E_campo=fraccion_solar_DOE(self.collector_type,self.num_col, self.num_fila, self.desal_thermal_power_req,self.qm,self.initial_water_temp, self.outlet_water_temp,self.Long,self.Lat,self.weatherfile,self.tilt_angle, self.v_azim,self.a,self.b,self.c,self.d,self.A,self.pressure,self.Interv,self.tiempo_oper,self.v1,self.v2,self.v3)
+            self.thermal_storage_capacity_m3=Almacenamiento_cpc_DOE (self.E_campo,self.initial_date, self.final_date, self.outlet_water_temp, self.initial_water_temp,self.desal_thermal_power_req,self.Interv, self.pressure,self.weatherfile)
 
 
         simu_output = []

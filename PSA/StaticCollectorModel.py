@@ -4,7 +4,7 @@ Created on Thu Feb 27 17:06:21 2020
 PSA Static Solar Collector functions transcribed from Matlab and modified for Python
 @author: adama
 """
-weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+
 
 import numpy as np
 from math import pi,sqrt
@@ -14,7 +14,7 @@ import pvlib
 import iapws
 
 #%% Determines the number of rows for the solar field
-def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,*args):
+def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,weatherfile,inc_captador,v_azim,Interv,tiempo_oper,*args):
 
     #% design_cpc_pvsyst(tipo_col,fecha_inicio, fecha_fin,Pot_term_kW,Tent_campo,Tsal_campo,qm,a,b,c,d,A,Long,Lat,inc_captador,v_azim,Interv,tiempo_oper,varargin)
     #
@@ -162,7 +162,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
         
     return num_col,num_fila, num_total_col, area_total_captacion 
 #%% Determines solar fraction of static collector field and gives annual thermal power profile on hourly basis
-def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, Tsal_campo,Long,Lat,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,*args):
+def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, Tsal_campo,Long,Lat,weatherfile,inc_captador, v_azim,a,b,c,d,A,pressure,Interv,tiempo_oper,*args):
 
 #    % fraccion_solar_DOE(tipo_col,Pot_term_kW, qmo,coord_geo, orient_captador,Tent_campo, Tsal_campo,a,b,c,d,A,pressure,Interv,tiempo_oper,varargin) 
 #    % tipo_col '1' '2'
@@ -292,9 +292,10 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
           Julian_date_vec[k]=datetimes[k]
           ang_inc[k]= pvlib.irradiance.aoi(inc_captador,v_azim,solar_zenith[k],solar_azimuth[k])   #ang_inc_staticcol(Julian_date_vec[k],[Long, Lat],[inc_captador, v_azim]);
           if num_col!=1:  
-              for n in range(num_col-1):
+              for n in range(num_col):
                   Ts[k,n]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)
-                  Te[k,n+1]=Ts[k,n]
+                  if n<(num_col-1):
+                      Te[k,n+1]=Ts[k,n]
           
 #          print(Julian_date_vec[k])
 #          print(Te)
@@ -354,7 +355,7 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 
 #%% (DOESN"T SEEM TO BE INCORPORATED IN CALCULATING SOLAR FRACTION) Determines storage capacity of water tanks according to selected design date.
 
-def Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure):
+def Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tst, Tamb,Pot_term_kW,Interv, pressure,weatherfile):
 #
 #    % Capacidad_m3=Almacenamiento_cpc_DOE (Fecha_inicio, Fecha_fin, Tst, Tamb,Pot_term_kW,Interv)
 #    
