@@ -9,7 +9,7 @@ but will change so that it can be executed as its own design method.
 
 @author: adama
 """
-from PSA.StaticCollectorModel import *
+from PSA.StaticCollectorFunctions import *
 
 class StaticCollector(object):
     '''
