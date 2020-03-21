@@ -7,11 +7,14 @@ PSA Static Solar Collector functions transcribed from Matlab and modified for Py
 
 
 import numpy as np
-from math import pi,sqrt
+from math import pi
 import pandas as pd
-import datetime as dt
+#import datetime as dt
 import pvlib
 import iapws
+from numpy.matlib import repmat
+
+
 
 #%% Determines the number of rows for the solar field
 def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_campo,Tsal_campo,qm,Tamb_D,G,a,b,c,d,A,Long,Lat,weatherfile,inc_captador,v_azim,Interv,tiempo_oper,*args):
@@ -116,14 +119,14 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     #% Calculate the thermal energy delivered by one row. E_term_fila_kWh, kWh
     #% If the thermal energy is positive (higher than zero), keep the values in a vector called E_term_fila_valida
     
-    for k in range(num_instantes):
-        Julian_date_vec[k]=datetimes[rows[k]]#jul2calg(Julian_date_D[k]);
-        Ts[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te,temp_amb_D[k],qm,a,b,c,d,Rad_sol_global_D[k],A,*args)
-        Pot_capt[k]=qm*(d*(Ts[k]-Te));
-        Pot_fila[k]=Pot_capt[k]*num_col;                      
-        E_term_fila_kWh[k]= Pot_fila[k]*Interv_horas;
-        if E_term_fila_kWh[k]>0:
-           E_term_fila_valida[k]=E_term_fila_kWh[k];         
+#    for k in range(num_instantes):
+    Julian_date_vec=datetimes[rows] #jul2calg(Julian_date_D[k]);
+    Ts=temp_salida_DOE(tipo_col,Julian_date_vec,Long,Lat,inc_captador,v_azim,Te,temp_amb_D,qm,a,b,c,d,Rad_sol_global_D,A,*args)
+    Pot_capt=qm*(d*(Ts-Te))
+    Pot_fila=Pot_capt*num_col;                      
+    E_term_fila_kWh= Pot_fila*Interv_horas;
+#        if E_term_fila_kWh[k]>0:
+    E_term_fila_valida=E_term_fila_kWh*(E_term_fila_kWh>0)      
         
          
         
@@ -286,23 +289,19 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 #        % the following instant is the outlet temperature of the row
 #        % If the outlet temperature of the row is higher than water outlet temperature from the solar field, re-calculate the mass flow
 #        % rate such that the outlet temperature of the row is equal to the water outlet temperature from the solar field
+
+    Julian_date_vec=datetimes
+    ang_inc= pvlib.irradiance.aoi(inc_captador,v_azim,solar_zenith,solar_azimuth)   #ang_inc_staticcol(Julian_date_vec[k],[Long, Lat],[inc_captador, v_azim]);
        
     
     for k in range(num_instantes):
-          Julian_date_vec[k]=datetimes[k]
-          ang_inc[k]= pvlib.irradiance.aoi(inc_captador,v_azim,solar_zenith[k],solar_azimuth[k])   #ang_inc_staticcol(Julian_date_vec[k],[Long, Lat],[inc_captador, v_azim]);
           if num_col!=1:  
               for n in range(num_col):
-                  Ts[k,n]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)
                   if n<(num_col-1):
-                      Te[k,n+1]=Ts[k,n]
+                      Te[k,n+1]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,n],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)
+                  
+                    
           
-#          print(Julian_date_vec[k])
-#          print(Te)
-#          print(temp_amb[k])
-#          print(qm[k])
-#          print(Rad_Global_inclin[k])
-#          print(n)
           Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)   
           Ts_fila[k]=np.real(Ts_fila[k])
           Pot_fila[k]=qm[k]*(d*(Ts_fila[k]-Te[k,0]))
@@ -339,9 +338,9 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
                      qm[k+1]=qm_max
               
           
-    
-          if Pot_campo[k]>0:
-              E_campo[k]=Pot_campo[k]*Interv_horas
+    Ts=np.concatenate((Te[:,1:],Ts_fila.reshape(-1,1)),axis=1)
+    E_campo=Pot_campo*Interv_horas*(Pot_campo>0)
+       
           
       
       
@@ -547,7 +546,11 @@ def cartesianas(v_theta,v_azim):
     vx=np.sin(v_theta_rad)*np.sin(v_azim_rad)
     vy=np.sin(v_theta_rad)*np.cos(v_azim_rad)
     vz=np.cos(v_theta_rad)
-    return [vx ,vy ,vz]
+    vx=vx.reshape(-1,1)
+    vy=vy.reshape(-1,1)
+    vz=vz.reshape(-1,1)
+    
+    return vx, vy, vz
 #%% uses zenith and azimuth angles to compute sun vector
 def sunvector(cenit,acimut):
 
@@ -561,9 +564,13 @@ def sunvector(cenit,acimut):
     sx=np.sin(cenit)*np.cos(acimut);
     sy=np.sin(cenit)*np.sin(acimut);
     sz=np.cos(cenit)
-    sunvec=[sx, sy, sz]
+    sx=sx.reshape(-1,1)
+    sy=sy.reshape(-1,1)
+    sz=sz.reshape(-1,1)
 
-    return sunvec
+    
+
+    return sx, sy, sz
 #%% Gets zenith and azimuth angles based on time, longitude and latitude 
 def psasunpos(Time,Longitude,Latitude):
 
@@ -673,40 +680,41 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
       
 #    % Calculate the normal vector to the collector 
     nx, ny, nz=cartesianas(inc_captador,v_azim)
-    
+    nvec=np.concatenate((nx, ny, nz),axis=1)
 #    % Calculate the solar vector
     cenit,acimut=psasunpos(Time,Long,Lat)
     sx,sy,sz=cartesianas(cenit,acimut)
+    svec=np.concatenate((sx, sy, sz),axis=1)
     
 #    % Calculate the incidence angle of the sun 
-    prod_escalar=dot_product([sx, sy, sz],[nx, ny, nz])
+    prod_escalar=dot_product(svec,nvec)
     ang_incid=np.arccos(prod_escalar)/rad;
     
 #    % Calculate the projection planes
 #    % Normal vector to the transversal plane
-    
-    normal_vec_transv_u = [-ny/np.sqrt(ny**2+ nx**2), nz/np.sqrt(ny**2+ nx**2), 0]
+    zerosvector=np.zeros((nvec.shape[0],1))
+    normal_vec_transv_u = np.concatenate((-ny/np.sqrt(ny**2+ nx**2), nz/np.sqrt(ny**2+ nx**2), zerosvector),axis=1)
     
 #    % Normal vector to the longitudinal plane
     
-    normal_vec_long_u = np.cross([nx, ny, nz],normal_vec_transv_u)
+    normal_vec_long_u = np.cross(nvec,normal_vec_transv_u)
     
 #    % Calculate the projection of the solar vector over the transversal plane and its unit vector
     
-    sunvector_trans = np.cross(np.cross(normal_vec_transv_u,[sx, sy, sz]),normal_vec_transv_u)
+    sunvector_trans = np.cross(np.cross(normal_vec_transv_u,svec),normal_vec_transv_u)
     sunvector_trans_unit = normalize(sunvector_trans)
     
 #    % Calculate the projection of the solar vector over the transversal plane and its unit vector
     
-    sunvector_long = np.cross(np.cross(normal_vec_long_u,[sx, sy, sz]),normal_vec_long_u)
+    sunvector_long = np.cross(np.cross(normal_vec_long_u,svec),normal_vec_long_u)
     sunvector_long_unit = normalize(sunvector_long)
     
 #    % Calculate the incidence angle longitudinal and transversal 
     
-    incidence_angle_long_rad = np.arccos(dot_product(sunvector_long_unit,[nx, ny, nz]))
+    incidence_angle_long_rad = np.arccos(dot_product(sunvector_long_unit,nvec))
     incidence_angle_long_deg=incidence_angle_long_rad/rad
     
-    incidence_angle_trans_rad = np.arccos(dot_product(sunvector_trans_unit,[nx, ny, nz]))
+    incidence_angle_trans_rad = np.arccos(dot_product(sunvector_trans_unit,nvec))
     incidence_angle_trans_deg=incidence_angle_trans_rad/rad
     
 #    % Calculate the incidence angle modifier
@@ -726,15 +734,15 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
     elif tipo_col=='2':
 
-         if ang_incid<90:
-            Mod_L=np.interp(incidence_angle_long_deg,args[0],args[1])   
-            Mod_T=np.interp(incidence_angle_trans_deg,args[0],args[2])   
+#         if ang_incid<90:
+        Mod_L=np.interp(incidence_angle_long_deg,args[0],args[1])   
+        Mod_T=np.interp(incidence_angle_trans_deg,args[0],args[2])   
 #             Mod_L=CubicSpline(args[0],args[1])
 #             Mod_T=CubicSpline(args[0],args[2])
 #             f_theta = Mod_L(incidence_angle_long_deg)*Mod_T(incidence_angle_trans_deg)
-            f_theta=Mod_L*Mod_T
-         else:
-            f_theta=0
+        f_theta=Mod_L*Mod_T*(ang_incid<90) +(ang_incid<90)*0
+#         else:
+#            f_theta=0
 
          
                                                                      
@@ -783,21 +791,25 @@ def temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,
 
 #%% Obtain Normal vector
 def normalize(vector):
+    if len(vector.shape)==2:
+        d_modulo = np.sqrt(np.sum(vector**2,axis=1))
+        d_modulo = repmat(d_modulo.reshape(-1,1),1,3)
 
-    d_modulo = np.sqrt(sum(vector.T**2))
+    elif len(vector.shape)==1:
+        d_modulo = np.sqrt(np.sum(vector**2))
 #    d_modulo = np.tile(d_modulo,(1,3))
 #    normal_vector=vector/d_modulo
     
     normal_vector=np.empty(np.shape(vector))
-    if np.shape(vector)[0]!=np.size(vector):
-    
-        normal_vector[:,0] = vector[:,0] / d_modulo
-        normal_vector[:,1] = vector[:,1] / d_modulo
-        normal_vector[:,2] = vector[:,2] / d_modulo
-    else:
-        normal_vector[0] = vector[0] / d_modulo
-        normal_vector[1] = vector[1] / d_modulo
-        normal_vector[2] = vector[2] / d_modulo
+#    if np.shape(vector)[0]!=np.size(vector):
+    normal_vector=vector/d_modulo
+#        normal_vector[:,0] = vector[:,0] / d_modulo
+#        normal_vector[:,1] = vector[:,1] / d_modulo
+#        normal_vector[:,2] = vector[:,2] / d_modulo
+#    else:
+#    normal_vector[0] = vector[0] / d_modulo
+#    normal_vector[1] = vector[1] / d_modulo
+#    normal_vector[2] = vector[2] / d_modulo
     
     return normal_vector
 #%% Default inputs and execution
