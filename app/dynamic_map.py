@@ -36,22 +36,22 @@ solar = go.Scattermapbox(
 )
 
  # user-selected point placeholder
-userPoint = go.Scattermapbox(
-    name='Selected Site',
-    lat=[0],
-    lon=[0],
-    # replaced None object with 'none', confusing but that turns it off!  
-    hoverinfo='none',
-    mode='markers',
-    marker=dict(
-        size=13,
-        color='red',
-    ),
-    showlegend=False,
-    visible=False,
-)
-print(type(userPoint))
-data = [solar,userPoint] # sets the order
+# userPoint = go.Scattermapbox(
+#     name='Selected Site',
+#     lat=[0],
+#     lon=[0],
+#     # replaced None object with 'none', confusing but that turns it off!  
+#     hoverinfo='none',
+#     mode='markers',
+#     marker=dict(
+#         size=13,
+#         color='red',
+#     ),
+#     showlegend=False,
+#     visible=False,
+# )
+
+data = [solar] # sets the order
 
 layout = go.Layout(
     #height=600,
@@ -103,7 +103,7 @@ app.layout = html.Div(children=[
             )], className='row'
         ),
         html.Div([
-            html.Div(id='callback-div'),
+            html.Div(id='markdown-div'),
             dcc.Markdown(children=markdownText)
             ], className='row'
         )
@@ -120,24 +120,6 @@ app.layout = html.Div(children=[
 
 ])
 
-# callback for dropdown theme choice
-# @app.callback(
-#     Output(component_id='map', component_property='figure'),
-#     []
-# )
-# def loadNewMap(fig):
-#     ''' Update map based on dropdown event '''
-#     print('clicked')
-#     raise PreventUpdate
-
-# callback for the button
-# @app.callback(
-#     Output(component_id='next-button',component_property='href'),
-#     [Input('next-button','n_clicks')]
-# )
-# def nextStep(n_clicks):
-#     return('http://127.0.0.1:8073/model-selection')
-# # callback for updating geometries
 
 """ callback to handle click events. Capturing map info with the click 
 event (figure, relayoutData) for clicks that are not close enough to a 
@@ -148,7 +130,6 @@ point (zoomed in too far). """
     Input(component_id='select-map', component_property='value')],
     [State('map','relayoutData'),
     State('map','figure')]
-
 )
 def clickPoint(clicks,dropDown,relay,fig):
     if not any([clicks,dropDown,relay,fig]):
@@ -156,18 +137,23 @@ def clickPoint(clicks,dropDown,relay,fig):
         raise PreventUpdate
     # clicked close enough to a point
     if clicks:
-        if(relay):
-            print('relay')
-        if(fig):
-            print('fig')
-        # get geom from nearest point and add user point
-        # user-selected point placeholder
-        newUserPoint = fig['data'][1]
-        newUserPoint['lat'] = [clicks['points'][0]['lat']]
-        newUserPoint['lon'] = [clicks['points'][0]['lon']]
-        newUserPoint['visible'] = True
-        newUserPoint['showlegend'] = True
-        return go.Figure(dict(data=[solar,newUserPoint], layout=layout))
+        # add the user point 
+        userPoint = go.Scattermapbox(
+            name='Selected Site',
+            lon=[clicks['points'][0]['lon']],
+            lat=[clicks['points'][0]['lat']],
+            # replaced None object with 'none', confusing but that turns it off!  
+            hoverinfo='none',
+            mode='markers',
+            marker=dict(
+                size=13,
+                color='red',
+            ),
+            showlegend=True,
+            visible=True,
+        )
+        # return the figure with the updated point
+        return go.Figure(dict(data=[solar,userPoint], layout=layout))
     elif relay:
         print(relay)
         raise PreventUpdate
@@ -178,7 +164,16 @@ def clickPoint(clicks,dropDown,relay,fig):
         print(dropDown)
         raise PreventUpdate
 
-
+# callback to update Markdown text
+@app.callback(
+    Output(component_id='markdown-div',component_property='children'),
+    [Input(component_id='map',component_property='clickData')] 
+)
+def updateMarkdown(clicks):
+    ''' pulls properties from dataframe and updates markdown div '''
+    print(clicks)
+    markdownText = '###### Site Properties in {}, {}\n\n'.format('County','State')
+    return dcc.Markdown(markdownText)
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
