@@ -128,11 +128,12 @@ def nextStep(n_clicks):
 @app.callback(
     Output(component_id='map', component_property='figure'),
     [Input(component_id='map', component_property='clickData')],
-    [State(component_id='map', component_property='relayoutData'),
-    State(component_id='map', component_property='figure')]
+    [State('map','relayoutData')]
+
 )
-def clickPoint(clicks,relay,fig):
-    if not any([clicks,relay,fig]):
+def clickPoint(clicks,relay):
+    #if not any([clicks,relay,fig]):
+    if not clicks:
         raise PreventUpdate
     # clicked close enough to a point
     if clicks:
@@ -157,15 +158,16 @@ def clickPoint(clicks,relay,fig):
         newUserPoint['lon'] = [clicks['points'][0]['lon']]
         newUserPoint['visible'] = True
         newUserPoint['showlegend'] = True
-        print(type(newUserPoint))
         #return go.Figure(dict(data=[solar,userPoint], layout=layout))
         return go.Figure(dict(data=[solar,newUserPoint], layout=layout))
-    if fig:
+    elif relay:
+        print(relay)
+    """     if fig:
         #print(fig)
         raise PreventUpdate
     if relay:
         print(relay)
-        raise PreventUpdate
+        raise PreventUpdate """
 
 
 
