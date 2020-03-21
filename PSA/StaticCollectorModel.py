@@ -246,14 +246,14 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 #    % Create matrix of zeros
     Julian_date_vec=np.zeros((num_instantes,6))
     ang_inc=np.zeros((num_instantes,1))
-    Ts=np.zeros((num_instantes+1,num_col))
-    Te=np.zeros((num_instantes+1,num_col))
+    Ts=np.zeros((num_instantes,num_col))
+    Te=np.zeros((num_instantes,num_col))
     Ts_fila=np.zeros(num_instantes)
     Pot_fila=np.zeros(num_instantes)
     Pot_campo=np.zeros(num_instantes)
     qm_recalc=np.zeros(num_instantes)
     E_campo=np.zeros(num_instantes)
-    qm=np.zeros(num_instantes+1)
+    qm=np.zeros(num_instantes)
    
     
 #    % Initialize the water mass flow rate and the inlet temperature of the first collector in the first instant
@@ -303,35 +303,40 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
 #          print(qm[k])
 #          print(Rad_Global_inclin[k])
 #          print(n)
-          Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)   
+          Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,-1],temp_amb[k],qm[k],a,b,c,d,Rad_Global_inclin[k],A,*args)   
           Ts_fila[k]=np.real(Ts_fila[k])
           Pot_fila[k]=qm[k]*(d*(Ts_fila[k]-Te[k,0]))
           Pot_campo[k]=Pot_fila[k]*num_fila      
           if Ts_fila[k]<Tsal_campo: 
-             qm_recalc[k]=Pot_fila[k]/(d*(Tsal_campo-Te[k,0]));
+             qm_recalc[k]=Pot_fila[k]/(d*(Tsal_campo-Te[k,0]))
              if qm_recalc[k]>qm_min:
-                Te[k+1,1]=Tent_campo
+                if k<(num_instantes-2):
+                    Te[k+1,0]=Tent_campo
                 Pot_fila[k]=qm_recalc[k]*(d*(Tsal_campo-Te[k,0]))
-                Pot_campo[k]=Pot_fila[k]*num_fila;
+                Pot_campo[k]=Pot_fila[k]*num_fila
                 qm[k+1]=qm_recalc[k]
-             elif qm_recalc[k]<qm_min:
-                 qm[k+1]=qmo;
-                 Te[k+1]=Ts_fila[k]
+             elif (qm_recalc[k]<qm_min and k<(num_instantes-2)):
+                 Te[k+1,0]=Ts_fila[k]
+                 qm[k+1]=qmo
+
              
           elif Ts_fila[k]>Tsal_campo:
               qm_recalc[k]=Pot_fila[k]/(d*(Tsal_campo-Te[k,0]))
               if qm_recalc[k]<qm_max:
                  Ts_fila[k]=Tsal_campo
-                 Te[k+1]=Tent_campo
-                 Pot_fila[k]=qm_recalc[k]*(d*(Tsal_campo-Te[k,0]));
-                 Pot_campo[k]=Pot_fila[k]*num_fila;
-                 qm[k+1]=qm_recalc[k];
+                 if k<(num_instantes-2):
+                     Te[k+1,0]=Tent_campo
+                     qm[k+1]=qm_recalc[k]
+                 Pot_fila[k]=qm_recalc[k]*(d*(Tsal_campo-Te[k,0]))
+                 Pot_campo[k]=Pot_fila[k]*num_fila
+                 
               elif qm_recalc[k]>qm_max:
-                 Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,num_col-1],temp_amb[k],qm_max,a,b,c,d,Rad_Global_inclin[k],A,*args)
-                 Pot_fila[k]=qm_max*(d*(Ts_fila[k]-Te[k,0]));
-                 Pot_campo[k]=Pot_fila[k]*num_fila;
-                 Te[k+1]=Tent_campo;
-                 qm[k+1]=qm_max
+                 Ts_fila[k]=temp_salida_DOE(tipo_col,Julian_date_vec[k],Long,Lat,inc_captador,v_azim,Te[k,-1],temp_amb[k],qm_max,a,b,c,d,Rad_Global_inclin[k],A,*args)
+                 Pot_fila[k]=qm_max*(d*(Ts_fila[k]-Te[k,0]))
+                 Pot_campo[k]=Pot_fila[k]*num_fila
+                 if k<(num_instantes-2):
+                     Te[k+1,0]=Tent_campo
+                     qm[k+1]=qm_max
               
           
     
