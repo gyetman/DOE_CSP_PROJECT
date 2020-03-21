@@ -33,7 +33,6 @@ solar = go.Scattermapbox(
         color='green',
     ),
     visible=True
-
 )
 
  # user-selected point placeholder
@@ -128,15 +127,20 @@ def nextStep(n_clicks):
 @app.callback(
     Output(component_id='map', component_property='figure'),
     [Input(component_id='map', component_property='clickData')],
-    [State('map','relayoutData')]
+    [State('map','relayoutData'),
+    State('map','figure')]
 
 )
-def clickPoint(clicks,relay):
-    #if not any([clicks,relay,fig]):
-    if not clicks:
+def clickPoint(clicks,relay,fig):
+    if not any([clicks,relay,fig]):
+        print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
     if clicks:
+        if(relay):
+            print('relay')
+        if(fig):
+            print('fig')
         # get geom from nearest point and add user point
         # user-selected point placeholder
         """         newUserPoint = go.Scattermapbox(
@@ -153,15 +157,18 @@ def clickPoint(clicks,relay):
             showlegend=True,
             visible=True,
         ), """
-        newUserPoint = userPoint
+        newUserPoint = fig['data'][1]
         newUserPoint['lat'] = [clicks['points'][0]['lat']]
         newUserPoint['lon'] = [clicks['points'][0]['lon']]
         newUserPoint['visible'] = True
         newUserPoint['showlegend'] = True
-        #return go.Figure(dict(data=[solar,userPoint], layout=layout))
         return go.Figure(dict(data=[solar,newUserPoint], layout=layout))
     elif relay:
         print(relay)
+        raise PreventUpdate
+    elif fig:
+        print(len(fig))
+        raise PreventUpdate
     """     if fig:
         #print(fig)
         raise PreventUpdate
