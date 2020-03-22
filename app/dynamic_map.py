@@ -32,26 +32,9 @@ solar = go.Scattermapbox(
         size=0,
         color='green',
     ),
-    visible=True
+    visible=True,
+    showlegend=False,
 )
-
- # user-selected point placeholder
-# userPoint = go.Scattermapbox(
-#     name='Selected Site',
-#     lat=[0],
-#     lon=[0],
-#     # replaced None object with 'none', confusing but that turns it off!  
-#     hoverinfo='none',
-#     mode='markers',
-#     marker=dict(
-#         size=13,
-#         color='red',
-#     ),
-#     showlegend=False,
-#     visible=False,
-# )
-
-data = [solar] # sets the order
 
 layout = go.Layout(
     #height=600,
@@ -59,7 +42,7 @@ layout = go.Layout(
     autosize=True,
     #hovermode='closest',
     #clickmode='text',
-    title='Make this dynamic', # the Meta tag on traces should do it
+    title='Solar Resource', # default value in dropdown
     showlegend=True,
     legend_orientation='h',
     uirevision='initial load',
@@ -73,23 +56,34 @@ layout = go.Layout(
     )
 )
 
+# data object for the figure
+data = [solar]
+
+
+dropDownOptions = [
+    {'label':'Solar Resource', 'value':'solar'},
+    {'label':'Electricity Prices', 'value':'price'},
+    {'label':'Produced Waters','value':'produced'},
+    {'label':'Brackish Waters', 'value':'brackish'},
+    {'label':'Legal Framework', 'value':'legal'}
+]
+# lookup used in callback
+dropDownTitles = dict()
+for opt in dropDownOptions:
+    dropDownTitles[opt['value']] = opt['label']
+
 fig = go.Figure(dict(data=data, layout=layout))
 app.title = 'Site Selection'
 app.layout = html.Div(children=[
         html.Div([
             dcc.Dropdown(
             id='select-map',
-            options = [
-                {'label':'Solar Resource', 'value':'solar'},
-                {'label':'Electricity Prices', 'value':'price'},
-                {'label':'Produced Waters','value':'produced'},
-                {'label':'Brackish Waters', 'value':'brackish'},
-                {'label':'Legal Framework', 'value':'legal'}
-            ],
+            options = dropDownOptions,
             value='solar',
             className='row',
             clearable=False,
             persistence=True,
+            persistence_type='session',
             style= {
                 'position': 'relative',
                 'display': 'inline-block',
@@ -131,11 +125,27 @@ point (zoomed in too far). """
     [State('map','relayoutData'),
     State('map','figure')]
 )
-def clickPoint(clicks,dropDown,relay,fig):
-    if not any([clicks,dropDown,relay,fig]):
+def clickPoint(clicks,dropDown,relay,figure):
+    if not any([clicks,dropDown,relay,figure]):
+        # not sure this is a required check here, but in 
+        # callbacks with fewer outputs it prevents an error
+        # on load. 
         print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
+    if dropDown:
+        ''' if the dropdown is not the same as the title text, 
+        we need to reload the map with the new choice. Dropdown
+        is supplied with callback regardless of status (updated
+        or not)'''
+        print(dropDown)
+        existingTitle = figure['layout']['title']['text']
+        if existingTitle != dropDownTitles[dropDown]:
+            print('Dropdown Changed')
+            # change title and load appropriate data
+            figure['layout']['title']['text'] = dropDownTitles[dropDown]
+            # TODO: update data and return a go.Figure! 
+            return figure
     if clicks:
         # add the user point 
         userPoint = go.Scattermapbox(
@@ -152,17 +162,18 @@ def clickPoint(clicks,dropDown,relay,fig):
             showlegend=True,
             visible=True,
         )
+        # update the figure title, otherwise default of solar is used
+        layout['title']['text'] = dropDownTitles[dropDown]
         # return the figure with the updated point
         return go.Figure(dict(data=[solar,userPoint], layout=layout))
-    elif relay:
-        print(relay)
+
+    if relay:
+        #print(relay)
         raise PreventUpdate
-    elif fig:
-        print(fig.keys())
+    if fig:
+        #print(fig.keys())
         raise PreventUpdate
-    elif dropDown:
-        print(dropDown)
-        raise PreventUpdate
+
 
 # callback to update Markdown text
 @app.callback(
@@ -171,7 +182,8 @@ def clickPoint(clicks,dropDown,relay,fig):
 )
 def updateMarkdown(clicks):
     ''' pulls properties from dataframe and updates markdown div '''
-    print(clicks)
+    if clicks is None:
+        raise PreventUpdate
     markdownText = '###### Site Properties in {}, {}\n\n'.format('County','State')
     return dcc.Markdown(markdownText)
 
