@@ -20,7 +20,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
 
 # load point mesh data with pre-calculated attributes
 df = pd.read_csv('./GISData/solar_sw.csv')
-
 solar = go.Scattermapbox(
     name='solar',
     lat=df.CENTROID_Y,
@@ -34,6 +33,50 @@ solar = go.Scattermapbox(
     ),
     visible=True,
     showlegend=False,
+)
+
+# load county polygons and dataframe of attributes
+with open('./GISData/counties.geojson','r') as f:
+    counties = json.load(f)
+
+df_county = '' #TODO
+
+# load existing desal plants
+
+df_desal = pd.read_csv('./GISData/desal_plants.csv')
+df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
+desal = go.Scattermapbox(
+    name='Desalination Plants',
+    lat=df_desal.Latitude,
+    lon=df_desal.Longitude,
+    mode='markers',
+    hoverinfo='text',
+    text=df_desal.text,
+    marker=dict(
+        size=7,
+        color='red',
+    ),
+    visible=True
+    # TODO: duplicate this layer to have cutoffs:
+    # 5,000
+    # 10,000
+    # 20,000
+    
+)
+# user-point placeholder
+userPoint = go.Scattermapbox(
+    name='Selected Site',
+    lon=[0],
+    lat=[0],
+    # replaced None object with 'none', confusing but that turns it off!  
+    hoverinfo='none',
+    mode='markers',
+    marker=dict(
+        size=13,
+        color='red',
+    ),
+    showlegend=False,
+    visible=False,
 )
 
 layout = go.Layout(
@@ -57,8 +100,7 @@ layout = go.Layout(
 )
 
 # data object for the figure
-data = [solar]
-
+data = [solar,desal,userPoint]
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
@@ -114,7 +156,39 @@ app.layout = html.Div(children=[
 
 ])
 
+def loadData(mapTheme,fg):
+    ''' loads data based on the chosen theme after a user selects a 
+    different theme from the dropdown '''
+    # keep existing user point 
+    # always the layer on top (last)
+    userPt = fg['data'][-1]
+    print(userPt)
+    newData = [solar]
+    if mapTheme == 'solar':
+        #default, no need to change
+        newData.append(desal)
+        newData.append(userPt)    
+        return newData
+    elif mapTheme == 'price':
+        # display the counties by price
+        # load water price point data (global)
+        df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
+        df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
+        newData.append(userPt)
+        return newData
+    elif mapTheme == 'produced':
+        newData.append(userPt)
+        return newData
+    elif mapTheme == 'brackish':
+        newData.append(userPt)
+        return newData
+    elif mapTheme == 'legal':
+        newData.append(userPt)
+        return newData
+    
 
+    
+    
 """ callback to handle click events. Capturing map info with the click 
 event (figure, relayoutData) for clicks that are not close enough to a 
 point (zoomed in too far). """
@@ -130,7 +204,7 @@ def clickPoint(clicks,dropDown,relay,figure):
         # not sure this is a required check here, but in 
         # callbacks with fewer outputs it prevents an error
         # on load. 
-        print('no objects')
+        #print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
     if dropDown:
@@ -145,27 +219,19 @@ def clickPoint(clicks,dropDown,relay,figure):
             # change title and load appropriate data
             figure['layout']['title']['text'] = dropDownTitles[dropDown]
             # TODO: update data and return a go.Figure! 
-            return figure
+            return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
     if clicks:
-        # add the user point 
-        userPoint = go.Scattermapbox(
-            name='Selected Site',
-            lon=[clicks['points'][0]['lon']],
-            lat=[clicks['points'][0]['lat']],
-            # replaced None object with 'none', confusing but that turns it off!  
-            hoverinfo='none',
-            mode='markers',
-            marker=dict(
-                size=13,
-                color='red',
-            ),
-            showlegend=True,
-            visible=True,
-        )
+        # update he user point 
+        pt = figure['data'][-1]
+        pt['visible'] = True
+        pt['showlegend'] = True
+        pt['lon'] = [clicks['points'][0]['lon']]
+        pt['lat'] = [clicks['points'][0]['lat']]
+
         # update the figure title, otherwise default of solar is used
-        layout['title']['text'] = dropDownTitles[dropDown]
+        #layout['title']['text'] = dropDownTitles[dropDown]
         # return the figure with the updated point
-        return go.Figure(dict(data=[solar,userPoint], layout=layout))
+        return go.Figure(dict(data=[solar,desal,pt], layout=figure['layout']))
 
     if relay:
         #print(relay)
