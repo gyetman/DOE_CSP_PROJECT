@@ -18,6 +18,30 @@ external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 mapbox_key = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
 app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
 
+# load solar geojson
+with open('./GISData/solar_resources3.geojson','r') as f:
+    solarGeoJson = json.load(f)
+# load data frame of solar values
+
+df_solar = pd.read_csv('./GISData/solar_data.csv',usecols=['ID','ANN_DNI','CENTROID_X','CENTROID_Y'])
+
+solarViz = go.Choroplethmapbox(
+    name='Solar Resource',
+    geojson=solarGeoJson, 
+    locations=df_solar.ID, 
+    z=df_solar['ANN_DNI'],
+    colorscale='Inferno', 
+    colorbar=dict(
+        title='Kwh/Day',
+    ),
+    marker_opacity=1, 
+    marker_line_width=0,
+    text=df_solar['ANN_DNI'],
+    hoverinfo='text',
+    visible=True,
+)
+
+
 # load point mesh data with pre-calculated attributes
 df = pd.read_csv('./GISData/solar_sw.csv')
 solar = go.Scattermapbox(
@@ -29,7 +53,7 @@ solar = go.Scattermapbox(
     #hovertext=df.ID,
     marker=dict(
         size=0,
-        color='green',
+        color='red',
     ),
     visible=True,
     showlegend=False,
@@ -54,7 +78,7 @@ desal = go.Scattermapbox(
     text=df_desal.text,
     marker=dict(
         size=7,
-        color='red',
+        color='green',
     ),
     visible=True
     # TODO: duplicate this layer to have cutoffs:
@@ -100,15 +124,15 @@ layout = go.Layout(
 )
 
 # data object for the figure
-data = [solar,desal,userPoint]
+data = [solarViz,solar,desal,userPoint]
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
     {'label':'Water Prices', 'value':'wprice'},
-    {'label':'Electric Prices', 'value':'eprice'},
+    {'label':'Electric Prices', 'value':'eprice','disabled':True},
     {'label':'Produced Waters','value':'produced'},
-    {'label':'Brackish Waters', 'value':'brackish'},
-    {'label':'Legal Framework', 'value':'legal'}
+    {'label':'Brackish Waters', 'value':'brackish','disabled':True},
+    {'label':'Legal Framework', 'value':'legal','disabled':True}
 ]
 # lookup used in callback
 dropDownTitles = dict()
@@ -294,7 +318,6 @@ def clickPoint(clicks,dropDown,relay,figure):
         tmpData = figure['data']
         pt = tmpData[-1]
         tmpData = tmpData[:-1]
-        print(type(tmpData))
         pt['visible'] = True
         pt['showlegend'] = True
         pt['lon'] = [clicks['points'][0]['lon']]
