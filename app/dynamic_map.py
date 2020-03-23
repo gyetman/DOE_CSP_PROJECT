@@ -32,7 +32,7 @@ solarViz = go.Choroplethmapbox(
     z=df_solar['ANN_DNI'],
     colorscale='Inferno', 
     colorbar=dict(
-        title='Kwh/Day',
+        title='kWh/m3/Day',
     ),
     marker_opacity=1, 
     marker_line_width=0,
@@ -187,13 +187,9 @@ def loadData(mapTheme,fg):
     # keep existing user point 
     # always the layer on top (last)
     userPt = fg['data'][-1]
-    newData = []
 
-    if mapTheme == 'solar':
-        newData.append(solar)
-        newData.append(desal)
-        newData.append(userPt)    
-        return [solar,desal,userPt]
+    if mapTheme == 'solar':   
+        return [solar,solarViz,desal,userPt]
     elif mapTheme == 'wprice':
         # display the counties by price
         # load water price point data (global)
@@ -214,6 +210,7 @@ def loadData(mapTheme,fg):
                 size=9,
             )
         )
+        
         #load geoJSON geometries for price data
         with open('./gisData/tx_county_water_prices.geojson','r') as f:
             geoj = json.load(f)
@@ -237,15 +234,49 @@ def loadData(mapTheme,fg):
             visible=True,
             # TODO: add year to map GUI (year of data)
         )
-        newData.append(countyData)
-        newData.append(solar)
-        newData.append(globalPriceData)
+        # load canal data
+        #TODO: make this a static file, read in at run time
+        df_canals = pd.read_csv('./gisData/canals.csv')
+        tmp = df_canals.lat.str.split(',')
+        canalLats = []
+        for i in tmp:
+            canalLats.append([float(j) for j in i])
+        tmp = df_canals.lon.str.split(',')
+        canalLongs = []
+        for i in tmp:
+            canalLongs.append([float(j) for j in i])
+        canalData = go.Scattermapbox(
+            name='Canals and Aqueducts',    
+            
+            lat = canalLats[0],
+            lon = canalLongs[0],
+            mode = "lines",
+            marker=dict(
+                size=10,
+                color='blue',
+
+            ),
+        )
+        newData = [countyData,solar,globalPriceData,canalData]
+        for i, _ in enumerate(canalLats[1:]):
+            newData.append(go.Scattermapbox(
+                showlegend=False,
+                lat = canalLats[i],
+                lon = canalLongs[i],
+                mode = 'lines',
+                marker = dict(
+                    size=10,
+                    color='blue',
+                ),
+
+            ))
+
         newData.append(userPt)
-        return [countyData,solar,globalPriceData,userPt]
+        return newData
     elif mapTheme == 'eprice':
         # load electric price data
         df_electric = pd.read_csv('./GISData/electric_prices_zcta.csv')
-        df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWH'
+        df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWh'
         #load geoJSON geometries for price data (zip codes)
         with open('./gisData/zcta.geojson','r') as f:
             geoj = json.load(f)
@@ -268,20 +299,13 @@ def loadData(mapTheme,fg):
         return [electricPriceData,solar,userPt]
 
     elif mapTheme == 'produced':
-        newData.append(solar)
-        newData.append(userPt)
-        return newData
+        return [solar,userPt]
     elif mapTheme == 'brackish':
-        newData.append(solar)
-        newData.append(userPt)
-        return newData
+        return [solar,userPt]
     elif mapTheme == 'legal':
-        newData.append(solar)
-        newData.append(userPt)
-        return newData
+        return [solar,userPt]
     
 
-    
     
 """ callback to handle click events. Capturing map info with the click 
 event (figure, relayoutData) for clicks that are not close enough to a 
