@@ -104,7 +104,8 @@ data = [solar,desal,userPoint]
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
-    {'label':'Electricity Prices', 'value':'price'},
+    {'label':'Water Prices', 'value':'wprice'},
+    {'label':'Electric Prices', 'value':'eprice'},
     {'label':'Produced Waters','value':'produced'},
     {'label':'Brackish Waters', 'value':'brackish'},
     {'label':'Legal Framework', 'value':'legal'}
@@ -162,18 +163,33 @@ def loadData(mapTheme,fg):
     # keep existing user point 
     # always the layer on top (last)
     userPt = fg['data'][-1]
-    print(userPt)
     newData = []
+
     if mapTheme == 'solar':
         newData.append(solar)
         newData.append(desal)
         newData.append(userPt)    
-        return newData
-    elif mapTheme == 'price':
+        return [solar,desal,userPt]
+    elif mapTheme == 'wprice':
         # display the counties by price
         # load water price point data (global)
         df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
         df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
+        globalPriceData = go.Scattermapbox(
+            #text=df_point_prices['City_Name'],
+            name='City Prices',
+            lat=df_point_prices.Latitude,
+            lon=df_point_prices.Longitude,
+            text=df_point_prices.text,
+            #hoverinfo='none',
+            visible=True,
+            showlegend=True,
+            mode='markers',
+            marker=dict(
+                color=df_point_prices.Water_bill,
+                size=9,
+            )
+        )
         #load geoJSON geometries for price data
         with open('./gisData/tx_county_water_prices.geojson','r') as f:
             geoj = json.load(f)
@@ -199,8 +215,33 @@ def loadData(mapTheme,fg):
         )
         newData.append(countyData)
         newData.append(solar)
+        newData.append(globalPriceData)
         newData.append(userPt)
-        return newData
+        return [countyData,solar,globalPriceData,userPt]
+    elif mapTheme == 'eprice':
+        # load electric price data
+        df_electric = pd.read_csv('./GISData/electric_prices_zcta.csv')
+        df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWH'
+        #load geoJSON geometries for price data (zip codes)
+        with open('./gisData/zcta.geojson','r') as f:
+            geoj = json.load(f)
+        electricPriceData = go.Choroplethmapbox(
+            name='Industrial Electric Prices',
+            geojson=geoj, 
+            locations=df_electric.ZCTA5CE10, 
+            # featureidkey='ZCTA5CE10',
+            z=df_electric.MEAN_ind_rate,
+            colorscale="Viridis", 
+            colorbar=dict(
+                title='Price $/kWH',
+            ),
+            marker_opacity=1, 
+            marker_line_width=0,
+            text=df_electric.text,
+            hoverinfo='text',
+            visible=True,
+        )
+        return [electricPriceData,solar,userPt]
 
     elif mapTheme == 'produced':
         newData.append(solar)
