@@ -67,17 +67,17 @@ class VAGMD_cost(object):
         self.Feed = self.FFR * self.num_modules / 1000
         self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
-        self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
+        self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
         
         self.cost_elec = self.SEEC * self.coe
-        self.other_OM = self.cost_sys *1000 *0.018 / self.Prod +0.1
+        self.other_OM = self.cost_sys *1000 *0.018 / (self.Prod+0.1) +0.1
         self.cost_th = self.STEC * self.coh
         self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM
         
         self.LCOW = self.CAPEX + self.OPEX
         
         cost_output = []
-        cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX*self.Prod,'Unit':'m3'})
+        cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         
