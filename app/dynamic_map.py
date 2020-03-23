@@ -32,7 +32,7 @@ solarViz = go.Choroplethmapbox(
     z=df_solar['ANN_DNI'],
     colorscale='Inferno', 
     colorbar=dict(
-        title='kWh/m3/Day',
+        title='kWh/m2/day',
     ),
     marker_opacity=1, 
     marker_line_width=0,
