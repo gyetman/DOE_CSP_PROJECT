@@ -94,7 +94,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
             self.design_output = self.VAGMD.design()
-            design_json_outfile = self.samPath / 'results' / 'VAGMD_design_output.json'
+            design_json_outfile =  'VAGMD_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
         
@@ -104,7 +104,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.design_output = self.LTMED.design()
-            design_json_outfile = self.samPath / 'results' / 'LTMED_design_output.json'
+            design_json_outfile =  'LTMED_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
                 
@@ -143,7 +143,7 @@ class SamBaseClass(object):
             from DesalinationModels.VAGMD_cost import VAGMD_cost
             with open(self.cost_json_values, "r") as read_file:
                 self.cost_values_json = json.load(read_file)
-            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC,
+            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.ssc.data_get_number(self.data, b'lcoe_fcr'), solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
             self.cost_output = self.LCOW.lcow()
             cost_json_outfile = self.samPath / 'results' /'VAGMD_cost_output.json'
