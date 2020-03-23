@@ -80,6 +80,7 @@ class VAGMD_cost(object):
         cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
         
         return cost_output
 #%%
