@@ -19,6 +19,7 @@ class VAGMD_cost(object):
                  FFR  = 1100, # Feed flow rate per module (l/h/module)
                  th_module  = 4.560, # Thermal power supplied per module (kW(th)/module)
                  STEC  = 62.180, # Specific thermal energy consumption (kWh(th)/m3) 
+                 SEEC = 1.25, # Specific electric energy consumption (kWh(e)/m3) 
 #                 GOR = 10.475,  # Gained output ratio
                 # downtime = 0.1, # Yearly downtime of the plant (ratio)
                  yrs = 20, # Expected plant lifetime
@@ -54,6 +55,7 @@ class VAGMD_cost(object):
         self.STEC = STEC
         self.yrs = yrs
         self.int_rate = int_rate
+        self.SEEC = SEEC
         
     def lcow(self):
         self.module_cost = (1.95*3*(self.num_modules/3)**0.8 + 0.075 * self.Area * self.num_modules) *1.11
@@ -67,7 +69,7 @@ class VAGMD_cost(object):
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
         self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
         
-        self.cost_elec = 1.25 * self.coe
+        self.cost_elec = self.SEEC * self.coe
         self.other_OM = self.cost_sys *1000 *0.018 / self.Prod +0.1
         self.cost_th = self.STEC * self.coh
         self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM

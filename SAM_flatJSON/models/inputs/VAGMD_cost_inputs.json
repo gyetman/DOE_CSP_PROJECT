@@ -16,6 +16,14 @@
             "Require": "*",
 			"Tab": "Desalination"
         },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "SEEC",
+            "Label": "Specific electric energy consumption",
+            "Units": "kWh/m3",
+            "Require": "",
+			"Tab": "Desalination"
+        },
         {
             "DataType": "SSC_NUMBER",
             "Name": "coe",
@@ -44,7 +52,7 @@
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "solar_outletlet",
+            "Name": "solar_outlet",
             "Label": "Heat source outlet temperature",
             "Units": "oC",
             "Require": "*",
