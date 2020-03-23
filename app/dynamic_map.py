@@ -163,9 +163,9 @@ def loadData(mapTheme,fg):
     # always the layer on top (last)
     userPt = fg['data'][-1]
     print(userPt)
-    newData = [solar]
+    newData = []
     if mapTheme == 'solar':
-        #default, no need to change
+        newData.append(solar)
         newData.append(desal)
         newData.append(userPt)    
         return newData
@@ -174,15 +174,44 @@ def loadData(mapTheme,fg):
         # load water price point data (global)
         df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
         df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
+        #load geoJSON geometries for price data
+        with open('./gisData/tx_county_water_prices.geojson','r') as f:
+            geoj = json.load(f)
+        # load data frame of prices
+        # TODO: only load fields that we need! 
+        df_county_prices = pd.read_csv('./gisData/tx_county_water_price.csv')
+        df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res'].round(2).astype(str) + '/Kgal'
+        countyData = go.Choroplethmapbox(
+            name='County Water Prices (residential)',
+            geojson=geoj, 
+            locations=df_county_prices.ID, 
+            z=df_county_prices.Max_F5000gal_res_perKgal,
+            colorscale="Viridis", 
+            colorbar=dict(
+                title='Price $/Kgal',
+            ),
+            marker_opacity=1, 
+            marker_line_width=0,
+            text=df_county_prices.text,
+            hoverinfo='text',
+            visible=True,
+            # TODO: add year to map GUI (year of data)
+        )
+        newData.append(countyData)
+        newData.append(solar)
         newData.append(userPt)
         return newData
+
     elif mapTheme == 'produced':
+        newData.append(solar)
         newData.append(userPt)
         return newData
     elif mapTheme == 'brackish':
+        newData.append(solar)
         newData.append(userPt)
         return newData
     elif mapTheme == 'legal':
+        newData.append(solar)
         newData.append(userPt)
         return newData
     
@@ -212,26 +241,26 @@ def clickPoint(clicks,dropDown,relay,figure):
         we need to reload the map with the new choice. Dropdown
         is supplied with callback regardless of status (updated
         or not)'''
-        print(dropDown)
         existingTitle = figure['layout']['title']['text']
         if existingTitle != dropDownTitles[dropDown]:
-            print('Dropdown Changed')
+            print('Dropdown Changed to {}'.format(dropDown))
             # change title and load appropriate data
             figure['layout']['title']['text'] = dropDownTitles[dropDown]
-            # TODO: update data and return a go.Figure! 
+            # update data and return a go.Figure! 
             return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
     if clicks:
         # update he user point 
-        pt = figure['data'][-1]
+        tmpData = figure['data']
+        pt = tmpData[-1]
+        tmpData = tmpData[:-1]
+        print(type(tmpData))
         pt['visible'] = True
         pt['showlegend'] = True
         pt['lon'] = [clicks['points'][0]['lon']]
         pt['lat'] = [clicks['points'][0]['lat']]
-
-        # update the figure title, otherwise default of solar is used
-        #layout['title']['text'] = dropDownTitles[dropDown]
-        # return the figure with the updated point
-        return go.Figure(dict(data=[solar,desal,pt], layout=figure['layout']))
+        #figure['data'] = tmpData
+        tmpData.append(pt)
+        return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
     if relay:
         #print(relay)
