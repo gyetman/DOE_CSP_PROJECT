@@ -2,7 +2,7 @@
 
 import json
 
-def index_in_list_of_dicts(lists,key,value):
+def index_in_lists_of_dicts(lists,key,value):
     '''
     checks lists to see if a key value exists in it
     returns the list and index of the first dict where the key and 
@@ -15,6 +15,19 @@ def index_in_list_of_dicts(lists,key,value):
             if d[key] == value:
                 return l,index
     return None,None
+
+def index_in_list_of_dicts(list_to_check,key,value):
+    '''
+    searches a list to see if a dict with a key value exists in it
+    returns the index of the first dict where the key and 
+    value pair is found, else returns None
+
+    none: index 0 can be returned, so use explicit tests with result
+    '''
+    for index, d in enumerate(list_to_check):
+        if d[key] == value:
+            return index
+    return None
 
 def json_load(filename):
     '''returns contents of JSON file'''
