@@ -1,4 +1,4 @@
-from SAM.PySSC import PySSC
+from SAM_flatJSON.PySSC import PySSC
 import logging, json, os
 from pathlib import Path
 import numpy as np
@@ -323,7 +323,7 @@ class SamBaseClass(object):
         try:
             self.logger.debug("Running execute statements for the SAM module '" + module + "'.")
             
-            self.ssc.module_exec_set_print( 0 );
+            self.ssc.module_exec_set_print( 0 )
             if self.ssc.module_exec(module1, self.data) == 0:
                 print ('{} simulation error'.format(module1))
                 idx = 1
@@ -332,7 +332,7 @@ class SamBaseClass(object):
                     print ('	: ' + msg.decode("utf - 8"))
                     msg = self.ssc.module_log(module1, idx)
                     idx = idx + 1
-                SystemExit( "Simulation Error" );
+                SystemExit( "Simulation Error" )
             self.ssc.module_free(module1)
         except Exception as e:
             print(e)
@@ -346,7 +346,7 @@ class SamBaseClass(object):
             self.logger.critical("Exception occurred while executing the SAM module. Please see the detailed error message below", exc_info=True)
 
     def P_T_conversion(self):
-        Cond_p = self.ssc.data_get_array(self.data, b'P_cond');
+        Cond_p = self.ssc.data_get_array(self.data, b'P_cond')
         Cond_temp=[]
         Cond_temp_root2=[]
         for i in Cond_p:
@@ -413,20 +413,20 @@ class SamBaseClass(object):
         outputs = []
         for variable in output_vars:
             if variable == 'twet': continue
-            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'));#bytes(variable, 'utf-8'));
-            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'));
+            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'))#bytes(variable, 'utf-8'))
+            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'))
             outputs.append({'name': variable,
                             'value': value,
                             'array': arrayVal})
 
-        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor');
+        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
         print ('\nCapacity factor (year 1) = ', capacity_factor)
 #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
 #        print ('Annual Water Usage = ', annual_total_water_use)
-        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy');
+        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
         print ('Annual energy (year 1) = ', annual_energy)
         
-        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real');
+        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real')
         print ('LCOE_real = ', lcoe_real)
         
         outputs.append({'name': 'capacity_factor',
