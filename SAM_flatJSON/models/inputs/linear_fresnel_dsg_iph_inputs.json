@@ -730,31 +730,6 @@
             "Tab": "System Design",
             "Section": "Design Point Parameters",
             "Subsection": "System Availability and Curtailment"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "adjust:hourly",
-            "Label": "Hourly loss adjustments",
-            "Units": "%",
-            "Group": "Loss Adjustments",
-            "Require": "?",
-            "Costraint": "LENGTH=8760",
-            "Tab": "System Design",
-            "Section": "Design Point Parameters",
-            "Subsection": "System Availability and Curtailment"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "adjust:periods",
-            "Label": "Period-based loss adjustments",
-            "Units": "%",
-            "Meta": "n x 3 matrix [ start, end, loss ]",
-            "Group": "Loss Adjustments",
-            "Require": "?",
-            "Costraint": "COLS=3",
-            "Tab": "System Design",
-            "Section": "Design Point Parameters",
-            "Subsection": "System Availability and Curtailment"
         }
     ]
 }
