@@ -7,8 +7,11 @@ desal = 'VAGMD'
 finance = 'iph_to_lcoefcr'
 base_path = Path(__file__).resolve().parent.parent.absolute()
 app_json = base_path / 'app' / 'app-data.json'
+map_json = base_path / 'app' / 'map-data.json'
+report_json = base_path / 'app' / 'report-data.json'
 json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
+sam_results_dir = base_path / 'SAM_flatJSON' / 'results'
 
 #TODO: build this later based on model selection within the GUI
 solar_variables_file = json_infiles_dir/ f'{solar}_inputs.json'
@@ -20,6 +23,8 @@ finance_values_file = json_defaults_dir / f'{solar}_{finance}.json'
 desal_finance_variables_file = json_infiles_dir/ f'{desal}_cost_inputs.json'
 desal_finance_values_file = json_defaults_dir/ f'{desal}_cost.json'
 desal_design_infile = base_path / 'app' / f'{desal}_design_output.json'
+sam_desal_finance_outfile = sam_results_dir / f'{desal}_cost_output.json'
+sam_desal_simulation_outfile = sam_results_dir / f'{desal}_simulation_output.json'
 ##
 
 json_outpath = base_path / 'app' / 'user-generated-inputs'
@@ -28,6 +33,12 @@ default_weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.1165
 weather_file_path = json_outpath / 'weather-file-location.txt'
 
 app_json_init = {'solar':'Solar','desal':'Desal','finance':'Finance'}
+
+#columns that will be used in data tables
+cols = [{'name':'Variable', 'id':'Label','editable':False},
+       # {'name':'Value',    'id':'Value','editable':True, 'type':'numeric'},
+        {'name':'Value',    'id':'Value','editable':True},
+        {'name':'Units',    'id':'Units','editable':False}]
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FOR':'Forward Osmosis                          ',
@@ -39,6 +50,9 @@ Desal = {'FOR':'Forward Osmosis                          ',
          'NUN':'No Desalination Model                    ',
          'ROM':'Reverse Osmosis                          ', 
          }
+
+# dict desalination output file naming conventions (from SAMBaseClass.py)
+desalFilenames = {'VAM':'VAGMD'}
 
 #dict for financial model 'values' and 'labels' 
 Financial = {'COMML':'Commercial (Distributed)                   ',
@@ -63,32 +77,6 @@ Solar = {'FPC' :'Flat-Plate Collector',
          'MSPT':'Power Tower Molten Salt         ',
          'PT'  :'Parabolic Trough Physical       ',
           }
-
-#dict containing the desalination options ('value' and 'disabled') after solar model chosen
-solarToDesal = {
-    'FPC' : [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'IPHP': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'IPHD': [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'ISCC': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'DSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'MSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'DSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'MSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'PT'  : [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    }
-
-#dict containing the finance options ('value' and 'disabled') after desal model chosen
-solarToFinance = {
-    'FPC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
-    'IPHP': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
-    'IPHD': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
-    'ISCC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',False)],
-    'DSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
-    'MSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
-    'DSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
-    'MSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
-    'PT'  : [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
-    }
 
 #dict containing Solar / Finance combinations
 solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
@@ -127,8 +115,28 @@ solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
                  ('IPHD','NONE') :'linear_fresnel_dsg_iph_none',    
     }
 
-#columns that will be used in data tables
-cols = [{'name':'Variable', 'id':'Label','editable':False},
-       # {'name':'Value',    'id':'Value','editable':True, 'type':'numeric'},
-        {'name':'Value',    'id':'Value','editable':True},
-        {'name':'Units',    'id':'Units','editable':False}]
+#dict containing the desalination options ('value' and 'disabled') after solar model chosen
+solarToDesal = {
+    'FPC' : [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHP': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'IPHD': [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'ISCC': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSLF': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'DSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'MSPT': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'PT'  : [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    }
+
+#dict containing the finance options ('value' and 'disabled') after desal model chosen
+solarToFinance = {
+    'FPC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'IPHP': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'IPHD': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'ISCC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',False)],
+    'DSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'MSLF': [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'DSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'MSPT': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    'PT'  : [('COMML',False),('LCOE',False),('LCOH',True),('NONE',False),('PPFWD',False),('PPFWO',False),('PPALS',False),('PPASO',False)],
+    }
