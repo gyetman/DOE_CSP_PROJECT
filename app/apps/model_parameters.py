@@ -72,7 +72,8 @@ def create_callback_for_tables(model_vars_list):
   
     #Then create the callback
     @app.callback(
-        Output('model-loading-output','children'),
+        [Output('model-loading-output','children'),
+        Output('sim-button', 'children')],
         [Input('model-button','n_clicks')],
         states)
     def update_model_variables_and_run_model(n_clicks, *tableData): 
@@ -89,7 +90,7 @@ def create_callback_for_tables(model_vars_list):
             '''find the list with the dict containing the unique value of Name and update that dict'''
             for td in tbl_data:
                 unique_val=td['Name']
-                mvars,index = helpers.index_in_list_of_dicts(model_vars_list,'Name',unique_val)
+                mvars,index = helpers.index_in_lists_of_dicts(model_vars_list,'Name',unique_val)
                 mvars[index].update(td)
         
         def _convert_strings_to_literal(v):
@@ -131,17 +132,21 @@ def create_callback_for_tables(model_vars_list):
             solar_model_outfile_path = Path(cfg.json_outpath / solar_model_outfile)
             with solar_model_outfile_path.open('w') as write_file:
                 json.dump(solar_output_vars, write_file)
+            # write the outfile to the app_json, to keep track for other apps
+            helpers.json_update({'solar_outfile': solar_model_outfile}, cfg.app_json)
             #create the desal json file that will be the input to the model
             desal_model_outfile = cfg.desal+timestamp+'_inputs.json'
             desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
             with desal_model_outfile_path.open('w') as write_file:
-                json.dump(desal_output_vars, write_file)  
+                json.dump(desal_output_vars, write_file)
+            # write the outfile to the app_json, to keep track for other apps
+            helpers.json_update({'desal_outfile': desal_model_outfile}, cfg.app_json)
             #create the finance json file that will be the input to the model
             finance_model_outfile = cfg.finance+timestamp+'_inputs.json'
             finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
             with finance_model_outfile_path.open('w') as write_file:
                 json.dump(finance_output_vars, write_file)  
-            
+            helpers.json_update({'finance_outfile': finance_model_outfile}, cfg.app_json)
             #TODO these should not be hardcoded
             #run the model
             run_model(csp=cfg.solar,
@@ -150,9 +155,14 @@ def create_callback_for_tables(model_vars_list):
                       json_file=solar_model_outfile_path,
                       desal_file=desal_model_outfile_path,
                       finance_file=finance_model_outfile_path)
-            return (
-                    dcc.Markdown('''Model run complete. [View results.](http://127.0.0.1:8051/)''')
-                    )
+
+            # return a new button with a link to the analysis report
+            return (   (html.Div([
+                        html.H5("Model run complete"),
+                        dcc.Link(dbc.Button("View Results", color="primary"), href='/analysis-report')
+            ])), 
+            # and replace the old button
+            html.P()   )
         else:
             return ""
                         
@@ -332,7 +342,7 @@ desal_finance_model_vars = create_variable_lists(
 finance_model_vars += desal_finance_model_vars
 
 # update weather file_name
-l,wf_index = helpers.index_in_list_of_dicts([solar_model_vars],'Name','file_name')
+l,wf_index = helpers.index_in_lists_of_dicts([solar_model_vars],'Name','file_name')
 solar_model_vars[wf_index]['Value']=str(get_weather_file())
 
 solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
@@ -379,7 +389,6 @@ tab_selected_style = {
 app.title = 'Model Parameters'
 
 loading = html.Div([
-    html.P(),
     dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default", color="#18BC9C")]
 )
 
@@ -430,10 +439,12 @@ primary_card = dbc.Card(
         #     [dbc.Spinner(size="sm"), " Run Model"],
         #     color="primary",
         #     id='model-button'),
+        html.Div([
         dbc.Button("Run Simulation Model",color="primary",id="model-button"),
         dbc.Tooltip(
             "Run the model after reviewing and editing the Desalination, Solar Thermal and Financial variables. The model takes 1-2 minutes to run.",
             target="model-button"),
+        ],id='sim-button'),
         loading,
     ]),color="secondary", className="text-white"
 )
@@ -484,7 +495,7 @@ def run_desal_design(desalDesign):
     if not ctx.triggered:
         return ""
     else:
-        stdm = SamBaseClass()
+        stdm = SamBaseClass(desalination=cfg.desal)
         stdm.desal_design(desal=cfg.desal)
         with open(cfg.desal_design_infile, "r") as read_file:
             desal_design_load = json.load(read_file)
