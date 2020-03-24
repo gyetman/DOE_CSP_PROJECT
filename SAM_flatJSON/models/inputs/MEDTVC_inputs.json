@@ -1,0 +1,43 @@
+{
+    "MEDTVC": [
+	    {
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "System Capcity",
+            "Units": "m3/day",
+            "Require": "*"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "T_VN",
+            "Label": "Vapor temperature in the last cell",
+            "Units": "C",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "T_s",
+            "Label": "Saturated external steam temperature",
+            "Units": "C",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "T_f",
+            "Label": "Feed seawater temperature",
+            "Units": "",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        }
+    ]
+}

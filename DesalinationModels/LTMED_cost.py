@@ -70,7 +70,7 @@ class LTMED_cost(object):
         self.LCOW = self.CAPEX + self.OPEX
         
         cost_output = []
-        cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX*self.Prod,'Unit':'m3'})
+        cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         
