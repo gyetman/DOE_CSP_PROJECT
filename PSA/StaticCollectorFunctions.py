@@ -729,7 +729,7 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
         Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
         ang_inc_D_rad=ang_inc_D*rad
         condicion1 = ang_inc_D_rad<Ang_incid_rad_max
-        f_theta = (condicion1)*(1-bo*(1/np.cos(ang_inc_D_rad)-1))+(~condicion1)*0
+        f_theta = np.array((condicion1)*(1-bo*(1/np.cos(ang_inc_D_rad)-1))+(~condicion1)*0)
           
 #       case {'2'}   #% ETC or CPC con datos experimentales de kteta L y kteta T
     elif tipo_col=='2':
