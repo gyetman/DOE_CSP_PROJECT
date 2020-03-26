@@ -11,7 +11,7 @@ import numpy as np
 
 # texas as default location
 CENTER_LAT=32.7767
-CENTER_LON=-96.7970
+CENTER_LON=-97.7970
 
 markdownText = '\n\n'
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -24,6 +24,7 @@ with open('./GISData/solar_resources3.geojson','r') as f:
 # load data frame of solar values
 
 df_solar = pd.read_csv('./GISData/solar_data.csv',usecols=['ID','ANN_DNI','CENTROID_X','CENTROID_Y'])
+df_solar['text'] = 'DNI: ' + df_solar['ANN_DNI'].round(1).astype(str)
 
 solarViz = go.Choroplethmapbox(
     name='Solar Resource',
@@ -36,21 +37,23 @@ solarViz = go.Choroplethmapbox(
     ),
     marker_opacity=1, 
     marker_line_width=0,
-    text=df_solar['ANN_DNI'],
-    hoverinfo='text',
+    #text = df_solar['text'],
+    #hoverinfo='text',
+    hoverinfo='none',
     visible=True,
 )
 
 
 # load point mesh data with pre-calculated attributes
 df = pd.read_csv('./GISData/solar_sw.csv')
+df['text'] = 'DNI: ' + df_solar['ANN_DNI'].round(1).astype(str)
 solar = go.Scattermapbox(
     name='solar',
     lat=df.CENTROID_Y,
     lon=df.CENTROID_X,
     mode='markers',
-    hoverinfo=None,
-    #hovertext=df.ID,
+    hoverinfo='text',
+    text=df.text,
     marker=dict(
         size=0,
         color='red',
@@ -60,10 +63,10 @@ solar = go.Scattermapbox(
 )
 
 # load county polygons and dataframe of attributes
-with open('./GISData/counties.geojson','r') as f:
-    counties = json.load(f)
+#with open('./GISData/counties.geojson','r') as f:
+#    counties = json.load(f)
 
-df_county = '' #TODO
+#df_county = '' #TODO
 
 # load existing desal plants
 
@@ -141,6 +144,7 @@ for opt in dropDownOptions:
 
 fig = go.Figure(dict(data=data, layout=layout))
 app.title = 'Site Selection'
+
 app.layout = html.Div(children=[
         html.Div([
             dcc.Dropdown(
@@ -154,7 +158,7 @@ app.layout = html.Div(children=[
             style= {
                 'position': 'relative',
                 'display': 'inline-block',
-                'min-width': '150px'
+                'min-width': '160px'
             }
         ),
         html.Div([
@@ -167,19 +171,22 @@ app.layout = html.Div(children=[
             html.Div(id='markdown-div'),
             dcc.Markdown(children=markdownText)
             ], className='row'
-        )
+        ),
 
-    ], className='row'),
-    html.Div([
-        html.Div(
-        dcc.Link(html.Button('Select Models'), 
-        href='http://127.0.0.1:8073/model-selection', 
-        id='next-button'),
+        html.Div([
+            html.Div(
+            html.Button('Select Models', 
+                #href='http://127.0.0.1:8077/model-selection', 
+                id='next-button'
+                )
+        
+            )   
+        
+        ], className='row'
         )
-    ], className='row'
-    )
+]
+    )])
 
-])
 
 def loadData(mapTheme,fg):
     ''' loads data based on the chosen theme after a user selects a 
@@ -189,19 +196,24 @@ def loadData(mapTheme,fg):
     userPt = fg['data'][-1]
 
     if mapTheme == 'solar':   
-        return [solar,solarViz,desal,userPt]
+        ''' default loaded data can be returned, with user point'''
+        # update visibility
+        solar.hoverinfo='text'
+        return [solarViz,solar,desal,userPt]
     elif mapTheme == 'wprice':
+        # turn hoverinfo off
+        solar.hoverinfo='none'
         # display the counties by price
         # load water price point data (global)
         df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
-        df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
+        df_point_prices['text'] = 'City Price: $' + df_point_prices['Water_bill'].round(2).astype(str) + ' /m3'
         globalPriceData = go.Scattermapbox(
             #text=df_point_prices['City_Name'],
             name='City Prices',
             lat=df_point_prices.Latitude,
             lon=df_point_prices.Longitude,
             text=df_point_prices.text,
-            #hoverinfo='none',
+            hoverinfo='text',
             visible=True,
             showlegend=True,
             mode='markers',
@@ -229,51 +241,32 @@ def loadData(mapTheme,fg):
             ),
             marker_opacity=1, 
             marker_line_width=0,
-            text=df_county_prices.text,
+            text=df_county_prices['text'],
             hoverinfo='text',
             visible=True,
             # TODO: add year to map GUI (year of data)
         )
         # load canal data
-        #TODO: make this a static file, read in at run time
         df_canals = pd.read_csv('./gisData/canals.csv')
-        tmp = df_canals.lat.str.split(',')
-        canalLats = []
-        for i in tmp:
-            canalLats.append([float(j) for j in i])
-        tmp = df_canals.lon.str.split(',')
-        canalLongs = []
-        for i in tmp:
-            canalLongs.append([float(j) for j in i])
-        canalData = go.Scattermapbox(
-            name='Canals and Aqueducts',    
-            
-            lat = canalLats[0],
-            lon = canalLongs[0],
-            mode = "lines",
-            marker=dict(
-                size=10,
-                color='blue',
-
-            ),
+        with open('./gisData/canals.geojson','r') as f:
+            canalGeoJson = json.load(f)
+        canalData = go.Choroplethmapbox(
+            name='Canals and Aqueducts',
+            geojson=canalGeoJson, 
+            locations=df_canals.IDField, 
+            z=df_canals['IDField'],
+            colorscale='Inferno', 
+            text=df_canals['Name'],
+            hoverinfo='text',
+            visible=True,
+            showscale=False,
+            showlegend=True
         )
-        newData = [countyData,solar,globalPriceData,canalData]
-        for i, _ in enumerate(canalLats[1:]):
-            newData.append(go.Scattermapbox(
-                showlegend=False,
-                lat = canalLats[i],
-                lon = canalLongs[i],
-                mode = 'lines',
-                marker = dict(
-                    size=10,
-                    color='blue',
-                ),
+        return [countyData,solar,globalPriceData,canalData,userPt]
 
-            ))
-
-        newData.append(userPt)
-        return newData
     elif mapTheme == 'eprice':
+        # turn hoverinfo off
+        solar.hoverinfo='none'
         # load electric price data
         df_electric = pd.read_csv('./GISData/electric_prices_zcta.csv')
         df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWh'
@@ -284,7 +277,6 @@ def loadData(mapTheme,fg):
             name='Industrial Electric Prices',
             geojson=geoj, 
             locations=df_electric.ZCTA5CE10, 
-            # featureidkey='ZCTA5CE10',
             z=df_electric.MEAN_ind_rate,
             colorscale="Viridis", 
             colorbar=dict(
@@ -299,17 +291,23 @@ def loadData(mapTheme,fg):
         return [electricPriceData,solar,userPt]
 
     elif mapTheme == 'produced':
+    # turn hoverinfo off
+        solar.hoverinfo='none'
         return [solar,userPt]
     elif mapTheme == 'brackish':
+    # turn hoverinfo off
+        solar.hoverinfo='none'
         return [solar,userPt]
     elif mapTheme == 'legal':
+    # turn hoverinfo off
+        solar.hoverinfo='none'
         return [solar,userPt]
     
 
     
-""" callback to handle click events. Capturing map info with the click 
-event (figure, relayoutData) for clicks that are not close enough to a 
-point (zoomed in too far). """
+""" callback to handle click events and dropdown changes. Capturing map 
+info with the click event (figure, relayoutData) for clicks that are 
+not close enough to a point (zoomed in too far). """
 @app.callback(
     Output(component_id='map', component_property='figure'),
     [Input(component_id='map', component_property='clickData'),
@@ -325,18 +323,17 @@ def clickPoint(clicks,dropDown,relay,figure):
         #print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
-    if dropDown:
-        ''' if the dropdown is not the same as the title text, 
-        we need to reload the map with the new choice. Dropdown
-        is supplied with callback regardless of status (updated
-        or not)'''
-        existingTitle = figure['layout']['title']['text']
-        if existingTitle != dropDownTitles[dropDown]:
-            print('Dropdown Changed to {}'.format(dropDown))
-            # change title and load appropriate data
-            figure['layout']['title']['text'] = dropDownTitles[dropDown]
-            # update data and return a go.Figure! 
-            return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
+    #if dropDown:
+    ''' if the dropdown is not the same as the title text, 
+    we need to reload the map with the new choice. Dropdown
+    is supplied with callback regardless of status (updated
+    or not)'''
+    existingTitle = figure['layout']['title']['text']
+    if existingTitle != dropDownTitles[dropDown]:
+        # change title and load appropriate data
+        figure['layout']['title']['text'] = dropDownTitles[dropDown]
+        # update data and return a go.Figure! 
+        return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
     if clicks:
         # update he user point 
         tmpData = figure['data']
@@ -369,6 +366,14 @@ def updateMarkdown(clicks):
         raise PreventUpdate
     markdownText = '###### Site Properties in {}, {}\n\n'.format('County','State')
     return dcc.Markdown(markdownText)
+
+@app.callback(
+    Output(component_id='next-button',component_property='children'),
+     [Input(component_id='next-button',component_property='n_clicks')]
+ )
+def writeOutParams(btn):
+    print(btn)
+    raise PreventUpdate
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    

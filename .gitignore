@@ -29,3 +29,6 @@ SAM_flatJSON/__pycache__/__init__.cpython-37.pyc
 *.ini
 .vscode/*
 
+app/VAGMD_design_output.json
+SAM_flatJSON/results/VAGMD_cost_output.json
+SAM_flatJSON/results/VAGMD_simulation_output.json
