@@ -108,7 +108,7 @@ for i, _ in enumerate(canalLats[1:]):
         mode = 'lines',
         marker = dict(
             size=10,
-            color='blue',
+            color='red',
         ),
 
     ))

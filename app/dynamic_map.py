@@ -18,32 +18,9 @@ external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 mapbox_key = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
 app = dash.Dash(__name__, external_stylesheets=external_stylesheet)
 
-# load solar geojson
-with open('./GISData/solar_resources3.geojson','r') as f:
-    solarGeoJson = json.load(f)
-# load data frame of solar values
-
-df_solar = pd.read_csv('./GISData/solar_data.csv',usecols=['ID','ANN_DNI','CENTROID_X','CENTROID_Y'])
-
-solarViz = go.Choroplethmapbox(
-    name='Solar Resource',
-    geojson=solarGeoJson, 
-    locations=df_solar.ID, 
-    z=df_solar['ANN_DNI'],
-    colorscale='Inferno', 
-    colorbar=dict(
-        title='kWh/m2/day',
-    ),
-    marker_opacity=1, 
-    marker_line_width=0,
-    text=df_solar['ANN_DNI'],
-    hoverinfo='text',
-    visible=True,
-)
-
-
 # load point mesh data with pre-calculated attributes
 df = pd.read_csv('./GISData/solar_sw.csv')
+
 solar = go.Scattermapbox(
     name='solar',
     lat=df.CENTROID_Y,
@@ -53,54 +30,10 @@ solar = go.Scattermapbox(
     #hovertext=df.ID,
     marker=dict(
         size=0,
-        color='red',
+        color='green',
     ),
     visible=True,
     showlegend=False,
-)
-
-# load county polygons and dataframe of attributes
-with open('./GISData/counties.geojson','r') as f:
-    counties = json.load(f)
-
-df_county = '' #TODO
-
-# load existing desal plants
-
-df_desal = pd.read_csv('./GISData/desal_plants.csv')
-df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
-desal = go.Scattermapbox(
-    name='Desalination Plants',
-    lat=df_desal.Latitude,
-    lon=df_desal.Longitude,
-    mode='markers',
-    hoverinfo='text',
-    text=df_desal.text,
-    marker=dict(
-        size=7,
-        color='green',
-    ),
-    visible=True
-    # TODO: duplicate this layer to have cutoffs:
-    # 5,000
-    # 10,000
-    # 20,000
-    
-)
-# user-point placeholder
-userPoint = go.Scattermapbox(
-    name='Selected Site',
-    lon=[0],
-    lat=[0],
-    # replaced None object with 'none', confusing but that turns it off!  
-    hoverinfo='none',
-    mode='markers',
-    marker=dict(
-        size=13,
-        color='red',
-    ),
-    showlegend=False,
-    visible=False,
 )
 
 layout = go.Layout(
@@ -124,15 +57,15 @@ layout = go.Layout(
 )
 
 # data object for the figure
-data = [solarViz,solar,desal,userPoint]
+data = [solar]
+
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
-    {'label':'Water Prices', 'value':'wprice'},
-    {'label':'Electric Prices', 'value':'eprice','disabled':True},
+    {'label':'Electricity Prices', 'value':'price'},
     {'label':'Produced Waters','value':'produced'},
-    {'label':'Brackish Waters', 'value':'brackish','disabled':True},
-    {'label':'Legal Framework', 'value':'legal','disabled':True}
+    {'label':'Brackish Waters', 'value':'brackish'},
+    {'label':'Legal Framework', 'value':'legal'}
 ]
 # lookup used in callback
 dropDownTitles = dict()
@@ -181,132 +114,7 @@ app.layout = html.Div(children=[
 
 ])
 
-def loadData(mapTheme,fg):
-    ''' loads data based on the chosen theme after a user selects a 
-    different theme from the dropdown '''
-    # keep existing user point 
-    # always the layer on top (last)
-    userPt = fg['data'][-1]
 
-    if mapTheme == 'solar':   
-        return [solar,solarViz,desal,userPt]
-    elif mapTheme == 'wprice':
-        # display the counties by price
-        # load water price point data (global)
-        df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
-        df_point_prices['text'] = '$' + df_point_prices['Water_bill'].round(2).astype(str) + '/m3'
-        globalPriceData = go.Scattermapbox(
-            #text=df_point_prices['City_Name'],
-            name='City Prices',
-            lat=df_point_prices.Latitude,
-            lon=df_point_prices.Longitude,
-            text=df_point_prices.text,
-            #hoverinfo='none',
-            visible=True,
-            showlegend=True,
-            mode='markers',
-            marker=dict(
-                color=df_point_prices.Water_bill,
-                size=9,
-            )
-        )
-        
-        #load geoJSON geometries for price data
-        with open('./gisData/tx_county_water_prices.geojson','r') as f:
-            geoj = json.load(f)
-        # load data frame of prices
-        # TODO: only load fields that we need! 
-        df_county_prices = pd.read_csv('./gisData/tx_county_water_price.csv')
-        df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res'].round(2).astype(str) + '/Kgal'
-        countyData = go.Choroplethmapbox(
-            name='County Water Prices (residential)',
-            geojson=geoj, 
-            locations=df_county_prices.ID, 
-            z=df_county_prices.Max_F5000gal_res_perKgal,
-            colorscale="Viridis", 
-            colorbar=dict(
-                title='Price $/Kgal',
-            ),
-            marker_opacity=1, 
-            marker_line_width=0,
-            text=df_county_prices.text,
-            hoverinfo='text',
-            visible=True,
-            # TODO: add year to map GUI (year of data)
-        )
-        # load canal data
-        #TODO: make this a static file, read in at run time
-        df_canals = pd.read_csv('./gisData/canals.csv')
-        tmp = df_canals.lat.str.split(',')
-        canalLats = []
-        for i in tmp:
-            canalLats.append([float(j) for j in i])
-        tmp = df_canals.lon.str.split(',')
-        canalLongs = []
-        for i in tmp:
-            canalLongs.append([float(j) for j in i])
-        canalData = go.Scattermapbox(
-            name='Canals and Aqueducts',    
-            
-            lat = canalLats[0],
-            lon = canalLongs[0],
-            mode = "lines",
-            marker=dict(
-                size=10,
-                color='blue',
-
-            ),
-        )
-        newData = [countyData,solar,globalPriceData,canalData]
-        for i, _ in enumerate(canalLats[1:]):
-            newData.append(go.Scattermapbox(
-                showlegend=False,
-                lat = canalLats[i],
-                lon = canalLongs[i],
-                mode = 'lines',
-                marker = dict(
-                    size=10,
-                    color='blue',
-                ),
-
-            ))
-
-        newData.append(userPt)
-        return newData
-    elif mapTheme == 'eprice':
-        # load electric price data
-        df_electric = pd.read_csv('./GISData/electric_prices_zcta.csv')
-        df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWh'
-        #load geoJSON geometries for price data (zip codes)
-        with open('./gisData/zcta.geojson','r') as f:
-            geoj = json.load(f)
-        electricPriceData = go.Choroplethmapbox(
-            name='Industrial Electric Prices',
-            geojson=geoj, 
-            locations=df_electric.ZCTA5CE10, 
-            # featureidkey='ZCTA5CE10',
-            z=df_electric.MEAN_ind_rate,
-            colorscale="Viridis", 
-            colorbar=dict(
-                title='Price $/kWH',
-            ),
-            marker_opacity=1, 
-            marker_line_width=0,
-            text=df_electric.text,
-            hoverinfo='text',
-            visible=True,
-        )
-        return [electricPriceData,solar,userPt]
-
-    elif mapTheme == 'produced':
-        return [solar,userPt]
-    elif mapTheme == 'brackish':
-        return [solar,userPt]
-    elif mapTheme == 'legal':
-        return [solar,userPt]
-    
-
-    
 """ callback to handle click events. Capturing map info with the click 
 event (figure, relayoutData) for clicks that are not close enough to a 
 point (zoomed in too far). """
@@ -322,7 +130,7 @@ def clickPoint(clicks,dropDown,relay,figure):
         # not sure this is a required check here, but in 
         # callbacks with fewer outputs it prevents an error
         # on load. 
-        #print('no objects')
+        print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
     if dropDown:
@@ -330,25 +138,34 @@ def clickPoint(clicks,dropDown,relay,figure):
         we need to reload the map with the new choice. Dropdown
         is supplied with callback regardless of status (updated
         or not)'''
+        print(dropDown)
         existingTitle = figure['layout']['title']['text']
         if existingTitle != dropDownTitles[dropDown]:
-            print('Dropdown Changed to {}'.format(dropDown))
+            print('Dropdown Changed')
             # change title and load appropriate data
             figure['layout']['title']['text'] = dropDownTitles[dropDown]
-            # update data and return a go.Figure! 
-            return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
+            # TODO: update data and return a go.Figure! 
+            return figure
     if clicks:
-        # update he user point 
-        tmpData = figure['data']
-        pt = tmpData[-1]
-        tmpData = tmpData[:-1]
-        pt['visible'] = True
-        pt['showlegend'] = True
-        pt['lon'] = [clicks['points'][0]['lon']]
-        pt['lat'] = [clicks['points'][0]['lat']]
-        #figure['data'] = tmpData
-        tmpData.append(pt)
-        return go.Figure(dict(data=tmpData, layout=figure['layout']))
+        # add the user point 
+        userPoint = go.Scattermapbox(
+            name='Selected Site',
+            lon=[clicks['points'][0]['lon']],
+            lat=[clicks['points'][0]['lat']],
+            # replaced None object with 'none', confusing but that turns it off!  
+            hoverinfo='none',
+            mode='markers',
+            marker=dict(
+                size=13,
+                color='red',
+            ),
+            showlegend=True,
+            visible=True,
+        )
+        # update the figure title, otherwise default of solar is used
+        layout['title']['text'] = dropDownTitles[dropDown]
+        # return the figure with the updated point
+        return go.Figure(dict(data=[solar,userPoint], layout=layout))
 
     if relay:
         #print(relay)
