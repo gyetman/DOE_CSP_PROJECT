@@ -744,14 +744,7 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #         else:
 #            f_theta=0
 
-         
-                                                                     
-    
-    
-    
-    
-    
-    
+            
     return f_theta
 #%% Determines the water outlet temperature from the collector
 def temp_salida_DOE(tipo_col,Time,Long,Lat,inc_captador,v_azim,Te,Tamb_D,qm,a,b,c,d,G,A,*args):
