@@ -27,10 +27,10 @@ class StaticCollector(object):
                  initial_date   = [2010, 3 ,18, 9, 0, 0], # initial design day/time
                  final_date     = [2010, 3, 18, 17, 0 ,0], # final design day/time
                  desal_thermal_power_req= 1000, # thermal power that solar collector field must supply to desal plant
-                 initial_water_temp=25, # inlet water temperature in the solar field, ºC
-                 outlet_water_temp=80, # outlet water temperature in the solar field, ºC
+                 initial_water_temp=85, # inlet water temperature in the solar field, ºC
+                 outlet_water_temp=95, # outlet water temperature in the solar field, ºC
                  qm=0.02,   # mass flow rate of collector 
-                 Tamb_D=25, # design point ambient temperature, C
+                 Tamb_D=30, # design point ambient temperature, C
                  
                  G=1000,    # irradiance from collector datasheet
                  a=0.64,    # datasheet 
