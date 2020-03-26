@@ -4,6 +4,7 @@ from pathlib import Path
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 from dash.dependencies import Input, Output, State
 
 import app_config as cfg
@@ -114,13 +115,13 @@ def set_desal_config(x):
     return ([
     html.H5('Desalination System Configuration', className='card-title'),
     html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
-    html.Div(f"Design capacity: {r['Capacity']}"),
-    html.Div(f"Thermal storage hour: {r['storage_hour']}"),
-    html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']}"),
+    html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+    html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+    html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
     html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
-    html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']}"),
-    html.Div(f"Required thermal energy: {r['thermal_power_consumption']}"),
-    html.Div(f"Required electric energy {r['electric_energy_consumption']}")
+    html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh(th)/m3"),
+    html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
+    html.Div(f"Required electric energy {r['electric_energy_consumption']:.2f} kWh(e)/m3")
     ])
 
 @app.callback(
@@ -131,9 +132,14 @@ def set_solar_config(x):
     return ([
     html.H5('Solar Field Configuration', className='card-title'),
     html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
-    html.Div(f"Design thermal energy production: {r['q_pb_des']}"),
+    html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
     ])
-
+#cols = [{'name':'Variable', 'id':'Label','editable':False},
+#        {'name':'Value',    'id':'Value','editable':True},
+#        {'name':'Units',    'id':'Units','editable':False}]
+#table_id = "test"
+#table_data = ['1','2','3']
+    
 @app.callback(
     Output('system-performance', 'children'),
     [Input('data-initialize', 'children')])
@@ -141,7 +147,43 @@ def set_system_performance(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('System Performance', className='card-title'),
-    html.Div(f"Gained output ratio: {r['gained_output_ratio']}"),
+    html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
+#    html.Div([
+#        html.P(),
+#        dash_table.DataTable(
+#            id=table_id,
+#            columns=cols,
+#            data=table_data,
+#            editable=True,
+#            style_cell={
+#                'textAlign': 'left',
+#                'maxWidth': '360px',
+#                'whiteSpace': 'no-wrap',
+#                'overflow': 'hidden',
+#                'textOverflow': 'ellipsis',
+#            },
+#            style_cell_conditional=[
+#                {'if': {'column_id': 'Label'},
+#                 'width': '40%'},
+#                {'if': {'column_id': 'Value'},
+#                 'width': '55%'},
+#                {'if': {'column_id': 'Units'},
+#                 'width': '5%'},
+#            ],
+#            css=[{
+#                'selector': '.dash-cell div.dash-cell-value',
+#                'rule': 'display: inline; white-space: inherit; overflow: inherit; text-overflow: inherit;'
+#            }],
+#            style_header={
+#                'backgroundColor': '#300C2D',
+#                'color': 'white',
+#                'font-family': 'Helvetica',
+#                #'fontWeight': 'bold',
+#            },
+#            #column_static_tooltip=tips
+#        ),
+#        html.P(),
+#    ]),
     ])
 
 @app.callback(
@@ -151,9 +193,9 @@ def set_cost_analysis(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('Cost Analysis', className='card-title'),
-    html.Div(f"Levelized cost of water (LCOW): {r['lcow']}"),
-    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']}"),
-    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']}"),
-    html.Div(f"Capital cost: {r['capital_cost']}"),
-    html.Div(f"Operational and Maintenance cost: {r['ops_cost']}"),
+    html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
+    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.2f}  $/m3"),
+    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f}  $/m3"),
+    html.Div(f"Capital cost: {r['capital_cost']:.2f}  $/m3"),
+    html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f}  $/m3"),
     ])
