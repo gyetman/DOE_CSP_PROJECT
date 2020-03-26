@@ -29,7 +29,7 @@ sam_desal_simulation_outfile = sam_results_dir / f'{desal}_simulation_output.jso
 
 json_outpath = base_path / 'app' / 'user-generated-inputs'
 
-default_weather_file = base_path / 'SAM' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
+default_weather_file = base_path / 'SAM_flatJSON' / 'solar_resource' / 'tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv'
 weather_file_path = json_outpath / 'weather-file-location.txt'
 
 app_json_init = {'solar':'Solar','desal':'Desal','finance':'Finance'}
