@@ -35,11 +35,11 @@ class StaticCollector(object):
 
                  
                  G=1000,    # irradiance from collector datasheet
-                 a=0.83,    # datasheet 
-                 b=3.523,   # datasheet 
-                 c=0.015,   # datasheet 
+                 a=0.64,    # datasheet 
+                 b=1.494,   # datasheet 
+                 c=0.012,   # datasheet 
                  d=4.18189, # datasheet 
-                 A=10.1,    # aperture area of collector from datasheet 
+                 A=2.83,    # aperture area of collector from datasheet 
                 
                  Long=-112.02, # Longitude
                  Lat=33.4,  # Latitude
