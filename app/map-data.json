@@ -1,0 +1,13 @@
+{"FeedC_r": 123.45, 
+"coe": 0.09, 
+"file_name": "D:/GitHub/DOE_CSP_PROJECT/SAM_flatJSON/solar_resource/Australia AUS Darwin (INTL).csv", 
+"county": "King's Cross", 
+"state": "Narnia", 
+"water_price": 0.18,
+"water_prise_res": 0.11,
+"latitude": -5.333, 
+"dni": 56,
+"ghi": 45,
+"dist_desal_plant": 39,
+"dist_water_network": 11,
+"dist_power_plant": 67}

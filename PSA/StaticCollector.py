@@ -29,19 +29,21 @@ class StaticCollector(object):
                  desal_thermal_power_req= 1000, # thermal power that solar collector field must supply to desal plant
                  initial_water_temp=85, # inlet water temperature in the solar field, ºC
                  outlet_water_temp=95, # outlet water temperature in the solar field, ºC
-                 qm=0.02,   # mass flow rate of collector 
+                
+                 qm=0.02,   # specific mass flow rate of collector (kg/s m2)
                  Tamb_D=30, # design point ambient temperature, C
+
                  
                  G=1000,    # irradiance from collector datasheet
-                 a=0.64,    # datasheet 
-                 b=1.494,   # datasheet 
-                 c=0.012,   # datasheet 
+                 a=0.83,    # datasheet 
+                 b=3.523,   # datasheet 
+                 c=0.015,   # datasheet 
                  d=4.18189, # datasheet 
-                 A=2.83,    # aperture area of collector from datasheet 
+                 A=10.1,    # aperture area of collector from datasheet 
                 
-                 Long=-2.460, # Longitude
-                 Lat=36.838,  # Latitude
-                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv',
+                 Long=-112.02, # Longitude
+                 Lat=33.4,  # Latitude
+                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/phoenix_az_33.450495_-111.983688_psmv3_60_tmy.csv',
                  
                  tilt_angle=36.838, # tilt angle of collector
                  v_azim=180,     # surface azimuth angle, 180 degrees facing south
@@ -60,7 +62,7 @@ class StaticCollector(object):
         self.desal_thermal_power_req   = desal_thermal_power_req
         self.initial_water_temp = initial_water_temp
         self.outlet_water_temp = outlet_water_temp
-        self.qm = qm
+        self.qm = qm * A
         self.Tamb_D = Tamb_D
         self.G = G
         self.a = a
