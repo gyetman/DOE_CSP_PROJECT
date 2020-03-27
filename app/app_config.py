@@ -22,7 +22,7 @@ finance_variables_file = json_infiles_dir/ f'{finance}_inputs.json'
 finance_values_file = json_defaults_dir / f'{solar}_{finance}.json'
 desal_finance_variables_file = json_infiles_dir/ f'{desal}_cost_inputs.json'
 desal_finance_values_file = json_defaults_dir/ f'{desal}_cost.json'
-desal_design_infile = base_path / 'app' / f'{desal}_design_output.json'
+desal_design_infile = base_path / 'SAM_flatJSON' / 'results' / f'{desal}_design_output.json'
 sam_desal_finance_outfile = sam_results_dir / f'{desal}_cost_output.json'
 sam_desal_simulation_outfile = sam_results_dir / f'{desal}_simulation_output.json'
 ##
