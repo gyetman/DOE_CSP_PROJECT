@@ -29,3 +29,6 @@ app/VAGMD_design_output.json
 SAM_flatJSON/results/VAGMD_cost_output.json
 SAM_flatJSON/results/VAGMD_simulation_output.json
 SAM_flatJSON/results/*
+app-data.json
+map-data.json
+report-data.json
