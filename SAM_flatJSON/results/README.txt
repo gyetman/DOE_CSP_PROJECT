@@ -1,0 +1,1 @@
+Files from this directory are temporary results and should not be committed to Github except for README.txt which keeps the directory in place.
