@@ -8,6 +8,13 @@ import json
 import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
+import helpers
+
+
+#TODO:
+# 1. update to use paths from app_config.py
+# 2. Update content with more detailed solar data
+# 3. Test using lookup function / caches for faster loading
 
 # texas as default location
 CENTER_LAT=32.7767
@@ -355,6 +362,7 @@ def clickPoint(clicks,dropDown,relay,figure):
         raise PreventUpdate
 
 
+
 # callback to update Markdown text
 @app.callback(
     Output(component_id='markdown-div',component_property='children'),
@@ -367,13 +375,41 @@ def updateMarkdown(clicks):
     markdownText = '###### Site Properties in {}, {}\n\n'.format('County','State')
     return dcc.Markdown(markdownText)
 
+
+def paramHelper(dfAtts):
+    ''' helper method to write out parameters. Uses the solar dataframe point ID 
+    to write out map paramers to  '''
+    print('getting params')
+    mParams = dict()
+    # update dictionary
+    mParams['file_name'] = dfAtts.filename.values[0]
+    mParams['county'] = dfAtts.NAME.values[0]
+    mParams['state'] = dfAtts.StatePostal.values[0]
+    mParams['water_price'] = '2.08'
+    mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
+    mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
+    mParams['dni'] = dfAtts.ANN_DNI.values[0]
+    mParams['ghi'] = dfAtts.ANN_GHI.values[0]
+
+
+    # update json file
+    helpers.json_update(mParams,'./map-data.json')
+
+# callback for model selection button click
 @app.callback(
     Output(component_id='next-button',component_property='children'),
-     [Input(component_id='next-button',component_property='n_clicks')]
+     [Input(component_id='next-button',component_property='n_clicks')],
+     [State('map','figure')]
  )
-def writeOutParams(btn):
-    print(btn)
-    raise PreventUpdate
+def writeOutParams(btn,mapFigure):
+    userPt = mapFigure['data'][-1]
+    if userPt['lat'][0] == 0:
+        raise PreventUpdate
+    else:
+        dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
+        paramHelper(dfTmp)
+    
+        raise PreventUpdate
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
