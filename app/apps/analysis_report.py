@@ -115,12 +115,12 @@ def set_desal_config(x):
     html.H5('Desalination System Configuration', className='card-title'),
     html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
     html.Div(f"Design capacity: {r['Capacity']}"),
-    html.Div(f"Thermal storage hour: {r['storage_hour']}"),
-    html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']}"),
+    html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+    html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
     html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
-    html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']}"),
-    html.Div(f"Required thermal energy: {r['thermal_power_consumption']}"),
-    html.Div(f"Required electric energy {r['electric_energy_consumption']}")
+    html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+    html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
+    html.Div(f"Required electric energy {r['electric_energy_consumption']:.2f}  kWh")
     ])
 
 @app.callback(
@@ -131,7 +131,7 @@ def set_solar_config(x):
     return ([
     html.H5('Solar Field Configuration', className='card-title'),
     html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
-    html.Div(f"Design thermal energy production: {r['q_pb_des']}"),
+    html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
     ])
 
 @app.callback(
@@ -141,7 +141,7 @@ def set_system_performance(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('System Performance', className='card-title'),
-    html.Div(f"Gained output ratio: {r['gained_output_ratio']}"),
+    html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
     ])
 
 @app.callback(
@@ -151,9 +151,9 @@ def set_cost_analysis(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('Cost Analysis', className='card-title'),
-    html.Div(f"Levelized cost of water (LCOW): {r['lcow']}"),
-    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']}"),
-    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']}"),
-    html.Div(f"Capital cost: {r['capital_cost']}"),
-    html.Div(f"Operational and Maintenance cost: {r['ops_cost']}"),
+    html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
+    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.2f} $/m3"),
+    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/m3"),
+    html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
+    html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
     ])
