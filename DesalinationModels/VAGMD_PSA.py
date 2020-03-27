@@ -227,12 +227,16 @@ class VAGMD_PSA(object):
             
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
             
+        Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
+        Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
+    
         simu_output = []
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
