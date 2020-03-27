@@ -7,12 +7,8 @@ __pycache__/
 *__init__*
 app/user-generated-inputs/*
 !app/user-generated-inputs/README.txt
-#local copies of files can be ignored with _OLD in the name
-*_OLD
 # ignore visual studio code settings
 app/.vscode/settings.json
-
-app/display-results-app_old.py
 .vscode/settings.json
 app/GISdata/zcta.geojson.metadata.xml
 app/GISdata/electric_prices_zcta.csv.xml
@@ -24,17 +20,12 @@ app/GISdata/schema.ini
 SAM/__pycache__/__init__.cpython-37.pyc
 SAM/__pycache__/PySSC.cpython-37.pyc
 SAM_flatJSON/__pycache__/__init__.cpython-37.pyc
+SAM_flatJSON/__pycache__/*
 .ipynb_checkpoints/Untitled-checkpoint.ipynb
 *.xml
 *.ini
 .vscode/*
-
 app/VAGMD_design_output.json
 SAM_flatJSON/results/VAGMD_cost_output.json
 SAM_flatJSON/results/VAGMD_simulation_output.json
-SAM_flatJSON/results/VAGMD_cost_output.json
-SAM_flatJSON/results/VAGMD_simulation_output.json
-SAM_flatJSON/results/VAGMD_simulation_output.json
-SAM_flatJSON/results/VAGMD_cost_output.json
-SAM_flatJSON/results/VAGMD_cost_output.json
-SAM_flatJSON/results/VAGMD_simulation_output.json
+SAM_flatJSON/results/*
