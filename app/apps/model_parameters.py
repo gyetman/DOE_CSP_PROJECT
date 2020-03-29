@@ -201,18 +201,6 @@ def create_variable_lists(model_name, json_vars, json_vals):
                     pass
     return model_vars
 
-def get_weather_file():
-    '''
-    checks to see if a weather file was written to the user directory and
-    returns it or the default weather file
-    
-    '''
-    if cfg.weather_file_path.is_file():
-        with open(cfg.weather_file_path, 'r') as f:
-            return f.readline().strip()
-    else:
-        return cfg.default_weather_file
-
 def run_model(csp='tcslinear_fresnel',
               desal=None,
               finance=None,
@@ -252,9 +240,12 @@ desal_finance_model_vars = create_variable_lists(
 # append the desal_finance variables to the finance variables
 finance_model_vars += desal_finance_model_vars
 
-# update weather file_name
-l,wf_index = helpers.index_in_lists_of_dicts([solar_model_vars],'Name','file_name')
-solar_model_vars[wf_index]['Value']=str(get_weather_file())
+# update weather file_name if it's found in map JSON
+map_dict = helpers.json_load(cfg.map_json)
+weather_file = map_dict.get('file_name')
+if weather_file:
+    l,wf_index = helpers.index_in_lists_of_dicts([solar_model_vars],'Name','file_name')
+    solar_model_vars[wf_index]['Value']=str(weather_file)
 
 solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
 desal_tabs = collect_and_sort_model_tabs(desal_model_vars)
