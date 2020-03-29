@@ -276,7 +276,6 @@ desal_states = create_table_states([desal_model_vars])
 solar_states = create_table_states([solar_model_vars])
 finance_states = create_table_states([finance_model_vars])
 table_states = desal_states+solar_states+finance_states
-print(f"desal_states: {desal_states}\n")
 
 #
 ### APP LAYOUTS ###
@@ -340,6 +339,26 @@ tabs_accordion = dbc.Card(
     id='tabs-card'
 )
 
+desal_side_panel = dbc.CardBody([
+    html.H4("Desalination Design Model", className="card-title"),
+    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. Please run the design model first and specify the thermal load in the solar thermal model accordingly.", className='card-text'),
+    dbc.Button('Run Design Model', 
+        color="primary", 
+        id='run-desal-design'),
+    dbc.Tooltip(
+        "Run the Desal Design Model after editing and approving the variables under Desalination System",
+        target="run-desal-design"),
+])
+
+solar_side_panel = dbc.CardBody([
+    html.H4("Solar Thermal System Model", className="card-title"),
+    html.P("", className='card-text'),
+])
+finance_side_panel = dbc.CardBody([
+    html.H4("Finance Model", className="card-title"),
+    html.P("", className='card-text'),
+])
+
 primary_card = dbc.Card(
     dbc.CardBody([
         html.H4(
@@ -364,31 +383,15 @@ primary_card = dbc.Card(
     ]),color="secondary", className="text-white"
 )
 
-desal_side_panel = dbc.CardBody([
-    html.H4("Desalination Design Model", className="card-title"),
-    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. Please run the design model first and specify the thermal load in the solar thermal model accordingly.", className='card-text'),
-    dbc.Button('Run Design Model', 
-        color="primary", 
-        id='run-desal-design'),
-    dbc.Tooltip(
-        "Run the Desal Design Model after editing and approving the variables under Desalination System",
-        target="run-desal-design"),
-    html.P(),
-    html.Div(id='desal-design-results')
-])
-
-solar_side_panel = dbc.CardBody([
-    html.H6("SOLAR THERMAL SYSTEM INSTRUCTIONS", className="card-title"),
-    html.P("blah blah blah", className='card-text')
-])
-finance_side_panel = dbc.CardBody([
-    html.H6("FINANCE MODEL INSTRUCTIONS", className="card-title"),
-    html.P("blah blah blah", className='card-text')
-])
-
 model_card = dbc.Card(children=desal_side_panel,id='model-card',color="secondary", className="text-white")
 
-side_panel = dbc.Card([model_card,primary_card,],className="h-100", color="secondary")
+desal_design_results_card = dbc.Card(
+    dbc.CardBody([
+        html.Div(id='desal-design-results')
+    ]), color="secondary", className="text-white"
+)
+
+side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],className="h-100", color="secondary")
 
 tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9)],no_gutters=True)
 
@@ -437,7 +440,8 @@ def run_desal_design(desalDesign, *desalData):
             elif isinstance(dd_val,float):
                 dd_val = f'{dd_val:,.2f}'
             dd_outputs.append(html.Div(f"{dd['Name']}: {dd_val} {dd['Unit']}"))
-        return dbc.Alert(dd_outputs)
+        return (html.H4('Desalination Design Results',className="card-title"),
+                dbc.Alert(dd_outputs))
 
 @app.callback([Output(f"collapse-title-{i}", 'children') for i in models],
             [Input('tabs-card','children')])
