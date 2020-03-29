@@ -36,17 +36,22 @@ def collect_and_sort_model_tabs(model_variable_list):
         mv_tabs.insert(0, mv_tabs.pop(mv_tabs.index('General')))
     return mv_tabs
 
-def create_callback_for_tables(model_vars_list):
+def convert_strings_to_literal(v):
+    '''converts some string values to their literal values'''
+    #arrays and matrices need to be converted back from string
+    if v['DataType']=='SSC_ARRAY' or v['DataType']=='SSC_MATRIX':
+        return ast.literal_eval(v['Value'])
+    #SSC_NUMBER, now represented as string after user edited in table
+    #need to be changed back to numbers
+    elif v['DataType']=='SSC_NUMBER' and isinstance(v['Value'],str):
+        return ast.literal_eval(v['Value'])
+    else:
+        return v['Value']
+
+def create_table_states(model_vars_list):
     '''
-    processes model variables and generates a table_id with the form:
-    'Solar_FieldMirror_WashingGeneral'
-    
-    where Solar_Field, Mirror_Washing, and General are the
-    tab, section and subsection names with spaces replaced by underscores.
-     
-    Then creates states for each table_id. These store changes to the tables.
-    Finally, creates a callback that fires when the Run Model button is hit.
-    '''        
+    @model_vars_list list: list of variables to create table states for
+    '''
     def _create_state(table_id):
         ''' 
         creates states for each table by appending
@@ -55,116 +60,22 @@ def create_callback_for_tables(model_vars_list):
         states.append(State(table_id,'data_timestamp'))
         #states.append(State(table_id,'id'))
         states.append(State(table_id,'data'))
-    
-    # loop through variables for each model, create table_ids and
+        
+    # loop through variables, create table_ids and
     # use those to create State lists
     states = []
 
-    for mVs in model_vars_list:
+    for mv in model_vars_list:
         #Collect the table ids
         table_ids = [*{*[ f"{v['Tab']}{v['Section']}{v['Subsection']}"\
                     .replace(' ','_').replace('(','').replace(')','')\
-                    .replace('/','') for v in mVs]}]
+                    .replace('/','') for v in mv]}]
                                         
         #Create States for each table id
         for table_id in table_ids:
             _create_state(table_id)
-  
-    #Then create the callback
-    @app.callback(
-        [Output('model-loading-output','children'),
-        Output('sim-button', 'children')],
-        [Input('model-button','n_clicks')],
-        states)
-    def update_model_variables_and_run_model(n_clicks, *tableData): 
-        '''
-        Once someone is done editing the tables they hit the Run Model button
-        This triggers the callback.
-        We then check through the state of each table to see if it has been 
-        edited. We can tell by whether or not it has a data_timestamp.
-        If it has been edited we update the model variables dict which will be 
-        converted to json and used as input to run the model.
-        Finally the model is run.
-        '''
-        def _update_model_variables(tbl_data):
-            '''find the list with the dict containing the unique value of Name and update that dict'''
-            for td in tbl_data:
-                unique_val=td['Name']
-                mvars,index = helpers.index_in_lists_of_dicts(model_vars_list,'Name',unique_val)
-                mvars[index].update(td)
-        
-        def _convert_strings_to_literal(v):
-            '''converts some string values to their literal values'''
-            #arrays and matrices need to be converted back from string
-            if v['DataType']=='SSC_ARRAY' or v['DataType']=='SSC_MATRIX':
-                return ast.literal_eval(v['Value'])
-            #SSC_NUMBER, now represented as string after user edited in table
-            #need to be changed back to numbers
-            elif v['DataType']=='SSC_NUMBER' and isinstance(v['Value'],str):
-                return ast.literal_eval(v['Value'])
-            else:
-                return v['Value']
 
-        if n_clicks:
-            #tableData states is in groups of twos
-            #i is the table data_timestamp, i+1 is the data
-            for i in range(0,len(tableData),2):
-                updated = tableData[i]
-                tbl_data = tableData[i+1]
-                if updated:
-                    #overwrite the dict with the updated data from the table
-                    _update_model_variables(tbl_data)  
-            #create simple name:value dicts from model variables
-            # to be used by SamBaseClass
-            solar_output_vars = dict()
-            desal_output_vars = dict()
-            finance_output_vars = dict()
-            for dvar in desal_model_vars:
-                desal_output_vars[dvar['Name']] = _convert_strings_to_literal(dvar)
-            for svar in solar_model_vars:
-                solar_output_vars[svar['Name']] = _convert_strings_to_literal(svar)
-            for fvar in finance_model_vars:
-                finance_output_vars[fvar['Name']] = _convert_strings_to_literal(fvar)
-                
-            #create the solar json file that will be the input to the model
-            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            solar_model_outfile = cfg.solar+timestamp+'_inputs.json'
-            solar_model_outfile_path = Path(cfg.json_outpath / solar_model_outfile)
-            with solar_model_outfile_path.open('w') as write_file:
-                json.dump(solar_output_vars, write_file)
-            # write the outfile to the app_json, to keep track for other apps
-            helpers.json_update({'solar_outfile': solar_model_outfile}, cfg.app_json)
-            #create the desal json file that will be the input to the model
-            desal_model_outfile = cfg.desal+timestamp+'_inputs.json'
-            desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
-            with desal_model_outfile_path.open('w') as write_file:
-                json.dump(desal_output_vars, write_file)
-            # write the outfile to the app_json, to keep track for other apps
-            helpers.json_update({'desal_outfile': desal_model_outfile}, cfg.app_json)
-            #create the finance json file that will be the input to the model
-            finance_model_outfile = cfg.finance+timestamp+'_inputs.json'
-            finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
-            with finance_model_outfile_path.open('w') as write_file:
-                json.dump(finance_output_vars, write_file)  
-            helpers.json_update({'finance_outfile': finance_model_outfile}, cfg.app_json)
-            #TODO these should not be hardcoded
-            #run the model
-            run_model(csp=cfg.solar,
-                      desal=cfg.desal,
-                      finance=cfg.finance,
-                      json_file=solar_model_outfile_path,
-                      desal_file=desal_model_outfile_path,
-                      finance_file=finance_model_outfile_path)
-
-            # return a new button with a link to the analysis report
-            return (   (html.Div([
-                        html.H5("Model run complete"),
-                        dcc.Link(dbc.Button("View Results", color="primary"), href='/analysis-report')
-            ])), 
-            # and replace the old button
-            html.P()   )
-        else:
-            return ""
+    return states
                         
 def create_data_table(table_data, table_id):
     return html.Div([
@@ -361,7 +272,11 @@ Model_vars = {models[0]:desal_model_vars,
 
 model_vars_list = [desal_model_vars,solar_model_vars,finance_model_vars]
 
-
+desal_states = create_table_states([desal_model_vars])
+solar_states = create_table_states([solar_model_vars])
+finance_states = create_table_states([finance_model_vars])
+table_states = desal_states+solar_states+finance_states
+print(f"desal_states: {desal_states}\n")
 
 #
 ### APP LAYOUTS ###
@@ -482,20 +397,35 @@ model_tables_layout = html.Div([model_vars_title, tabs])
 #
 ### CALLBACKS
 #     
-    
-# the table callbacks are defined in a function above
-create_callback_for_tables(model_vars_list)
 
 @app.callback(
     Output('desal-design-results', 'children'),
-    [Input('run-desal-design', 'n_clicks')])
-def run_desal_design(desalDesign):
+    [Input('run-desal-design', 'n_clicks')],
+    desal_states)
+def run_desal_design(desalDesign, *desalData):
     ctx = dash.callback_context
     
     if not ctx.triggered:
         return ""
     else:
-        stdm = SamBaseClass(desalination=cfg.desal)
+        #i is the table data_timestamp, i+1 is the data
+        #save the dicts into one list
+        dsl_data= []
+        for i in range(0,len(desalData),2):
+            dsl_data += desalData[i+1]
+        desal_design_vars = dict()
+        # pull out variable names and values and add to new dict
+        for dvar in dsl_data:
+            desal_design_vars[dvar['Name']] = convert_strings_to_literal(dvar)
+        #write the dict out into a JSON
+        desal_design_outfile = cfg.desal+'design_inputs.json'
+        desal_design_outfile_path = Path(cfg.json_outpath /         
+                                         desal_design_outfile)
+        with desal_design_outfile_path.open('w') as write_file:
+            json.dump(desal_design_vars, write_file)
+
+        stdm = SamBaseClass(desalination=cfg.desal, 
+                            desal_json_value_filepath=desal_design_outfile_path)
         stdm.desal_design(desal=cfg.desal)
         with open(cfg.desal_design_infile, "r") as read_file:
             desal_design_load = json.load(read_file)
@@ -558,4 +488,85 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
         return False, False, not is_open3
     return False, False, False
 
+@app.callback(
+    [Output('model-loading-output','children'),
+    Output('sim-button', 'children')],
+    [Input('model-button','n_clicks')],
+    table_states)
+def update_model_variables_and_run_model(n_clicks, *tableData): 
+    '''
+    Once someone is done editing the tables they hit the Run Model button
+    This triggers the callback.
+    We then check through the state of each table to see if it has been 
+    edited. We can tell by whether or not it has a data_timestamp.
+    If it has been edited we update the model variables dict which will be 
+    converted to json and used as input to run the model.
+    Finally the model is run.
+    '''
+    def _update_model_variables(tbl_data):
+        '''find the list with the dict containing the unique value of Name and update that dict'''
+        for td in tbl_data:
+            unique_val=td['Name']
+            mvars,index = helpers.index_in_lists_of_dicts(model_vars_list,'Name',unique_val)
+            mvars[index].update(td)
 
+    if n_clicks:
+        #tableData states is in groups of twos
+        #i is the table data_timestamp, i+1 is the data
+        for i in range(0,len(tableData),2):
+            updated = tableData[i]
+            tbl_data = tableData[i+1]
+            if updated:
+                #overwrite the dict with the updated data from the table
+                _update_model_variables(tbl_data)  
+        #create simple name:value dicts from model variables
+        # to be used by SamBaseClass
+        solar_output_vars = dict()
+        desal_output_vars = dict()
+        finance_output_vars = dict()
+        for dvar in desal_model_vars:
+            desal_output_vars[dvar['Name']] = convert_strings_to_literal(dvar)
+        for svar in solar_model_vars:
+            solar_output_vars[svar['Name']] = convert_strings_to_literal(svar)
+        for fvar in finance_model_vars:
+            finance_output_vars[fvar['Name']] = convert_strings_to_literal(fvar)
+            
+        #create the solar json file that will be the input to the model
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        solar_model_outfile = cfg.solar+timestamp+'_inputs.json'
+        solar_model_outfile_path = Path(cfg.json_outpath / solar_model_outfile)
+        with solar_model_outfile_path.open('w') as write_file:
+            json.dump(solar_output_vars, write_file)
+        # write the outfile to the app_json, to keep track for other apps
+        helpers.json_update({'solar_outfile': solar_model_outfile}, cfg.app_json)
+        #create the desal json file that will be the input to the model
+        desal_model_outfile = cfg.desal+timestamp+'_inputs.json'
+        desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
+        with desal_model_outfile_path.open('w') as write_file:
+            json.dump(desal_output_vars, write_file)
+        # write the outfile to the app_json, to keep track for other apps
+        helpers.json_update({'desal_outfile': desal_model_outfile}, cfg.app_json)
+        #create the finance json file that will be the input to the model
+        finance_model_outfile = cfg.finance+timestamp+'_inputs.json'
+        finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
+        with finance_model_outfile_path.open('w') as write_file:
+            json.dump(finance_output_vars, write_file)  
+        helpers.json_update({'finance_outfile': finance_model_outfile}, cfg.app_json)
+        #TODO these should not be hardcoded
+        #run the model
+        run_model(csp=cfg.solar,
+                    desal=cfg.desal,
+                    finance=cfg.finance,
+                    json_file=solar_model_outfile_path,
+                    desal_file=desal_model_outfile_path,
+                    finance_file=finance_model_outfile_path)
+
+        # return a new button with a link to the analysis report
+        return (   (html.Div([
+                    html.H5("Model run complete"),
+                    dcc.Link(dbc.Button("View Results", color="primary"), href='/analysis-report')
+        ])), 
+        # and replace the old button
+        html.P()   )
+    else:
+        return ""
