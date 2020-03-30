@@ -62,6 +62,7 @@ class SamBaseClass(object):
         self.set_data(self.varListCsp)
         # execute csp model
         self.module_create_execute(self.cspModel)
+
 #        SAM_output = self.data
 #        SAM_json_outfile = 'SAM_flatJSON/models/outputs/SAM_output.json'
 #        with open(SAM_json_outfile, 'w') as outfile:
@@ -74,10 +75,6 @@ class SamBaseClass(object):
             elif self.financialModel == 'iph_to_lcoefcr':
                 self.module_create_execute('lcoefcr')
         # execute desalination model, if any
-#        if self.desalination:
-#            self.T_cond = self.P_T_conversion()
-#            self.GOR, self.MD = self.LT_MED_water_empirical(self.T_cond)
-        
         if self.desalination:
             self.desal_simulation(self.desalination)
             self.cost(self.desalination)
@@ -124,6 +121,9 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
             self.design_output = self.VAGMD.design()
+            design_json_outfile =  self.samPath / 'results' /'VAGMD_design_output.json'
+            with open(design_json_outfile, 'w') as outfile:
+                json.dump(self.design_output, outfile)
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
             with open(self.json_values, "r") as read_file:
                 values_json = json.load(read_file)
@@ -413,18 +413,23 @@ class SamBaseClass(object):
         output_values = Path(self.samPath / "models" / "outputs" / cspOuts)
         with open(output_values, "r") as read_file:
             outputs_json = json.load(read_file)
-        output_vars = []
-        for outputs in outputs_json['TcslinearFresnel_LFDS']:
-            output_vars.append(outputs['Name'])
-
         outputs = []
-        for variable in output_vars:
-            if variable == 'twet': continue
-            value = self.ssc.data_get_number(self.data, variable.encode('utf-8'))#bytes(variable, 'utf-8'))
-            arrayVal = self.ssc.data_get_array(self.data, variable.encode('utf-8'))
-            outputs.append({'name': variable,
-                            'value': value,
-                            'array': arrayVal})
+        for variable in outputs_json['Output']:
+
+#            if variable == 'twet': continue
+            if variable['Data'] == 'SSC_NUMBER':
+                value = self.ssc.data_get_number(self.data, variable['Name'].encode('utf-8'))#bytes(variable, 'utf-8'))
+            elif variable['Data'] == 'SSC_ARRAY':
+                value = self.ssc.data_get_array(self.data, variable['Name'].encode('utf-8'))
+            
+            if 'Unit' in variable:
+                unit = variable['Unit']
+            else:
+                unit = None
+            
+            outputs.append({'Name': variable['Label'],
+                            'Value': value,
+                            'Unit': unit})
 
         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
         print ('\nCapacity factor (year 1) = ', capacity_factor)
@@ -433,15 +438,15 @@ class SamBaseClass(object):
         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
         print ('Annual energy (year 1) = ', annual_energy)
         
-        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_real')
+        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_fcr')
         print ('LCOE_real = ', lcoe_real)
         
-        outputs.append({'name': 'capacity_factor',
-                        'value': capacity_factor})
-
-        outputs.append({'name': 'annual_energy',
-                        'value': annual_energy})
-        json_outfile = 'sample.json'
+#        outputs.append({'name': 'capacity_factor',
+#                        'value': capacity_factor})
+#
+#        outputs.append({'name': 'annual_energy',
+#                        'value': annual_energy})
+        json_outfile = self.samPath / 'results' / 'Solar_output.json'
         with open(json_outfile, 'w') as outfile:
             json.dump(outputs, outfile)
         #print ('outputs = ', outputs)
