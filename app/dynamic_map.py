@@ -184,13 +184,14 @@ app.layout = html.Div(children=[
 
         html.Div([
             html.Div(
-            html.Button('Select Models', 
-                #href='http://127.0.0.1:8077/model-selection', 
-                id='next-button'
-                )
-        
+            html.A(
+                html.Button('Select Models', 
+                    #href='http://127.0.0.1:8077/model-selection', 
+                    id='next-button',
+                ),
+            href='http://127.0.0.1:8077/model-selection'
             )   
-        
+            )
         ], className='row'
         )
 ]
@@ -369,7 +370,7 @@ def createMarkdown(mddf,theme):
     map theme '''
     print('create md called')
     # markdown used with all themes
-    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName.value[0],mddf.StatePosta.value[0])
+    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName[0],mddf.StatePosta[0])
     if theme not in dropDownTitles.keys():
         print('Bad dropdown value!')
         return markdownText
@@ -402,18 +403,19 @@ def updateMarkdown(clicks,fig):
 def paramHelper(dfAtts):
     ''' helper method to write out parameters. Uses the solar dataframe point ID 
     to write out map paramers to  '''
+    #TODO: initialize the map-data json and write all params (read and update?)
     print('getting params')
     mParams = dict()
     # update dictionary
     weatherPath = cfg.base_path
-    mParams['file_name'] = weatherPath / dfAtts.filename.values[0]
-    mParams['county'] = dfAtts.NAME.values[0]
-    mParams['state'] = dfAtts.StatePostal.values[0]
+    mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts.filename.values[0])
+    mParams['county'] = dfAtts.CountyName.values[0]
+    mParams['state'] = dfAtts.StatePosta.values[0]
     mParams['water_price'] = '2.08'
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
-    mParams['ghi'] = dfAtts.ANN_GHI.values[0]
+    mParams['ghi'] = dfAtts.GHI.values[0]
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
