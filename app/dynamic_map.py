@@ -405,8 +405,8 @@ def paramHelper(dfAtts):
     print('getting params')
     mParams = dict()
     # update dictionary
-    mParams['file_name'] = dfAtts.filename.values[0]
-    mParams['file_name'] = r'C:\DOE\DOE_CSP_PROJECT\SAM_flatJSON\solar_resourcemParams' + os.path.sep + mParams['file_name']
+    weatherPath = cfg.base_path
+    mParams['file_name'] = weatherPath / dfAtts.filename.values[0]
     mParams['county'] = dfAtts.NAME.values[0]
     mParams['state'] = dfAtts.StatePostal.values[0]
     mParams['water_price'] = '2.08'
