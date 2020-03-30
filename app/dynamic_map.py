@@ -358,7 +358,7 @@ def clickPoint(clicks,dropDown,relay,figure):
         return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
     if relay:
-        #print(relay)
+        print(relay)
         raise PreventUpdate
     if fig:
         #print(fig.keys())
@@ -370,10 +370,11 @@ def createMarkdown(mddf,theme):
     map theme '''
     print('create md called')
     # markdown used with all themes
-    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName[0],mddf.StatePosta[0])
-    if theme not in dropDownTitles.keys():
+    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName.values[0],mddf.StatePosta.values[0])
+    if theme not in list(dropDownTitles.values()):
         print('Bad dropdown value!')
-        return markdownText
+        print(theme)
+        return mdText
     mdText += 'Hellooooo\n\n'
     return(mdText)
 
@@ -396,6 +397,7 @@ def updateMarkdown(clicks,fig):
         print('creating data frame')
         dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
         theme = fig['layout']['title']['text']
+        print(dfTmp.columns)
         markdownText = createMarkdown(dfTmp,theme)
     
     return dcc.Markdown(markdownText)
