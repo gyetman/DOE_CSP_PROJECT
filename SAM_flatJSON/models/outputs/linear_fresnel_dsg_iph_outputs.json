@@ -1,454 +1,310 @@
 {
-    "TcslinearFresnel_LFDS": [
+    "Output": [
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "time_hr",
+            "Label": "Time at end of timestep",
+            "Unit": "hr",
+            "Group": "Solver"
+        },
         {
             "Data": "SSC_ARRAY",
             "Name": "month",
             "Label": "Resource Month",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "hour",
+            "Name": "hour_day",
             "Label": "Resource Hour of Day",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "solazi",
             "Label": "Resource Solar Azimuth",
-            "Units": "deg",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "deg",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "solzen",
             "Label": "Resource Solar Zenith",
-            "Units": "deg",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "deg",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "beam",
             "Label": "Resource Beam normal irradiance",
-            "Units": "W/m2",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "W/m2",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "tdry",
             "Label": "Resource Dry bulb temperature",
-            "Units": "C",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "C",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "twet",
             "Label": "Resource Wet bulb temperature",
-            "Units": "C",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "C",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "wspd",
             "Label": "Resource Wind Speed",
-            "Units": "m/s",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "m/s",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "pres",
             "Label": "Resource Pressure",
-            "Units": "mbar",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "mbar",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "tou_value",
-            "Label": "Resource Time-of-use value",
-            "Group": "tou",
-            "Constraint": "LENGTH=8760"
+            "Name": "theta_traverse",
+            "Label": "Field traverse incidence angle",
+            "Unit": "deg",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "theta_longitudinal",
+            "Label": "Field traverse incidence angle",
+            "Unit": "deg",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "eta_opt_ave",
+            "Label": "Field optical efficiency before defocus",
+            "Unit": "deg",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "defocus",
             "Label": "Field collector focus fraction",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "eta_opt_ave",
-            "Label": "Field collector optical efficiency",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "eta_thermal",
-            "Label": "Field thermal efficiency",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "eta_sf",
-            "Label": "Field efficiency total",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "q_inc_tot",
+            "Name": "q_inc_sf_tot",
             "Label": "Field thermal power incident",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Unit": "MWt",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_rec",
-            "Label": "Field thermal power receiver loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_rec_inc",
+            "Label": "Receiver thermal power incident",
+            "Unit": "MWt",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_piping",
-            "Label": "Field thermal power header pipe loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_rec_thermal_loss",
+            "Label": "Receiver thermal losses",
+            "Unit": "MWt",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_sf",
-            "Label": "Field thermal power loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_rec_abs",
+            "Label": "Receiver thermal power absorbed",
+            "Unit": "MWt",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_field_delivered",
-            "Label": "Field thermal power produced",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_piping_loss",
+            "Label": "Field piping thermal losses",
+            "Unit": "MWt",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "e_dot_field_int_energy",
+            "Label": "Field change in material/htf internal energy",
+            "Unit": "MWt",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_sf_out",
+            "Label": "Field thermal power leaving in steam",
+            "Unit": "MWt",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_freeze_prot",
+            "Label": "Field freeze protection required",
+            "Unit": "MWt",
+            "Group": "dsg_field"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "m_dot_loop",
+            "Label": "Receiver mass flow rate",
+            "Unit": "kg/s",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "m_dot_field",
-            "Label": "Field steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Label": "Field total mass flow rate",
+            "Unit": "kg/s",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_b_tot",
-            "Label": "Field steam mass flow rate - boiler",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_field_cold_in",
+            "Label": "Field timestep-averaged inlet temperature",
+            "Unit": "C",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot",
-            "Label": "Field steam mass flow rate - loop",
-            "Units": "kg/s",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_rec_cold_in",
+            "Label": "Loop timestep-averaged inlet temperature",
+            "Unit": "C",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "P_sf_in",
-            "Label": "Field steam pressure at inlet",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_rec_hot_out",
+            "Label": "Loop timestep-averaged outlet temperature",
+            "Unit": "C",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "dP_tot",
-            "Label": "Field steam pressure loss",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "x_rec_hot_out",
+            "Label": "Loop timestep-averaged outlet quality",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_field_in",
-            "Label": "Field steam temperature at header inlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_field_hot_out",
+            "Label": "Field timestep-averaged outlet temperature",
+            "Unit": "C",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_loop_out",
-            "Label": "Field steam temperature at collector outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "x_field_hot_out",
+            "Label": "Field timestep-averaged outlet quality",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_field_out",
-            "Label": "Field steam temperature at header outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "deltaP_field",
+            "Label": "Field pressure drop",
+            "Unit": "bar",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "eta",
-            "Label": "Cycle efficiency (gross)",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "W_dot_sca_track",
+            "Label": "Field collector tracking power",
+            "Unit": "MWe",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_net",
-            "Label": "Cycle electrical power output (net)",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "W_dot_field_pump",
+            "Label": "Field htf pumping power",
+            "Unit": "MWe",
+            "Group": "dsg_field"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_cycle_gross",
-            "Label": "Cycle electrical power output (gross)",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_to_heat_sink",
+            "Label": "Heat sink thermal power",
+            "Unit": "MWt",
+            "Group": "Heat_Sink"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_to_pb",
-            "Label": "Cycle steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "W_dot_heat_sink_pump",
+            "Label": "Heat sink pumping power",
+            "Unit": "MWe",
+            "Group": "Heat_Sink"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "P_turb_in",
-            "Label": "Cycle steam pressure at inlet",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "W_dot_parasitic_tot",
+            "Label": "System total electrical parasitic",
+            "Unit": "MWe",
+            "Group": "Controller"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_pb_in",
-            "Label": "Cycle steam temperature at inlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "op_mode_1",
+            "Label": "1st operating mode",
+            "Group": "Controller"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_pb_out",
-            "Label": "Cycle steam temperature at outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "op_mode_2",
+            "Label": "2nd op. mode, if applicable",
+            "Group": "Controller"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "E_bal_startup",
-            "Label": "Cycle thermal energy startup",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "q_dump",
-            "Label": "Cycle thermal energy dumped",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "q_to_pb",
-            "Label": "Cycle thermal power input",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "m_dot_makeup",
-            "Label": "Cycle cooling water mass flow rate - makeup",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "P_cond",
-            "Label": "Condenser pressure",
-            "Units": "Pa",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "f_bays",
-            "Label": "Condenser fraction of operating bays",
-            "Units": "none",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "q_aux_fluid",
-            "Label": "Fossil thermal power produced",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "m_dot_aux",
-            "Label": "Fossil steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "q_aux_fuel",
-            "Label": "Fossil fuel usage",
-            "Units": "MMBTU",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_dot_pump",
-            "Label": "Parasitic power solar field pump",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_dot_col",
-            "Label": "Parasitic power field collector drives",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_dot_bop",
-            "Label": "Parasitic power generation-dependent load",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_dot_fixed",
-            "Label": "Parasitic power fixed load",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_dot_aux",
-            "Label": "Parasitic power auxiliary heater operation",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "W_cool_par",
-            "Label": "Parasitic power condenser operation",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "monthly_energy",
-            "Label": "Monthly Energy",
-            "Units": "kWh",
-            "Group": "Linear Fresnel",
-            "Constraint": "LENGTH=12"
+            "Name": "op_mode_3",
+            "Label": "3rd op. mode, if applicable",
+            "Group": "Controller"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "annual_energy",
-            "Label": "Annual Energy",
-            "Units": "kWh",
-            "Group": "Linear Fresnel"
+            "Label": "Annual Net Thermal Energy Production w/ avail derate",
+            "Unit": "kWt-hr",
+            "Group": "Post-process"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "annual_W_cycle_gross",
-            "Label": "Electrical source - Power cycle gross output",
-            "Units": "kWh",
-            "Group": "Linear Fresnel"
+            "Name": "annual_field_energy",
+            "Label": "Annual Gross Thermal Energy Production w/ avail derate",
+            "Unit": "kWt-hr",
+            "Group": "Post-process"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "conversion_factor",
-            "Label": "Gross to Net Conversion Factor",
-            "Units": "%",
-            "Group": "Calculated"
+            "Name": "annual_thermal_consumption",
+            "Label": "Annual thermal freeze protection required",
+            "Unit": "kWt-hr",
+            "Group": "Post-process"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "capacity_factor",
-            "Label": "Capacity factor",
-            "Units": "%"
+            "Name": "annual_electricity_consumption",
+            "Label": "Annual electricity consumptoin w/ avail derate",
+            "Unit": "kWe-hr",
+            "Group": "Post-process"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "annual_total_water_use",
-            "Label": "Total Annual Water Usage: cycle + mirror washing",
-            "Units": "m3",
-            "Group": "PostProcess"
-        },
-        {
-            "Data": "SSC_NUMBER",
-            "Name": "kwh_per_kw",
-            "Label": "First year kWh/kW",
-            "Units": "kWh/kW"
-        },
-        {
-            "Data": "SSC_NUMBER",
-            "Name": "system_heat_rate",
-            "Label": "System heat rate",
-            "Units": "MMBtu/MWh"
-        },
-        {
-            "Data": "SSC_NUMBER",
-            "Name": "annual_fuel_usage",
-            "Label": "Annual fuel usage",
-            "Units": "kWh"
+            "Label": "Total Annual Water Usage",
+            "Unit": "m^3",
+            "Group": "Post-process"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "gen",
             "Label": "System power generated",
-            "Units": "kW",
+            "Unit": "kW",
             "Group": "Time Series"
         }
     ]
