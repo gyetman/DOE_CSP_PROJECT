@@ -9,6 +9,8 @@ import pandas as pd
 import plotly.graph_objs as go
 import numpy as np
 import helpers
+from pathlib import Path
+import app_config as cfg 
 
 
 #TODO:
@@ -362,19 +364,40 @@ def clickPoint(clicks,dropDown,relay,figure):
         raise PreventUpdate
 
 
+def createMarkdown(mddf,theme):
+    ''' helper method to return the markdown text relevant for the given 
+    map theme '''
+    print('create md called')
+    # markdown used with all themes
+    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName.value[0],mddf.StatePosta.value[0])
+    if theme not in dropDownTitles.keys():
+        print('Bad dropdown value!')
+        return markdownText
+    mdText += 'Hellooooo\n\n'
+    return(mdText)
+
 
 # callback to update Markdown text
 @app.callback(
     Output(component_id='markdown-div',component_property='children'),
-    [Input(component_id='map',component_property='clickData')] 
+    [Input(component_id='map',component_property='clickData')],
+    [State('map','figure')] 
 )
-def updateMarkdown(clicks):
+def updateMarkdown(clicks,fig):
     ''' pulls properties from dataframe and updates markdown div '''
     if clicks is None:
+        print('no clicks')
         raise PreventUpdate
-    markdownText = '###### Site Properties in {}, {}\n\n'.format('County','State')
+    userPt = fig['data'][-1]
+    if userPt['lat'][0] == 0:
+        raise PreventUpdate
+    else:
+        print('creating data frame')
+        dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
+        theme = fig['layout']['title']['text']
+        markdownText = createMarkdown(dfTmp,theme)
+    
     return dcc.Markdown(markdownText)
-
 
 def paramHelper(dfAtts):
     ''' helper method to write out parameters. Uses the solar dataframe point ID 
@@ -383,6 +406,7 @@ def paramHelper(dfAtts):
     mParams = dict()
     # update dictionary
     mParams['file_name'] = dfAtts.filename.values[0]
+    mParams['file_name'] = r'C:\DOE\DOE_CSP_PROJECT\SAM_flatJSON\solar_resourcemParams' + os.path.sep + mParams['file_name']
     mParams['county'] = dfAtts.NAME.values[0]
     mParams['state'] = dfAtts.StatePostal.values[0]
     mParams['water_price'] = '2.08'
@@ -390,7 +414,6 @@ def paramHelper(dfAtts):
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.ANN_GHI.values[0]
-
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
