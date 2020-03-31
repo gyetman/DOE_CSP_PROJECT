@@ -240,12 +240,10 @@ desal_finance_model_vars = create_variable_lists(
 # append the desal_finance variables to the finance variables
 finance_model_vars += desal_finance_model_vars
 
-# update weather file_name if it's found in map JSON
-map_dict = helpers.json_load(cfg.map_json)
-weather_file = map_dict.get('file_name')
-if weather_file:
-    l,wf_index = helpers.index_in_lists_of_dicts([solar_model_vars],'Name','file_name')
-    solar_model_vars[wf_index]['Value']=str(weather_file)
+# get the table id for the weather file variable to update table later
+wf_index = helpers.index_in_list_of_dicts(solar_model_vars,'Name','file_name')
+wf_table = solar_model_vars[wf_index]
+weather_table_id=f"{wf_table['Tab']}{wf_table['Section']}{wf_table['Subsection']}".replace(' ','_').replace('(','').replace(')','').replace('/','')
 
 solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
 desal_tabs = collect_and_sort_model_tabs(desal_model_vars)
@@ -299,7 +297,7 @@ loading = html.Div([
 
 model_vars_title = html.Div([
     html.H3('System Configuration', className='page-header'),
-    html.P()])
+    html.P(id='initialize')])
 
 def make_tabs_in_collapse(i):
     # return the tabs belonging to the collapse button
@@ -483,6 +481,26 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
         return False, False, not is_open3
     return False, False, False
 
+@app.callback(
+    [Output(weather_table_id, 'data')],
+    [Input('initialize', 'children')]
+)
+def update_map_variables(x):
+    '''
+    update tables with variables passed in from the map
+    necessary because data was initially loaded before 
+    variables were chosen in the GIS map part of the app,
+    now they can be over-written when the model parameters 
+    page loads on the users screen
+    '''
+    # update weather file_name if it's found in map JSON
+    map_dict = helpers.json_load(cfg.map_json)
+    weather_file = map_dict.get('file_name')
+    if weather_file:
+        #wf_table is a copy of the weather data from when the app was started
+        wf_table['Value']=str(weather_file)
+        return [[dict(wf_table)]]
+        
 @app.callback(
     [Output('model-loading-output','children'),
     Output('sim-button', 'children')],
