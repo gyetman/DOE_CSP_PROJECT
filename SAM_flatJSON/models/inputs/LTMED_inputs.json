@@ -10,6 +10,14 @@
         },
 		{
             "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Costraint": "<106,>34"
+        },
+		{
+            "DataType": "SSC_NUMBER",
             "Name": "Nef",
             "Label": "Number of effects",
             "Units": "none",
@@ -22,6 +30,14 @@
             "Units": "C",
             "Require": "*",
             "Constraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hour",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
         },
 		{
             "DataType": "SSC_NUMBER",
