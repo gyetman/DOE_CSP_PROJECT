@@ -20,7 +20,7 @@ import app_config as cfg
 
 # texas as default location
 CENTER_LAT=32.7767
-CENTER_LON=-98.7970
+CENTER_LON=-99.7970
 
 markdownText = '\n\n'
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -61,8 +61,8 @@ solar = go.Scattermapbox(
     lat=df.CENTROID_Y,
     lon=df.CENTROID_X,
     mode='markers',
-    hoverinfo='text',
-    text=df['text'],
+    hoverinfo='none',
+    #text=df['text'],
     marker=dict(
         size=0,
         color='red',
@@ -127,7 +127,7 @@ layout = go.Layout(
     uirevision='initial load',
     mapbox=dict(
             accesstoken=mapbox_key,
-            zoom=5,
+            zoom=6,
             center=dict(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
@@ -359,15 +359,32 @@ def createMarkdown(mddf,theme):
     ''' helper method to return the markdown text relevant for the given 
     map theme '''
     # markdown used with all themes
-    mdText = '###### Site Properties in {} county, {}\n\n'.format(
+    mdText = '##### Site Properties in {} county, {}\n\n'.format(
         mddf.CountyName.values[0],
         mddf.StatePosta.values[0]
-        )
+    ) 
+    mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
+    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0])
+    mdText += '&nbsp&nbsp Potential Energy: {:,.0f} (units?)\n\n'.format(mddf.Exhaust_Ga.values[0])
+    mdText += '&nbsp&nbsp Total Capacity: {:,.0f} (units?)\n\n'.format(mddf.Plant_tota.values[0])
+    mdText += '&nbsp&nbsp Annual Production: {:,.0f} (units?), 2019\n\n'.format(mddf.Plant_annu.values[0])
+    mdText += 'Closest desalination plant: {}\n\n'.format('To be added')
+
     if theme not in list(dropDownTitles.values()):
-        print('Bad dropdown value!')
-        print(theme)
         return mdText
-    mdText += 'Hellooooo\n\n'
+    elif theme == 'Water Prices':
+        mdText += '###### Water Price Information\n\n'
+        mdText += 'Texas county average price: ${:,.2f}\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0])
+        mdText += '{} city water price: {}\n\n'.format('City Name', '$$$$')
+        wnd = mddf.WaterNetworkDistance.values[0]
+        if wnd > 0:
+            mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
+        cnl = mddf.CanalsDist.values[0]
+        if cnl > 0:
+            mdText += 'Distance to closest Canal: {:,.0f}\n\n'.format(cnl)
+            mdText += '&nbsp&nbspName: {}\n\n'.format(mddf.CanalName.values[0])
+            mdText += '&nbsp&nbspOperator: {}\n\n'.format(mddf.CanalOperator.values[0])
+
     return(mdText)
 
 
