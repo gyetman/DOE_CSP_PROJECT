@@ -118,7 +118,7 @@ userPoint = go.Scattermapbox(
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
 df_nuclear['text'] = df_nuclear.Plant_prim \
-    + ' Potential: ' + df_nuclear['Total_Pote'].round(0).astype(str)
+    + ' Residual Heat: ' + df_nuclear['Exhaust_Re'].round(0).astype(str)
 
 nuclear = go.Scattermapbox(
     name='Nuclear Plants',
@@ -137,7 +137,7 @@ nuclear = go.Scattermapbox(
 # Coal power plants
 df_coal = pd.read_csv('./GISData/nuclear.csv')
 df_coal['text'] = df_coal.Plant_prim \
-    + ' Potential: ' + df_coal['Total_Pote'].round(0).astype(str)
+    + ' Residual Heat: ' + df_coal['Exhaust_Re'].round(0).astype(str)
 
 coal = go.Scattermapbox(
     name='Coal Plants',
@@ -228,7 +228,7 @@ app.layout = html.Div(children=[
                     #href='http://127.0.0.1:8077/model-selection', 
                     id='next-button',
                 ),
-            href='http://127.0.0.1:8077/model-selection'
+            #href='http://127.0.0.1:8077/model-selection'
             )   
             )
         ], className='row'
@@ -404,10 +404,11 @@ def createMarkdown(mddf,theme):
         mddf.StatePosta.values[0]
     ) 
     mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
-    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0])
-    mdText += '&nbsp&nbsp Potential Energy: {:,.0f} (units?)\n\n'.format(mddf.Exhaust_Ga.values[0])
-    mdText += '&nbsp&nbsp Total Capacity: {:,.0f} (units?)\n\n'.format(mddf.Plant_tota.values[0])
-    mdText += '&nbsp&nbsp Annual Production: {:,.0f} (units?), 2019\n\n'.format(mddf.Plant_annu.values[0])
+    # TODO
+    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0].title())
+    mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} (MJ)\n\n'.format(mddf.Exhaust_Re.values[0])
+    mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} (MJ)\n\n'.format(mddf.Condenser.values[0])
+
     mdText += 'Closest desalination plant: {}\n\n'.format('To be added')
 
     if theme not in list(dropDownTitles.values()):
