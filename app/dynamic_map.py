@@ -115,6 +115,45 @@ userPoint = go.Scattermapbox(
     visible=False,
 )
 
+# Nuclear power plants
+df_nuclear = pd.read_csv('./GISData/nuclear.csv')
+df_nuclear['text'] = df_nuclear.Plant_prim \
+    + ' Potential: ' + df_nuclear['Total_Pote'].round(0).astype(str)
+
+nuclear = go.Scattermapbox(
+    name='Nuclear Plants',
+    lat=df_nuclear.Plant_lati,
+    lon=df_nuclear.Plant_long,
+    mode='markers',
+    hoverinfo='text',
+    text=df_nuclear.text,
+    marker=dict(
+        size=7,
+        symbol='square',
+    ),
+    visible=True
+)
+
+# Coal power plants
+df_coal = pd.read_csv('./GISData/nuclear.csv')
+df_coal['text'] = df_coal.Plant_prim \
+    + ' Potential: ' + df_coal['Total_Pote'].round(0).astype(str)
+
+coal = go.Scattermapbox(
+    name='Coal Plants',
+    lat=df_coal.Plant_lati,
+    lon=df_coal.Plant_long,
+    mode='markers',
+    hoverinfo='text',
+    text=df_nuclear.text,
+    marker=dict(
+        size=7,
+        color='green',
+        symbol='square',
+    ),
+    visible=True
+)
+
 layout = go.Layout(
     #height=600,
     #width=900,
@@ -136,7 +175,7 @@ layout = go.Layout(
 )
 
 # data object for the figure
-data = [solarViz,solar,desal,userPoint]
+data = [solarViz,solar,nuclear,coal,desal,userPoint]
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
@@ -301,7 +340,7 @@ def loadData(mapTheme,fg):
     elif mapTheme == 'solar':   
         ''' default loaded data can be returned, with user point'''
         # update visibility
-        return [solarViz,solar,desal,userPt]
+        return [solarViz,solar,nuclear,coal,desal,userPt]
 
     
 """ callback to handle click events and dropdown changes. Capturing map 
@@ -358,6 +397,7 @@ def clickPoint(clicks,dropDown,relay,figure):
 def createMarkdown(mddf,theme):
     ''' helper method to return the markdown text relevant for the given 
     map theme '''
+    # TODO: add distance to closest plants
     # markdown used with all themes
     mdText = '##### Site Properties in {} county, {}\n\n'.format(
         mddf.CountyName.values[0],
@@ -375,7 +415,7 @@ def createMarkdown(mddf,theme):
     elif theme == 'Water Prices':
         mdText += '###### Water Price Information\n\n'
         mdText += 'Texas county average price: ${:,.2f}\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0])
-        mdText += '{} city water price: {}\n\n'.format('City Name', '$$$$')
+        mdText += '{} city water price: {}\n\n'.format('{Name}', '$')
         wnd = mddf.WaterNetworkDistance.values[0]
         if wnd > 0:
             mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
