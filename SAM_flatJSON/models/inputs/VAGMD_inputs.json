@@ -43,14 +43,14 @@
             "DataType": "SSC_NUMBER",
             "Name": "TEI_r",
             "Label": "Evaporator channel inlet temperature",
-            "Units": "°C",
+            "Units": "C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TCI_r",
             "Label": "Condenser channel inlet temperature",
-            "Units": "°C",
+            "Units": "C",
             "Require": "*"
         },
         {
