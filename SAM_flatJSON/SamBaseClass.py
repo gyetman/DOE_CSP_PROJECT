@@ -9,7 +9,7 @@ class SamBaseClass(object):
     def __init__(self,
                  CSP = 'linear_fresnel_dsg_iph',
                  financial = 'iph_to_lcoefcr',
-                 desalination =  'VAGMD',
+                 desalination =  'LTMED',
                  json_value_filepath = None,
                  desal_json_value_filepath = None,
                  cost_json_value_filepath = None
@@ -125,9 +125,7 @@ class SamBaseClass(object):
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
-            with open(self.json_values, "r") as read_file:
-                values_json = json.load(read_file)
-            self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = values_json['storage_hour'])
+            self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'VAGMD_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)
@@ -139,9 +137,7 @@ class SamBaseClass(object):
             self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.LTMED.design()
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
-            with open(self.json_values, "r") as read_file:
-                values_json = json.load(read_file)
-            self.simu_output = self.LTMED.simulation(gen = heat_gen, storage = values_json['storage_hour'])
+            self.simu_output = self.LTMED.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'LTMED_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)

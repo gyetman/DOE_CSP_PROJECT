@@ -28,7 +28,7 @@ class LTMED_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.04 , # Unit cost of electricity ($/kWh)
-                 coh = None , # Unit cost of heat ($/kWh)
+                 coh = 0.01 , # Unit cost of heat ($/kWh)
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 13422 # Capacity of thermal storage (kWh)
@@ -73,6 +73,7 @@ class LTMED_cost(object):
         cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
         
         return cost_output
 #%%

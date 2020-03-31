@@ -2,5 +2,7 @@
 	"Ts" : 80,
 	"Nef" : 14,
 	"Capacity": 2000,
-	"Fossil_f": 1
+	"Fossil_f": 1,
+	"FeedC_r": 35,
+	"storage_hour":6
 }
