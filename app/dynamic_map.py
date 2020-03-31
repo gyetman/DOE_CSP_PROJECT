@@ -20,7 +20,7 @@ import app_config as cfg
 
 # texas as default location
 CENTER_LAT=32.7767
-CENTER_LON=-97.7970
+CENTER_LON=-98.7970
 
 markdownText = '\n\n'
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -119,7 +119,7 @@ layout = go.Layout(
     #height=600,
     #width=900,
     autosize=True,
-    #hovermode='closest',
+    hovermode='closest',
     #clickmode='text',
     title='Solar Resource', # default value in dropdown
     showlegend=True,
@@ -206,8 +206,6 @@ def loadData(mapTheme,fg):
     userPt = fg['data'][-1]
 
     if mapTheme == 'wprice':
-        # turn hoverinfo off
-        solar.hoverinfo='none'
         # display the counties by price
         # load water price point data (global)
         df_point_prices = pd.read_csv('./gisData/global_water_cost_pt.csv')
@@ -270,8 +268,6 @@ def loadData(mapTheme,fg):
         return [countyData,solar,globalPriceData,canalData,userPt]
 
     elif mapTheme == 'eprice':
-        # turn hoverinfo off
-        solar.hoverinfo='none'
         # load electric price data
         df_electric = pd.read_csv('./GISData/electric_prices_zcta.csv')
         df_electric['text'] = '$' + df_electric['MEAN_ind_rate'].round(3).astype(str) + '/kWh'
@@ -296,22 +292,15 @@ def loadData(mapTheme,fg):
         return [electricPriceData,solar,userPt]
 
     elif mapTheme == 'produced':
-    # turn hoverinfo off
-        solar.hoverinfo='none'
         return [solar,userPt]
     elif mapTheme == 'brackish':
-    # turn hoverinfo off
-        solar.hoverinfo='none'
         return [solar,userPt]
     elif mapTheme == 'legal':
-    # turn hoverinfo off
-        solar.hoverinfo='none'
         return [solar,userPt]
     
     elif mapTheme == 'solar':   
         ''' default loaded data can be returned, with user point'''
         # update visibility
-        solar.hoverinfo='text'
         return [solarViz,solar,desal,userPt]
 
     
@@ -370,7 +359,10 @@ def createMarkdown(mddf,theme):
     ''' helper method to return the markdown text relevant for the given 
     map theme '''
     # markdown used with all themes
-    mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName.values[0],mddf.StatePosta.values[0])
+    mdText = '###### Site Properties in {} county, {}\n\n'.format(
+        mddf.CountyName.values[0],
+        mddf.StatePosta.values[0]
+        )
     if theme not in list(dropDownTitles.values()):
         print('Bad dropdown value!')
         print(theme)
