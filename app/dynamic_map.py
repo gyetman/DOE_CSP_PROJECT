@@ -62,7 +62,7 @@ solar = go.Scattermapbox(
     lon=df.CENTROID_X,
     mode='markers',
     hoverinfo='text',
-    text=df.text,
+    text=df['text'],
     marker=dict(
         size=0,
         color='red',
@@ -205,12 +205,7 @@ def loadData(mapTheme,fg):
     # always the layer on top (last)
     userPt = fg['data'][-1]
 
-    if mapTheme == 'solar':   
-        ''' default loaded data can be returned, with user point'''
-        # update visibility
-        solar.hoverinfo='text'
-        return [solarViz,solar,desal,userPt]
-    elif mapTheme == 'wprice':
+    if mapTheme == 'wprice':
         # turn hoverinfo off
         solar.hoverinfo='none'
         # display the counties by price
@@ -313,6 +308,11 @@ def loadData(mapTheme,fg):
         solar.hoverinfo='none'
         return [solar,userPt]
     
+    elif mapTheme == 'solar':   
+        ''' default loaded data can be returned, with user point'''
+        # update visibility
+        solar.hoverinfo='text'
+        return [solarViz,solar,desal,userPt]
 
     
 """ callback to handle click events and dropdown changes. Capturing map 
