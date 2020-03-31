@@ -330,7 +330,6 @@ def clickPoint(clicks,dropDown,relay,figure):
         # not sure this is a required check here, but in 
         # callbacks with fewer outputs it prevents an error
         # on load. 
-        #print('no objects')
         raise PreventUpdate
     # clicked close enough to a point
     #if dropDown:
@@ -344,6 +343,12 @@ def clickPoint(clicks,dropDown,relay,figure):
         figure['layout']['title']['text'] = dropDownTitles[dropDown]
         # update data and return a go.Figure! 
         return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
+
+    # if relay:
+    #     print(relay)
+    #     print(clicks)
+    #     print(type(fig))
+
     if clicks:
         # update he user point 
         tmpData = figure['data']
@@ -357,18 +362,13 @@ def clickPoint(clicks,dropDown,relay,figure):
         tmpData.append(pt)
         return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
-    if relay:
-        print(relay)
-        raise PreventUpdate
-    if fig:
-        #print(fig.keys())
+    else:
         raise PreventUpdate
 
 
 def createMarkdown(mddf,theme):
     ''' helper method to return the markdown text relevant for the given 
     map theme '''
-    print('create md called')
     # markdown used with all themes
     mdText = '###### Site Properties in {}, {}\n\n'.format(mddf.CountyName.values[0],mddf.StatePosta.values[0])
     if theme not in list(dropDownTitles.values()):
@@ -388,17 +388,13 @@ def createMarkdown(mddf,theme):
 def updateMarkdown(clicks,fig):
     ''' pulls properties from dataframe and updates markdown div '''
     if clicks is None:
-        print('no clicks')
         raise PreventUpdate
-    userPt = fig['data'][-1]
-    if userPt['lat'][0] == 0:
-        raise PreventUpdate
-    else:
-        print('creating data frame')
-        dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
-        theme = fig['layout']['title']['text']
-        print(dfTmp.columns)
-        markdownText = createMarkdown(dfTmp,theme)
+    
+    lat = [clicks['points'][0]['lat']]
+    lon = [clicks['points'][0]['lon']]
+    dfTmp = df.loc[(df['CENTROID_Y'] == lat[0]) & (df['CENTROID_X'] == lon[0])]
+    theme = fig['layout']['title']['text']
+    markdownText = createMarkdown(dfTmp,theme)
     
     return dcc.Markdown(markdownText)
 
