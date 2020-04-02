@@ -71,14 +71,7 @@ solar = go.Scattermapbox(
     showlegend=False,
 )
 
-# load county polygons and dataframe of attributes
-#with open('./GISData/counties.geojson','r') as f:
-#    counties = json.load(f)
-
-#df_county = '' #TODO
-
 # load existing desal plants
-
 df_desal = pd.read_csv('./GISData/desal_plants.csv')
 df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
 desal = go.Scattermapbox(
@@ -92,13 +85,12 @@ desal = go.Scattermapbox(
         size=7,
         color='green',
     ),
-    visible=True
-    # TODO: duplicate this layer to have cutoffs:
-    # 5,000
-    # 10,000
-    # 20,000
+    visible=True,
+
     
 )
+
+
 # user-point placeholder
 userPoint = go.Scattermapbox(
     name='Selected Site',
@@ -115,10 +107,30 @@ userPoint = go.Scattermapbox(
     visible=False,
 )
 
+# natural gas power plants
+df_ng = pd.read_csv('./GISData/ng.csv')
+df_ng['text'] = df.Plant_prim.astype(str).apply(str.title) \
+    + ' Residual Heat: ' + df_ng['Exhaust_Re'].round(0).astype(str)
+
+ng = go.Scattermapbox(
+    name='Natural Gas Plants',
+    lat=df_ng.Plant_lati,
+    lon=df_ng.Plant_long,
+    mode='markers',
+    hoverinfo='text',
+    text= df_ng.text,
+    marker=dict(
+        size=7,
+        symbol='circle',
+    ),
+    visible=True,
+    showlegend=True,
+)
+
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
-df_nuclear['text'] = df_nuclear.Plant_prim \
-    + ' Residual Heat: ' + df_nuclear['Exhaust_Re'].round(0).astype(str)
+df_nuclear['text'] = df_nuclear.Plant_prim.astype(str).apply(str.title) \
+    + ' Concenser heat: ' + df_nuclear['Condenser'].round(0).apply(format,':,.0f').astype(str) + ' MJ' 
 
 nuclear = go.Scattermapbox(
     name='Nuclear Plants',
@@ -126,7 +138,7 @@ nuclear = go.Scattermapbox(
     lon=df_nuclear.Plant_long,
     mode='markers',
     hoverinfo='text',
-    text=df_nuclear.text,
+    text= df_nuclear.text,
     marker=dict(
         size=7,
         symbol='square',
@@ -135,8 +147,8 @@ nuclear = go.Scattermapbox(
 )
 
 # Coal power plants
-df_coal = pd.read_csv('./GISData/nuclear.csv')
-df_coal['text'] = df_coal.Plant_prim \
+df_coal = pd.read_csv('./GISData/coal.csv')
+df_coal['text'] = df_coal.Plant_prim.astype(str).apply(str.title) \
     + ' Residual Heat: ' + df_coal['Exhaust_Re'].round(0).astype(str)
 
 coal = go.Scattermapbox(
@@ -145,13 +157,12 @@ coal = go.Scattermapbox(
     lon=df_coal.Plant_long,
     mode='markers',
     hoverinfo='text',
-    text=df_nuclear.text,
+    text=df_coal.text,
     marker=dict(
-        size=7,
-        color='green',
-        symbol='square',
+        #size=7,
+        symbol='circle',
     ),
-    visible=True
+    visible=True,
 )
 
 layout = go.Layout(
@@ -175,7 +186,7 @@ layout = go.Layout(
 )
 
 # data object for the figure
-data = [solarViz,solar,nuclear,coal,desal,userPoint]
+data = [solarViz,solar,ng,nuclear,coal,desal,userPoint]
 
 dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
@@ -340,7 +351,7 @@ def loadData(mapTheme,fg):
     elif mapTheme == 'solar':   
         ''' default loaded data can be returned, with user point'''
         # update visibility
-        return [solarViz,solar,nuclear,coal,desal,userPt]
+        return [solarViz,solar,ng,nuclear,coal,desal,userPt]
 
     
 """ callback to handle click events and dropdown changes. Capturing map 
