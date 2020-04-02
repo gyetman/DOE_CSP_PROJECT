@@ -22,6 +22,8 @@ import app_config as cfg
 CENTER_LAT=32.7767
 CENTER_LON=-99.7970
 
+# global pandas display option
+pd.options.display.float_format = '{:,.0f}'.format
 markdownText = '\n\n'
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 mapbox_key = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
@@ -62,7 +64,7 @@ solar = go.Scattermapbox(
     lon=df.CENTROID_X,
     mode='markers',
     hoverinfo='none',
-    #text=df['text'],
+    text=df['text'],
     marker=dict(
         size=0,
         color='red',
@@ -73,7 +75,7 @@ solar = go.Scattermapbox(
 
 # load existing desal plants
 df_desal = pd.read_csv('./GISData/desal_plants.csv')
-df_desal['text'] = 'Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
+df_desal['text'] = 'Desalination Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
 desal = go.Scattermapbox(
     name='Desalination Plants',
     lat=df_desal.Latitude,
@@ -109,8 +111,8 @@ userPoint = go.Scattermapbox(
 
 # natural gas power plants
 df_ng = pd.read_csv('./GISData/ng.csv')
-df_ng['text'] = df.Plant_prim.astype(str).apply(str.title) \
-    + ' Residual Heat: ' + df_ng['Exhaust_Re'].round(0).astype(str)
+df_ng['text'] = df_ng.Plant_prim.astype(str).apply(str.title) \
+    + ' Residual Heat: ' + df_ng['Exhaust_Re'].map('{:,.0f}'.format) + 'MJ'
 
 ng = go.Scattermapbox(
     name='Natural Gas Plants',
@@ -130,7 +132,7 @@ ng = go.Scattermapbox(
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
 df_nuclear['text'] = df_nuclear.Plant_prim.astype(str).apply(str.title) \
-    + ' Concenser heat: ' + df_nuclear['Condenser'].round(0).apply(format,':,.0f').astype(str) + ' MJ' 
+    + ' Concenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' ??' 
 
 nuclear = go.Scattermapbox(
     name='Nuclear Plants',
@@ -149,7 +151,7 @@ nuclear = go.Scattermapbox(
 # Coal power plants
 df_coal = pd.read_csv('./GISData/coal.csv')
 df_coal['text'] = df_coal.Plant_prim.astype(str).apply(str.title) \
-    + ' Residual Heat: ' + df_coal['Exhaust_Re'].round(0).astype(str)
+    + ' Residual Heat: ' + df_coal['Exhaust_Re'].map('{:,.0f}'.format)
 
 coal = go.Scattermapbox(
     name='Coal Plants',
@@ -417,6 +419,7 @@ def createMarkdown(mddf,theme):
     mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
     # TODO
     mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0].title())
+    mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
     mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} (MJ)\n\n'.format(mddf.Exhaust_Re.values[0])
     mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} (MJ)\n\n'.format(mddf.Condenser.values[0])
 
@@ -433,7 +436,7 @@ def createMarkdown(mddf,theme):
             mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
         cnl = mddf.CanalsDist.values[0]
         if cnl > 0:
-            mdText += 'Distance to closest Canal: {:,.0f}\n\n'.format(cnl)
+            mdText += 'Distance to closest Canal: {:,.0f}\n\n'.format(cnl/1000)
             mdText += '&nbsp&nbspName: {}\n\n'.format(mddf.CanalName.values[0])
             mdText += '&nbsp&nbspOperator: {}\n\n'.format(mddf.CanalOperator.values[0])
 
@@ -475,6 +478,9 @@ def paramHelper(dfAtts):
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.GHI.values[0]
+    #mParams['dist_desal_plant'] = dfAtts['TBD!!!!']
+    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0]
+    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0]
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
