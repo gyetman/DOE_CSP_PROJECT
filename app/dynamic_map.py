@@ -132,7 +132,7 @@ ng = go.Scattermapbox(
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
 df_nuclear['text'] = df_nuclear.Plant_prim.astype(str).apply(str.title) \
-    + ' Concenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' ??' 
+    + ' Concenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' MJ' 
 
 nuclear = go.Scattermapbox(
     name='Nuclear Plants',
@@ -420,8 +420,8 @@ def createMarkdown(mddf,theme):
     # TODO
     mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0].title())
     mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
-    mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} (MJ)\n\n'.format(mddf.Exhaust_Re.values[0])
-    mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} (MJ)\n\n'.format(mddf.Condenser.values[0])
+    mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} MJ (91 C < T < 128 C)\n\n'.format(mddf.Exhaust_Re.values[0])
+    mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} MJ (29 C < T < 41 C)\n\n'.format(mddf.Condenser.values[0])
 
     mdText += 'Closest desalination plant: {}\n\n'.format('To be added')
 
@@ -479,8 +479,8 @@ def paramHelper(dfAtts):
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.GHI.values[0]
     #mParams['dist_desal_plant'] = dfAtts['TBD!!!!']
-    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0]
-    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0]
+    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0].round(1)/1000
+    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0].round(1)/1000
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
