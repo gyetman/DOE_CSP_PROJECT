@@ -244,6 +244,11 @@ finance_model_vars += desal_finance_model_vars
 wf_index = helpers.index_in_list_of_dicts(solar_model_vars,'Name','file_name')
 wf_table = solar_model_vars[wf_index]
 weather_table_id=f"{wf_table['Tab']}{wf_table['Section']}{wf_table['Subsection']}".replace(' ','_').replace('(','').replace(')','').replace('/','')
+# get the table id for the TDS Feed Concentration
+tds_index = helpers.index_in_list_of_dicts(desal_model_vars,'Name','FeedC_r')
+tds_table = desal_model_vars[tds_index]
+tds_table_id=f"{tds_table['Tab']}{tds_table['Section']}{tds_table['Subsection']}".replace(' ','_').replace('(','').replace(')','').replace('/','')
+
 
 solar_tabs = collect_and_sort_model_tabs(solar_model_vars)
 desal_tabs = collect_and_sort_model_tabs(desal_model_vars)
@@ -482,24 +487,29 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     return False, False, False
 
 @app.callback(
-    [Output(weather_table_id, 'data')],
-    [Input('initialize', 'children')]
+    [Output(weather_table_id, 'data'),
+    Output(tds_table_id, 'data')],
+    [Input('initialize', 'children')],
+    [State(weather_table_id,'data'),
+     State(tds_table_id,'data')]
 )
-def update_map_variables(x):
+def update_map_variables(z, weather_tbl, tds_tbl):
     '''
-    update tables with variables passed in from the map
-    necessary because data was initially loaded before 
-    variables were chosen in the GIS map part of the app,
-    now they can be over-written when the model parameters 
-    page loads on the users screen
+    Update tables with variables passed in from the map.
+    Necessary because data was initially loaded before 
+    variables were chosen in the GIS-map part of the app.
+    Over-writes table values when the model parameters 
+    page loads on the users screen.
     '''
-    # update weather file_name if it's found in map JSON
     map_dict = helpers.json_load(cfg.map_json)
     weather_file = map_dict.get('file_name')
+    tds_value = map_dict.get('FeedC_r')
+    #indexes were calculated earlier in the code
     if weather_file:
-        #wf_table is a copy of the weather data from when the app was started
-        wf_table['Value']=str(weather_file)
-        return [[dict(wf_table)]]
+        weather_tbl[wf_index]['Value']=str(weather_file)
+    if tds_value:
+        tds_tbl[tds_index]['Value']=tds_value
+    return (weather_tbl,tds_tbl)
         
 @app.callback(
     [Output('model-loading-output','children'),
@@ -529,6 +539,15 @@ def update_model_variables_and_run_model(n_clicks, *tableData):
         for i in range(0,len(tableData),2):
             updated = tableData[i]
             tbl_data = tableData[i+1]
+            # temporary code until we find out how to update
+            # timestamp_data State with table updates from callbacks
+            # https://community.plotly.com/t/change-table-state-data-through-a-callback/37053/2
+            ###
+            if helpers.index_in_list_of_dicts(tbl_data,'Name','file_name') is not None:
+                updated=1
+            elif helpers.index_in_list_of_dicts(tbl_data,'Name','FeedC_r') is not None:
+                updated=1
+            #### end temp code for GIS map variables
             if updated:
                 #overwrite the dict with the updated data from the table
                 _update_model_variables(tbl_data)  
