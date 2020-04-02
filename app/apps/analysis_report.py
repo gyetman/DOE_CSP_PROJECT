@@ -46,41 +46,82 @@ def gather_data(x):
     updates = helpers.json_load(cfg.map_json)
     # add all data from app_json
     updates.update(helpers.json_load(cfg.app_json))
+    
+    if cfg.desal == 'VAGMD':
     # add specific data from desalination GUI output
-    d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
-    fossil_fuel = "Yes" if d['Fossil_f'] else "No"
-    updates.update({'FeedC_r':d['FeedC_r'],
-                    'Capacity':d['Capacity'],
-                    'storage_hour':d['storage_hour'],
-                    'fossil_fuel': fossil_fuel})
-    # add specific data from desal simulation output
-    ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
-    index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
-    updates.update({'thermal_storage_capacity':ds[index]['Value']})
-    # add specific data from desal design output
-    dd = helpers.json_load(cfg.desal_design_infile)
-    index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
-    updates.update({'thermal_power_consumption':ds[index]['Value']})
-    index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
-    updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
-    index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
-    updates.update({'gained_output_ratio':dd[index]['Value']})
-    # add specific data from desal cost output
-    dc = helpers.json_load(cfg.sam_desal_finance_outfile)
-    index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
-    updates.update({'lcow':dc[index]['Value']})
-    index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
-    updates.update({'lcoh':dc[index]['Value']})
-    index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
-    updates.update({'capital_cost':dc[index]['Value']})
-    index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
-    updates.update({'ops_cost':dc[index]['Value']})
-    # add specific data from solar GUI output
-    s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
-    updates.update({'q_pb_des':s['q_pb_des']})
-    f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
-    updates.update({'electric_energy_consumption':f['SEEC']})
-    updates.update({'lcoe':f['coe']})
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        fossil_fuel = "Yes" if d['Fossil_f'] else "No"
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['Capacity'],
+                        'storage_hour':d['storage_hour'],
+                        'fossil_fuel': fossil_fuel})
+        # add specific data from desal simulation output
+        ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
+        index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
+        updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        # add specific data from desal design output
+        dd = helpers.json_load(cfg.desal_design_infile)
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
+        updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
+        updates.update({'gained_output_ratio':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
+        updates.update({'n_modules':dd[index]['Value']})
+        # add specific data from desal cost output
+        dc = helpers.json_load(cfg.sam_desal_finance_outfile)
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
+        updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['q_pb_des']})
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'electric_energy_consumption':f['SEEC']})
+        updates.update({'lcoe':f['coe']})
+        
+    ## Temporal 'if' condition for another desal technology
+    elif cfg.desal == 'LTMED':
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        fossil_fuel = "Yes" if d['Fossil_f'] else "No"
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['Capacity'],
+                        'storage_hour':d['storage_hour'],
+                        'fossil_fuel': fossil_fuel})
+        # add specific data from desal simulation output
+        ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
+        index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
+        updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        # add specific data from desal design output
+        dd = helpers.json_load(cfg.desal_design_infile)
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
+        updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
+        updates.update({'gained_output_ratio':dd[index]['Value']})
+        # add specific data from desal cost output
+        dc = helpers.json_load(cfg.sam_desal_finance_outfile)
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
+        updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['q_pb_des']})
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'electric_energy_consumption':f['SEEC']})
+        updates.update({'lcoe':f['coe']})
 
     # finally create the report json
     helpers.initialize_json(updates,cfg.report_json)
@@ -101,9 +142,9 @@ def set_local_condition(x):
     html.Div(f"Daily average GHI: {r['ghi']}"),
     html.Div(f"Feedwater salinity: {r['FeedC_r']}"),
     html.Div(f"Market water price: ${r['water_price']}"), 
-    html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']} km"),
-    html.Div(f"Distance to nearest water network: {r['dist_water_network']} km"),
-    html.Div(f"Distance to nearest power plant: {r['dist_power_plant']} km")
+    html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
+    html.Div(f"Distance to nearest water network: {r['dist_water_network']:.1f} km"),
+    html.Div(f"Distance to nearest power plant: {r['dist_power_plant']:.1f} km")
     ])
 
 @app.callback(
@@ -111,17 +152,32 @@ def set_local_condition(x):
     [Input('data-initialize', 'children')])
 def set_desal_config(x):
     r = helpers.json_load(cfg.report_json)
-    return ([
-    html.H5('Desalination System Configuration', className='card-title'),
-    html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
-    html.Div(f"Design capacity: {r['Capacity']}"),
-    html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
-    html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
-    html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
-    html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
-    html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
-    html.Div(f"Required electric energy {r['electric_energy_consumption']:.2f}  kWh")
-    ])
+    
+    if cfg.desal == "VAGMD":
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"Number of module required: {r['n_modules']}"),
+        html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+        html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
+        html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+        html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
+        html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh")
+        ])
+    elif cfg.desal == 'LTMED':
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+        html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
+        html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+        html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
+        html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh")
+        ])
 
 @app.callback(
     Output('solar-config', 'children'),
