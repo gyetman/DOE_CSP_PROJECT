@@ -118,17 +118,6 @@ solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
                  ('IPHD','NONE') :'linear_fresnel_dsg_iph_none',    
     }
 
-def pickle_model_selection(s-model,d-model,f-model):
-''' Writes solar, desal and financial model selections to a pickle file
-    and creates one if it does not exist.
-'''
-    models = {'solar':s-model,'desal':d-model,'finance':f-model}
-    pickle_path = base_path / 'user-generated-outputs' / 'app.pkl'
-    if not pickle_path.exists():
-        
-        
-        
-
 external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
