@@ -32,7 +32,7 @@ model_selection_layout = html.Div([
             dbc.RadioItems(
                 id='select-solar',
                 options=[
-                    {'label': 'Flat-Plate Collector            ', 'value': 'FPC',  'disabled': True},
+                    {'label': 'Static Collector                ', 'value': 'FPC',  'disabled': False},
                     {'label': 'Integrated Solar Combined Cycle ', 'value': 'ISCC', 'disabled': False},
                     {'label': 'Linear Fresnel Direct Steam     ', 'value': 'DSLF', 'disabled': False},
                     {'label': 'Linear Fresnel Molten Salt      ', 'value': 'MSLF', 'disabled': False},

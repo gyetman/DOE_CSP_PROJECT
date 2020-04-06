@@ -28,7 +28,7 @@ class VAGMD_PSA(object):
 
     def __init__(self,
                  # Design parameters
-                 module = 0,  # '0' for AS7C1.5L module and '1' for AS24C5L module
+                 module = 1,  # '0' for AS7C1.5L module and '1' for AS24C5L module
                  TEI_r  = 80, # Evaporator channel inlet temperature (ºC)
                  TCI_r  = 25, # Condenser channel inlet temperature (ºC)
                  FFR_r  = 582.7, # Feed flow rate (l/h)
@@ -186,7 +186,7 @@ class VAGMD_PSA(object):
         self.num_modules = math.ceil(self.Capacity *1000 / self.F /24 )
         design_output = []
         design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
-        design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/h'})
+        design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/m2 h'})
         design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
         design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
         design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})

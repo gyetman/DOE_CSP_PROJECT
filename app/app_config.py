@@ -110,11 +110,12 @@ solarFinance = {('PT','PPASO')  :'tcstrough_physical_singleowner',
                  ('IPHP','NONE') :'trough_physical_process_heat_none',
                  ('IPHD','LCOH') :'linear_fresnel_dsg_iph_iph_to_lcoefcr',
                  ('IPHD','NONE') :'linear_fresnel_dsg_iph_none',    
+                 ('FPC','LCOH') :'StaticCollector_iph_iph_to_lcoefcr',
     }
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'FPC' : [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'FPC' : [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'IPHP': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'IPHD': [('FOR',True),('VAM',False),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
     'ISCC': [('FOR',True),('VAM',True),('MED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
@@ -127,7 +128,7 @@ solarToDesal = {
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
 solarToFinance = {
-    'FPC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
+    'FPC': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
     'IPHP': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
     'IPHD': [('COMML',True),('LCOE',True),('LCOH',False),('NONE',False),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',True)],
     'ISCC': [('COMML',True),('LCOE',True),('LCOH',True),('NONE',True),('PPFWD',True),('PPFWO',True),('PPALS',True),('PPASO',False)],

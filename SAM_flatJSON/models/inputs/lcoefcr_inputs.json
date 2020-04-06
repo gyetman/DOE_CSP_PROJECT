@@ -34,15 +34,6 @@
             "Group": "Simple LCOE",
             "Require": "*",
             "Tab": "Cost Analysis"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "annual_energy",
-            "Label": "Annual energy production",
-            "Units": "kWh",
-            "Group": "Simple LCOE",
-            "Require": "*",
-            "Tab": "Cost Analysis"
         }
     ]
 }

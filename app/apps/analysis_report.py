@@ -112,6 +112,8 @@ def gather_data(x):
         updates.update({'lcow':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
         updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat_Calculated')
+        updates.update({'lcoh_cal':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
@@ -138,9 +140,9 @@ def set_local_condition(x):
     return ([
     html.H5('Local Condition', className='card-title'),
     html.Div(f"Location: {r['county']}, {r['state']}"),
-    html.Div(f"Daily average DNI: {r['dni']}"),
-    html.Div(f"Daily average GHI: {r['ghi']}"),
-    html.Div(f"Feedwater salinity: {r['FeedC_r']}"),
+    html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2 day"),
+    html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2 day"),
+    html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
     html.Div(f"Market water price: ${r['water_price']}"), 
     html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
     html.Div(f"Distance to nearest water network: {r['dist_water_network']:.1f} km"),
@@ -209,6 +211,7 @@ def set_cost_analysis(x):
     html.H5('Cost Analysis', className='card-title'),
     html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
     html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.2f} $/m3"),
+#    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
     html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/m3"),
     html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
     html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),

@@ -46,10 +46,8 @@ class VAGMD_cost(object):
         self.th_module = th_module
         self.FFR = FFR
         self.coe = coe
-        if coh:
-            self.coh = coh
-        else:
-            self.coh = sam_coh
+        self.coh = coh
+        self.sam_coh = sam_coh
         self.cost_module_re = cost_module_re
         self.Prod = Prod
         self.STEC = STEC
@@ -81,6 +79,7 @@ class VAGMD_cost(object):
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of heat_Calculated','Value':self.sam_coh,'Unit':'$/m3'})   
         
         return cost_output
 #%%

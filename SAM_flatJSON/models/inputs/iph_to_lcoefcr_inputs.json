@@ -38,15 +38,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "fixed_operating_cost",
-            "Label": "Annual fixed operating cost",
-            "Units": "$",
-            "Group": "Simple LCOE",
-            "Require": "*",
-            "Tab": "Solar Field"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "variable_operating_cost",
             "Label": "Annual variable operating cost",
             "Units": "$/kWh",
@@ -58,15 +49,6 @@
             "DataType": "SSC_NUMBER",
             "Name": "fixed_charge_rate",
             "Label": "Fixed charge rate",
-            "Group": "Simple LCOE",
-            "Require": "*",
-            "Tab": "Solar Field"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "annual_energy",
-            "Label": "Annual energy production",
-            "Units": "kWh",
             "Group": "Simple LCOE",
             "Require": "*",
             "Tab": "Solar Field"
