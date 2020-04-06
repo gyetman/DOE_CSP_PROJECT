@@ -14,16 +14,15 @@ import app_config as cfg
 
 
 #TODO:
-# 1. update to use paths from app_config.py
-# 2. Update content with more detailed solar data
-# 3. Test using lookup function / caches for faster loading
+# 1. Update content with more detailed solar data
+# 2. Test using lookup function / caches for faster loading
 
-# texas as default location
+# default location
 CENTER_LAT=32.7767
 CENTER_LON=-99.7970
 
 # global pandas display option
-pd.options.display.float_format = '{:,.0f}'.format
+#pd.options.display.float_format = '{:,.0f}'.format
 markdownText = '\n\n'
 external_stylesheet = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 mapbox_key = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
@@ -479,8 +478,8 @@ def paramHelper(dfAtts):
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.GHI.values[0]
     #mParams['dist_desal_plant'] = dfAtts['TBD!!!!']
-    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0].round(1)/1000
-    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0].round(1)/1000
+    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0].divide(1000).round(1)
+    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0].divide(1000).round(1)
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
