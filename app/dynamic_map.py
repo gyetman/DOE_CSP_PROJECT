@@ -234,16 +234,9 @@ app.layout = html.Div(children=[
         ),
 
         html.Div([
-            html.Div(
-            html.A(
-                html.Button('Select Models', 
-                    #href='http://127.0.0.1:8077/model-selection', 
-                    id='next-button',
-                ),
-            #href='http://127.0.0.1:8077/model-selection'
-            )   
-            )
-        ], className='row'
+            html.Div(id='next-button'),
+            
+        ], className = 'row',
         )
 ]
     )])
@@ -411,13 +404,13 @@ def createMarkdown(mddf,theme):
     map theme '''
     # TODO: add distance to closest plants
     # markdown used with all themes
-    mdText = '##### Site Properties in {} county, {}\n\n'.format(
+    mdText = '##### Site Properties in {} County, {}\n\n'.format(
         mddf.CountyName.values[0],
         mddf.StatePosta.values[0]
     ) 
     mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
     # TODO
-    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values[0].title())
+    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values.astype(str)[0].title())
     mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
     mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} MJ (91 C < T < 128 C)\n\n'.format(mddf.Exhaust_Re.values[0])
     mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} MJ (29 C < T < 41 C)\n\n'.format(mddf.Condenser.values[0])
@@ -429,13 +422,15 @@ def createMarkdown(mddf,theme):
     elif theme == 'Water Prices':
         mdText += '###### Water Price Information\n\n'
         mdText += 'Texas county average price: ${:,.2f}\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0])
-        mdText += '{} city water price: {}\n\n'.format('{Name}', '$')
+        mdText += '{} city water price: ${:.2f}\n\n'.format(mddf.WaterUtilityCity.values[0], mddf.WaterPrice.values[0])
+        mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
+        mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0])
         wnd = mddf.WaterNetworkDistance.values[0]
         if wnd > 0:
             mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
         cnl = mddf.CanalsDist.values[0]
         if cnl > 0:
-            mdText += 'Distance to closest Canal: {:,.0f}\n\n'.format(cnl/1000)
+            mdText += 'Distance to closest Canal: {:,.0f} km\n\n'.format(cnl/1000)
             mdText += '&nbsp&nbspName: {}\n\n'.format(mddf.CanalName.values[0])
             mdText += '&nbsp&nbspOperator: {}\n\n'.format(mddf.CanalOperator.values[0])
 
@@ -478,8 +473,8 @@ def paramHelper(dfAtts):
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.GHI.values[0]
     #mParams['dist_desal_plant'] = dfAtts['TBD!!!!']
-    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0].divide(1000).round(1)
-    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0].divide(1000).round(1)
+    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
+    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
 
     # update json file
     helpers.json_update(mParams,'./map-data.json')
@@ -487,7 +482,7 @@ def paramHelper(dfAtts):
 # callback for model selection button click
 @app.callback(
     Output(component_id='next-button',component_property='children'),
-     [Input(component_id='next-button',component_property='n_clicks')],
+     [Input(component_id='map',component_property='figure')],
      [State('map','figure')]
  )
 def writeOutParams(btn,mapFigure):
@@ -497,8 +492,19 @@ def writeOutParams(btn,mapFigure):
     else:
         dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
         paramHelper(dfTmp)
-    
-        raise PreventUpdate
+        # return the next-model button
+        return(
+            html.Div([
+                html.Div(id='button-div'),
+                html.Div(html.A(
+                    html.Button('Select Models', 
+                            id='model-button',
+                        ),
+                    href='http://127.0.0.1:8077/model-selection'
+                    )  )
+            ], className='row',
+            ) 
+        )        
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
