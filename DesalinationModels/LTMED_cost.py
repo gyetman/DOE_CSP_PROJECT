@@ -41,10 +41,9 @@ class LTMED_cost(object):
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
-        if coh:
-            self.coh = coh
-        else:
-            self.coh = sam_coh
+
+        self.coh = coh
+        self.sam_coh = sam_coh
 
         self.Prod = Prod
         self.SEEC = SEEC

@@ -43,7 +43,7 @@ class StaticCollector(object):
                 
                  Long=-112.02, # Longitude
                  Lat=33.4,  # Latitude
-                 weatherfile  = 'C:/SAM/2018.11.11/solar_resource/phoenix_az_33.450495_-111.983688_psmv3_60_tmy.csv',
+                 file_name  = 'C:/SAM/2018.11.11/solar_resource/phoenix_az_33.450495_-111.983688_psmv3_60_tmy.csv',
                  
                  tilt_angle=36.838, # tilt angle of collector
                  v_azim=180,     # surface azimuth angle, 180 degrees facing south
@@ -80,7 +80,7 @@ class StaticCollector(object):
         self.v1=v1
         self.v2=v2
         self.v3=v3
-        self.weatherfile=weatherfile
+        self.weatherfile= file_name
         
  #% 
     def design(self):
