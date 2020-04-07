@@ -411,11 +411,18 @@ def createMarkdown(mddf,theme):
     mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
     # TODO
     mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values.astype(str)[0].title())
+    # TODO: go back to e-grid data and add in plant capacity MW
+    #mdText += 'Annual Plant Capacity: {:,.0f}\n\n'.format(mddf.???.values[0])
     mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
     mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} MJ (91 C < T < 128 C)\n\n'.format(mddf.Exhaust_Re.values[0])
     mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} MJ (29 C < T < 41 C)\n\n'.format(mddf.Condenser.values[0])
 
-    mdText += 'Closest desalination plant: {}\n\n'.format('To be added')
+    mdText += 'Closest desalination plant: {}\n\n'.format(mddf.DesalProjName.values[0])
+    mdText += '&nbsp&nbsp Distance to plant: {:,.1f} km\n\n'.format(mddf.DesalDist.values[0] / 1000)
+    mdText += '&nbsp&nbsp Plant Capacity: {:,.0f} (m3/day)\n\n'.format(mddf.DesalCapacity.values[0])
+    mdText += '&nbsp&nbsp Plant Technology: {}\n\n'.format(mddf.DesalTechnology.values[0])
+    mdText += '&nbsp&nbsp Plant Feedwater: {}\n\n'.format(mddf.DesalFeedwater.values[0])
+    mdText += '&nbsp&nbsp Plant Customer Type : {}\n\n'.format(mddf.DesalCustomerType.values[0])
 
     if theme not in list(dropDownTitles.values()):
         return mdText
@@ -424,7 +431,7 @@ def createMarkdown(mddf,theme):
         mdText += 'Texas county average price: ${:,.2f}\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0])
         mdText += '{} city water price: ${:.2f}\n\n'.format(mddf.WaterUtilityCity.values[0], mddf.WaterPrice.values[0])
         mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
-        mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0])
+        mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
         wnd = mddf.WaterNetworkDistance.values[0]
         if wnd > 0:
             mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
@@ -467,12 +474,13 @@ def paramHelper(dfAtts):
     mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts.filename.values[0])
     mParams['county'] = dfAtts.CountyName.values[0]
     mParams['state'] = dfAtts.StatePosta.values[0]
+    # TODO: pull from city or Texas county data
     mParams['water_price'] = '2.08'
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
     mParams['ghi'] = dfAtts.GHI.values[0]
-    #mParams['dist_desal_plant'] = dfAtts['TBD!!!!']
+    mParams['dist_desal_plant'] = dfAtts.DesalDist.values[0] / 1000
     mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
     mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
 
