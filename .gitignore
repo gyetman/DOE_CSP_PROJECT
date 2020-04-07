@@ -10,14 +10,9 @@ app/user-generated-inputs/*
 # ignore visual studio code settings
 app/.vscode/settings.json
 .vscode/settings.json
-app/GISdata/zcta.geojson.metadata.xml
-app/GISdata/electric_prices_zcta.csv.xml
-app/GISdata/county_tds.csv.xml
-app/GISdata/county_tds.geojson.metadata.xml
-app/GISdata/desal_plants.csv.xml
-app/GISdata/power_plants.csv.xml
-app/GISdata/schema.ini
 app/app-data.json
+app/GISdata/*
+!app/GISdata/Readme.md
 app/map-data.json
 app/report-data.json
 app/VAGMD_design_output.json
@@ -32,5 +27,6 @@ SAM_flatJSON/results/*
 *.xml
 *.ini
 .vscode/*
+
 
 
