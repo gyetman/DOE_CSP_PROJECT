@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-"""
-Created on Sun Aug  4 20:25:27 2019
-Display results from SAM model output
-@author: gyetman
-"""
-
 import json
 import numpy as np
 import pandas as pd
@@ -20,9 +11,11 @@ from dash.dependencies import Input, Output
 import app_config as cfg
 import helpers
 
-external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.title = 'Model Results'
+from app import app
+
+# external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css']
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app.title = 'Chart Results'
 
 # load simulation results from JSONs
 sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
@@ -44,7 +37,7 @@ solar_array_data = np.array([pd.Series(x) for x in solar_arrays]).T
 df_solar = pd.DataFrame(
         solar_array_data,
         columns = solar_names
-)
+).round(2)
 
 # Note: desal_names need to match 'Name' values in the JSON
 desal_names = ('Water production','Fossil fuel usage', 'Storage status')
@@ -59,7 +52,7 @@ desal_array_data = np.array([pd.Series(x) for x in desal_arrays]).T
 df_desal = pd.DataFrame(
         desal_array_data,
         columns = desal_names
-)
+).round(2)
 
 # determine how weekly and monthly data is aggregated
 # SUM if in sumCols set, else MEAN
@@ -72,14 +65,14 @@ def aggregate_data(dataframe, variable, time):
         return dataframe
     elif time == 'Daily': 
         if variable in sumCols:
-            return dataframe.groupby(dataframe.index // 24).sum().reset_index()
+            return dataframe.groupby(dataframe.index // 24).sum().round(2).reset_index()
         else:
-            return dataframe.groupby(dataframe.index // 24).mean().reset_index()
+            return dataframe.groupby(dataframe.index // 24).mean().round(2).reset_index()
     elif time == 'Weekly':
         if variable in sumCols:
-            return dataframe.groupby(dataframe.index // 168).sum().reset_index()
+            return dataframe.groupby(dataframe.index // 168).sum().round(2).reset_index()
         else:
-            return dataframe.groupby(dataframe.index // 168).mean().reset_index()
+            return dataframe.groupby(dataframe.index // 168).mean().round(2).reset_index()
 
 def gen_title(variable, time):
     d = {'Hourly':'Hour', 'Daily':'Day', 'Weekly':'Week'}
@@ -93,11 +86,20 @@ time_series = [{'label':' Hourly', 'value':'Hourly'},
                {'label':' Daily', 'value':'Daily'},
                {'label':' Weekly','value':'Weekly'}]
 
+chart_navbar = dbc.NavbarSimple(
+    children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
+              dbc.NavItem(dbc.NavLink("Report", href='/analysis-report'))],
+    brand="Model Results",
+    color="primary",
+    dark=True,
+    style={'margin-bottom':60}
+)
+
 solar_radios = html.Div([
     dbc.Row([
         dbc.Col(
             dcc.RadioItems(
-                id='select-solar',
+                id='select-solar-chart',
                 options=[{'label': f" {name}", 'value': name}
                         for name in solar_names],
                 value=solar_names[0],
@@ -117,7 +119,7 @@ desal_radios = html.Div([
     dbc.Row([
         dbc.Col(
             dcc.RadioItems(
-                id='select-desal',
+                id='select-desal-chart',
                 options=[{'label': f" {name}", 'value': name}
                         for name in desal_names],
                 value=desal_names[0],
@@ -134,18 +136,21 @@ desal_radios = html.Div([
 ])
 
 
-app.layout = dbc.Container([  
-    html.H3('Solar Thermal Model Results', className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
-    dcc.Graph(id='solar-graph'),
-    solar_radios,
-    html.H3('Desalination Model Results', className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
-    dcc.Graph(id='desal-graph'),
-    desal_radios,
-],style={'margin-bottom':150})
+chart_results_layout = html.Div([
+    chart_navbar,
+    dbc.Container([ 
+        html.H3('Solar Thermal Model', className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
+        dcc.Graph(id='solar-graph'),
+        solar_radios,
+        html.H3('Desalination Model Results', className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
+        dcc.Graph(id='desal-graph'),
+        desal_radios,
+    ],style={'margin-bottom':150})
+])
 
 @app.callback(
         Output('solar-graph','figure'),
-        [Input('select-solar', 'value'),
+        [Input('select-solar-chart', 'value'),
          Input('select-solar-time', 'value')])
 def update_solar_graph(solarValue,timeAggValue):
     ''' update the figure object '''
@@ -174,7 +179,7 @@ def update_solar_graph(solarValue,timeAggValue):
 
 @app.callback(
         Output('desal-graph','figure'),
-        [Input('select-desal', 'value'),
+        [Input('select-desal-chart', 'value'),
          Input('select-desal-time', 'value')])
 def update_desal_graph(desalValue,timeAggValue):
     ''' update the figure object '''
@@ -200,7 +205,3 @@ def update_desal_graph(desalValue,timeAggValue):
         }
     }
     return figure
-
-if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)
-

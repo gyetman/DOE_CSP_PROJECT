@@ -14,9 +14,16 @@ from app import app
 
 app.title = "Analysis Report"
 
-analysis_report_title = html.Div([
-    html.H2('Analysis Report', className='page-header', id='report-title'),
-    html.P(id='data-initialize')])
+report_navbar = dbc.NavbarSimple(
+    children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')), 
+              dbc.NavItem(dbc.NavLink("Report"), active=True)],
+    brand="Model Results",
+    color="primary",
+    dark=True,
+    style={'margin-bottom':30}
+)
+
+analysis_report_title = html.Div([html.P(id='data-initialize')])
 
 local_condition = dbc.CardBody(id='local-condition')
 
@@ -32,12 +39,17 @@ system_description = dbc.Card([dbc.CardHeader(html.H4('System Description')),loc
 
 simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
 
-analysis_report_layout = [analysis_report_title, 
-                          dbc.CardDeck([system_description, simulation_results])]
+analysis_report_layout = [
+    report_navbar, 
+    dbc.Container([
+        analysis_report_title, 
+        dbc.CardDeck([system_description, simulation_results])
+    ])
+]
 
 @app.callback(
     Output('data-initialize', 'children'),
-    [Input('report-title', 'children')])
+    [Input('data-initalize', 'children')])
 def gather_data(x):
     '''initial callback to gather data for callbacks chained below
     updates app_json dict with all values needed for analysis report
