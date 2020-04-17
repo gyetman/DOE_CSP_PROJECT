@@ -9,7 +9,7 @@ class SamBaseClass(object):
     def __init__(self,
                  CSP = 'linear_fresnel_dsg_iph',
                  financial = 'iph_to_lcoefcr',
-                 desalination =  'VAGMD',
+                 desalination =  'LTMED',
                  json_value_filepath = None,
                  desal_json_value_filepath = None,
                  cost_json_value_filepath = None
@@ -82,11 +82,17 @@ class SamBaseClass(object):
             if self.desalination:
                 self.desal_simulation(self.desalination)
                 self.cost(self.desalination)
-    
+            
+            self.sam_calculation()
             self.print_impParams()
             self.data_free()
         
-
+    def sam_calculation(self):
+        with open(self.json_values, "r") as read_file:
+            sam_input = json.load(read_file)
+            
+        if self.cspModel == 'linear_fresnel_dsg_iph':
+            self.actual_aper = sam_input['nLoops'] * sam_input['nModBoil'] *  sam_input['A_aperture'][0][0]
     
 
     
@@ -125,12 +131,13 @@ class SamBaseClass(object):
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
             with open(self.desal_json_values, "r") as read_file:
                 self.desal_values_json = json.load(read_file)
-            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
+            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f = self.desal_values_json['Fossil_f'])
             self.design_output = self.VAGMD.design()
             design_json_outfile =  self.samPath / 'results' /'VAGMD_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
+
             self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'VAGMD_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
@@ -143,6 +150,7 @@ class SamBaseClass(object):
             self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.LTMED.design()
             heat_gen = self.ssc.data_get_array(self.data, b'gen')
+            np.savetxt("gen.csv",heat_gen,delimiter=',')
             self.simu_output = self.LTMED.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'LTMED_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
@@ -432,6 +440,11 @@ class SamBaseClass(object):
             outputs.append({'Name': variable['Label'],
                             'Value': value,
                             'Unit': unit})
+        # append more results
+        if self.cspModel == 'linear_fresnel_dsg_iph':
+            outputs.append({'Name': 'Actual aperture',
+                            'Value': self.actual_aper,
+                            'Unit': 'm2'})
 
         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
         print ('\nCapacity factor (year 1) = ', capacity_factor)

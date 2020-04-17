@@ -14,16 +14,9 @@ from app import app
 
 app.title = "Analysis Report"
 
-report_navbar = dbc.NavbarSimple(
-    children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')), 
-              dbc.NavItem(dbc.NavLink("Report"), active=True)],
-    brand="Model Results",
-    color="primary",
-    dark=True,
-    style={'margin-bottom':30}
-)
-
-analysis_report_title = html.Div([html.P(id='data-initialize')])
+analysis_report_title = html.Div([
+    html.H2('Analysis Report', className='page-header', id='report-title'),
+    html.P(id='data-initialize')])
 
 local_condition = dbc.CardBody(id='local-condition')
 
@@ -39,17 +32,12 @@ system_description = dbc.Card([dbc.CardHeader(html.H4('System Description')),loc
 
 simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
 
-analysis_report_layout = [
-    report_navbar, 
-    dbc.Container([
-        analysis_report_title, 
-        dbc.CardDeck([system_description, simulation_results])
-    ])
-]
+analysis_report_layout = [analysis_report_title, 
+                          dbc.CardDeck([system_description, simulation_results])]
 
 @app.callback(
     Output('data-initialize', 'children'),
-    [Input('data-initalize', 'children')])
+    [Input('report-title', 'children')])
 def gather_data(x):
     '''initial callback to gather data for callbacks chained below
     updates app_json dict with all values needed for analysis report
@@ -71,6 +59,8 @@ def gather_data(x):
         ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Fossile fuel usage')
+        updates.update({'fossil_usage':ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(cfg.desal_design_infile)
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -97,6 +87,10 @@ def gather_data(x):
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
+        # add sam simulation output
+        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
+        index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
+        updates.update({'actual_aperture':so[index]['Value']})
         
     ## Temporal 'if' condition for another desal technology
     elif cfg.desal == 'LTMED':
@@ -136,6 +130,10 @@ def gather_data(x):
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
+        # add sam simulation output
+        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
+        index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
+        updates.update({'actual_aperture':so[index]['Value']})
 
     # finally create the report json
     helpers.initialize_json(updates,cfg.report_json)
@@ -202,6 +200,7 @@ def set_solar_config(x):
     html.H5('Solar Field Configuration', className='card-title'),
     html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
     html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
+    html.Div(f"Actual aperture: {r['actual_aperture']:.0f} m2"),
     ])
 
 @app.callback(
@@ -212,6 +211,7 @@ def set_system_performance(x):
     return ([
     html.H5('System Performance', className='card-title'),
     html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
+    html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
     ])
 
 @app.callback(

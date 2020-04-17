@@ -269,7 +269,7 @@
         {
             "DataType": "SSC_MATRIX",
             "Name": "OptCharType",
-            "Label": "Optical characterization method ('1' for Soalr possition table, '2' for Collector incidence angle table, '3' for Incidence angle modifiers",
+            "Label": "Optical characterization method ('1' for Solar position table, '2' for Collector incidence angle table, '3' for Incidence angle modifiers",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",

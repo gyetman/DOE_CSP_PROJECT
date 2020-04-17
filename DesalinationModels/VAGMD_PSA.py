@@ -223,6 +223,7 @@ class VAGMD_PSA(object):
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
             if load[i] / self.thermal_load < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
+
                 
             
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
@@ -231,12 +232,14 @@ class VAGMD_PSA(object):
         Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
     
         simu_output = []
+
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
+        simu_output.append({'Name':'Fossile fuel usage','Value':sum(fuel),'Unit':'kWh'})
         
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
@@ -316,11 +319,11 @@ class VAGMD_PSA(object):
 #for f in Feed:
 #case = VAGMD_PSA()
 #output = case.design()
-#a = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#a = [0.0, 0.0,  1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0]
 #simu = case.simulation(gen = a, storage = 6)
-#print(simu)
-
-#    Plux.append(case.PFlux)
+##print(simu)
+#
+##    Plux.append(case.PFlux)
 #    STEC.append(case.STEC)
 #    GOR.append(case.GOR)
 #    print('TCO7: ', case.F)
