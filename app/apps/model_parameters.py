@@ -94,11 +94,11 @@ def create_data_table(table_data, table_id):
             },
             style_cell_conditional=[
                 {'if': {'column_id': 'Label'},
-                 'width': '40%'},
+                 'width': '80%'},
                 {'if': {'column_id': 'Value'},
-                 'width': '55%'},
+                 'width': '15%','textAlign': 'right'},
                 {'if': {'column_id': 'Units'},
-                 'width': '5%'},
+                 'width': '5%','textAlign': 'right'},
             ],
             css=[{
                 'selector': '.dash-cell div.dash-cell-value',
@@ -596,7 +596,7 @@ def update_model_variables_and_run_model(n_clicks, *tableData):
         # return a new button with a link to the analysis report
         return (   (html.Div([
                     html.H5("Model run complete"),
-                    dcc.Link(dbc.Button("View Results", color="primary"), href='/chart-results')
+                    dcc.Link(dbc.Button("View Results", color="primary"), href='/analysis-report')
         ])), 
         # and replace the old button
         html.P()   )
