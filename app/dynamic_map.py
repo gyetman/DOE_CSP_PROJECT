@@ -475,7 +475,7 @@ def paramHelper(dfAtts):
     mParams['county'] = dfAtts.CountyName.values[0]
     mParams['state'] = dfAtts.StatePosta.values[0]
     # TODO: pull from city or Texas county data
-    mParams['water_price'] = '2.08'
+    mParams['water_price'] =  dfAtts.WaterPrice.values[0]
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
     mParams['dni'] = dfAtts.ANN_DNI.values[0]
