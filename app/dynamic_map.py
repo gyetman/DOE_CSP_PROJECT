@@ -167,9 +167,9 @@ coal = go.Scattermapbox(
 )
 
 layout = go.Layout(
-    #height=600,
-    #width=900,
-    autosize=True,
+    height=600,
+    width=900,
+    #autosize=True,
     hovermode='closest',
     #clickmode='text',
     title='Solar Resource', # default value in dropdown
@@ -428,8 +428,12 @@ def createMarkdown(mddf,theme):
         return mdText
     elif theme == 'Water Prices':
         mdText += '###### Water Price Information\n\n'
-        mdText += 'Texas county average price: ${:,.2f}\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0])
-        mdText += '{} city water price: ${:.2f}\n\n'.format(mddf.WaterUtilityCity.values[0], mddf.WaterPrice.values[0])
+        # TODO: display min & max, not average
+        # mdText += 'Texas county average price: ${:,.2f}/m3\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0]/3.78)
+        #Max_F5000gal_res_perKgal Min_F5000gal_res_perKgal
+        mdText += 'Texas county minimum price: ${:,.2f}/m3\n\n'.format(mddf.Min_F5000gal_res_perKgal.values[0]/3.78)
+        mdText += 'Texas county maximum price: ${:,.2f}/m3\n\n'.format(mddf.Max_Water_Price_perKgal_Res.values[0]/3.78)
+        mdText += '{} city water price: ${:.2f}/m3\n\n'.format(mddf.WaterUtilityCity.values[0], mddf.WaterPrice.values[0])
         mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
         mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
         wnd = mddf.WaterNetworkDistance.values[0]
