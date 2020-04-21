@@ -131,7 +131,7 @@ ng = go.Scattermapbox(
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
 df_nuclear['text'] = df_nuclear.Plant_prim.astype(str).apply(str.title) \
-    + ' Concenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' MJ' 
+    + ' Condenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' MJ' 
 
 nuclear = go.Scattermapbox(
     name='Nuclear Plants',
