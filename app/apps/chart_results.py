@@ -17,6 +17,8 @@ from app import app
 # app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Chart Results'
 
+HOURS_IN_YEAR = 8760
+
 # load simulation results from JSONs
 sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
 des = helpers.json_load(cfg.sam_desal_simulation_outfile)
@@ -26,8 +28,16 @@ solar_names = ('System power generated','Receiver mass flow rate',
                'Receiver thermal losses','Resource Beam normal irradiance')
 solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
                 for x in solar_names]
-solar_arrays = [sol[x]['Value'] for x in solar_indexes]
 solar_units = {sol[x]['Name']:sol[x]['Unit'] for x in solar_indexes}
+# the arrays all need to be the same size
+# creates dummy variables (zeros) if they are not
+# on failed runs of SamBaseClass the file can have empty values
+solar_arrays = []
+for x in solar_indexes:
+    if len(sol[x]['Value']) == HOURS_IN_YEAR:
+        solar_arrays.append(sol[x]['Value'])
+    else:
+        solar_arrays.append(np.zeros(HOURS_IN_YEAR))
 
 # combine results into list of series; note the .T for transpose,
 # otherwise the lists are read as rows, not columns. '''
