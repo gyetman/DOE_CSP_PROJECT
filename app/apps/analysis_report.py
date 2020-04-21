@@ -155,7 +155,7 @@ def set_local_condition(x):
     html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2 day"),
     html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2 day"),
     html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
-    html.Div(f"Market water price: ${r['water_price']}"), 
+    html.Div(f"Market water price: {r['water_price']} $/m3"), 
     html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
     html.Div(f"Distance to nearest water network: {r['dist_water_network']:.1f} km"),
     html.Div(f"Distance to nearest power plant: {r['dist_power_plant']:.1f} km")
