@@ -12,8 +12,8 @@ class LTMED_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  f_HEX = 0.4, # Cost fraction of the evaporator 
-                 HEX_area = 8800, # Heat exchanger area (m2)
-                 STEC = 60 , # Thermal energy consumption (kW)
+                 HEX_area = 389, # Heat exchanger area (m2)
+                 STEC = 58.3 , # Thermal energy consumption (kW)
                  SEEC = 1.5, # Specifc Electricity energy consumption (kWh/m3)
                  
                  # OPEX parameters
@@ -28,8 +28,8 @@ class LTMED_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.04 , # Unit cost of electricity ($/kWh)
-                 coh = None , # Unit cost of heat ($/kWh)
-                 sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
+                 coh = 0.01 , # Unit cost of heat ($/kWh)
+                 sam_coh = 0, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 13422 # Capacity of thermal storage (kWh)
 
@@ -60,7 +60,7 @@ class LTMED_cost(object):
         
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/302.01)**0.8) 
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
@@ -73,9 +73,10 @@ class LTMED_cost(object):
         cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
         
         return cost_output
 #%%
 
-case = LTMED_cost()
+case = LTMED_cost( Capacity = 30000, Prod = 365000*30, HEX_area = 389,coh =0 )
 case.lcow()

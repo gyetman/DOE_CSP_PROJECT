@@ -59,7 +59,7 @@ def gather_data(x):
         ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
-        index = helpers.index_in_list_of_dicts(ds,'Name','Fossile fuel usage')
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
         updates.update({'fossil_usage':ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(cfg.desal_design_infile)
@@ -104,6 +104,8 @@ def gather_data(x):
         ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
+        updates.update({'fossil_usage':ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(cfg.desal_design_infile)
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -118,8 +120,8 @@ def gather_data(x):
         updates.update({'lcow':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
         updates.update({'lcoh':dc[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat_Calculated')
-        updates.update({'lcoh_cal':dc[index]['Value']})
+#        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat_Calculated')
+#        updates.update({'lcoh_cal':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')

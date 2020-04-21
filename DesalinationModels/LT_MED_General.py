@@ -9,6 +9,7 @@ Created on Wed Aug 28 10:01:06 2019
 import numpy as np
 import math
 import DesalinationModels.IAPWS97_thermo_functions as TD_func
+from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
 class lt_med_general(object):
     
@@ -78,17 +79,25 @@ class lt_med_general(object):
         if self.Nef == 12:
             self.GOR = 8.744 - 0.02817 * self.Ts -4.426e-6 *self.Capacity+0.0004547*self.Ts**2 + 3.932e-8*self.Ts*self.Capacity
             self.qs = -1.211 + 0.0321 * self.Ts +0.001666 *self.Capacity - 2.12e-4*self.Ts**2 - 5.55e-6*self.Ts*self.Capacity
+            self.qF = 0.3312 - 0.00881 * self.Ts + 0.03835 * self.Capacity +5.832e-5 * self.Ts **2 -1.13e-6 * self.Ts * self.Capacity
         if self.Nef == 14:
             self.GOR = 9.683 - 0.03048 * self.Ts - 7.639e-6 *self.Capacity+ 0.0004896*self.Ts**2 + 7.227e-8*self.Ts*self.Capacity
             self.qs = -1.176 + 0.03098 * self.Ts +0.001503 *self.Capacity - 2.039e-4*self.Ts**2 - 4.94e-6*self.Ts*self.Capacity
+            self.qF = 0.3513 - 0.0094 * self.Ts + 0.03834 * self.Capacity + 6.24e-5 * self.Ts **2 - 9.89e-7 * self.Ts * self.Capacity
         if self.Nef == 16:
             self.GOR = 10.55 - 0.03405 * self.Ts - 8.205e-6 *self.Capacity+0.0005344*self.Ts**2 + 7.227e-8*self.Ts*self.Capacity
             self.qs = -1.127 + 0.02981 * self.Ts +0.001381 *self.Capacity - 1.97e-4*self.Ts**2 - 4.48e-6*self.Ts*self.Capacity
-        
+            self.qF = 0.3312 - 0.00881 * self.Ts + 0.03835 * self.Capacity +5.894e-5 * self.Ts **2 -1.128e-6 * self.Ts * self.Capacity
+       
         self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *1000/3600
         self.P_req = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *self.Capacity *1000/24/3600
     
-
+        self.system = lt_med_calculation(Nef = self.Nef, Ts = self.Ts, Ms = self.qs, Mf = self.qF)
+        self.system.model_execution() 
+#        print('calculated STEC:', system.STE)
+#        print('calculated GOR:', system.GOR)
+#        print('calculated production:', system.Mprod_m3_day)
+        
         design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
@@ -97,13 +106,15 @@ class lt_med_general(object):
         design_output.append({'Name':'Thermal power consumption','Value':self.P_req,'Unit':'kW(th)'})
         design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
-        design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})      
+        design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
+        design_output.append({'Name':'Specific heat exchanger area','Value':self.system.sA,'Unit':'m2/(kg/s)'}) 
         
         return design_output
+    
     # class variables
 #    DELTAT_loss = 0.05
 #
-#        
+
 #    def __init__(self,
 #                 Tb1      = 76     , # The brine temperature in the first effect, ºC
 #                 FeedC_r  = 35  , # The feed water salinity, ppm
@@ -442,14 +453,16 @@ class lt_med_general(object):
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        simu_output.append({'Name':'Solar energy curtailment','Value':solar_loss,'Unit':'kWh'})
                
         return simu_output
             
 #%% MODEL EXECUTION            
 
-case = lt_med_general(Fossil_f=0)
+case = lt_med_general(Capacity = 1000)
 case.design()
-case.simulation(gen = [5000,6000,5000,3000,2500], storage =6)
+#case.simulation(gen = [5000,6000,5000,3000,2500], storage =6)
             
         
         

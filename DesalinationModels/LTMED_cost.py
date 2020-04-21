@@ -12,7 +12,7 @@ class LTMED_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  f_HEX = 0.4, # Cost fraction of the evaporator 
-                 HEX_area = 8800, # Heat exchanger area (m2)
+                 HEX_area = 389, # Heat exchanger area (m2)
                  STEC = 60 , # Thermal energy consumption (kW)
                  SEEC = 1.5, # Specifc Electricity energy consumption (kWh/m3)
                  
@@ -59,7 +59,7 @@ class LTMED_cost(object):
         
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/302.01)**0.8) 
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
@@ -77,5 +77,5 @@ class LTMED_cost(object):
         return cost_output
 #%%
 
-case = LTMED_cost()
+case = LTMED_cost(Capacity = 300000,Prod = 328500*300)
 case.lcow()
