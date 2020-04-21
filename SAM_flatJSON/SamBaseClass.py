@@ -74,6 +74,8 @@ class SamBaseClass(object):
             # execute financial model, if any
             if self.financialModel:
                 self.module_create_execute(self.financialModel)
+                annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+                self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
                 if self.financialModel == 'utilityrate5':
                     self.module_create_execute('cashloan')
                 elif self.financialModel == 'iph_to_lcoefcr':
