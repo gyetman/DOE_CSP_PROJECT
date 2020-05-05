@@ -14,8 +14,13 @@ import app_config as cfg
 
 
 #TODO:
-# 1. Update content with more detailed solar data
-# 2. Test using lookup function / caches for faster loading
+# Test using lookup function / caches for faster loading
+# Hide Texas County water price information (mdText lines)
+# if outside of Texas. 
+# Update state and local Google Sheet links with HTML to pop
+# out in new tab/window
+# In Texas water price infomration, include commercial, residential, 
+# industrial price information (min & max)
 
 # default location
 CENTER_LAT=32.7767
@@ -195,7 +200,7 @@ dropDownOptions = [
     {'label':'Electric Prices', 'value':'eprice','disabled':True},
     {'label':'Produced Waters','value':'produced'},
     {'label':'Brackish Waters', 'value':'brackish','disabled':True},
-    {'label':'Legal Framework', 'value':'legal'}
+    {'label':'Regulatory and Permitting', 'value':'legal'}
 ]
 # lookup used in callback
 dropDownTitles = dict()
@@ -403,7 +408,7 @@ def loadData(mapTheme,fg):
                 showscale=False,
                 )
         # solar is only used if an easement area is not clicked
-        return [solar,easementData,federalData,userPt]
+        return [easementData,federalData,solar,userPt]
     
     elif mapTheme == 'solar':   
         ''' default loaded data can be returned, with user point'''
@@ -446,17 +451,25 @@ def clickPoint(clicks,dropDown,relay,figure):
     #     print(type(fig))
 
     if clicks:
+        txt = clicks['points'][0]['text']
+        if 'Easement:' in txt:
+            print('Clicked easement')
+            raise PreventUpdate
+        elif 'Agency:' in txt:
+            print('Clicked agency')
+            raise PreventUpdate
+        else:
         # update he user point 
-        tmpData = figure['data']
-        pt = tmpData[-1]
-        tmpData = tmpData[:-1]
-        pt['visible'] = True
-        pt['showlegend'] = True
-        pt['lon'] = [clicks['points'][0]['lon']]
-        pt['lat'] = [clicks['points'][0]['lat']]
-        #figure['data'] = tmpData
-        tmpData.append(pt)
-        return go.Figure(dict(data=tmpData, layout=figure['layout']))
+            tmpData = figure['data']
+            pt = tmpData[-1]
+            tmpData = tmpData[:-1]
+            pt['visible'] = True
+            pt['showlegend'] = True
+            pt['lon'] = [clicks['points'][0]['lon']]
+            pt['lat'] = [clicks['points'][0]['lat']]
+            #figure['data'] = tmpData
+            tmpData.append(pt)
+            return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
     else:
         raise PreventUpdate
@@ -508,6 +521,10 @@ def createMarkdown(mddf,theme):
             mdText += '&nbsp&nbspName: {}\n\n'.format(mddf.CanalName.values[0])
             mdText += '&nbsp&nbspOperator: {}\n\n'.format(mddf.CanalOperator.values[0])
 
+    elif theme == 'Regulatory and Permitting':
+        mdText += '###### Regulatory Information\n\n'
+        mdText += '[State Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
+        mdText += '[Local Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
     return(mdText)
 
 
@@ -521,7 +538,7 @@ def updateMarkdown(clicks,fig):
     ''' pulls properties from dataframe and updates markdown div '''
     if clicks is None:
         raise PreventUpdate
-    
+    print(clicks)
     lat = [clicks['points'][0]['lat']]
     lon = [clicks['points'][0]['lon']]
     dfTmp = df.loc[(df['CENTROID_Y'] == lat[0]) & (df['CENTROID_X'] == lon[0])]
