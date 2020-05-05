@@ -596,7 +596,7 @@ def update_model_variables_and_run_model(n_clicks, *tableData):
         # return a new button with a link to the analysis report
         return (   (html.Div([
                     html.H5("Model run complete"),
-                    dcc.Link(dbc.Button("View Results", color="primary"), href='/analysis-report')
+                    dcc.Link(dbc.Button("View Results", color="primary"), href='/chart-results')
         ])), 
         # and replace the old button
         html.P()   )
