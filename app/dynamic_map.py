@@ -195,7 +195,7 @@ dropDownOptions = [
     {'label':'Electric Prices', 'value':'eprice','disabled':True},
     {'label':'Produced Waters','value':'produced'},
     {'label':'Brackish Waters', 'value':'brackish','disabled':True},
-    {'label':'Legal Framework', 'value':'legal','disabled':True}
+    {'label':'Legal Framework', 'value':'legal'}
 ]
 # lookup used in callback
 dropDownTitles = dict()
@@ -214,7 +214,7 @@ app.layout = html.Div(children=[
             className='row',
             clearable=False,
             persistence=True,
-            persistence_type='session',
+            persistence_type='local',
             style= {
                 'position': 'relative',
                 'display': 'inline-block',
@@ -340,7 +340,70 @@ def loadData(mapTheme,fg):
     elif mapTheme == 'brackish':
         return [solar,userPt]
     elif mapTheme == 'legal':
-        return [solar,userPt]
+        # load easement data
+        df_easements = pd.read_csv('./GISData/easements.csv')
+        df_easements['text'] = 'Easement: ' + df_easements['d_Mang_Typ']
+        df_easements['z'] = 1
+
+        # load federal data
+        df_federal = pd.read_csv('./GISData/federal.csv')
+        df_federal['text'] = 'Agency: ' + df_federal['ADMIN1']
+        df_federal['z'] = 5
+
+        # load padus data
+        #df_padus = pd.read_csv('./GISData/padus.csv')
+        #df_padus['text'] = 'For fee land: {}'.format(df_padus['???'])
+
+        #load geoJSON geometries for easements
+        with open('./gisData/easements_non_federal.geojson','r') as f:
+            geoj_easements = json.load(f)
+
+        #load geoJSON geometries for federal lands
+        with open('./gisData/federal_lands.geojson','r') as f:
+            geoj_federal = json.load(f)
+            easementData = go.Choroplethmapbox(
+                name='Easements',
+                geojson=geoj_easements, 
+                locations=df_easements.ID,
+                text=df_easements.text,
+                z=df_easements.z,
+                hoverinfo='text',
+                # featureidkey='ZCTA5CE10',
+                #z=df_county.TDS_mgL,
+                #colorscale="Viridis", 
+                #colorbar=dict(
+                #    title='Average TDS mg/L',
+                #),
+                showlegend=True,
+                marker_opacity=1, 
+                marker_line_width=0,
+                #hoverinfo='skip',
+                visible=True,
+                showscale=False,
+                )
+
+            federalData = go.Choroplethmapbox(
+                name='Federal Lands',
+                geojson=geoj_federal, 
+                locations=df_federal.ID,
+                text=df_federal.text,
+                z=df_federal.z,
+                hoverinfo='text',
+                # featureidkey='ZCTA5CE10',
+                #z=df_county.TDS_mgL,
+                colorscale="Viridis", 
+                #colorbar=dict(
+                #    title='Average TDS mg/L',
+                #),
+                showlegend=True,
+                marker_opacity=1, 
+                marker_line_width=0,
+                #hoverinfo='skip',
+                visible=True,
+                showscale=False,
+                )
+        # solar is only used if an easement area is not clicked
+        return [solar,easementData,federalData,userPt]
     
     elif mapTheme == 'solar':   
         ''' default loaded data can be returned, with user point'''
