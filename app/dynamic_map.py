@@ -484,34 +484,53 @@ def createMarkdown(mddf,theme):
         mddf.CountyName.values[0],
         mddf.StatePosta.values[0]
     ) 
-    mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
-    # TODO
-    mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values.astype(str)[0].title())
-    # TODO: go back to e-grid data and add in plant capacity MW
-    #mdText += 'Annual Plant Capacity: {:,.0f}\n\n'.format(mddf.???.values[0])
-    mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
-    mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} MJ (91 C < T < 128 C)\n\n'.format(mddf.Exhaust_Re.values[0])
-    mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} MJ (29 C < T < 41 C)\n\n'.format(mddf.Condenser.values[0])
-
-    mdText += 'Closest desalination plant: {}\n\n'.format(mddf.DesalProjName.values[0])
-    mdText += '&nbsp&nbsp Distance to plant: {:,.1f} km\n\n'.format(mddf.DesalDist.values[0] / 1000)
-    mdText += '&nbsp&nbsp Plant Capacity: {:,.0f} (m3/day)\n\n'.format(mddf.DesalCapacity.values[0])
-    mdText += '&nbsp&nbsp Plant Technology: {}\n\n'.format(mddf.DesalTechnology.values[0])
-    mdText += '&nbsp&nbsp Plant Feedwater: {}\n\n'.format(mddf.DesalFeedwater.values[0])
-    mdText += '&nbsp&nbsp Plant Customer Type : {}\n\n'.format(mddf.DesalCustomerType.values[0])
 
     if theme not in list(dropDownTitles.values()):
         return mdText
+    elif theme == 'Solar Resource':
+        mdText += '###### Existing plants nearby\n\nWithin 100km\n\n'
+        mdText += 'Closest power plant: {}\n\n'.format(mddf.Plant_prim.values.astype(str)[0].title())
+        # TODO: go back to e-grid data and add in plant capacity MW
+        #mdText += 'Annual Plant Capacity: {:,.0f}\n\n'.format(mddf.???.values[0])
+        mdText += '&nbsp&nbsp Distance: {:,.0f} km\n\n'.format(mddf.PowerPlantDistance.values[0]/1000)
+        mdText += '&nbsp&nbsp Exhaust Residual Heat: {:,.0f} MJ (91 C < T < 128 C)\n\n'.format(mddf.Exhaust_Re.values[0])
+        mdText += '&nbsp&nbsp Condenser Heat: {:,.0f} MJ (29 C < T < 41 C)\n\n'.format(mddf.Condenser.values[0])
+
+        mdText += 'Closest desalination plant: {}\n\n'.format(mddf.DesalProjName.values[0])
+        mdText += '&nbsp&nbsp Distance to plant: {:,.1f} km\n\n'.format(mddf.DesalDist.values[0] / 1000)
+        mdText += '&nbsp&nbsp Plant Capacity: {:,.0f} (m3/day)\n\n'.format(mddf.DesalCapacity.values[0])
+        mdText += '&nbsp&nbsp Plant Technology: {}\n\n'.format(mddf.DesalTechnology.values[0])
+        mdText += '&nbsp&nbsp Plant Feedwater: {}\n\n'.format(mddf.DesalFeedwater.values[0])
+        mdText += '&nbsp&nbsp Plant Customer Type : {}\n\n'.format(mddf.DesalCustomerType.values[0])
+        return mdText
+
     elif theme == 'Water Prices':
         mdText += '###### Water Price Information\n\n'
         # TODO: display min & max, not average
         # mdText += 'Texas county average price: ${:,.2f}/m3\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0]/3.78)
         #Max_F5000gal_res_perKgal Min_F5000gal_res_perKgal
-        mdText += 'Texas county minimum price: ${:,.2f}/m3\n\n'.format(mddf.Min_F5000gal_res_perKgal.values[0]/3.78)
-        mdText += 'Texas county maximum price: ${:,.2f}/m3\n\n'.format(mddf.Max_Water_Price_perKgal_Res.values[0]/3.78)
-        mdText += '{} city water price: ${:.2f}/m3\n\n'.format(mddf.WaterUtilityCity.values[0], mddf.WaterPrice.values[0])
-        mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
-        mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
+        minPrice = mddf.Min_F5000gal_res_perKgal.values[0]/3.78
+        maxPrice = mddf.Max_Water_Price_perKgal_Res.values[0]/3.78
+        print(type(minPrice))
+        print(minPrice)
+        if np.isnan(minPrice):
+            print('No Texas water prices at this location')
+        else:
+            mdText += 'Texas county minimum residential price: ${:,.2f}/m3\n\n'.format(minPrice)
+            mdText += 'Texas county maximum residential price: ${:,.2f}/m3\n\n'.format(maxPrice)
+            mdText += 'Texas county minimum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Min_F50000Gal_Commercial_per_13.values[0]/3.78)
+            mdText += 'Texas county maximum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Max_Water_Price_perKgal_Comm.values[0]/3.78)
+            mdText += 'Year of Prices ()\n\n'
+        cityPrice = mddf.WaterPrice.values[0]
+        if np.isnan(cityPrice):
+            print('No city water prices within 150km of this location')
+        else:
+            mdText += '{} city water price: ${:.2f}/m3\n\n'.format(mddf.WaterUtilityCity.values[0], cityPrice)
+            mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
+            mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
+            mdText += '&nbsp&nbsp Year of Data: ()\n\n'
+        if np.isnan(minPrice) & np.isnan(cityPrice):
+            mdText += 'No local water price information available for this location.\n\n'
         wnd = mddf.WaterNetworkDistance.values[0]
         if wnd > 0:
             mdText += 'Distance to water network proxy location: {:,.0f} km\n\n'.format(wnd / 1000)
