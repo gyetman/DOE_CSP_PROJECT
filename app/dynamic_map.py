@@ -424,7 +424,8 @@ not close enough to a point (zoomed in too far). """
     [Input(component_id='map', component_property='clickData'),
     Input(component_id='select-map', component_property='value')],
     [State('map','relayoutData'),
-    State('map','figure')]
+    State('map','figure')],
+    prevent_initial_call=True
 )
 def clickPoint(clicks,dropDown,relay,figure):
     if not any([clicks,dropDown,relay,figure]):
@@ -551,7 +552,8 @@ def createMarkdown(mddf,theme):
 @app.callback(
     Output(component_id='markdown-div',component_property='children'),
     [Input(component_id='map',component_property='clickData')],
-    [State('map','figure')] 
+    [State('map','figure')],
+    prevent_initial_call = True
 )
 def updateMarkdown(clicks,fig):
     ''' pulls properties from dataframe and updates markdown div '''
@@ -594,7 +596,8 @@ def paramHelper(dfAtts):
 @app.callback(
     Output(component_id='next-button',component_property='children'),
      [Input(component_id='map',component_property='figure')],
-     [State('map','figure')]
+     [State('map','figure')],
+     prevent_initial_call=True
  )
 def writeOutParams(btn,mapFigure):
     userPt = mapFigure['data'][-1]
