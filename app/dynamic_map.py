@@ -21,6 +21,8 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
+# Use different symbol types for desal from power plans & nuclear (three types, 
+# same shape for power, different for desal & nuke)
 
 # default location
 CENTER_LAT=32.7767
@@ -89,7 +91,8 @@ desal = go.Scattermapbox(
     text=df_desal.text,
     marker=dict(
         size=7,
-        color='green',
+        symbol='square',
+        #color='green',
     ),
     visible=True,
 
@@ -147,7 +150,7 @@ nuclear = go.Scattermapbox(
     text= df_nuclear.text,
     marker=dict(
         size=7,
-        symbol='square',
+        symbol='circle',
     ),
     visible=True
 )
@@ -407,7 +410,6 @@ def loadData(mapTheme,fg):
                 visible=True,
                 showscale=False,
                 )
-        # solar is only used if an easement area is not clicked
         return [easementData,federalData,solar,userPt]
     
     elif mapTheme == 'solar':   
