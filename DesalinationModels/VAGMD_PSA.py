@@ -9,8 +9,6 @@ Converted from PSA's AGMD model
 
 import numpy as np
 import math
-from DesalinationModels.VAGMD_cost import VAGMD_cost
-from scipy.optimize import fmin
 
 class VAGMD_PSA(object):
     # MD MODELS FOR AQUASTILL MODULES AS7C1.5L AND AS24C5L
@@ -186,42 +184,16 @@ class VAGMD_PSA(object):
         
         
         self.num_modules = math.ceil(self.Capacity *1000 / self.F /24 )
-        self.design_output = []
-        self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
-        self.design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/m2 h'})
-        self.design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
-        self.design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
-        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
-        return 
+        design_output = []
+        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
+        design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/m2 h'})
+        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
+        design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
+        design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
+        design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         
-# Added optimization on parameter selection of TEI_r, TCI_r and FFR_r
-    def opt(self):    
-        def target(params):
-            TEI_r, TCI_r, FFR_r = params[0:3]
-            TEI_r = max(60, min (80, TEI_r))
-            TCI_r = max(20, min (30, TCI_r))
-            FFR_r = max(400, min (1100, FFR_r))
-
-            temp = VAGMD_PSA(TEI_r=TEI_r, TCI_r=TCI_r, FFR_r=FFR_r, module= self.module,FeedC_r=self.FeedC_r, Capacity=self.Capacity)
-            temp.design()
-            temp_cost = VAGMD_cost(Capacity = temp.Capacity, Area = temp.Area, Pflux = temp.PFlux, th_module = temp.ThPower,STEC = temp.STEC, TCO = self.TCO, Prod = self.Capacity*365*0.9)
-            temp_cost.lcow()
-            return temp_cost.LCOW
-        
-        x0 =  np.asarray([80, 25, 528.7])
-        xopt = fmin(target, x0)
-        yopt = target(xopt)
-
-        self.design_output.append({'Name':'(Suggested) Evaporator channel inlet temperature','Value':max(60,min(80,xopt[0])),'Unit':'oC'})
-        self.design_output.append({'Name':'(Suggested) Condenser channel inlet temperature','Value':max(20,min(30,xopt[1])),'Unit':'oC'})
-        self.design_output.append({'Name':'(Suggested) Feed flow rate ','Value':max(400, min(1100,xopt[2])),'Unit':'l/h'})
-        self.design_output.append({'Name':'Estimated LCOW ','Value':yopt,'Unit':'$/m3'})
-
-        return self.design_output
-        
-
+        return design_output
     
     def simulation(self, gen, storage):
         self.thermal_load = self.ThPower * self.num_modules # kWh
@@ -261,7 +233,7 @@ class VAGMD_PSA(object):
     
         simu_output = []
 
-        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
@@ -361,9 +333,6 @@ class VAGMD_PSA(object):
 ##    print('STEC: ', case.STEC_AS26_allM)
 ##    print('GOR: ', case.GOR_AS26_allM)
     
-# case = VAGMD_PSA()
-# case.design()
-# case.opt()
-
+            
             
         
