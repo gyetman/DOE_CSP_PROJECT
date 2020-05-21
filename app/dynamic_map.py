@@ -21,6 +21,8 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
+# Use different symbol types for desal from power plans & nuclear (three types, 
+# same shape for power, different for desal & nuke)
 
 # default location
 CENTER_LAT=32.7767
@@ -89,7 +91,8 @@ desal = go.Scattermapbox(
     text=df_desal.text,
     marker=dict(
         size=7,
-        color='green',
+        symbol='square',
+        #color='green',
     ),
     visible=True,
 
@@ -147,7 +150,7 @@ nuclear = go.Scattermapbox(
     text= df_nuclear.text,
     marker=dict(
         size=7,
-        symbol='square',
+        symbol='circle',
     ),
     visible=True
 )
@@ -407,7 +410,6 @@ def loadData(mapTheme,fg):
                 visible=True,
                 showscale=False,
                 )
-        # solar is only used if an easement area is not clicked
         return [easementData,federalData,solar,userPt]
     
     elif mapTheme == 'solar':   
@@ -424,7 +426,8 @@ not close enough to a point (zoomed in too far). """
     [Input(component_id='map', component_property='clickData'),
     Input(component_id='select-map', component_property='value')],
     [State('map','relayoutData'),
-    State('map','figure')]
+    State('map','figure')],
+    prevent_initial_call=True
 )
 def clickPoint(clicks,dropDown,relay,figure):
     if not any([clicks,dropDown,relay,figure]):
@@ -551,7 +554,8 @@ def createMarkdown(mddf,theme):
 @app.callback(
     Output(component_id='markdown-div',component_property='children'),
     [Input(component_id='map',component_property='clickData')],
-    [State('map','figure')] 
+    [State('map','figure')],
+    prevent_initial_call = True
 )
 def updateMarkdown(clicks,fig):
     ''' pulls properties from dataframe and updates markdown div '''
@@ -594,7 +598,8 @@ def paramHelper(dfAtts):
 @app.callback(
     Output(component_id='next-button',component_property='children'),
      [Input(component_id='map',component_property='figure')],
-     [State('map','figure')]
+     [State('map','figure')],
+     prevent_initial_call=True
  )
 def writeOutParams(btn,mapFigure):
     userPt = mapFigure['data'][-1]
