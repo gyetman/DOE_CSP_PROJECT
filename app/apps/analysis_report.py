@@ -61,6 +61,8 @@ def gather_data(x):
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
         updates.update({'fossil_usage':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
+        updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(cfg.desal_design_infile)
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -106,6 +108,8 @@ def gather_data(x):
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
         updates.update({'fossil_usage':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
+        updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(cfg.desal_design_infile)
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -212,8 +216,10 @@ def set_system_performance(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('System Performance', className='card-title'),
+    html.Div(f"Total water production: {r['water_prod']:.0f} m3"),
     html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
     html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+    
     ])
 
 @app.callback(
