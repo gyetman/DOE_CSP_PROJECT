@@ -21,8 +21,7 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
-# Use different symbol types for desal from power plans & nuclear (three types, 
-# same shape for power, different for desal & nuke)
+# Show the nearest Desal, power plant to the user-selected point
 
 # default location
 CENTER_LAT=32.7767
