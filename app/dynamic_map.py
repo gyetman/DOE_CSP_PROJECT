@@ -187,6 +187,7 @@ layout = go.Layout(
     mapbox=dict(
             accesstoken=mapbox_key,
             zoom=6,
+            style="outdoors",
             center=dict(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
