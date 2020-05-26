@@ -156,8 +156,8 @@ def set_local_condition(x):
     return ([
     html.H5('Local Condition', className='card-title'),
     html.Div(f"Location: {r['county']}, {r['state']}"),
-    html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2 day"),
-    html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2 day"),
+    html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2/day"),
+    html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2/day"),
     html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
     html.Div(f"Market water price: {r['water_price']} $/m3"), 
     html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
