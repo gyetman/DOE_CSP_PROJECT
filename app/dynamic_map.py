@@ -81,7 +81,7 @@ solar = go.Scattermapbox(
 
 # load existing desal plants
 df_desal = pd.read_csv('./GISData/desal_plants.csv')
-df_desal['text'] = 'Desalination Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
+df_desal['text'] = df_desal['Project_name'].astype(str) + '. Capacity: ' + df_desal['Capacity_m3_d'].astype(str) + ' m3/day'
 desal = go.Scattermapbox(
     name='Desalination Plants',
     lat=df_desal.Latitude,
@@ -118,7 +118,7 @@ userPoint = go.Scattermapbox(
 
 # natural gas power plants
 df_ng = pd.read_csv('./GISData/ng.csv')
-df_ng['text'] = df_ng.Plant_prim.astype(str).apply(str.title) \
+df_ng['text'] = df_ng.Plant_name.astype(str) + '. ' + df_ng.Plant_prim.astype(str).apply(str.title) \
     + ' Residual Heat: ' + df_ng['Exhaust_Re'].map('{:,.0f}'.format) + 'MJ'
 
 ng = go.Scattermapbox(
@@ -138,7 +138,7 @@ ng = go.Scattermapbox(
 
 # Nuclear power plants
 df_nuclear = pd.read_csv('./GISData/nuclear.csv')
-df_nuclear['text'] = df_nuclear.Plant_prim.astype(str).apply(str.title) \
+df_nuclear['text'] = df_nuclear.Plant_name.astype(str) + '. ' + df_nuclear.Plant_prim.astype(str).apply(str.title) \
     + ' Condenser heat: ' + df_nuclear['Condenser'].map('{:,.0f}'.format) + ' MJ' 
 
 nuclear = go.Scattermapbox(
@@ -157,7 +157,7 @@ nuclear = go.Scattermapbox(
 
 # Coal power plants
 df_coal = pd.read_csv('./GISData/coal.csv')
-df_coal['text'] = df_coal.Plant_prim.astype(str).apply(str.title) \
+df_coal['text'] = df_coal.Plant_name.astype(str) + '. ' + df_coal.Plant_prim.astype(str).apply(str.title) \
     + ' Residual Heat: ' + df_coal['Exhaust_Re'].map('{:,.0f}'.format)
 
 coal = go.Scattermapbox(
@@ -187,7 +187,8 @@ layout = go.Layout(
     mapbox=dict(
             accesstoken=mapbox_key,
             zoom=6,
-            style="outdoors",
+            #style="stamen-terrain",
+            #style="outdoors",
             center=dict(
                 lat=CENTER_LAT,
                 lon=CENTER_LON
