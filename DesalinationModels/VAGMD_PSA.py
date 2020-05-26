@@ -233,7 +233,7 @@ class VAGMD_PSA(object):
     
         simu_output = []
 
-        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3/h'})
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
