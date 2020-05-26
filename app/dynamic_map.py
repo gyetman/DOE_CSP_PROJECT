@@ -21,7 +21,8 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
-# Show the nearest Desal, power plant to the user-selected point
+# Show the nearest Desal, power plant to the user-selected point (draw a line)
+# add name of plant when hovering (desal)
 
 # default location
 CENTER_LAT=32.7767
@@ -461,7 +462,7 @@ def clickPoint(clicks,dropDown,relay,figure):
             print('Clicked agency')
             raise PreventUpdate
         else:
-        # update he user point 
+        # update the user point 
             tmpData = figure['data']
             pt = tmpData[-1]
             tmpData = tmpData[:-1]
@@ -471,6 +472,34 @@ def clickPoint(clicks,dropDown,relay,figure):
             pt['lat'] = [clicks['points'][0]['lat']]
             #figure['data'] = tmpData
             tmpData.append(pt)
+
+            
+            # add lines for solar theme
+            if existingTitle == 'Solar Resource':
+                # get the location of the desal & power plant to draw lines
+
+                # pull the previous line if it exists
+                test = tmpData[-2]
+                if 'line' in test.keys():
+                    tmpData.remove(test)
+
+                dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
+                lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
+                lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
+                lines = go.Scattermapbox(
+                    mode='lines',
+                    line=dict(
+                        width=2,
+                        color='blue',
+                    ),
+                    lon = lons,
+                    lat = lats,
+                    showlegend=False,
+                )
+                print(lines)
+                tmpData.insert(-1,lines)
+                
+
             return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
     else:
