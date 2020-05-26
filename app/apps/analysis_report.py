@@ -230,7 +230,7 @@ def set_cost_analysis(x):
     return ([
     html.H5('Cost Analysis', className='card-title'),
     html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
-    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.2f} $/m3"),
+    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.3f} $/m3"),
 #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
     html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/m3"),
     html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
