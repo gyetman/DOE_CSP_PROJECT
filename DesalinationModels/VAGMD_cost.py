@@ -31,6 +31,28 @@ class VAGMD_cost(object):
                  solar_outlet = 95, # Solar field outlet temperature
                  HX_eff = 0.85, # Heat exchanger efficiency
                  cost_module_re = 0.220 , # Cost of module replacement ($/m3)
+                 
+                 MD_membrane = 0.075*1.11, # Base price of AGMD membrane (k$/m2)
+                 HX = 0.35 * 1.11, # Base price of heat exchanger (k$/m2)
+                 
+                 MD_module = 1.95* 1.11,# Base price of AGMD module assembly (k$/base capacity)
+                 MD_module_capacity = 3, # Base capacity of module assembly (modules)   
+                                  
+                 endplates = 0.85* 1.11,# Base price of HX endplates (k$/base capacity)
+                 endplates_capacity =10, # Base capacity of housing rack (m2)
+                 heat_cool = 5* 1.11, # Base price of heating/cooling installation (k$/base capacity)
+                 heat_cool_capacity =10, # Base capacity of housing rack (m3/h)
+                 
+                 h_r = 5* 1.11,  # Base price of housing rack (k$/base capacity)
+                 h_r_capacity = 3, # Base capacity of housing rack (modules)
+                 tank = 5* 1.11,  # Base price of tank (with plumbing) (k$/base capacity)
+                 tank_capacity = 3, # Base capacity of tank (modules)
+                 pump = 3* 1.11,  # Base price of pump (k$/base capacity)
+                 pump_capacity = 5, # Base capacity of pump (m3/h)
+                 other = 15* 1.11,  # Base price of controller, cabling and programming (k$/base capacity)
+                 other_capacity = 3, # Base capacity of controller, cabling and programming (modules)
+     
+                 
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
@@ -55,16 +77,36 @@ class VAGMD_cost(object):
         self.int_rate = int_rate
         self.SEEC = SEEC
         
+        self.MD_membrane = MD_membrane
+        self.HX = HX
+        self.MD_module = MD_module
+        self.MD_module_capacity = MD_module_capacity
+        self.endplates = endplates
+        self.endplates_capacity =endplates_capacity
+        self.heat_cool = heat_cool
+        self.heat_cool_capacity =heat_cool_capacity
+        
+        self.h_r = h_r
+        self.h_r_capacity = h_r_capacity
+        self.tank = tank
+        self.tank_capacity = tank_capacity
+        self.pump = pump
+        self.pump_capacity = pump_capacity
+        self.other = other
+        self.other_capacity = other_capacity
+   
+        
     def lcow(self):
-        self.module_cost = (1.95*3*(self.num_modules/3)**0.8 + 0.075 * self.Area * self.num_modules) *1.11
+        self.module_cost = (self.MD_module*self.MD_module_capacity*(self.num_modules/self.MD_module_capacity)**0.8 + self.MD_membrane * self.Area * self.num_modules) 
         self.delta_T2 = self.solar_outlet - self.TEI
         self.delta_T1 = self.solar_inlet - self.TCO
         self.LMTD = (self.delta_T2 - self.delta_T1) / math.log(self.delta_T2/self.delta_T1)
         self.HX_area = self.num_modules * self.th_module / self.HX_eff / 2.5 / self.LMTD
-        self.HX_cost = 2 * ( 0.85 * (self.HX_area/10)**0.6 + 0.35 * self.HX_area) * 1.11
+        self.HX_cost = 2 * ( self.endplates * (self.HX_area/self.endplates_capacity)**0.6 + self.HX * self.HX_area) 
         self.Feed = self.FFR * self.num_modules / 1000
-        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
+        self.other_cap = (self.h_r * (self.num_modules/self.h_r_capacity)**0.6 + self.tank * (self.num_modules/self.tank_capacity)**0.5 + self.pump*(self.Feed/self.pump_capacity)**0.6 + self.other *(self.num_modules/self.other_capacity)**0.3 + 0.25*5 + 2*self.heat_cool*(self.Feed/self.heat_cool_capacity)**0.6) 
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
+        
         self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
         
         self.cost_elec = self.SEEC * self.coe
@@ -83,4 +125,5 @@ class VAGMD_cost(object):
         
         return cost_output
 #%%
-
+case2 = VAGMD_cost()
+print(case2.lcow())
