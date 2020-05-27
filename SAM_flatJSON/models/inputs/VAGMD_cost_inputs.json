@@ -76,6 +76,182 @@
             "Require": "*",
             "Costraint": "",
 			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_membrane",
+            "Label": "Base price of AGMD membrane",
+            "Units": "k$/m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Membrane system"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_module",
+            "Label": "Base price of AGMD module assembly",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Membrane system"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_module_capacity",
+            "Label": "Base capacity of module assembly",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Membrane system"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "HX",
+            "Label": "Base price of heat exchanger",
+            "Units": "k$/m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Heat exchanger"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "endplates",
+            "Label": "Base price of HX endplates",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Heat exchanger"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "endplates_capacity",
+            "Label": "Base capacity of housing rack",
+            "Units": "m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Heat exchanger"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "heat_cool",
+            "Label": "Base price of heating/cooling installation",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Heat exchanger"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "heat_cool_capacity",
+            "Label": "Base capacity of housing rack",
+            "Units": "m3/h",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Heat exchanger"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "h_r",
+            "Label": "Base price of housing rack",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Housing rack"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "h_r_capacity",
+            "Label": "Base capacity of housing rack",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Housing rack"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "tank",
+            "Label": "Base price of tank (with plumbing)",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Tank"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_capacity",
+            "Label": "Base capacity of tank ",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Tank"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pump",
+            "Label": "Base price of pump",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Pump"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pump_capacity",
+            "Label": "Base capacity of pump",
+            "Units": "m3/h",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Pump"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "other",
+            "Label": "Base price of controller, cabling and programming",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Others"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "other_capacity",
+            "Label": "Base capacity of controller, cabling and programming",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "System Components",
+			"Subsection": "Others"
         }
     ]
 }
