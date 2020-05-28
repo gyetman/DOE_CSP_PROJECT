@@ -479,8 +479,6 @@ def clickPoint(clicks,dropDown,relay,figure):
             
             # add lines for solar theme
             if existingTitle == 'Solar Resource':
-                # get the location of the desal & power plant to draw lines
-
                 # pull the previous line if it exists
                 test = tmpData[-2]
                 if 'line' in test.keys():
@@ -491,39 +489,41 @@ def clickPoint(clicks,dropDown,relay,figure):
                     tmpData.remove(test)
 
                 dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
-                # get lat & long points from user-selected point to the power plant
-                powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
-                powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
-                #lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
-                #lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
-                powerLines = go.Scattermapbox(
-                    mode='lines',
-                    name='Closest Power Plant',
-                    line=dict(
-                        width=2,
-                        color='black',
-                    ),
-                    lon = powerLons,
-                    lat = powerLats,
-                    #showlegend=False,
-                )
-                tmpData.insert(-1,powerLines)
+                # skip if we are outside the study area
+                if not dfTmp.shape[0] == 0:
+                    # get lat & long points from user-selected point to the power plant
+                    powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
+                    powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
+                    #lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
+                    #lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
+                    powerLines = go.Scattermapbox(
+                        mode='lines',
+                        name='Closest Power Plant',
+                        line=dict(
+                            width=2,
+                            color='black',
+                        ),
+                        lon = powerLons,
+                        lat = powerLats,
+                        #showlegend=False,
+                    )
+                    tmpData.insert(-1,powerLines)
 
-                # repeat for closest desal location
-                desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
-                desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
-                desalLines = go.Scattermapbox( 
-                    mode='lines',
-                    name='Closest Desalination Plant',
-                    line=dict(
-                        width=2,
-                        color='#40E0D0',
-                    ),
-                    lon=desalLons,
-                    lat=desalLats,
-                    #showlegend=False,
-                )
-                tmpData.insert(-1,desalLines)
+                    # repeat for closest desal location
+                    desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
+                    desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
+                    desalLines = go.Scattermapbox( 
+                        mode='lines',
+                        name='Closest Desalination Plant',
+                        line=dict(
+                            width=2,
+                            color='#40E0D0',
+                        ),
+                        lon=desalLons,
+                        lat=desalLats,
+                        #showlegend=False,
+                    )
+                    tmpData.insert(-1,desalLines)
 
             return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
@@ -659,20 +659,21 @@ def writeOutParams(btn,mapFigure):
         raise PreventUpdate
     else:
         dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
-        paramHelper(dfTmp)
-        # return the next-model button
-        return(
-            html.Div([
-                html.Div(id='button-div'),
-                html.Div(html.A(
-                    html.Button('Select Models', 
-                            id='model-button',
-                        ),
-                    href='http://127.0.0.1:8077/model-selection'
-                    )  )
-            ], className='row',
-            ) 
-        )        
+        if not dfTmp.shape[0] == 0:
+            paramHelper(dfTmp)
+            # return the next-model button
+            return(
+                html.Div([
+                    html.Div(id='button-div'),
+                    html.Div(html.A(
+                        html.Button('Select Models', 
+                                id='model-button',
+                            ),
+                        href='http://127.0.0.1:8077/model-selection'
+                        )  )
+                ], className='row',
+                ) 
+            )        
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
