@@ -21,8 +21,9 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
-# Show the nearest Desal, power plant to the user-selected point (draw a line)
-# add name of plant when hovering (desal)
+# Show line to desal & power plants in different colors. 
+# Draw a line to the nearest canal / water network
+# Show year along with price data. 
 
 # default location
 CENTER_LAT=32.7767
@@ -485,22 +486,44 @@ def clickPoint(clicks,dropDown,relay,figure):
                 if 'line' in test.keys():
                     tmpData.remove(test)
 
+                test = tmpData[-2]
+                if 'line' in test.keys():
+                    tmpData.remove(test)
+
                 dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
-                lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
-                lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
-                lines = go.Scattermapbox(
+                # get lat & long points from user-selected point to the power plant
+                powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
+                powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
+                #lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
+                #lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
+                powerLines = go.Scattermapbox(
                     mode='lines',
+                    name='Closest Power Plant',
                     line=dict(
                         width=2,
-                        color='blue',
+                        color='black',
                     ),
-                    lon = lons,
-                    lat = lats,
-                    showlegend=False,
+                    lon = powerLons,
+                    lat = powerLats,
+                    #showlegend=False,
                 )
-                print(lines)
-                tmpData.insert(-1,lines)
-                
+                tmpData.insert(-1,powerLines)
+
+                # repeat for closest desal location
+                desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
+                desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
+                desalLines = go.Scattermapbox( 
+                    mode='lines',
+                    name='Closest Desalination Plant',
+                    line=dict(
+                        width=2,
+                        color='#40E0D0',
+                    ),
+                    lon=desalLons,
+                    lat=desalLats,
+                    #showlegend=False,
+                )
+                tmpData.insert(-1,desalLines)
 
             return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
@@ -611,7 +634,6 @@ def paramHelper(dfAtts):
     mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts.filename.values[0])
     mParams['county'] = dfAtts.CountyName.values[0]
     mParams['state'] = dfAtts.StatePosta.values[0]
-    # TODO: pull from city or Texas county data
     mParams['water_price'] =  dfAtts.WaterPrice.values[0]
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
