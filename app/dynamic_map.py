@@ -479,37 +479,20 @@ def clickPoint(clicks,dropDown,relay,figure):
             
             # add lines for solar theme
             if existingTitle == 'Solar Resource':
-                # pull the previous line if it exists
-                test = tmpData[-2]
-                if 'line' in test.keys():
-                    tmpData.remove(test)
+                # pull the previous lines if they exists
+                lns = tmpData[-2]
+                if 'line' in lns.keys():
+                    tmpData.remove(lns)
 
-                test = tmpData[-2]
-                if 'line' in test.keys():
-                    tmpData.remove(test)
+                lns = tmpData[-2]
+                if 'line' in lns.keys():
+                    tmpData.remove(lns)
 
                 dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
                 # skip if we are outside the study area
                 if not dfTmp.shape[0] == 0:
                     # get lat & long points from user-selected point to the power plant
-                    powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
-                    powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
-                    #lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
-                    #lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
-                    powerLines = go.Scattermapbox(
-                        mode='lines',
-                        name='Closest Power Plant',
-                        line=dict(
-                            width=2,
-                            color='black',
-                        ),
-                        lon = powerLons,
-                        lat = powerLats,
-                        #showlegend=False,
-                    )
-                    tmpData.insert(-1,powerLines)
-
-                    # repeat for closest desal location
+                    # Pull closest desal point and add it
                     desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
                     desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
                     desalLines = go.Scattermapbox( 
@@ -524,6 +507,21 @@ def clickPoint(clicks,dropDown,relay,figure):
                         #showlegend=False,
                     )
                     tmpData.insert(-1,desalLines)
+                    # pull closest power plant point and add it
+                    powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
+                    powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
+                    powerLines = go.Scattermapbox(
+                        mode='lines',
+                        name='Closest Power Plant',
+                        line=dict(
+                            width=2,
+                            color='black',
+                        ),
+                        lon = powerLons,
+                        lat = powerLats,
+                        #showlegend=False,
+                    )
+                    tmpData.insert(-1,powerLines)
 
             return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
@@ -576,7 +574,7 @@ def createMarkdown(mddf,theme):
             mdText += 'Texas county maximum residential price: ${:,.2f}/m3\n\n'.format(maxPrice)
             mdText += 'Texas county minimum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Min_F50000Gal_Commercial_per_13.values[0]/3.78)
             mdText += 'Texas county maximum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Max_Water_Price_perKgal_Comm.values[0]/3.78)
-            mdText += 'Year of Prices ()\n\n'
+            mdText += 'Year of price data: 2018\n\n'
         cityPrice = mddf.WaterPrice.values[0]
         if np.isnan(cityPrice):
             print('No city water prices within 150km of this location')
@@ -584,7 +582,7 @@ def createMarkdown(mddf,theme):
             mdText += '{} city water price: ${:.2f}/m3\n\n'.format(mddf.WaterUtilityCity.values[0], cityPrice)
             mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
             mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
-            mdText += '&nbsp&nbsp Year of Data: ()\n\n'
+            mdText += '&nbsp&nbsp Year of price data: 2017\n\n'
         if np.isnan(minPrice) & np.isnan(cityPrice):
             mdText += 'No local water price information available for this location.\n\n'
         wnd = mddf.WaterNetworkDistance.values[0]
