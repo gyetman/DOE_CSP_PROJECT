@@ -18,15 +18,6 @@ from dash.dependencies import Output, Input
 # 4. transfer & adapt code to write out parameters as json
 # 5. style to be consistent with menu interface
 
-# Methods for data loading
-def loadPowerPlants():
-    ''' load power plant data & return mapbox layer '''
-    # TODO: use helper functions & config for loading / location
-    pplants = df.load(csv('./GISData/'))
-
-
-
-
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -34,12 +25,12 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 
 # Dictionary to hold map theme labels and ID values
 # add any new themes here to make them appear in the 
-# list of radio buttons
+# list of radio buttons. note: first item is the 
+# default for when map loads, change order to update. 
 mapbox_ids = {
     'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j',
     'Outdoors': 'mapbox/outdoors-v9',
     'Satellie with streets': 'mapbox/satellite-streets-v9', 
-
 }
 
 MAP_ID = "map-id"
@@ -60,7 +51,7 @@ def render_map():
             zoom=10,
             children=[
                 dl.TileLayer(id=BASE_LAYER_ID),
-                dl.ScaleControl(metric=True, imperial=False),
+                dl.ScaleControl(metric=True, imperial=True),
 
                 # Placeholder for user-selected site. 
                 # TODO: get an icon that's "invisible"
@@ -107,10 +98,10 @@ def register_map(app):
     @app.callback(Output(USER_POINT, 'position'),
                   [Input(MAP_ID, 'click_lat_lng')])
     def click_coord(coords):
-        if coords is not None:
-            return(coords)
-        else:
+        if not coords:
             return [0,0]
+        else:
+            return coords
 
     @app.callback(Output(SITE_DETAILS, 'children'),
                   [Input(MAP_ID, 'click_lat_lng')])
@@ -118,7 +109,7 @@ def register_map(app):
         if coords is None:
             return('Click on Map')
         else:
-            # TODO: use coords and theme to lookup layer. 
+            # TODO: use coords and theme to lookup layers. 
             # theme should come from a state in the callback...
             # module to lookup info will called...
             return('Placeholder text: clicked!')
