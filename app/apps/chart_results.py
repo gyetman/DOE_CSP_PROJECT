@@ -19,9 +19,11 @@ app.title = 'Chart Results'
 
 HOURS_IN_YEAR = 8760
 
+alkup = helpers.json_load(cfg.app_json)
+flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], alkup['finance'])
 # load simulation results from JSONs
 sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
-des = helpers.json_load(cfg.sam_desal_simulation_outfile)
+des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
 
 # Note: solar_names need to match 'Name' values in the JSON
 solar_names = ('System power generated','Receiver mass flow rate',

@@ -14,9 +14,20 @@ from app import app
 
 app.title = "Analysis Report"
 
-analysis_report_title = html.Div([
-    html.H2('Analysis Report', className='page-header', id='report-title'),
-    html.P(id='data-initialize')])
+chart_navbar = dbc.NavbarSimple(
+    children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
+              dbc.NavItem(dbc.NavLink("Report"), active=True),
+              html.P(id='data-initialize')],
+    brand="Analysis Report",
+    color="primary",
+    dark=True,
+    style={'margin-bottom':60},  
+    id='report-title'
+)
+
+# analysis_report_title = html.Div([
+#     html.H2('Analysis Report', className='page-header', id='report-title'),
+#     html.P(id='data-initialize')])
 
 local_condition = dbc.CardBody(id='local-condition')
 
@@ -32,8 +43,8 @@ system_description = dbc.Card([dbc.CardHeader(html.H4('System Description')),loc
 
 simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
 
-analysis_report_layout = [analysis_report_title, 
-                          dbc.CardDeck([system_description, simulation_results])]
+analysis_report_layout = [chart_navbar, 
+                          dbc.Container(dbc.CardDeck([system_description, simulation_results]),style={'margin-bottom':150})]
 
 @app.callback(
     Output('data-initialize', 'children'),
@@ -46,8 +57,10 @@ def gather_data(x):
     updates = helpers.json_load(cfg.map_json)
     # add all data from app_json
     updates.update(helpers.json_load(cfg.app_json))
+    # create the file lookup dict for dynamic file names
+    flkup = cfg.build_file_lookup(updates['solar'], updates['desal'], updates['finance'])
     
-    if cfg.desal == 'VAGMD':
+    if updates['desal'] == 'VAGMD':
     # add specific data from desalination GUI output
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         fossil_fuel = "Yes" if d['Fossil_f'] else "No"
@@ -56,7 +69,7 @@ def gather_data(x):
                         'storage_hour':d['storage_hour'],
                         'fossil_fuel': fossil_fuel})
         # add specific data from desal simulation output
-        ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
+        ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
@@ -64,7 +77,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
-        dd = helpers.json_load(cfg.desal_design_infile)
+        dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -74,7 +87,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
         updates.update({'n_modules':dd[index]['Value']})
         # add specific data from desal cost output
-        dc = helpers.json_load(cfg.sam_desal_finance_outfile)
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
         updates.update({'lcow':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
@@ -95,7 +108,7 @@ def gather_data(x):
         updates.update({'actual_aperture':so[index]['Value']})
         
     ## Temporal 'if' condition for another desal technology
-    elif cfg.desal == 'LTMED':
+    elif updates['desal'] == 'LTMED':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         fossil_fuel = "Yes" if d['Fossil_f'] else "No"
         updates.update({'FeedC_r':d['FeedC_r'],
@@ -103,7 +116,7 @@ def gather_data(x):
                         'storage_hour':d['storage_hour'],
                         'fossil_fuel': fossil_fuel})
         # add specific data from desal simulation output
-        ds = helpers.json_load(cfg.sam_desal_simulation_outfile)
+        ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
@@ -111,7 +124,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
-        dd = helpers.json_load(cfg.desal_design_infile)
+        dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -119,13 +132,11 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
         # add specific data from desal cost output
-        dc = helpers.json_load(cfg.sam_desal_finance_outfile)
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
         updates.update({'lcow':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
         updates.update({'lcoh':dc[index]['Value']})
-#        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat_Calculated')
-#        updates.update({'lcoh_cal':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
@@ -170,8 +181,9 @@ def set_local_condition(x):
     [Input('data-initialize', 'children')])
 def set_desal_config(x):
     r = helpers.json_load(cfg.report_json)
+    app = helpers.json_load(cfg.app_json)
     
-    if cfg.desal == "VAGMD":
+    if app['desal'] == "VAGMD":
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
@@ -184,7 +196,7 @@ def set_desal_config(x):
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
         html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh")
         ])
-    elif cfg.desal == 'LTMED':
+    elif app['desal'] == 'LTMED':
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
