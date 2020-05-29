@@ -204,7 +204,7 @@ dropDownOptions = [
     {'label':'Solar Resource', 'value':'solar'},
     {'label':'Water Prices', 'value':'wprice'},
     {'label':'Electric Prices', 'value':'eprice','disabled':True},
-    {'label':'Produced Waters','value':'produced'},
+    {'label':'Produced Waters','value':'produced','disabled':True},
     {'label':'Brackish Waters', 'value':'brackish','disabled':True},
     {'label':'Regulatory and Permitting', 'value':'legal'}
 ]
