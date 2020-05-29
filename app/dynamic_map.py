@@ -21,8 +21,9 @@ import app_config as cfg
 # out in new tab/window
 # In Texas water price infomration, include commercial, residential, 
 # industrial price information (min & max)
-# Show the nearest Desal, power plant to the user-selected point (draw a line)
-# add name of plant when hovering (desal)
+# Show line to desal & power plants in different colors. 
+# Draw a line to the nearest canal / water network
+# Show year along with price data. 
 
 # default location
 CENTER_LAT=32.7767
@@ -478,29 +479,49 @@ def clickPoint(clicks,dropDown,relay,figure):
             
             # add lines for solar theme
             if existingTitle == 'Solar Resource':
-                # get the location of the desal & power plant to draw lines
+                # pull the previous lines if they exists
+                lns = tmpData[-2]
+                if 'line' in lns.keys():
+                    tmpData.remove(lns)
 
-                # pull the previous line if it exists
-                test = tmpData[-2]
-                if 'line' in test.keys():
-                    tmpData.remove(test)
+                lns = tmpData[-2]
+                if 'line' in lns.keys():
+                    tmpData.remove(lns)
 
                 dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
-                lats = [dfTmp.PowerPlantY.values[0],pt['lat'][0],dfTmp.DesalY.values[0]]
-                lons = [dfTmp.PowerPlantX.values[0],pt['lon'][0],dfTmp.DesalX.values[0]]
-                lines = go.Scattermapbox(
-                    mode='lines',
-                    line=dict(
-                        width=2,
-                        color='blue',
-                    ),
-                    lon = lons,
-                    lat = lats,
-                    showlegend=False,
-                )
-                print(lines)
-                tmpData.insert(-1,lines)
-                
+                # skip if we are outside the study area
+                if not dfTmp.shape[0] == 0:
+                    # get lat & long points from user-selected point to the power plant
+                    # Pull closest desal point and add it
+                    desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
+                    desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
+                    desalLines = go.Scattermapbox( 
+                        mode='lines',
+                        name='Closest Desalination Plant',
+                        line=dict(
+                            width=2,
+                            color='#40E0D0',
+                        ),
+                        lon=desalLons,
+                        lat=desalLats,
+                        #showlegend=False,
+                    )
+                    tmpData.insert(-1,desalLines)
+                    # pull closest power plant point and add it
+                    powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
+                    powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
+                    powerLines = go.Scattermapbox(
+                        mode='lines',
+                        name='Closest Power Plant',
+                        line=dict(
+                            width=2,
+                            color='black',
+                        ),
+                        lon = powerLons,
+                        lat = powerLats,
+                        #showlegend=False,
+                    )
+                    tmpData.insert(-1,powerLines)
 
             return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
@@ -553,7 +574,7 @@ def createMarkdown(mddf,theme):
             mdText += 'Texas county maximum residential price: ${:,.2f}/m3\n\n'.format(maxPrice)
             mdText += 'Texas county minimum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Min_F50000Gal_Commercial_per_13.values[0]/3.78)
             mdText += 'Texas county maximum commercial price: ${:,.2f}/m3\n\n'.format(mddf.Max_Water_Price_perKgal_Comm.values[0]/3.78)
-            mdText += 'Year of Prices ()\n\n'
+            mdText += 'Year of price data: 2018\n\n'
         cityPrice = mddf.WaterPrice.values[0]
         if np.isnan(cityPrice):
             print('No city water prices within 150km of this location')
@@ -561,7 +582,7 @@ def createMarkdown(mddf,theme):
             mdText += '{} city water price: ${:.2f}/m3\n\n'.format(mddf.WaterUtilityCity.values[0], cityPrice)
             mdText += '&nbsp&nbsp Provider: {}\n\n'.format(mddf.WaterUtilityName.values[0])
             mdText += '&nbsp&nbsp Distance to site: {:,.1f} km\n\n'.format(mddf.WaterPriceDist.values[0] / 1000)
-            mdText += '&nbsp&nbsp Year of Data: ()\n\n'
+            mdText += '&nbsp&nbsp Year of price data: 2017\n\n'
         if np.isnan(minPrice) & np.isnan(cityPrice):
             mdText += 'No local water price information available for this location.\n\n'
         wnd = mddf.WaterNetworkDistance.values[0]
@@ -611,7 +632,6 @@ def paramHelper(dfAtts):
     mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts.filename.values[0])
     mParams['county'] = dfAtts.CountyName.values[0]
     mParams['state'] = dfAtts.StatePosta.values[0]
-    # TODO: pull from city or Texas county data
     mParams['water_price'] =  dfAtts.WaterPrice.values[0]
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = dfAtts.CENTROID_Y.values[0]
@@ -637,20 +657,21 @@ def writeOutParams(btn,mapFigure):
         raise PreventUpdate
     else:
         dfTmp = df.loc[(df['CENTROID_Y'] == userPt['lat'][0]) & (df['CENTROID_X'] == userPt['lon'][0])]
-        paramHelper(dfTmp)
-        # return the next-model button
-        return(
-            html.Div([
-                html.Div(id='button-div'),
-                html.Div(html.A(
-                    html.Button('Select Models', 
-                            id='model-button',
-                        ),
-                    href='http://127.0.0.1:8077/model-selection'
-                    )  )
-            ], className='row',
-            ) 
-        )        
+        if not dfTmp.shape[0] == 0:
+            paramHelper(dfTmp)
+            # return the next-model button
+            return(
+                html.Div([
+                    html.Div(id='button-div'),
+                    html.Div(html.A(
+                        html.Button('Select Models', 
+                                id='model-button',
+                            ),
+                        href='http://127.0.0.1:8077/model-selection'
+                        )  )
+                ], className='row',
+                ) 
+            )        
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
