@@ -90,7 +90,7 @@ def render_map():
             # use the first item as the default
             value=mapbox_url.format(id=next(iter(mapbox_ids.values())), access_token=mapbox_token)
         ),
-        dcc.Markdown('#### Site details (click on map to select site):'),
+        dcc.Markdown('#### Site details:'),
         html.Div(id=SITE_DETAILS),
     ]
 
