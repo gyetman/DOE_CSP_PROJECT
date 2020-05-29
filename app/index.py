@@ -6,7 +6,7 @@ from app import app
 from apps import analysis_report, chart_results, model_selection, model_parameters
 
 layout = html.Div([
-    dcc.Location(id='url', refresh=False),
+    dcc.Location(id='url', refresh=True),
     html.Div(id='page-content')
 ])
 app.layout = layout
