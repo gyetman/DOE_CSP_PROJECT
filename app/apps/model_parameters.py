@@ -336,7 +336,7 @@ def create_tabs_and_tables(x):
     # find the TDS Feed Concentration table and update
     if tds_value:
         tds_index = helpers.index_in_list_of_dicts(desal_model_vars,'Name','FeedC_r')
-        solar_model_vars[tds_index]['Value']=tds_value
+        desal_model_vars[tds_index]['Value']=tds_value
 
     # append the desal_finance variables to the finance variables
     finance_model_vars += desal_finance_model_vars
