@@ -29,5 +29,5 @@ Run the logic model
 
 Open your browser and choose a model
 
-http://127.0.0.1:8066/model-selection
+http://127.0.0.1:8067/model-selection
 Work through from there…
