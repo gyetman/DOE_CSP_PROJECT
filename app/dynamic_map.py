@@ -14,14 +14,10 @@ import app_config as cfg
 
 
 #TODO:
-
-# Update state and local Google Sheet links with HTML to pop
-# out in new tab/window
-# Show line to desal & power plants in different colors. 
 # Show power plant size in MW
 # Desal plant: add customer sub-type
+# TODO: go back to e-grid data and add in plant capacity MW
 
-# State-level regulatory information
 regulatory = {
 'TX':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1175080604&single=true',
 'AZ':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=802223381&single=true',
@@ -289,7 +285,6 @@ def loadData(mapTheme,fg):
         with open('./gisData/tx_county_water_prices.geojson','r') as f:
             geoj = json.load(f)
         # load data frame of prices
-        # TODO: only load fields that we need! 
         df_county_prices = pd.read_csv('./gisData/tx_county_water_price.csv')
         df_county_prices['text'] = '$' + df_county_prices['Max_Water_Price_perKgal_Res'].round(2).astype(str) + '/Kgal'
         countyData = go.Choroplethmapbox(
@@ -457,65 +452,64 @@ def clickPoint(clicks,dropDown,relay,figure):
 
     if clicks:
         txt = clicks['points'][0]['text']
-        else:
         # update the user point 
-            tmpData = figure['data']
-            pt = tmpData[-1]
-            tmpData = tmpData[:-1]
-            pt['visible'] = True
-            pt['showlegend'] = True
-            pt['lon'] = [clicks['points'][0]['lon']]
-            pt['lat'] = [clicks['points'][0]['lat']]
-            #figure['data'] = tmpData
-            tmpData.append(pt)
-            
-            # add lines for solar theme
-            if existingTitle == 'Solar Resource':
-                # pull the previous lines if they exists
-                lns = tmpData[-2]
-                if 'line' in lns.keys():
-                    tmpData.remove(lns)
+        tmpData = figure['data']
+        pt = tmpData[-1]
+        tmpData = tmpData[:-1]
+        pt['visible'] = True
+        pt['showlegend'] = True
+        pt['lon'] = [clicks['points'][0]['lon']]
+        pt['lat'] = [clicks['points'][0]['lat']]
+        #figure['data'] = tmpData
+        tmpData.append(pt)
+        
+        # add lines for solar theme
+        if existingTitle == 'Solar Resource':
+            # pull the previous lines if they exists
+            lns = tmpData[-2]
+            if 'line' in lns.keys():
+                tmpData.remove(lns)
 
-                lns = tmpData[-2]
-                if 'line' in lns.keys():
-                    tmpData.remove(lns)
+            lns = tmpData[-2]
+            if 'line' in lns.keys():
+                tmpData.remove(lns)
 
-                dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
-                # skip if we are outside the study area
-                if not dfTmp.shape[0] == 0:
-                    # get lat & long points from user-selected point to the power plant
-                    # Pull closest desal point and add it
-                    desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
-                    desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
-                    desalLines = go.Scattermapbox( 
-                        mode='lines',
-                        name='Closest Desalination Plant',
-                        line=dict(
-                            width=2,
-                            color='#40E0D0',
-                        ),
-                        lon=desalLons,
-                        lat=desalLats,
-                        #showlegend=False,
-                    )
-                    tmpData.insert(-1,desalLines)
-                    # pull closest power plant point and add it
-                    powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
-                    powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
-                    powerLines = go.Scattermapbox(
-                        mode='lines',
-                        name='Closest Power Plant',
-                        line=dict(
-                            width=2,
-                            color='black',
-                        ),
-                        lon = powerLons,
-                        lat = powerLats,
-                        #showlegend=False,
-                    )
-                    tmpData.insert(-1,powerLines)
+            dfTmp = df.loc[(df['CENTROID_Y'] == pt['lat'][0]) & (df['CENTROID_X'] == pt['lon'][0])]
+            # skip if we are outside the study area
+            if not dfTmp.shape[0] == 0:
+                # get lat & long points from user-selected point to the power plant
+                # Pull closest desal point and add it
+                desalLats = [dfTmp.DesalY.values[0],pt['lat'][0]]
+                desalLons = [dfTmp.DesalX.values[0],pt['lon'][0]]
+                desalLines = go.Scattermapbox( 
+                    mode='lines',
+                    name='Closest Desalination Plant',
+                    line=dict(
+                        width=2,
+                        color='#40E0D0',
+                    ),
+                    lon=desalLons,
+                    lat=desalLats,
+                    #showlegend=False,
+                )
+                tmpData.insert(-1,desalLines)
+                # pull closest power plant point and add it
+                powerLats = [dfTmp.PowerPlantY.values[0],pt['lat'][0]]
+                powerLons = [dfTmp.PowerPlantX.values[0],pt['lon'][0]]
+                powerLines = go.Scattermapbox(
+                    mode='lines',
+                    name='Closest Power Plant',
+                    line=dict(
+                        width=2,
+                        color='black',
+                    ),
+                    lon = powerLons,
+                    lat = powerLats,
+                    #showlegend=False,
+                )
+                tmpData.insert(-1,powerLines)
 
-            return go.Figure(dict(data=tmpData, layout=figure['layout']))
+        return go.Figure(dict(data=tmpData, layout=figure['layout']))
 
     else:
         raise PreventUpdate
@@ -524,7 +518,6 @@ def clickPoint(clicks,dropDown,relay,figure):
 def createMarkdown(mddf,theme):
     ''' helper method to return the markdown text relevant for the given 
     map theme '''
-    # TODO: add distance to closest plants
     # markdown used with all themes
     mdText = '##### Site Properties in {} County, {}\n\n'.format(
         mddf.CountyName.values[0],
@@ -552,13 +545,8 @@ def createMarkdown(mddf,theme):
 
     elif theme == 'Water Prices':
         mdText += '###### Water Price Information\n\n'
-        # TODO: display min & max, not average
-        # mdText += 'Texas county average price: ${:,.2f}/m3\n\n'.format(mddf.Avg_F5000gal_res_perKgal.values[0]/3.78)
-        #Max_F5000gal_res_perKgal Min_F5000gal_res_perKgal
         minPrice = mddf.Min_F5000gal_res_perKgal.values[0]/3.78
         maxPrice = mddf.Max_Water_Price_perKgal_Res.values[0]/3.78
-        print(type(minPrice))
-        print(minPrice)
         if np.isnan(minPrice):
             print('No Texas water prices at this location')
         else:
@@ -592,10 +580,10 @@ def createMarkdown(mddf,theme):
             mdText += '###### No regulatory information available for {}\n\n'.format(st)
         else:
             mdText += '###### [Regulatory Information]({})\n\n'.format(regulatory[st])
+            # following lines don't work, perhaps not supported in markdown
             #mdText += '<a href="{}" target="_blank">Regulatory Information</a>'.format(regulatory[st])
             #mdText += '######[Regulatory Information]({}){:target="_blank"}\n\n'.format(regulatory[st])
     return(mdText)
-
 
 # callback to update Markdown text
 @app.callback(
@@ -619,8 +607,7 @@ def updateMarkdown(clicks,fig):
 
 def paramHelper(dfAtts):
     ''' helper method to write out parameters. Uses the solar dataframe point ID 
-    to write out map paramers to  '''
-    #TODO: initialize the map-data json and write all params (read and update?)
+    to write out map paramers.  '''
     print('getting params')
     mParams = dict()
     # update dictionary
