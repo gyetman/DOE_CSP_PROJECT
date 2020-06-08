@@ -21,6 +21,16 @@ import app_config as cfg
 # Show power plant size in MW
 # Desal plant: add customer sub-type
 
+# State-level regulatory information
+regulatory = {
+'TX':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1175080604&single=true',
+'AZ':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=802223381&single=true',
+'FL':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1153194759&single=true',
+'CA':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1162276707&single=true',
+'NV':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=736651906&single=true',
+'CO':'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=334054884&single=true',
+}
+
 
 # default location
 CENTER_LAT=32.7767
@@ -593,6 +603,7 @@ def createMarkdown(mddf,theme):
 
     elif theme == 'Regulatory and Permitting':
         mdText += '###### Regulatory Information\n\n'
+        mdText += '{}\n\n'.format(mddf.StatePosta.values[0])
         mdText += '[State Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
     return(mdText)
 
