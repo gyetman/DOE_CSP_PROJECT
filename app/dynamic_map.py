@@ -236,7 +236,7 @@ app.layout = html.Div(children=[
             style= {
                 'position': 'relative',
                 'display': 'inline-block',
-                'min-width': '250px'
+                'min-width': '225px'
             }
         ),
         html.Div([
@@ -606,8 +606,9 @@ def createMarkdown(mddf,theme):
         if st not in regulatory.keys():
             mdText += '###### No regulatory information available for {}\n\n'.format(st)
         else:
-            #mdText += '######[Regulatory Information]({})\n\n'.format(regulatory[st])
-            mdText += '<a href="{}" target="_blank">Regulatory Information</a>'.format(regulatory[st])
+            mdText += '###### [Regulatory Information]({})\n\n'.format(regulatory[st])
+            #mdText += '<a href="{}" target="_blank">Regulatory Information</a>'.format(regulatory[st])
+            #mdText += '######[Regulatory Information]({}){:target="_blank"}\n\n'.format(regulatory[st])
     return(mdText)
 
 
