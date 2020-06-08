@@ -103,10 +103,7 @@ desal = go.Scattermapbox(
         #color='green',
     ),
     visible=True,
-
-    
 )
-
 
 # user-point placeholder
 userPoint = go.Scattermapbox(
@@ -266,7 +263,7 @@ def loadData(mapTheme,fg):
     # keep existing user point 
     # always the layer on top (last)
     userPt = fg['data'][-1]
-
+    # handling in a switch-like manner
     if mapTheme == 'wprice':
         # display the counties by price
         # load water price point data (global)
@@ -458,19 +455,8 @@ def clickPoint(clicks,dropDown,relay,figure):
         # update data and return a go.Figure! 
         return (go.Figure(dict(data=loadData(dropDown,figure),layout = figure['layout'])))
 
-    # if relay:
-    #     print(relay)
-    #     print(clicks)
-    #     print(type(fig))
-
     if clicks:
         txt = clicks['points'][0]['text']
-        if 'Easement:' in txt:
-            print('Clicked easement')
-            raise PreventUpdate
-        elif 'Agency:' in txt:
-            print('Clicked agency')
-            raise PreventUpdate
         else:
         # update the user point 
             tmpData = figure['data']
@@ -482,7 +468,6 @@ def clickPoint(clicks,dropDown,relay,figure):
             pt['lat'] = [clicks['points'][0]['lat']]
             #figure['data'] = tmpData
             tmpData.append(pt)
-
             
             # add lines for solar theme
             if existingTitle == 'Solar Resource':
@@ -686,6 +671,4 @@ def writeOutParams(btn,mapFigure):
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8058)    
-    
-    
     
