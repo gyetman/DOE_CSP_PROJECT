@@ -80,6 +80,8 @@ class SamBaseClass(object):
                     self.module_create_execute('cashloan')
                 elif self.financialModel == 'iph_to_lcoefcr':
                     self.module_create_execute('lcoefcr')
+                self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+                print(self.lcoh)
             # execute desalination model, if any
             if self.desalination:
                 self.desal_simulation(self.desalination)
@@ -195,11 +197,14 @@ class SamBaseClass(object):
         
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
-            lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            lcoh = self.lcoh
+
             self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
                                    MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
+
             self.cost_output = self.LCOW.lcow()
+
             cost_json_outfile = self.samPath / 'results' /'VAGMD_cost_output.json'
               
         elif desal == 'LTMED':

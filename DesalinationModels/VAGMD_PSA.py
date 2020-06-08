@@ -194,6 +194,7 @@ class VAGMD_PSA(object):
         self.design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
+        self.design_output.append({'Name':'Recovery ratio','Value':self.F / self.FFR_r *100 ,'Unit':'%'})
         return 
         
 # Added optimization on parameter selection of TEI_r, TCI_r and FFR_r
@@ -345,10 +346,10 @@ class VAGMD_PSA(object):
 #STEC =[]
 #GOR =[]
 #for f in Feed:
-#case = VAGMD_PSA()
-#output = case.design()
-#a = [0.0, 0.0,  1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0]
-#simu = case.simulation(gen = a, storage = 6)
+case = VAGMD_PSA()
+output = case.design()
+a = [0.0, 0.0,  1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0]
+simu = case.simulation(gen = a, storage = 6)
 ##print(simu)
 #
 ##    Plux.append(case.PFlux)

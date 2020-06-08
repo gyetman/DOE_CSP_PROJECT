@@ -32,8 +32,10 @@ model_selection_layout = html.Div([
             dbc.RadioItems(
                 id='select-solar',
                 options=[
-                    {'label': 'Static Collector                ',
-                    'value': 'StaticCollector_iph', 'disabled': False},
+                    {'label': 'Static Collector (Flat Plate)   ',
+                    'value': 'SC_FPC', 'disabled': False},
+                    {'label': 'Static Collector (Evacuated Tube)',
+                    'value': 'SC_ETC', 'disabled': False},
                     {'label': 'Integrated Solar Combined Cycle ',
                     'value': 'tcsiscc', 'disabled': False},
                     {'label': 'Linear Fresnel Direct Steam     ',
@@ -50,6 +52,8 @@ model_selection_layout = html.Div([
                     'value': 'trough_physical_process_heat', 'disabled': False},
                     {'label': 'Process Heat Linear Direct Steam',
                     'value': 'linear_fresnel_dsg_iph', 'disabled': False}, 
+                    {'label': 'No Solar Thermal System',
+                    'value': 'none', 'disabled': False}, 
                 ],
                 value='tcslinear_fresnel',
             ),width=10,

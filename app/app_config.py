@@ -57,7 +57,7 @@ Desal = {'FOR':'Forward Osmosis                          ',
          'TLV':'MED with Thermal Vapor Compression       ',
          'MBD':'Membrane Distillation                    ',
          'NUN':'No Desalination Model                    ',
-         'ROM':'Reverse Osmosis                          ', 
+         'RO':'Reverse Osmosis                          ', 
          }
 
 #dict for financial model 'values' and 'labels' 
@@ -73,7 +73,8 @@ Financial = {'utilityrate5':'Commercial (Distributed)                   ',
 
 # NOTE: make sure any changes in this table are also reflected in app.layout
 # dict for solar/CSP 'values' and 'labels'
-Solar = {'StaticCollector_iph' :'Flat-Plate Collector',
+Solar = {'SC_FPC' :'Static Collector (Flat Plate)',
+         'SC_ETC' :'Static Collector (Evacuated Tube)',
          'trough_physical_process_heat':'Industrial Process Heat Parabolic Trough   ',
          'linear_fresnel_dsg_iph':'Industrial Process Heat Linear Direct Steam',
          'tcsiscc':'Integrated Solar Combined Cycle ',
@@ -82,24 +83,28 @@ Solar = {'StaticCollector_iph' :'Flat-Plate Collector',
          'tcsdirect_steam':'Power Tower Direct Steam        ',
          'tcsmolten_salt':'Power Tower Molten Salt         ',
          'tcstrough_physical'  :'Parabolic Trough Physical       ',
+         'none': 'No Solar Thermal System'
           }
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'StaticCollector_iph' : [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'trough_physical_process_heat': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'linear_fresnel_dsg_iph': [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcsiscc': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcslinear_fresnel': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcsMSLF': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcsdirect_steam': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcsmolten_salt': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
-    'tcstrough_physical'  : [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('ROM',True)],
+    'SC_FPC' : [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'SC_ETC' : [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'trough_physical_process_heat': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'linear_fresnel_dsg_iph': [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcsiscc': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcslinear_fresnel': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcsMSLF': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcsdirect_steam': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcsmolten_salt': [('FOR',True),('VAGMD',True),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'tcstrough_physical'  : [('FOR',True),('VAGMD',False),('LTMED',False),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',True)],
+    'none'  : [('FOR',True),('VAGMD',True),('LTMED',True),('ABS',True),('TLV',True),('MBD',True),('NUN',True),('RO',False)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
 solarToFinance = {
-    'StaticCollector_iph': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
+    'SC_FPC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
+    'SC_ETC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'trough_physical_process_heat': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'linear_fresnel_dsg_iph': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'tcsiscc': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',False)],
@@ -108,4 +113,5 @@ solarToFinance = {
     'tcsdirect_steam': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('none',True),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
     'tcsmolten_salt': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('none',True),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
     'tcstrough_physical'  : [('utilityrate5',False),('lcoefcr',False),('iph_to_lcoefcr',True),('none',False),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
+    'none'  : [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('none',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     }
