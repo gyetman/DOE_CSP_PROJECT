@@ -14,16 +14,13 @@ import app_config as cfg
 
 
 #TODO:
-# Test using lookup function / caches for faster loading
-# Hide Texas County water price information (mdText lines)
-# if outside of Texas. 
+
 # Update state and local Google Sheet links with HTML to pop
 # out in new tab/window
-# In Texas water price infomration, include commercial, residential, 
-# industrial price information (min & max)
 # Show line to desal & power plants in different colors. 
-# Draw a line to the nearest canal / water network
-# Show year along with price data. 
+# Show power plant size in MW
+# Desal plant: add customer sub-type
+
 
 # default location
 CENTER_LAT=32.7767
@@ -597,7 +594,6 @@ def createMarkdown(mddf,theme):
     elif theme == 'Regulatory and Permitting':
         mdText += '###### Regulatory Information\n\n'
         mdText += '[State Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
-        mdText += '[Local Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
     return(mdText)
 
 
