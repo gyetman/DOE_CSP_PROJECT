@@ -231,8 +231,8 @@ app.layout = html.Div(children=[
             value='solar',
             className='row',
             clearable=False,
-            persistence=True,
-            persistence_type='local',
+            #persistence=True,
+            #persistence_type='local',
             style= {
                 'position': 'relative',
                 'display': 'inline-block',
@@ -602,9 +602,11 @@ def createMarkdown(mddf,theme):
             mdText += '&nbsp&nbspOperator: {}\n\n'.format(mddf.CanalOperator.values[0])
 
     elif theme == 'Regulatory and Permitting':
-        mdText += '###### Regulatory Information\n\n'
-        mdText += '{}\n\n'.format(mddf.StatePosta.values[0])
-        mdText += '[State Level Information](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSw5fi_GwITuU45S16K6Yn_U5Ae1AbuWZJDkzNhNzPOA8u2yQ9ga14cy7oQpPgTZzMknS83hrKSlHnu/pubhtml#)\n\n'
+        st = mddf.StatePosta.values[0]
+        if st not in regulatory.keys():
+            mdText += '###### No regulatory information available for {}\n\n'.format(st)
+        else:
+            mdText += '[###### Regulatory Information]({})\n\n'.format(regulatory[st])
     return(mdText)
 
 
