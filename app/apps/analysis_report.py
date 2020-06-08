@@ -86,6 +86,8 @@ def gather_data(x):
         updates.update({'gained_output_ratio':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
         updates.update({'n_modules':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
+        updates.update({'RR':dd[index]['Value']})
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
@@ -96,9 +98,13 @@ def gather_data(x):
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
         updates.update({'ops_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        updates.update({'energy_cost':dc[index]['Value']})
         # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['q_pb_des']})
+        updates.update({'footprint1':s['q_pb_des'] * 6})
+        updates.update({'footprint2':s['q_pb_des'] * 8})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
@@ -131,6 +137,8 @@ def gather_data(x):
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
+        updates.update({'RR':dd[index]['Value']})
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
@@ -144,6 +152,8 @@ def gather_data(x):
         # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['q_pb_des']})
+        updates.update({'footprint1':s['q_pb_des'] * 6})
+        updates.update({'footprint2':s['q_pb_des'] * 8})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
@@ -219,6 +229,7 @@ def set_solar_config(x):
     html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
     html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
     html.Div(f"Actual aperture: {r['actual_aperture']:.0f} m2"),
+    html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
     ])
 
 @app.callback(
@@ -228,8 +239,9 @@ def set_system_performance(x):
     r = helpers.json_load(cfg.report_json)
     return ([
     html.H5('System Performance', className='card-title'),
-    html.Div(f"Total water production: {r['water_prod']:.0f} m3"),
+    html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
     html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
+    html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
     html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
     
     ])
@@ -242,9 +254,11 @@ def set_cost_analysis(x):
     return ([
     html.H5('Cost Analysis', className='card-title'),
     html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
-    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.3f} $/m3"),
+    html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.3f} $/kWh"),
 #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
-    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/m3"),
+    html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/kWh"),
     html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
     html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
+    html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
+       
     ])

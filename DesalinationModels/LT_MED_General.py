@@ -108,7 +108,8 @@ class lt_med_general(object):
         design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
         design_output.append({'Name':'Specific heat exchanger area','Value':self.system.sA,'Unit':'m2/(kg/s)'}) 
-        
+        design_output.append({'Name':'Recovery ratio','Value':self.Capacity / self.qF * 100/24/3.6,'Unit':'%'}) 
+                
         return design_output
     
     # class variables

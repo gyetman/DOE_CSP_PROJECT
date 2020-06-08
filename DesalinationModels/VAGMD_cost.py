@@ -68,8 +68,12 @@ class VAGMD_cost(object):
         self.th_module = th_module
         self.FFR = FFR
         self.coe = coe
-        self.coh = coh
+        if coh == 100:
+            self.coh = sam_coh
+        else:
+            self.coh = coh
         self.sam_coh = sam_coh
+
         self.cost_module_re = cost_module_re
         self.Prod = Prod
         self.STEC = STEC
@@ -122,8 +126,9 @@ class VAGMD_cost(object):
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat_Calculated','Value':self.sam_coh,'Unit':'$/m3'})   
+        cost_output.append({'Name':'Energy cost','Value':self.cost_th + self.cost_elec,'Unit':'$/m3'})   
         
         return cost_output
 #%%
-case2 = VAGMD_cost()
-print(case2.lcow())
+# case2 = VAGMD_cost(coh = 100)
+# print(case2.lcow())

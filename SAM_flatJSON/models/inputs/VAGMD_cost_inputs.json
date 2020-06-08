@@ -135,7 +135,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "endplates_capacity",
-            "Label": "Base capacity of housing rack",
+            "Label": "Base capacity of HX endplates",
             "Units": "m2",
             "Require": "*",
             "Costraint": "",
@@ -157,7 +157,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "heat_cool_capacity",
-            "Label": "Base capacity of housing rack",
+            "Label": "Base capacity of heating/cooling installation",
             "Units": "m3/h",
             "Require": "*",
             "Costraint": "",
