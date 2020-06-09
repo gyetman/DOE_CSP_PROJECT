@@ -1,7 +1,7 @@
 {
-    "cashloan": [
+    "SC_ETC": [
 	    {
-            "DataType": "SSC_ARRAY",
+            "DataType": "SSC_STRING",
             "Name": "file_name",
             "Label": "Weather file path",
             "Units": "",
@@ -16,7 +16,7 @@
             "Units": "",
             "Group": "System",
             "Require": "*",
-            "Costraint": "INTEGER,1 or 2",
+            "Constraint": "INTEGER,1 or 2",
             "Tab": "System Design"
         },
         {
@@ -38,13 +38,13 @@
             "Tab": "System Design"
         },
         {
-            "DataType": "SSC_NUMBER",
+            "DataType": "SSC_ARRAY",
             "Name": "final_date",
             "Label": "Final design day/time",
             "Units": "",
             "Group": "System Design",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "System Design"
         },
         {
@@ -54,7 +54,7 @@
             "Units": "kW",
             "Group": "System Design",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "System Design"
         },
         {
@@ -64,7 +64,7 @@
             "Units": "C",
             "Group": "System Design",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "System Design"
         },
         {
@@ -74,7 +74,7 @@
             "Units": "C",
             "Group": "System Design",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "System Design"
         },
 		{
@@ -99,7 +99,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "pressure",
             "Label": "Water pressure in the solar field",
-            "Units": "degree",
+            "Units": "bar",
             "Group": "System Design",
             "Require": "*",
             "Tab": "System Design"
@@ -111,7 +111,7 @@
             "Units": "kg/s m2",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
@@ -121,7 +121,7 @@
             "Units": "C",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
@@ -131,7 +131,7 @@
             "Units": "W/m2",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
@@ -141,7 +141,7 @@
             "Units": "",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
@@ -151,7 +151,7 @@
             "Units": "W/m2 K",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
@@ -171,7 +171,7 @@
             "Units": "m2",
             "Group": "Collector Specification",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
             "Tab": "Collector Specification"
         },
         {
