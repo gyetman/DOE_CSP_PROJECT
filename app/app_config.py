@@ -106,7 +106,7 @@ solarToFinance = {
     'SC_FPC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'SC_ETC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'trough_physical_process_heat': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
-    'linear_fresnel_dsg_iph': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
+    'linear_fresnel_dsg_iph': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'tcsiscc': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',False)],
     'tcslinear_fresnel': [('utilityrate5',False),('lcoefcr',False),('iph_to_lcoefcr',True),('none',False),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
     'tcsMSLF': [('utilityrate5',False),('lcoefcr',False),('iph_to_lcoefcr',True),('none',False),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],

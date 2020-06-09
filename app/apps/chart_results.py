@@ -26,8 +26,14 @@ sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
 des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
 
 # Note: solar_names need to match 'Name' values in the JSON
-solar_names = ('System power generated','Receiver mass flow rate',
-               'Receiver thermal losses','Resource Beam normal irradiance')
+updates = helpers.json_load(cfg.app_json)
+# solar_names = ('System power generated','Receiver mass flow rate',
+#                     'Receiver thermal losses','Resource Beam normal irradiance')
+if updates['solar'] == 'linear_fresnel_dsg_iph':
+    solar_names = ('System power generated','Receiver mass flow rate',
+                    'Receiver thermal losses','Resource Beam normal irradiance')
+elif updates['solar'] == 'SC_FPC':
+    solar_names = ('Thermal power generation','Field outlet temperature')
 solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
                 for x in solar_names]
 solar_units = {sol[x]['Name']:sol[x]['Unit'] for x in solar_indexes}
