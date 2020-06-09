@@ -657,5 +657,5 @@ def writeOutParams(btn,mapFigure):
             )        
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8058)    
+    app.run_server(debug=False, port=8058)    
     
