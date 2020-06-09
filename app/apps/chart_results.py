@@ -74,8 +74,11 @@ df_desal = pd.DataFrame(
 
 # determine how weekly and monthly data is aggregated
 # SUM if in sumCols set, else MEAN
-sumCols = {'System power generated','Receiver thermal losses',
-           'Water production', 'Fossil fuel usage'}
+if updates['solar'] == 'linear_fresnel_dsg_iph':
+    sumCols = {'System power generated','Receiver thermal losses',
+               'Water production', 'Fossil fuel usage'}
+if updates['solar'] == 'SC_FPC':  
+    sumCols = {'Thermal power generation'}
 
 def aggregate_data(dataframe, variable, time):
     '''returns dataframe aggregated by selected time value'''
