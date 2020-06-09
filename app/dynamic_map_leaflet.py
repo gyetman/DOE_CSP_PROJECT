@@ -30,7 +30,7 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 mapbox_ids = {
     'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j',
     'Outdoors': 'mapbox/outdoors-v9',
-    'Satellie with streets': 'mapbox/satellite-streets-v9', 
+    'Satellite with streets': 'mapbox/satellite-streets-v9', 
 }
 
 MAP_ID = "map-id"
