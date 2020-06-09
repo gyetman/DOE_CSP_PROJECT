@@ -95,6 +95,7 @@ class SamBaseClass(object):
                     self.module_create_execute('lcoefcr')
             self.heat_gen = self.ssc.data_get_array(self.data, b'gen')
             self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            print("extracted value: ",self.lcoh)
             # execute desalination model, if any
             if self.desalination:
                 self.desal_simulation(self.desalination)
@@ -179,7 +180,7 @@ class SamBaseClass(object):
                 self.desal_values_json = json.load(read_file)
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f = self.desal_values_json['Fossil_f'])
             self.VAGMD.design()
-            print(self.heat_gen[0:24])
+
             self.simu_output = self.VAGMD.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
             
             simu_json_outfile = self.samPath / 'results' /'VAGMD_simulation_output.json'
