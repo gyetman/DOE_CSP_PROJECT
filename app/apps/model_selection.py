@@ -33,7 +33,7 @@ model_selection_layout = html.Div([
                 id='select-solar',
                 options=[
                     {'label': 'Static Collector (Flat Plate)   ',
-                    'value': 'SC_FPC', 'disabled': False},
+                    'value': 'SC_FPC', 'disabled': True},
                     {'label': 'Static Collector (Evacuated Tube)',
                     'value': 'SC_ETC', 'disabled': True},
                     {'label': 'Integrated Solar Combined Cycle ',
