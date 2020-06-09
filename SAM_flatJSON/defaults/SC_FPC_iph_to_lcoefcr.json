@@ -1,5 +1,5 @@
 {
-	"file_name" : "D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/solar_resource/USA AZ Phoenix Sky Harbor Intl Ap (TMY3).csv",
+	"file_name" : "C:/DOE/DOE_CSP_PROJECT/SAM_flatJSON/solar_resource/USA AZ Phoenix Sky Harbor Intl Ap (TMY3).csv",
 	"collector_type" : 1,
 	"design_point_date" : [2010, 3 ,18 ,12, 0, 0],
 	"initial_date" : [2010, 3 ,18, 9, 0, 0],
