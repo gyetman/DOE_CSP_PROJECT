@@ -18,7 +18,6 @@ from dash.dependencies import Output, Input
 # 4. transfer & adapt code to write out parameters as json
 # 5. style to be consistent with menu interface
 
-# TODO: add line 
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -29,9 +28,9 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 # list of radio buttons. note: first item is the 
 # default for when map loads, change order to update. 
 mapbox_ids = {
-    'Regulatory-satellite':'gyetman/ckb7ynqmu41591ilamcoqnr0j',
-    'Regulatory-topography':'gyetman/ck7avopr400px1ilc7j49bi6j',
-    'Satellite with streets': 'mapbox/satellite-streets-v9', 
+    'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j',
+    'Outdoors': 'mapbox/outdoors-v9',
+    'Satellie with streets': 'mapbox/satellite-streets-v9', 
 }
 
 MAP_ID = "map-id"

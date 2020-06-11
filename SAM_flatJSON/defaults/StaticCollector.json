@@ -1,0 +1,10 @@
+{
+	"module" : 1,
+	"TEI_r" : 80,
+	"TCI_r" : 25,
+	"FFR_r" : 582.7,
+	"FeedC_r" : 35,
+	"Capacity": 1000,
+	"Fossil_f": 1,
+	"storage_hour": 6
+}
