@@ -26,4 +26,4 @@ def display_page(pathname):
         return html.H5('404 URL not found')
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8077)
+    app.run_server(debug=True, port=8077)
