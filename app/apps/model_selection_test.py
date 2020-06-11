@@ -16,8 +16,6 @@ sys.path.insert(0,str(cfg.base_path))
 import helpers
 from app import app
 
-from SAM_flatJSON.SamBaseClass import SamBaseClass
-
 #define columns used in data tables
 cols = [{'name':'Variable', 'id':'Label','editable':False},
         {'name':'Value',    'id':'Value','editable':True},
@@ -32,30 +30,26 @@ model_selection_layout = html.Div([
             dbc.RadioItems(
                 id='select-solar',
                 options=[
-                    {'label': 'Static Collector (Flat Plate)   ',
-                    'value': 'SC_FPC', 'disabled': True},
-                    {'label': 'Static Collector (Evacuated Tube)',
-                    'value': 'SC_ETC', 'disabled': True},
+                    {'label': 'Static Collector                ',
+                    'value': 'StaticCollector_iph', 'disabled': False},
                     {'label': 'Integrated Solar Combined Cycle ',
-                    'value': 'tcsiscc', 'disabled': True},
+                    'value': 'tcsiscc', 'disabled': False},
                     {'label': 'Linear Fresnel Direct Steam     ',
-                    'value': 'tcslinear_fresnel', 'disabled': True},
+                    'value': 'tcslinear_fresnel', 'disabled': False},
                     {'label': 'Linear Fresnel Molten Salt      ',
-                    'value': 'tcsMSLF', 'disabled': True},
+                    'value': 'tcsMSLF', 'disabled': False},
                     {'label': 'Parabolic Trough Physical       ',
-                    'value': 'tcstrough_physical', 'disabled': True},
+                    'value': 'tcstrough_physical', 'disabled': False},
                     {'label': 'Power Tower Direct Steam        ',
-                    'value': 'tcsdirect_steam', 'disabled': True},
+                    'value': 'tcsdirect_steam', 'disabled': False},
                     {'label': 'Power Tower Molten Salt         ',
-                    'value': 'tcsmolten_salt', 'disabled': True},
+                    'value': 'tcsmolten_salt', 'disabled': False},
                     {'label': 'Process Heat Parabolic Trough   ',
-                    'value': 'trough_physical_process_heat', 'disabled': True},
+                    'value': 'trough_physical_process_heat', 'disabled': False},
                     {'label': 'Process Heat Linear Direct Steam',
                     'value': 'linear_fresnel_dsg_iph', 'disabled': False}, 
-                    {'label': 'No Solar Thermal System',
-                    'value': 'none', 'disabled': True}, 
                 ],
-                value='linear_fresnel_dsg_iph',
+                value='tcslinear_fresnel',
             ),width=10,
         ),
     ],row=True),
@@ -99,7 +93,7 @@ def display_model_parameters(solar, desal, finance):
             helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
         return html.Div([
             html.P(),
-            dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/model-variables')])
+            dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/wc')])
   
 # display desal model options after solar model has been selected
 @app.callback(

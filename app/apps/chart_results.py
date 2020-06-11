@@ -26,8 +26,11 @@ solar_names = ('System power generated','Receiver mass flow rate',
 desal_names = ('Water production','Fossil fuel usage', 'Storage status')
 # determine how weekly and monthly data is aggregated
 # SUM if in sumCols set, else MEAN
-sumCols = {'System power generated','Receiver thermal losses',
-           'Water production', 'Fossil fuel usage'}
+if updates['solar'] == 'linear_fresnel_dsg_iph':
+    sumCols = {'System power generated','Receiver thermal losses',
+               'Water production', 'Fossil fuel usage'}
+if updates['solar'] == 'SC_FPC':  
+    sumCols = {'Thermal power generation'}
 
 #
 ### METHODS 
