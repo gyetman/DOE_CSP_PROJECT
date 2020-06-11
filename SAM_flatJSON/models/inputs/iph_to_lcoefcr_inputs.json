@@ -3,7 +3,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "annual_electricity_consumption",
-            "Label": "Annual electricity consumption w/ avail derate",
+            "Label": "Annual electricity consumptoin w/ avail derate",
             "Units": "kWe-hr",
             "Group": "IPH_LCOH",
             "Require": "*",

@@ -60,31 +60,6 @@ def gather_data(x):
     # create the file lookup dict for dynamic file names
     flkup = cfg.build_file_lookup(updates['solar'], updates['desal'], updates['finance'])
     
-        # add specific data from solar GUI output
-
-    if updates['solar'] == 'linear_fresnel_dsg_iph':
-        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
-        updates.update({'q_pb_des':s['q_pb_des']})
-        updates.update({'footprint1':s['q_pb_des'] * 6})
-        updates.update({'footprint2':s['q_pb_des'] * 8})
-    # add sam simulation output
-        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
-        index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
-        updates.update({'actual_aperture':so[index]['Value']})
-        
-    elif updates['solar'] == 'SC_FPC':
-        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
-        updates.update({'q_pb_des':s['desal_thermal_power_req']})
-        updates.update({'footprint1':s['desal_thermal_power_req'] * 6})
-        updates.update({'footprint2':s['desal_thermal_power_req'] * 8})
-        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
-        index = helpers.index_in_list_of_dicts(so,'Name','Number of collectors per row')
-        updates.update({'num_col':so[index]['Value']})
-        index = helpers.index_in_list_of_dicts(so,'Name','Number of collector rows')
-        updates.update({'num_row':so[index]['Value']})
-        index = helpers.index_in_list_of_dicts(so,'Name','Total aperture area')
-        updates.update({'actual_aperture':so[index]['Value']})
-    
     if updates['desal'] == 'VAGMD':
     # add specific data from desalination GUI output
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -125,14 +100,18 @@ def gather_data(x):
         updates.update({'ops_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
         updates.update({'energy_cost':dc[index]['Value']})
-         
-            
-            
-            
+        # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['q_pb_des']})
+        updates.update({'footprint1':s['q_pb_des'] * 6})
+        updates.update({'footprint2':s['q_pb_des'] * 8})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
-
+        # add sam simulation output
+        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
+        index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
+        updates.update({'actual_aperture':so[index]['Value']})
         
     ## Temporal 'if' condition for another desal technology
     elif updates['desal'] == 'LTMED':
@@ -170,9 +149,11 @@ def gather_data(x):
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
         updates.update({'ops_cost':dc[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
-        updates.update({'energy_cost':dc[index]['Value']})
-
+        # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['q_pb_des']})
+        updates.update({'footprint1':s['q_pb_des'] * 6})
+        updates.update({'footprint2':s['q_pb_des'] * 8})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
@@ -225,7 +206,6 @@ def set_desal_config(x):
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW"),
         html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh")
         ])
-
     elif app['desal'] == 'LTMED':
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
@@ -244,26 +224,13 @@ def set_desal_config(x):
     [Input('data-initialize', 'children')])
 def set_solar_config(x):
     r = helpers.json_load(cfg.report_json)
-    app = helpers.json_load(cfg.app_json)
-    
-    if app['solar'] == 'linear_fresnel_dsg_iph':
-        return ([
-        html.H5('Solar Field Configuration', className='card-title'),
-        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
-        html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
-        html.Div(f"Actual aperture: {r['actual_aperture']:.0f} m2"),
-        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres")
-        ])
-    elif app['solar'] == 'SC_FPC':
-        return ([
-        html.H5('Solar Field Configuration', className='card-title'),
-        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
-        html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
-        html.Div(f"Number of collectors per row: {r['num_col']:.0f} "),
-        html.Div(f"Number of rows: {r['num_row']:.0f} "),
-        html.Div(f"Aperture area: {r['actual_aperture']:.0f} m2"),
-        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres")
-        ])
+    return ([
+    html.H5('Solar Field Configuration', className='card-title'),
+    html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+    html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
+    html.Div(f"Actual aperture: {r['actual_aperture']:.0f} m2"),
+    html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
+    ])
 
 @app.callback(
     Output('system-performance', 'children'),
