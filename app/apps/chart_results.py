@@ -28,7 +28,7 @@ desal_names = ('Water production','Fossil fuel usage', 'Storage status')
 # SUM if in sumCols set, else MEAN
 sumCols = {'System power generated','Receiver thermal losses',
            'Water production', 'Fossil fuel usage'}
-
+           
 #
 ### METHODS 
 #
