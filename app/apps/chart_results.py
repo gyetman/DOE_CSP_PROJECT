@@ -13,63 +13,25 @@ import helpers
 
 from app import app
 
-# external_stylesheets = [dbc.themes.FLATLY,'https://codepen.io/chriddyp/pen/bWLwgP.css']
-# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Chart Results'
 
+#
+### GLOBALS 
+#
+
 HOURS_IN_YEAR = 8760
-
-alkup = helpers.json_load(cfg.app_json)
-flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], alkup['finance'])
-# load simulation results from JSONs
-sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
-des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
-
-# Note: solar_names need to match 'Name' values in the JSON
+# Note: names need to match 'Name' values in the JSON
 solar_names = ('System power generated','Receiver mass flow rate',
                'Receiver thermal losses','Resource Beam normal irradiance')
-solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
-                for x in solar_names]
-solar_units = {sol[x]['Name']:sol[x]['Unit'] for x in solar_indexes}
-# the arrays all need to be the same size
-# creates dummy variables (zeros) if they are not
-# on failed runs of SamBaseClass the file can have empty values
-solar_arrays = []
-for x in solar_indexes:
-    if len(sol[x]['Value']) == HOURS_IN_YEAR:
-        solar_arrays.append(sol[x]['Value'])
-    else:
-        solar_arrays.append(np.zeros(HOURS_IN_YEAR))
-
-# combine results into list of series; note the .T for transpose,
-# otherwise the lists are read as rows, not columns. '''
-solar_array_data = np.array([pd.Series(x) for x in solar_arrays]).T
-
-# data frame of arrays, fortunately all the same shape!'''
-df_solar = pd.DataFrame(
-        solar_array_data,
-        columns = solar_names
-).round(2)
-
-# Note: desal_names need to match 'Name' values in the JSON
 desal_names = ('Water production','Fossil fuel usage', 'Storage status')
-desal_indexes = [helpers.index_in_list_of_dicts(des,'Name', x)
-                for x in desal_names]
-desal_arrays = [des[x]['Value'] for x in desal_indexes]
-desal_units = {des[x]['Name']:des[x]['Unit'] for x in desal_indexes}
-
-desal_array_data = np.array([pd.Series(x) for x in desal_arrays]).T
-
-# data frame of arrays, fortunately all the same shape!'''
-df_desal = pd.DataFrame(
-        desal_array_data,
-        columns = desal_names
-).round(2)
-
 # determine how weekly and monthly data is aggregated
 # SUM if in sumCols set, else MEAN
 sumCols = {'System power generated','Receiver thermal losses',
            'Water production', 'Fossil fuel usage'}
+
+#
+### METHODS 
+#
 
 def aggregate_data(dataframe, variable, time):
     '''returns dataframe aggregated by selected time value'''
@@ -91,7 +53,7 @@ def gen_title(variable, time):
     return f"{variable.title()} per {d[time]}"
 
 #
-### Layout 
+### LAYOUT 
 #
 
 time_series = [{'label':' Hourly', 'value':'Hourly'},
@@ -147,9 +109,11 @@ desal_radios = html.Div([
     ], justify="center")
 ])
 
-
 chart_results_layout = html.Div([
+    html.Div(id='initialize'),
     chart_navbar,
+    dcc.Store(id='solar-storage'),
+    dcc.Store(id='desal-storage'),
     dbc.Container([ 
         html.H3('Solar Thermal Model', className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
         dcc.Graph(id='solar-graph'),
@@ -160,12 +124,82 @@ chart_results_layout = html.Div([
     ],style={'margin-bottom':150})
 ])
 
+#
+### CALLBACKS 
+#
+
 @app.callback(
-        Output('solar-graph','figure'),
-        [Input('select-solar-chart', 'value'),
-         Input('select-solar-time', 'value')])
-def update_solar_graph(solarValue,timeAggValue):
-    ''' update the figure object '''
+    Output('solar-storage', 'data'),
+    [Input('initialize', 'children')])
+def store_solar_data(x):
+
+    # load simulation results from JSONs
+    sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
+
+    solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
+                    for x in solar_names]
+    solar_units = {sol[x]['Name']:sol[x]['Unit'] for x in solar_indexes}
+    # the arrays all need to be the same size
+    # creates dummy variables (zeros) if they are not
+    # on failed runs of SamBaseClass the file can have empty values
+    solar_arrays = []
+    for x in solar_indexes:
+        if len(sol[x]['Value']) == HOURS_IN_YEAR:
+            solar_arrays.append(sol[x]['Value'])
+        else:
+            solar_arrays.append(np.zeros(HOURS_IN_YEAR))
+
+    # combine results into list of series; note the .T for transpose,
+    # otherwise the lists are read as rows, not columns. '''
+    solar_array_data = np.array([pd.Series(x) for x in solar_arrays]).T
+
+    # data frame of arrays, fortunately all the same shape!
+    df_solar = pd.DataFrame(
+            solar_array_data,
+            columns = solar_names
+    ).round(2)
+    df = df_solar.to_dict()
+    solarDict = {'units': solar_units, 'df_dict': df}
+    return solarDict
+
+@app.callback(
+    Output('desal-storage', 'data'),
+    [Input('initialize', 'children')])
+def store_desal_data(x):
+    alkup = helpers.json_load(cfg.app_json)
+    flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
+                                  alkup['finance'])
+    des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
+
+    desal_indexes = [helpers.index_in_list_of_dicts(des,'Name', x)
+                    for x in desal_names]
+    desal_arrays = [des[x]['Value'] for x in desal_indexes]
+    desal_units = {des[x]['Name']:des[x]['Unit'] for x in desal_indexes}
+
+    desal_array_data = np.array([pd.Series(x) for x in desal_arrays]).T
+
+    # data frame of arrays, fortunately all the same shape!
+    df_desal = pd.DataFrame(
+            desal_array_data,
+            columns = desal_names
+    ).round(2)
+
+    dfd = df_desal.to_dict()
+    desalDict = {'units': desal_units, 'df_dict': dfd}
+    return desalDict
+
+@app.callback(
+    Output('solar-graph','figure'),
+    [Input('select-solar-chart', 'value'),
+    Input('select-solar-time', 'value'),
+    Input('solar-storage', 'data')])
+def update_solar_graph(solarValue, timeAggValue, solarData):
+    ''' update the solar figure object '''
+
+    solar_units = solarData['units']
+    df_solar = pd.DataFrame.from_dict(solarData['df_dict'])
+    # change index from dict conversion from string back to int
+    df_solar.index = df_solar.index.astype(int)
     df_tmp = aggregate_data(dataframe=df_solar, 
                             variable=solarValue,
                             time=timeAggValue)
@@ -190,11 +224,17 @@ def update_solar_graph(solarValue,timeAggValue):
     return figure
 
 @app.callback(
-        Output('desal-graph','figure'),
-        [Input('select-desal-chart', 'value'),
-         Input('select-desal-time', 'value')])
-def update_desal_graph(desalValue,timeAggValue):
-    ''' update the figure object '''
+    Output('desal-graph','figure'),
+    [Input('select-desal-chart', 'value'),
+    Input('select-desal-time', 'value'),
+    Input('desal-storage', 'data')])
+def update_desal_graph(desalValue, timeAggValue, desalData):
+    ''' update the desal figure object '''
+
+    desal_units = desalData['units']
+    df_desal = pd.DataFrame.from_dict(desalData['df_dict'])
+    # change index from dict conversion from string back to int
+    df_desal.index = df_desal.index.astype(int)
     df_tmp = aggregate_data(dataframe=df_desal,
                             variable=desalValue,
                             time=timeAggValue)
