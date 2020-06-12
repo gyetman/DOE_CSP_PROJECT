@@ -651,7 +651,10 @@ def paramHelper(dfAtts):
     mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
 
     # update json file
-    helpers.json_update(mParams,'./map-data.json')
+    try:
+        helpers.json_update(data=mParams, filename=cfg.map_json)
+    except FileNotFoundError:
+        helpers.initialize_json(data=mParams, filename=cfg.map_json)
 
 # callback for model selection button click
 @app.callback(
