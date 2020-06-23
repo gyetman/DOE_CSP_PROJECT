@@ -3,6 +3,8 @@ import logging
 import fiona
 import sys
 
+from pathlib import Path
+
 from shapely.strtree import STRtree
 from shapely.geometry import Point, box as shapely_box
 from shapely.geos import geos_version
@@ -28,7 +30,15 @@ def build_index(shp):
     @param [shp]: full path to shp or geojson file
     '''
     logging.debug('Setting up STRtree. ')
+
+    logging.debug('Checking for speedups...')
     
+
+    logging.info(f'Opening {Path(shp).name} for reading.')
+
+    logging.info('Generating indexes for polygons.')
+
+    logging.debug('Writing out file.')
 
 
 if __name__ == '__main__':
@@ -41,6 +51,10 @@ if __name__ == '__main__':
         help='Log more verbosely.')
     args = parser.parse_args()
     _setup_logging(args.verbose)
-    
+    if not Path(args.spatial_file).exists():
+        logging.error(f'Input file:\n{args.spatial_file}\nnot found!')
+        sys.exit(1)
     logging.debug(args)
+
+    build_index(args.spatial_file)
 
