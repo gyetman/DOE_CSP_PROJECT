@@ -4,9 +4,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_leaflet as dl
 import pandas as pd
+import helpers
 
 from dash.dependencies import Output, Input
+from dash_leaflet import express as dlx
+from pathlib import Path
 
+gis_data = Path('./GISdata')
 
 # TODO:
 # 1. separate map theme loading (regulatory, solar, etc.) from
@@ -18,6 +22,8 @@ from dash.dependencies import Output, Input
 # 4. transfer & adapt code to write out parameters as json
 # 5. style to be consistent with menu interface
 
+# GREG'S REGULATORY LAYER (by itself)
+test_layer = 'mapbox://styles/gyetman/ckbgyarss0sm41imvpcyl09fp'
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -30,7 +36,7 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 mapbox_ids = {
     'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j',
     'Outdoors': 'mapbox/outdoors-v9',
-    'Satellie with streets': 'mapbox/satellite-streets-v9', 
+    'Satellite': 'mapbox/satellite-streets-v9', 
 }
 
 MAP_ID = "map-id"
@@ -38,6 +44,42 @@ BASE_LAYER_ID = "base-layer-id"
 BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS = "site-details"
 USER_POINT = 'user_point'
+
+def get_style(feature):
+    return dict()
+
+def get_d_style(feature):
+    return dict(fillColor='orange', weight=2, opacity=1, color='white')
+
+def get_info(feature=None):
+    header = [html.H4("US Power Plants")]
+    if not feature:
+        return header + ["Hover over a power plant"]
+    return header + [html.B(feature["properties"]["name"]), html.Br(),
+                     f"{float(feature['properties']['capacity_mw']):.3f} capacity MW"]
+
+# load power plants JSON
+power_plants_json = gis_data / 'power_plants.geojson'
+pp_data = helpers.json_load(power_plants_json)
+power_plants = dlx.geojson(pp_data, id="geojson", style=get_style, defaultStyle=dict(fillColor='orange', weight=2, opacity=1, color='white'))
+# power_plants = dlx.geojson(pp_data, id="geojson", style=get_style)
+# print(power_plants.featureStyle[0])
+# power_plants.featureStyle[0]={'color':'orange'}
+# print({power_plants.available_properties[0]})
+# print({power_plants})
+# should see if we can get Canvas circle markers instead? 
+# they draw faster and can be styled#
+
+#load canals JSON
+canals_json = gis_data / 'canals.geojson'
+ca_data = helpers.json_load(canals_json)
+canals = dlx.geojson(ca_data, id='canals', style=get_style, defaultStyle=dict(fillColor='blue', weight=2, opacity=1, color='blue'))
+
+
+info = html.Div(children=get_info(), id="info", className="mapinfo",
+                style={"position": "absolute", "top": "10px", "right": "10px", "z-index": "1000"})
+
+regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
 def render_map():
     comment = """ Click on a location to examine site details.  """
@@ -62,6 +104,10 @@ def render_map():
                     children=[
                         dl.Tooltip("Selected site")
                 ]),
+                html.Div(id='theme-layer')
+                # power_plants,
+                # canals,
+                # info,
 
                 # TODO: load layers for default selection
 
@@ -71,6 +117,14 @@ def render_map():
 
         # map theme selection
         # TODO: change to tabs / buttons
+        dcc.RadioItems(
+            id='theme-dropdown',
+            options=[{'label':'Canals', 'value':'canals'},
+                     {'label':'Power Plants', 'value':'pplants'},
+                     {'label': 'Regulatory', 'value':'regulatory'}],
+            labelStyle={'display': 'inline-block'},
+            value='canals'
+        ),
         dcc.RadioItems(
             id=BASE_LAYER_DROPDOWN_ID,
             options = [
@@ -85,19 +139,33 @@ def render_map():
         html.Div(id=SITE_DETAILS),
     ]
 
-    
+
+theme_ids = {
+    'canals': canals,
+    'pplants': html.Div([power_plants, info]),
+    'regulatory': regulatory
+}
+
 def register_map(app):
     @app.callback(Output(BASE_LAYER_ID, "url"),
                 [Input(BASE_LAYER_DROPDOWN_ID, "value")])
     def set_baselayer(url):
         return url
 
-    # Callback for updating the map after a user click 
-    # TODO: in addition to returning 0,0, update icon
-    # to be "invisible".
+    @app.callback(Output('theme-layer','children'),
+                 [Input('theme-dropdown', 'value')])
+    def set_theme_layer(theme):
+        return theme_ids[theme]
+
+
     @app.callback(Output(USER_POINT, 'position'),
                   [Input(MAP_ID, 'click_lat_lng')])
     def click_coord(coords):
+    # '''
+    # Callback for updating the map after a user click 
+    # TODO: in addition to returning 0,0, update icon
+    # to be "invisible".
+    # '''
         if not coords:
             return [0,0]
         else:
@@ -114,9 +182,13 @@ def register_map(app):
             # module to lookup info will called...
             return('Placeholder text: clicked!')
 
+    @app.callback(Output('info', 'children'),
+                 [Input("geojson", "featureHover")])
+    def info_hover(feature):
+        return get_info(feature)
 
-
-app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+# app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+app = dash.Dash(__name__)
 
 app.layout = html.Div(
     render_map()
