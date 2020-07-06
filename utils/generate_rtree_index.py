@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from shapely.strtree import STRtree
-from shapely.geometry import Point, box as shapely_box
+from shapely.geometry import Point, Polygon, shape, box as shapely_box
 from shapely.geos import geos_version
 from shapely import speedups, wkt
 
@@ -29,14 +29,24 @@ def build_index(shp):
     Supports geojson and shapefile inputs. 
     @param [shp]: full path to shp or geojson file
     '''
-    logging.debug('Setting up STRtree. ')
+    if speedups.available:
+        logging.debug('Enabling GEOS speedups.')
+        speedups.enable()
+    else:
+        logging.info('GEOS speedups not available.')
 
-    logging.debug('Checking for speedups...')
-    
-
+    bboxes = []
     logging.info(f'Opening {Path(shp).name} for reading.')
-
-    logging.info('Generating indexes for polygons.')
+    with fiona.open(shp,'r') as source:
+        logging.info('Generating indexes for polygons.')
+        for item in source:
+            print(item['geometry'].keys())
+            # need to create a geomtry from the coords in the 
+            # geometry, then coerce to bbox
+            geom = Polygon(shape(item['geometry']))
+            box = shapely_box(*geom.bounds)
+            setattr(box, 'uid', item['id'])
+            bboxes.append(box)
 
     logging.debug('Writing out file.')
 
