@@ -1,4 +1,5 @@
 import argparse
+import pickle
 import logging
 import fiona
 import sys
@@ -38,17 +39,37 @@ def build_index(shp):
     bboxes = []
     logging.info(f'Opening {Path(shp).name} for reading.')
     with fiona.open(shp,'r') as source:
-        logging.info('Generating indexes for polygons.')
+        logging.info(f'Generating indexes for {len(source):,} polygons.')
+        i = 0
         for item in source:
-            print(item['geometry'].keys())
+            i += 1
             # need to create a geomtry from the coords in the 
             # geometry, then coerce to bbox
             geom = Polygon(shape(item['geometry']))
             box = shapely_box(*geom.bounds)
             setattr(box, 'uid', item['id'])
             bboxes.append(box)
+            if i % 10000 == 0:
+                logging.info(f'Processed {i:,} geometries.')
+    try:
+        sidx = STRtree(bboxes)
 
-    logging.debug('Writing out file.')
+    except Exception as e:
+        logging.error('Error generating spatial index from bounding boxes.')
+        print(e)
+        sys.exit(1)
+    return sidx
+ 
+def write_index(idx, fullPath):
+    '''
+    Writes out the index to the specified path. 
+    @param [idx]: STRTree object
+    @param [fullPath]: Path where object should be written
+    '''
+    logging.debug(f'Writing out file {fullPath}')
+
+    with open(fullPath, 'wb') as f:
+        pickle.dump(idx,f)
 
 
 if __name__ == '__main__':
@@ -57,7 +78,8 @@ if __name__ == '__main__':
         description='Build rtree for spatial data (polygons)')
     parser.add_argument('spatial_file',
         help='input spatial file (shp or json)')
-    parser.add_argument('-v', '--verbose', action='store_true',
+    parser.add_argument('-v', '--verbose', 
+        action='store_true',
         help='Log more verbosely.')
     args = parser.parse_args()
     _setup_logging(args.verbose)
@@ -66,5 +88,6 @@ if __name__ == '__main__':
         sys.exit(1)
     logging.debug(args)
 
-    build_index(args.spatial_file)
-
+    idx = build_index(args.spatial_file)
+    logging.info('Writing index...')
+    write_index(idx,r'C:\DOE\test.STRTree')
