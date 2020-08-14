@@ -33,3 +33,4 @@ SAM_flatJSON/results/*
 app/GISdata/Readme.md
 app/GISdata/Readme.md
 app/gen.csv
+utils/test_read_rtree.py
