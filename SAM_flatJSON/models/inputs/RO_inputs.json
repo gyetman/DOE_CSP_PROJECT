@@ -10,7 +10,7 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "Cf",
+            "Name": "FeedC_r",
             "Label": "Feed TDS",
             "Units": "g/L",
             "Require": "*",

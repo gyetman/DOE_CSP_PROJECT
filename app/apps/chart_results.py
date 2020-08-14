@@ -1,3 +1,8 @@
+#%%
+# Pending issue: Plotting issue when only one output variable exists
+
+#%%
+
 import json
 import numpy as np
 import pandas as pd
@@ -21,15 +26,25 @@ app.title = 'Chart Results'
 
 HOURS_IN_YEAR = 8760
 # Note: names need to match 'Name' values in the JSON
-solar_names = ('System power generated','Receiver mass flow rate',
-               'Receiver thermal losses','Resource Beam normal irradiance')
-desal_names = ('Water production','Fossil fuel usage', 'Storage status')
+# solar_names = ('System power generated','Receiver mass flow rate',
+#                 'Receiver thermal losses','Resource Beam normal irradiance')
+# desal_names = ('Water production','Fossil fuel usage','Storage status')
+
+# sumCols = {'System power generated','Irradiance GHI from weather file','Water production'}
 # determine how weekly and monthly data is aggregated
 # SUM if in sumCols set, else MEAN
-sumCols = {'System power generated','Receiver thermal losses',
-           'Water production', 'Fossil fuel usage'}
-           
-#
+
+solar_names = {'linear_fresnel_dsg_iph':('System power generated','Receiver mass flow rate','Receiver thermal losses','Resource Beam normal irradiance'),
+               'SC_FPC':('Thermal power generation','Field outlet temperature'),
+               'tcslinear_fresnel':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
+               'tcsdirect_steam':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
+               'trough_physical_process_heat':('Heat sink thermal power','Field total mass flow delivered', 'Receiver thermal losses','Resource Beam normal irradiance'),
+               'pvsamv1':('System power generated','Irradiance GHI from weather file')}    
+desal_names = {'RO': ('Water production','Water production2'),'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),'LTMED':('Water production','Fossil fuel usage', 'Storage status')}    
+sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation'}
+
+
+# #
 ### METHODS 
 #
 
@@ -75,8 +90,8 @@ solar_radios = html.Div([
             dcc.RadioItems(
                 id='select-solar-chart',
                 options=[{'label': f" {name}", 'value': name}
-                        for name in solar_names],
-                value=solar_names[0],
+                        for name in solar_names[helpers.json_load(cfg.app_json)['solar']]],
+                value=solar_names[helpers.json_load(cfg.app_json)['solar']][0],
                 labelStyle = {'display': 'block'}),
             width=4),
         dbc.Col(
@@ -95,8 +110,8 @@ desal_radios = html.Div([
             dcc.RadioItems(
                 id='select-desal-chart',
                 options=[{'label': f" {name}", 'value': name}
-                        for name in desal_names],
-                value=desal_names[0],
+                        for name in desal_names[helpers.json_load(cfg.app_json)['desal']]],
+                value=desal_names[helpers.json_load(cfg.app_json)['desal']][0],
                 labelStyle = {'display': 'block'}),
             width=2),
         dbc.Col(
@@ -115,10 +130,10 @@ chart_results_layout = html.Div([
     dcc.Store(id='solar-storage'),
     dcc.Store(id='desal-storage'),
     dbc.Container([ 
-        html.H3('Solar Thermal Model', className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
+        html.H3(cfg.Solar[helpers.json_load(cfg.app_json)['solar']], className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
         dcc.Graph(id='solar-graph'),
         solar_radios,
-        html.H3('Desalination Model Results', className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
+        html.H3(cfg.Desal[helpers.json_load(cfg.app_json)['desal']], className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
         dcc.Graph(id='desal-graph'),
         desal_radios,
     ],style={'margin-bottom':150})
@@ -137,7 +152,7 @@ def store_solar_data(x):
     sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
 
     solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
-                    for x in solar_names]
+                    for x in solar_names[helpers.json_load(cfg.app_json)['solar']]]
     solar_units = {sol[x]['Name']:sol[x]['Unit'] for x in solar_indexes}
     # the arrays all need to be the same size
     # creates dummy variables (zeros) if they are not
@@ -156,7 +171,7 @@ def store_solar_data(x):
     # data frame of arrays, fortunately all the same shape!
     df_solar = pd.DataFrame(
             solar_array_data,
-            columns = solar_names
+            columns = solar_names[helpers.json_load(cfg.app_json)['solar']]
     ).round(2)
     df = df_solar.to_dict()
     solarDict = {'units': solar_units, 'df_dict': df}
@@ -172,7 +187,7 @@ def store_desal_data(x):
     des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
 
     desal_indexes = [helpers.index_in_list_of_dicts(des,'Name', x)
-                    for x in desal_names]
+                    for x in desal_names[helpers.json_load(cfg.app_json)['desal']]]
     desal_arrays = [des[x]['Value'] for x in desal_indexes]
     desal_units = {des[x]['Name']:des[x]['Unit'] for x in desal_indexes}
 
@@ -181,7 +196,7 @@ def store_desal_data(x):
     # data frame of arrays, fortunately all the same shape!
     df_desal = pd.DataFrame(
             desal_array_data,
-            columns = desal_names
+            columns = desal_names[helpers.json_load(cfg.app_json)['desal']]
     ).round(2)
 
     dfd = df_desal.to_dict()

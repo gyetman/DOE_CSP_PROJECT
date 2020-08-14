@@ -4,7 +4,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "yrs",
             "Label": "Plant lifetime",
-            "Units": "none",
+            "Units": "yrs",
             "Require": "*",
 			"Tab": "Desalination"
         },
@@ -12,7 +12,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "int_rate",
             "Label": "Average interest rate",
-            "Units": "ºC",
+            "Units": "",
             "Require": "*",
 			"Tab": "Desalination"
         },
@@ -26,47 +26,90 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "coh",
-            "Label": "Unit cost of heat",
-            "Units": "$/kWh",
-            "Require": "*",
-            "Costraint": "",
+            "Name": "Nel",
+            "Label": "Number of elements per vessel",
+            "Units": "",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Area",
+            "Label": "Membrane area",
+            "Units": "m2",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "membrane_cost",
+            "Label": "Cost per unit area of membrane",
+            "Units": "$/m2",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pressure_vessel_cost",
+            "Label": "Cost per pressure vessel",
+            "Units": "$/vessel",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "chem_cost",
+            "Label": "Specific chemical cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "labor_cost",
+            "Label": "Specific labor cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "rep_rate",
+            "Label": "Membrane replacement rate",
+            "Units": "",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_STRING",
+            "Name": "equip_cost_method",
+            "Label": "Option 1:'general' capex breakdown by cost factor; Option 2: 'specify' equipment costs",
+            "Units": "",
+            "Require": "",
 			"Tab": "Desalination"
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "solar_inlet",
-            "Label": "Heat source inlet temperature",
-            "Units": "oC",
+            "Name": "unit_capex",
+            "Label": "Total EPC cost",
+            "Units": "$/(m3/day)",
             "Require": "*",
-            "Costraint": "",
 			"Tab": "Desalination"
-        },
+        },		
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "solar_outletlet",
-            "Label": "Heat source outlet temperature",
-            "Units": "oC",
-            "Require": "*",
-            "Costraint": "",
+            "Name": "sec",
+            "Label": "Specific energy consumption",
+            "Units": "kwh/m3",
+            "Require": "",
 			"Tab": "Desalination"
-        },
+        },	
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "HX_eff",
-            "Label": "Heat exchanger efficiency",
-            "Units": "",
-            "Require": "*",
-            "Costraint": "",
-			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "cost_module_re",
-            "Label": "Cost of module replacement",
+            "Name": "disposal_cost",
+            "Label": "Specific waste disposal cost",
             "Units": "$/m3",
-            "Require": "*",
-            "Costraint": "",
+            "Require": "",
 			"Tab": "Desalination"
         }
     ]

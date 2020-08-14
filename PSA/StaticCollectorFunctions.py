@@ -68,7 +68,7 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     
     #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
     # AAA- major changes to this segment for pulling data from TMY
-    datetimes=np.asarray(data.iloc[:,0:6])
+    datetimes=np.asarray(data.iloc[:,0:4])
 #    Julian_Date=pd.to_datetime(datetimes)
 #    julian_date_inicio=pd.to_datetime(fecha_inicio)
     
@@ -85,11 +85,11 @@ def design_cpc_DOE(tipo_col,Time, fecha_inicio, fecha_fin, Pot_term_kW,Tent_camp
     rows=list(range(rowstart[0],rowend[0]+1))
     #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
 #    Julian_date_D=Julian_Date(rows);
-    temp_amb_D=np.asarray(data['Temperature'].iloc[rows])
+    temp_amb_D=np.asarray(data['Tdry'].iloc[rows])
     dni=data['DNI'].iloc[rows]
     ghi=data['GHI'].iloc[rows]
     dhi=data['DHI'].iloc[rows]
-    surfalbedo=data['Surface Albedo'].iloc[rows]
+    surfalbedo=data['Albedo'].iloc[rows]
 #    Rad_sol_global_D=Rad_Global_inclin(rows); #### Need to compute global irradiation on tilted plane... fill for now w/ GHI and fix later
     
     solar_zenith,solar_azimuth=psasunpos(datetimes[rows,:],Lat,Long)
@@ -214,15 +214,15 @@ def fraccion_solar_DOE(tipo_col,num_col, num_fila, Pot_term_kW,qmo,Tent_campo, T
     
     #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
     # AAA- major changes to this segment for pulling data from TMY
-    datetimes=np.asarray(data.iloc[:,0:6])
+    datetimes=np.asarray(data.iloc[:,0:4])
 #
     #% Extract the data of julian date, ambient temperature and Solar Radiation (beam global radiation) corresponding to the rows
 #    Julian_date_D=Julian_Date(rows);
-    temp_amb=np.asarray(data['Temperature'])
+    temp_amb=np.asarray(data['Tdry'])
     dni=data['DNI']
     ghi=data['GHI']
     dhi=data['DHI']
-    surfalbedo=data['Surface Albedo']
+    surfalbedo=data['Albedo']
     solar_zenith,solar_azimuth=psasunpos(datetimes,Lat,Long)
     poa=pvlib.irradiance.get_total_irradiance(inc_captador,v_azim,solar_zenith,solar_azimuth,dni,ghi,dhi,albedo=surfalbedo)
     Rad_Global_inclin=np.asarray(poa.iloc[:,0])
@@ -400,7 +400,7 @@ def Almacenamiento_cpc_DOE (E_campo,fecha_inicio, fecha_fin, Tst, Tamb,Pot_term_
     
     #% Calculation of the julian date of "fecha_inicio" and "fecha_fin"
     # AAA- major changes to this segment for pulling data from TMY
-    datetimes=np.asarray(data.iloc[:,0:6])
+    datetimes=np.asarray(data.iloc[:,0:4])
 #    Julian_Date=pd.to_datetime(datetimes)
 #    julian_date_inicio=pd.to_datetime(fecha_inicio)
     
@@ -590,12 +590,12 @@ def psasunpos(Time,Longitude,Latitude):
     #% noon 1 January 2000 Universal Time
     #
     #% Calculate time of the day in UT decimal hours
-        DecimalHours=Time[:,3]+(Time[:,4]+Time[:,5]/60)/60
+        DecimalHours=Time[:,3]
         #% Calculate current Julian Day
         Aux1=np.fix((Time[:,1]-14)/12);
         Aux2=np.fix((1461*(Time[:,0]+4800+Aux1))/4)+np.fix((367*(Time[:,1]-2-12*Aux1))/12)-np.fix((3*(np.fix((Time[:,0]+4900+Aux1)/100)))/4)+Time[:,2]-32075
     else:
-        DecimalHours=Time[3]+(Time[4]+Time[5]/60)/60
+        DecimalHours=Time[3]
         #% Calculate current Julian Day
         Aux1=np.fix((Time[1]-14)/12);
         Aux2=np.fix((1461*(Time[0]+4800+Aux1))/4)+np.fix((367*(Time[1]-2-12*Aux1))/12)-np.fix((3*(np.fix((Time[0]+4900+Aux1)/100)))/4)+Time[2]-32075
@@ -724,7 +724,7 @@ def k_teta_DOE(tipo_col,inc_captador,v_azim,Time,Long,Lat,*args):
 #        case {'1'} #% FPC
     if tipo_col=='1':
         ang_inc_D=pvlib.irradiance.aoi(inc_captador,v_azim,cenit,acimut) 
-        Ang_incid_rad=args[0]*rad
+        Ang_incid_rad = args[0]*rad
         bo=(1-args[1])/((1/np.cos(Ang_incid_rad)-1))
         Ang_incid_rad_max = np.arccos(1/((1/bo)+1))
         ang_inc_D_rad=ang_inc_D*rad

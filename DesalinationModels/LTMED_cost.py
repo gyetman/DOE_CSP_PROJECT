@@ -73,9 +73,11 @@ class LTMED_cost(object):
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
+        cost_output.append({'Name':'Energy cost','Value':self.coh * self.STEC + self.coe * self.SEEC,'Unit':'$/m3'})
+         
         
         return cost_output
 #%%
 
-case = LTMED_cost(Capacity = 1000,Prod = 328500)
+case = LTMED_cost(Capacity = 1000,Prod = 328500,HEX_area = 400)
 print(case.lcow())

@@ -23,7 +23,7 @@ class RODesign:
     def __init__(self,
 ###### (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
                 # Fluid properties
-                Cf=32,                # Feed TDS, g/L or parts per trillion
+                FeedC_r=32000,                # Feed TDS, ppm or parts per trillion
                 T=298.15,            # Feedwater Temperature [Kelvin]
                 
                 
@@ -65,7 +65,7 @@ class RODesign:
                 self.nominal_daily_cap_tmp=nominal_daily_cap_tmp
                 self.Nel1=Nel1
                 self.R1=R1
-                self.Cf=Cf  
+                self.Cf=FeedC_r/1000  
                 self.Pfp=Pfp
                 
                 

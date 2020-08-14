@@ -10,13 +10,14 @@ from numpy import array,cumprod,insert
 from numpy.matlib import repmat
 from math import ceil, exp
 from warnings import warn
+import numpy as np
 #%%
 class RO(object):
 #
     def __init__(self,
     ###### (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
                 # Fluid properties
-                Cf=32,                # Feed TDS, g/L or parts per trillion
+                FeedC_r=32,                # Feed TDS, g/L or parts per trillion
                 T=25,            # Feedwater Temperature [C]
                 #Fossil_f = 0.8 , # Fossil fuel fraction 
     
@@ -60,7 +61,7 @@ class RO(object):
         self.nominal_daily_cap_tmp=nominal_daily_cap_tmp
         self.Nel1=Nel1
         self.R1=R1
-        self.Cf=Cf  
+        self.Cf=FeedC_r  
         self.Pfp=Pfp
         self.T=T +273.15
         self.Am1=Am1
@@ -137,7 +138,7 @@ class RO(object):
         
         design_output = []
         design_output.append({'Name':'Permeate flow rate of the system','Value':self.Qp1,'Unit':'m3/h'})
-    #            design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
+        design_output.append({'Name':'Number of vessels','Value':self.NV1,'Unit':''})
     #            design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
     #            design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
     #            design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
@@ -154,18 +155,21 @@ class RO(object):
         self.Qp_hourly_sim=count_hours.reshape(1,-1)*repmat(self.Qp1,1,8760)
         self.Qp_annual_total= np.sum(count_hours)*self.Qp1
         
+        self.Qp = self.Qp_hourly_sim.tolist()[0]
+        
         simu_output = []
-        simu_output.append({'Name':'Water production','Value': self.Qp_hourly_sim,'Unit':'m3/h'})
+        simu_output.append({'Name':'Water production','Value': self.Qp,'Unit':'m3/h'})
+        simu_output.append({'Name':'Water production2','Value': self.Qp,'Unit':'m3/h'})
         simu_output.append({'Name':'Annual total water production','Value':self.Qp_annual_total,'Unit':'m3/year'})
         
         
         return simu_output
 
 #%% EXAMPLE
-gen=[100,110]*4380
-r = RO()
-r.RODesign()
-r.simulation(gen)
+# gen=[100,110]*4380
+# r = RO()
+# r.RODesign()
+# r.simulation(gen)
         
 
 
