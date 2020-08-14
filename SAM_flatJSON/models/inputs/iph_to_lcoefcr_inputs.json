@@ -1,6 +1,6 @@
 {
     "iph_to_lcoefcr": [
-        {
+	    {
             "DataType": "SSC_NUMBER",
             "Name": "annual_electricity_consumption",
             "Label": "Annual electricity consumptoin w/ avail derate",

@@ -2,7 +2,7 @@
     "pvsamv1": [
         {
             "DataType": "SSC_STRING",
-            "Name": "solar_resource_file",
+            "Name": "file_name",
             "Label": "Weather file in TMY2, TMY3, EPW, or SAM CSV.",
             "Group": "pvsamv1",
             "Require": "?",
@@ -12,7 +12,6 @@
             "DataType": "SSC_TABLE",
             "Name": "solar_resource_data",
             "Label": "Weather data",
-            "Meta": "lat,lon,tz,elev,year,month,hour,minute,gh,dn,df,poa,tdry,twet,tdew,rhum,pres,snow,alb,aod,wspd,wdir",
             "Group": "pvsamv1",
             "Require": "?",
             "Tab": "Part2"
@@ -40,7 +39,7 @@
             "Units": "0/1",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -65,7 +64,7 @@
             "Units": "0/1",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -82,7 +81,7 @@
             "Units": "0/1",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -99,7 +98,7 @@
             "Units": "0/1",
             "Group": "snowmodel",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -116,7 +115,7 @@
             "Units": "0/1",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -125,25 +124,23 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "irrad_mode",
             "Label": "Irradiance input translation mode",
-            "Meta": "0=beam&diffuse,1=total&beam,2=total&diffuse,3=poa_reference,4=poa_pyranometer",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "sky_model",
             "Label": "Diffuse sky model",
-            "Meta": "0=isotropic,1=hkdr,2=perez",
             "Group": "pvsamv1",
             "Require": "?=2",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -151,7 +148,7 @@
             "Label": "Number of inverters",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -159,14 +156,14 @@
             "Label": "Enable mismatched subarray Vmax calculation",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_nstrings",
             "Label": "Sub-array 1 Number of parallel strings",
             "Group": "pvsamv1",
-            "Costraint": "INTEGER"
+            "Constraints": "INTEGER"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -174,7 +171,7 @@
             "Label": "Sub-array 1 Modules per string",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -182,16 +179,15 @@
             "Label": "Sub-array 1 Inverter MPPT input number",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_tilt",
             "Label": "Sub-array 1 Tilt",
             "Units": "deg",
-            "Meta": "0=horizontal,90=vertical",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=90"
+            "Constraints": "MIN=0,MAX=90"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -199,25 +195,23 @@
             "Label": "Sub-array 1 Tilt=latitude override",
             "Units": "0/1",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_azimuth",
             "Label": "Sub-array 1 Azimuth",
             "Units": "deg",
-            "Meta": "0=N,90=E,180=S,270=W",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=359.9"
+            "Constraints": "MIN=0,MAX=359.9"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_track_mode",
             "Label": "Sub-array 1 Tracking mode",
-            "Meta": "0=fixed,1=1axis,2=2axis,3=azi,4=monthly",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -226,17 +220,16 @@
             "Units": "deg",
             "Group": "pvsamv1",
             "Require": "?=45",
-            "Costraint": "MIN=0,MAX=85"
+            "Constraints": "MIN=0,MAX=85"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_shade_mode",
             "Label": "Sub-array 1 shading mode (fixed tilt or 1x tracking)",
             "Units": "0/1/2",
-            "Meta": "0=none,1=standard(non-linear),2=thin film(linear)",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -245,7 +238,7 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "?=0.3",
-            "Costraint": "MIN=0,MAX=3"
+            "Constraints": "MIN=0,MAX=3"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -254,16 +247,15 @@
             "Units": "deg",
             "Group": "pvsamv1",
             "Require": "subarray1_track_mode=4",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_shading:string_option",
             "Label": "Sub-array 1 shading string option",
-            "Meta": "0=shadingdb,1=shadingdb_notc,2=average,3=maximum,4=minimum",
             "Group": "pvsamv1",
             "Require": "?=-1",
-            "Costraint": "INTEGER,MIN=-1,MAX=4"
+            "Constraints": "INTEGER,MIN=-1,MAX=4"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -304,7 +296,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -313,7 +305,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -322,7 +314,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -331,7 +323,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -340,7 +332,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -349,7 +341,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -358,7 +350,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=-5,MAX=100"
+            "Constraints": "MIN=-5,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -367,7 +359,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -376,7 +368,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -385,7 +377,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -394,7 +386,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -403,7 +395,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -412,7 +404,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=-5,MAX=100"
+            "Constraints": "MIN=-5,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -421,7 +413,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -430,7 +422,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -439,7 +431,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -448,7 +440,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -457,7 +449,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -466,7 +458,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=-5,MAX=100"
+            "Constraints": "MIN=-5,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -475,7 +467,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -484,17 +476,16 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_diodeconn_loss",
             "Label": "Sub-array 4 DC diodes and connections loss",
             "Units": "%",
-            "Meta": "?",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -503,7 +494,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -512,7 +503,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -521,7 +512,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "?",
-            "Costraint": "MIN=-5,MAX=100"
+            "Constraints": "MIN=-5,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -530,7 +521,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -539,7 +530,7 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -548,17 +539,16 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraints": "MIN=0,MAX=100"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_mod_orient",
             "Label": "Sub-array 1 Module orientation",
             "Units": "0/1",
-            "Meta": "0=portrait,1=landscape",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -566,7 +556,7 @@
             "Label": "Sub-array 1 Number of modules along bottom of row",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -574,26 +564,24 @@
             "Label": "Sub-array 1 Number of modules along side of row",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_backtrack",
             "Label": "Sub-array 1 Backtracking enabled",
-            "Meta": "0=no backtracking,1=backtrack",
             "Group": "pvsamv1",
             "Require": "subarray1_track_mode=1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_enable",
             "Label": "Sub-array 2 Enable",
             "Units": "0/1",
-            "Meta": "0=disabled,1=enabled",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -601,7 +589,7 @@
             "Label": "Sub-array 2 Modules per string",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -609,7 +597,7 @@
             "Label": "Sub-array 2 Number of parallel strings",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -617,16 +605,15 @@
             "Label": "Sub-array 2 Inverter MPPT input number",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_tilt",
             "Label": "Sub-array 2 Tilt",
             "Units": "deg",
-            "Meta": "0=horizontal,90=vertical",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=90"
+            "Constraints": "MIN=0,MAX=90"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -634,25 +621,23 @@
             "Label": "Sub-array 2 Tilt=latitude override",
             "Units": "0/1",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_azimuth",
             "Label": "Sub-array 2 Azimuth",
             "Units": "deg",
-            "Meta": "0=N,90=E,180=S,270=W",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=359.9"
+            "Constraints": "MIN=0,MAX=359.9"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_track_mode",
             "Label": "Sub-array 2 Tracking mode",
-            "Meta": "0=fixed,1=1axis,2=2axis,3=azi,4=monthly",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -661,17 +646,16 @@
             "Units": "deg",
             "Group": "pvsamv1",
             "Require": "?=45",
-            "Costraint": "MIN=0,MAX=85"
+            "Constraints": "MIN=0,MAX=85"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_shade_mode",
             "Label": "Sub-array 2 Shading mode (fixed tilt or 1x tracking)",
             "Units": "0/1/2",
-            "Meta": "0=none,1=standard(non-linear),2=thin film(linear)",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -680,7 +664,7 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "?=0.3",
-            "Costraint": "MIN=0,MAX=3"
+            "Constraints": "MIN=0,MAX=3"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -688,16 +672,15 @@
             "Label": "Sub-array 2 Monthly tilt input",
             "Units": "deg",
             "Group": "pvsamv1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_shading:string_option",
             "Label": "Sub-array 2 Shading string option",
-            "Meta": "0=shadingdb,1=shadingdb_notc,2=average,3=maximum,4=minimum",
             "Group": "pvsamv1",
             "Require": "?=-1",
-            "Costraint": "INTEGER,MIN=-1,MAX=4"
+            "Constraints": "INTEGER,MIN=-1,MAX=4"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -738,17 +721,16 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_mod_orient",
             "Label": "Sub-array 2 Module orientation",
             "Units": "0/1",
-            "Meta": "0=portrait,1=landscape",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -756,7 +738,7 @@
             "Label": "Sub-array 2 Number of modules along bottom of row",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -764,25 +746,23 @@
             "Label": "Sub-array 2 Number of modules along side of row",
             "Group": "pvsamv1",
             "Require": "subarray2_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_backtrack",
             "Label": "Sub-array 2 Backtracking enabled",
-            "Meta": "0=no backtracking,1=backtrack",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_enable",
             "Label": "Sub-array 3 Enable",
             "Units": "0/1",
-            "Meta": "0=disabled,1=enabled",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -790,7 +770,7 @@
             "Label": "Sub-array 3 Modules per string",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -798,7 +778,7 @@
             "Label": "Sub-array 3 Number of parallel strings",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -806,16 +786,15 @@
             "Label": "Sub-array 3 Inverter MPPT input number",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_tilt",
             "Label": "Sub-array 3 Tilt",
             "Units": "deg",
-            "Meta": "0=horizontal,90=vertical",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=90"
+            "Constraints": "MIN=0,MAX=90"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -823,25 +802,23 @@
             "Label": "Sub-array 3 Tilt=latitude override",
             "Units": "0/1",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_azimuth",
             "Label": "Sub-array 3 Azimuth",
             "Units": "deg",
-            "Meta": "0=N,90=E,180=S,270=W",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=359.9"
+            "Constraints": "MIN=0,MAX=359.9"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_track_mode",
             "Label": "Sub-array 3 Tracking mode",
-            "Meta": "0=fixed,1=1axis,2=2axis,3=azi,4=monthly",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -850,17 +827,16 @@
             "Units": "deg",
             "Group": "pvsamv1",
             "Require": "?=45",
-            "Costraint": "MIN=0,MAX=85"
+            "Constraints": "MIN=0,MAX=85"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_shade_mode",
             "Label": "Sub-array 3 Shading mode (fixed tilt or 1x tracking)",
             "Units": "0/1/2",
-            "Meta": "0=none,1=standard(non-linear),2=thin film(linear)",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -869,7 +845,7 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "?=0.3",
-            "Costraint": "MIN=0,MAX=3"
+            "Constraints": "MIN=0,MAX=3"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -877,16 +853,15 @@
             "Label": "Sub-array 3 Monthly tilt input",
             "Units": "deg",
             "Group": "pvsamv1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_shading:string_option",
             "Label": "Sub-array 3 Shading string option",
-            "Meta": "0=shadingdb,1=shadingdb_notc,2=average,3=maximum,4=minimum",
             "Group": "pvsamv1",
             "Require": "?=-1",
-            "Costraint": "INTEGER,MIN=-1,MAX=4"
+            "Constraints": "INTEGER,MIN=-1,MAX=4"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -927,17 +902,16 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_mod_orient",
             "Label": "Sub-array 3 Module orientation",
             "Units": "0/1",
-            "Meta": "0=portrait,1=landscape",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -945,7 +919,7 @@
             "Label": "Sub-array 3 Number of modules along bottom of row",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -953,25 +927,23 @@
             "Label": "Sub-array 3 Number of modules along side of row",
             "Group": "pvsamv1",
             "Require": "subarray3_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_backtrack",
             "Label": "Sub-array 3 Backtracking enabled",
-            "Meta": "0=no backtracking,1=backtrack",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_enable",
             "Label": "Sub-array 4 Enable",
             "Units": "0/1",
-            "Meta": "0=disabled,1=enabled",
             "Group": "pvsamv1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -979,7 +951,7 @@
             "Label": "Sub-array 4 Modules per string",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -987,7 +959,7 @@
             "Label": "Sub-array 4 Number of parallel strings",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraints": "INTEGER,MIN=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -995,16 +967,15 @@
             "Label": "Sub-array 4 Inverter MPPT input number",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_tilt",
             "Label": "Sub-array 4 Tilt",
             "Units": "deg",
-            "Meta": "0=horizontal,90=vertical",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=90"
+            "Constraints": "MIN=0,MAX=90"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1012,25 +983,23 @@
             "Label": "Sub-array 4 Tilt=latitude override",
             "Units": "0/1",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_azimuth",
             "Label": "Sub-array 4 Azimuth",
             "Units": "deg",
-            "Meta": "0=N,90=E,180=S,270=W",
             "Group": "pvsamv1",
-            "Costraint": "MIN=0,MAX=359.9"
+            "Constraints": "MIN=0,MAX=359.9"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_track_mode",
             "Label": "Sub-array 4 Tracking mode",
-            "Meta": "0=fixed,1=1axis,2=2axis,3=azi,4=monthly",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1039,17 +1008,16 @@
             "Units": "deg",
             "Group": "pvsamv1",
             "Require": "?=45",
-            "Costraint": "MIN=0,MAX=85"
+            "Constraints": "MIN=0,MAX=85"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_shade_mode",
             "Label": "Sub-array 4 shading mode (fixed tilt or 1x tracking)",
             "Units": "0/1/2",
-            "Meta": "0=none,1=standard(non-linear),2=thin film(linear)",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1058,7 +1026,7 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "?=0.3",
-            "Costraint": "MIN=0,MAX=3"
+            "Constraints": "MIN=0,MAX=3"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1066,16 +1034,15 @@
             "Label": "Sub-array 4 Monthly tilt input",
             "Units": "deg",
             "Group": "pvsamv1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_shading:string_option",
             "Label": "Sub-array 4 Shading string option",
-            "Meta": "0=shadingdb,1=shadingdb_notc,2=average,3=maximum,4=minimum",
             "Group": "pvsamv1",
             "Require": "?=-1",
-            "Costraint": "INTEGER,MIN=-1,MAX=4"
+            "Constraints": "INTEGER,MIN=-1,MAX=4"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1116,17 +1083,16 @@
             "Units": "%",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "LENGTH=12"
+            "Constraints": "LENGTH=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_mod_orient",
             "Label": "Sub-array 4 Module orientation",
             "Units": "0/1",
-            "Meta": "0=portrait,1=landscape",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1134,7 +1100,7 @@
             "Label": "Sub-array 4 Number of modules along bottom of row",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1142,24 +1108,22 @@
             "Label": "Sub-array 4 Number of modules along side of row",
             "Group": "pvsamv1",
             "Require": "subarray4_enable=1",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_backtrack",
             "Label": "Sub-array 4 Backtracking enabled",
-            "Meta": "0=no backtracking,1=backtrack",
             "Group": "pvsamv1",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "module_model",
             "Label": "Photovoltaic module model specifier",
-            "Meta": "0=spe,1=cec,2=6par_user,3=snl,4=sd11-iec61853,5=PVYield",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=5"
+            "Constraints": "INTEGER,MIN=0,MAX=5"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1262,16 +1226,15 @@
             "Label": "Reference irradiance level",
             "Group": "pvsamv1",
             "Require": "module_model=0",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "spe_module_structure",
             "Label": "Mounting and module structure",
-            "Meta": "0=glass/cell/polymer sheet - open rack,1=glass/cell/glass - open rack,2=polymer/thin film/steel - open rack,3=Insulated back, building-integrated PV,4=close roof mount,5=user-defined",
             "Group": "pvsamv1",
             "Require": "module_model=0",
-            "Costraint": "INTEGER,MIN=0,MAX=5"
+            "Constraints": "INTEGER,MIN=0,MAX=5"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1309,7 +1272,7 @@
             "Units": "0..1",
             "Group": "pvsamv1",
             "Require": "module_model=0",
-            "Costraint": "MIN=0,MAX=1"
+            "Constraints": "MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1318,7 +1281,7 @@
             "Units": "V",
             "Group": "pvsamv1",
             "Require": "module_model=0",
-            "Costraint": "POSITIVE"
+            "Constraints": "POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1327,7 +1290,7 @@
             "Units": "V",
             "Group": "pvsamv1",
             "Require": "module_model=0",
-            "Costraint": "POSITIVE"
+            "Constraints": "POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1446,7 +1409,7 @@
             "Label": "Number of cells in series",
             "Group": "pvsamv1",
             "Require": "module_model=1",
-            "Costraint": "POSITIVE"
+            "Constraints": "POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1492,10 +1455,9 @@
             "DataType": "SSC_NUMBER",
             "Name": "cec_temp_corr_mode",
             "Label": "Cell temperature model selection",
-            "Meta": "0=noct,1=mc",
             "Group": "pvsamv1",
             "Require": "module_model=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1533,46 +1495,41 @@
             "DataType": "SSC_NUMBER",
             "Name": "cec_standoff",
             "Label": "Standoff mode",
-            "Meta": "0=bipv,1=>3.5in,2=2.5-3.5in,3=1.5-2.5in,4=0.5-1.5in,5=<0.5in,6=ground/rack",
             "Group": "pvsamv1",
             "Require": "module_model=1",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraints": "INTEGER,MIN=0,MAX=6"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "cec_height",
             "Label": "Array mounting height",
-            "Meta": "0=one story,1=two story",
             "Group": "pvsamv1",
             "Require": "module_model=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "cec_mounting_config",
             "Label": "Mounting configuration",
-            "Meta": "0=rack,1=flush,2=integrated,3=gap",
             "Group": "pvsamv1",
             "Require": "module_model=1&cec_temp_corr_mode=1",
-            "Costraint": "INTEGER,MIN=0,MAX=3"
+            "Constraints": "INTEGER,MIN=0,MAX=3"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "cec_heat_transfer",
             "Label": "Heat transfer dimensions",
-            "Meta": "0=module,1=array",
             "Group": "pvsamv1",
             "Require": "module_model=1&cec_temp_corr_mode=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "cec_mounting_orientation",
             "Label": "Mounting structure orientation",
-            "Meta": "0=do not impede flow,1=vertical supports,2=horizontal supports",
             "Group": "pvsamv1",
             "Require": "module_model=1&cec_temp_corr_mode=1",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1619,16 +1576,15 @@
             "Units": "C",
             "Group": "pvsamv1",
             "Require": "module_model=1&cec_temp_corr_mode=1",
-            "Costraint": "POSITIVE"
+            "Constraints": "POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "6par_celltech",
             "Label": "Solar cell technology type",
-            "Meta": "monoSi=0,multiSi=1,CdTe=2,CIS=3,CIGS=4,Amorphous=5",
             "Group": "pvsamv1",
             "Require": "module_model=2",
-            "Costraint": "INTEGER,MIN=0,MAX=5"
+            "Constraints": "INTEGER,MIN=0,MAX=5"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1692,7 +1648,7 @@
             "Label": "Nseries",
             "Group": "pvsamv1",
             "Require": "module_model=2",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1714,19 +1670,17 @@
             "DataType": "SSC_NUMBER",
             "Name": "6par_standoff",
             "Label": "Standoff mode",
-            "Meta": "0=bipv,1=>3.5in,2=2.5-3.5in,3=1.5-2.5in,4=0.5-1.5in,5=<0.5in,6=ground/rack",
             "Group": "pvsamv1",
             "Require": "module_model=2",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraints": "INTEGER,MIN=0,MAX=6"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "6par_mounting",
             "Label": "Array mounting height",
-            "Meta": "0=one story,1=two story",
             "Group": "pvsamv1",
             "Require": "module_model=2",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1764,10 +1718,9 @@
             "DataType": "SSC_NUMBER",
             "Name": "snl_module_structure",
             "Label": "Module and mounting structure configuration",
-            "Meta": "0=Use Database Values,1=glass/cell/polymer sheet - open rack,2=glass/cell/glass - open rack,3=polymer/thin film/steel - open rack,4=Insulated back building-integrated PV,5=close roof mount,6=user-defined",
             "Group": "pvsamv1",
             "Require": "module_model=3",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraints": "INTEGER,MIN=0,MAX=6"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2041,7 +1994,7 @@
             "Label": "Number of cells in series",
             "Group": "pvsamv1",
             "Require": "module_model=3",
-            "Costraint": "INTEGER"
+            "Constraints": "INTEGER"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2063,7 +2016,7 @@
             "Label": "Nseries",
             "Group": "pvsamv1",
             "Require": "module_model=4",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2112,7 +2065,6 @@
             "DataType": "SSC_NUMBER",
             "Name": "sd11par_glass",
             "Label": "Module cover glass type",
-            "Meta": "0=normal,1=AR glass",
             "Group": "pvsamv1",
             "Require": "module_model=4"
         },
@@ -2128,19 +2080,17 @@
             "DataType": "SSC_NUMBER",
             "Name": "sd11par_standoff",
             "Label": "Standoff mode",
-            "Meta": "0=bipv,1=>3.5in,2=2.5-3.5in,3=1.5-2.5in,4=0.5-1.5in,5=<0.5in,6=ground/rack",
             "Group": "pvsamv1",
             "Require": "module_model=4",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraints": "INTEGER,MIN=0,MAX=6"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "sd11par_mounting",
             "Label": "Array mounting height",
-            "Meta": "0=one story,1=two story",
             "Group": "pvsamv1",
             "Require": "module_model=4",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2330,16 +2280,16 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "mlm_S_ref",
-            "Label": "Reference irradiance (Typically 1000W/m虏)",
-            "Units": "W/m虏",
+            "Label": "Reference irradiance (Typically 1000W/m)",
+            "Units": "W/m",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_ref",
-            "Label": "Reference temperature (Typically 25掳C)",
-            "Units": "掳C",
+            "Label": "Reference temperature (Typically 25C)",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2428,7 +2378,6 @@
             "Name": "mlm_T_mode",
             "Label": "Cell temperature model mode",
             "Units": "-",
-            "Meta": "1: NOCT",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2436,7 +2385,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_c_no_tnoct",
             "Label": "NOCT cell temperature",
-            "Units": "掳C",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2445,7 +2394,6 @@
             "Name": "mlm_T_c_no_mounting",
             "Label": "NOCT Array mounting height",
             "Units": "-",
-            "Meta": "0=one story,1=two story",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2454,7 +2402,6 @@
             "Name": "mlm_T_c_no_standoff",
             "Label": "NOCT standoff mode",
             "Units": "-",
-            "Meta": "0=bipv,1=>3.5in,2=2.5-3.5in,3=1.5-2.5in,4=0.5-1.5in,5=<0.5in,6=ground/rack",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2478,7 +2425,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_c_fa_U1",
             "Label": "Extended Faiman model U_1",
-            "Units": "W/m鲁sK",
+            "Units": "W/msK",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2487,7 +2434,6 @@
             "Name": "mlm_AM_mode",
             "Label": "Air-mass modifier mode",
             "Units": "-",
-            "Meta": "1: Do not consider AM effects, 2: Use Sandia polynomial [corr=f(AM)], 3: Use standard coefficients from DeSoto model [corr=f(AM)], 4: Use First Solar polynomial [corr=f(AM, p_wat)]",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2584,7 +2530,6 @@
             "Name": "mlm_IAM_mode",
             "Label": "Incidence Angle Modifier mode",
             "Units": "-",
-            "Meta": "1: Use ASHRAE formula, 2: Use Sandia polynomial, 3: Use cubic spline with user-supplied data",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
@@ -2672,10 +2617,9 @@
             "DataType": "SSC_NUMBER",
             "Name": "inverter_model",
             "Label": "Inverter model specifier",
-            "Meta": "0=cec,1=datasheet,2=partload,3=coefficientgenerator,4=PVYield",
             "Group": "pvsamv1",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2699,7 +2643,7 @@
             "Label": "Number of MPPT inputs",
             "Group": "pvsamv1",
             "Require": "?=1",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3087,28 +3031,28 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "ond_TPNom",
-            "Units": "掳C",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "inverter_model=4"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ond_TPMax",
-            "Units": "掳C",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "inverter_model=4"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ond_TPLim1",
-            "Units": "掳C",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "inverter_model=4"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ond_TPLimAbs",
-            "Units": "掳C",
+            "Units": "C",
             "Group": "pvsamv1",
             "Require": "inverter_model=4"
         },
@@ -3286,7 +3230,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100"
+            "Constraints": "MAX=100"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -3295,17 +3239,16 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760"
+            "Constraints": "LENGTH=8760"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "adjust:periods",
             "Label": "Period-based loss adjustments",
             "Units": "%",
-            "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3"
+            "Constraints": "COLS=3"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3313,7 +3256,7 @@
             "Label": "DC Constant loss adjustment",
             "Units": "%",
             "Group": "Loss Adjustments",
-            "Costraint": "MAX=100"
+            "Constraints": "MAX=100"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -3321,47 +3264,42 @@
             "Label": "DC Hourly loss adjustments",
             "Units": "%",
             "Group": "Loss Adjustments",
-            "Costraint": "LENGTH=8760"
+            "Constraints": "LENGTH=8760"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dc_adjust:periods",
             "Label": "DC Period-based loss adjustments",
             "Units": "%",
-            "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
-            "Costraint": "COLS=3"
+            "Constraints": "COLS=3"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "system_use_lifetime_output",
             "Label": "PV lifetime simulation",
             "Units": "0/1",
-            "Meta": "0=SingleYearRepeated,1=RunEveryYear",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "analysis_period",
             "Label": "Lifetime analysis period",
             "Units": "years",
-            "Meta": "The number of years in the simulation",
             "Require": "system_use_lifetime_output=1"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_chem",
             "Label": "Battery chemistry",
-            "Meta": "0=LeadAcid,1=LiIon",
             "Group": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "inverter_model",
             "Label": "Inverter model specifier",
-            "Meta": "0=cec,1=datasheet,2=partload,3=coefficientgenerator,4=generic",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3429,7 +3367,6 @@
             "DataType": "SSC_NUMBER",
             "Name": "batt_ac_or_dc",
             "Label": "Battery interconnection (AC or DC)",
-            "Meta": "0=DC_Connected,1=AC_Connected",
             "Group": "Battery"
         },
         {
@@ -3460,7 +3397,6 @@
             "DataType": "SSC_NUMBER",
             "Name": "batt_meter_position",
             "Label": "Position of battery relative to electric meter",
-            "Meta": "0=BehindTheMeter,1=FrontOfMeter",
             "Group": "Battery"
         },
         {
@@ -3500,7 +3436,6 @@
             "Name": "batt_loss_choice",
             "Label": "Loss power input option",
             "Units": "0/1",
-            "Meta": "0=Monthly,1=TimeSeries",
             "Group": "Battery",
             "Require": "?=0"
         },
@@ -3562,7 +3497,6 @@
             "Name": "batt_voltage_choice",
             "Label": "Battery voltage input option",
             "Units": "0/1",
-            "Meta": "0=UseVoltageModel,1=InputVoltageTable",
             "Group": "Battery",
             "Require": "?=0"
         },
@@ -3708,7 +3642,6 @@
             "Name": "batt_calendar_choice",
             "Label": "Calendar life degradation input option",
             "Units": "0/1/2",
-            "Meta": "0=NoCalendarDegradation,1=LithiomIonModel,2=InputLossTable",
             "Group": "Battery"
         },
         {
@@ -3758,7 +3691,7 @@
             "Units": "0=none,1=capacity based,2=user schedule",
             "Group": "Battery",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -3903,7 +3836,6 @@
             "Name": "batt_target_choice",
             "Label": "Target power input option",
             "Units": "0/1",
-            "Meta": "0=InputMonthlyTarget,1=InputFullTimeSeries",
             "Group": "Battery",
             "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2"
         },
@@ -3920,7 +3852,6 @@
             "Name": "batt_dispatch_choice",
             "Label": "Battery dispatch algorithm",
             "Units": "0/1/2/3/4",
-            "Meta": "If behind the meter: 0=PeakShavingLookAhead,1=PeakShavingLookBehind,2=InputGridTarget,3=InputBatteryPower,4=ManualDispatch, if front of meter: 0=AutomatedLookAhead,1=AutomatedLookBehind,2=AutomatedInputForecast,3=InputBatteryPower,4=ManualDispatch",
             "Group": "Battery",
             "Require": "en_batt=1"
         },
@@ -3987,7 +3918,6 @@
             "Name": "batt_cycle_cost_choice",
             "Label": "Use SAM model for cycle costs or input custom",
             "Units": "0/1",
-            "Meta": "0=UseCostModel,1=InputCost",
             "Group": "Battery"
         },
         {
@@ -4001,21 +3931,18 @@
             "DataType": "SSC_NUMBER",
             "Name": "en_electricity_rates",
             "Label": "Enable Electricity Rates",
-            "Meta": "0/1",
             "Group": "0=EnableElectricityRates,1=NoRates"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekday",
             "Label": "Energy charge weekday schedule",
-            "Meta": "12 x 24 matrix",
             "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekend",
             "Label": "Energy charge weekend schedule",
-            "Meta": "12 x 24 matrix",
             "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
         },
         {
@@ -4036,10 +3963,9 @@
             "Name": "ppa_multiplier_model",
             "Label": "PPA multiplier model",
             "Units": "0/1",
-            "Meta": "0=diurnal,1=timestep",
             "Group": "Time of Delivery",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraints": "INTEGER,MIN=0"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -4060,7 +3986,6 @@
             "Name": "dispatch_sched_weekday",
             "Label": "Diurnal weekday TOD periods",
             "Units": "1..9",
-            "Meta": "12 x 24 matrix",
             "Group": "Time of Delivery",
             "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0"
         },
@@ -4069,7 +3994,6 @@
             "Name": "dispatch_sched_weekend",
             "Label": "Diurnal weekend TOD periods",
             "Units": "1..9",
-            "Meta": "12 x 24 matrix",
             "Group": "Time of Delivery",
             "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0"
         }

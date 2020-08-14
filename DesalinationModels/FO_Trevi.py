@@ -364,7 +364,7 @@ class FO_Trevi(object):
         f_wd = self.WD_M #m3/day
         self.cp_wd = self.OneDInterp('Draw cp', self.B*100)  # kJ/kg-deg C
         # To outgoing brine
-        h_b   = self.hm # Heat transfered (MJ per m3/day)
+        h_b   = self.hm - h_wd # Heat transfered (MJ per m3/day)
         f_b = self.e_s # m3/day
         self.density_b = self.TwoDInterp('Seawater density', self.T_memb, self.salinity_b)  # kg/m3
         self.cp_b = self.TwoDInterp('Seawater Cp', self.T_memb, self.salinity_b)  # kJ/kg-deg C
@@ -480,7 +480,7 @@ class FO_Trevi(object):
         self.HX5  = self.heat_exchanger_calculations('HX_5' , 'Water' , 'SW', self.SD, self.sw, 1, 8, 1, 4, self.T_hout_2A, self.T_prod, self.T_sw, self.T_cout_5, None, self.salinity)
                                                            
 #%%
-case = FO_Trevi()
+case = FO_Trevi(Mprod = 1,salinity=0.035)
 case.flow_rate_calculations()  
 case.membrane_heat_calculations()      
 case.system_calculations()

@@ -18,10 +18,10 @@ class lt_med_calculation(object):
         
     def __init__(self,
                  Tb1      = 76     , # The brine temperature in the first effect, ºC
-                 Xf       = 35000  , # The feed water salinity, ppm
+                 Xf       = 40000  , # The feed water salinity, ppm
                  Ms       = 1.023  , # The mass flow rate of the steam entering the bundle tube of the first effect, kg/s
-                 Ts       = 70     , # The temperature of the steam at the inlet of the first bundle tube, ºC
-                 Tcwin    = 25     , # Seawater inlet temperature in the condenser, ºC
+                 Ts       = 80     , # The temperature of the steam at the inlet of the first bundle tube, ºC
+                 Tcwin    = 15     , # Seawater inlet temperature in the condenser, ºC
                  DELTATcw = 7.3    , # The temperature difference between the inlet and outlet seawater temperature in the condenser, ºC
                  Mf       = 38.27  , # Feed water mass flow rate sprayed on the bundle tube, kg/s
                  Nef      = 12     , # Number of effects
@@ -317,8 +317,11 @@ class lt_med_calculation(object):
         
 #%% MODEL EXECUTION            
 
-default_case = lt_med_calculation()
-default_case.model_execution()
-            
+default_case = lt_med_calculation(Nef=16,Ts=80)
+default_case.preheater_calculations()
+default_case.effects_calculation()
+default_case.condenser_calculations()
+default_case.distilllates_calculations()
+    
         
         

@@ -6,7 +6,8 @@
             "Label": "local weather file path",
             "Group": "Weather",
             "Require": "*",
-            "Costraint": "LOCAL_FILE"
+            "Costraint": "LOCAL_FILE",
+			"Tab": "Weather"
         },
         {
             "DataType": "SSC_NUMBER",

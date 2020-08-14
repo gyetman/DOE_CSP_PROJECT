@@ -2,11 +2,11 @@
     "tcsdirect_steam": [
         {
             "DataType": "SSC_STRING",
-            "Name": "solar_resource_file",
+            "Name": "file_name",
             "Label": "local weather file path",
             "Group": "Weather",
             "Require": "*",
-            "Costraint": "LOCAL_FILE",
+            "Constraints": "LOCAL_FILE",
             "Tab": "Weather"
         },
         {
@@ -737,7 +737,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -792,7 +792,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -928,7 +928,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -1028,7 +1028,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -1065,7 +1065,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -1111,7 +1111,7 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "dsg_controller"
         },
         {
@@ -1364,7 +1364,7 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Costraint": "INTEGER",
+            "Constraints": "INTEGER",
             "Tab": "powerblock"
         },
         {
@@ -1544,7 +1544,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100",
+            "Constraints": "MAX=100",
             "Tab": "Loss Adjustments"
         },
         {
@@ -1554,7 +1554,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760",
+            "Constraints": "LENGTH=8760",
             "Tab": "Loss Adjustments"
         },
         {
@@ -1565,7 +1565,7 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3",
+            "Constraints": "COLS=3",
             "Tab": "Loss Adjustments"
         },
         {
@@ -1575,7 +1575,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100",
+            "Constraints": "MAX=100",
             "Tab": "Loss Adjustments"
         },
         {
@@ -1585,7 +1585,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760",
+            "Constraints": "LENGTH=8760",
             "Tab": "Loss Adjustments"
         },
         {
@@ -1596,7 +1596,7 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3",
+            "Constraints": "COLS=3",
             "Tab": "Loss Adjustments"
         }
     ]

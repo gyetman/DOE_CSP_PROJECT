@@ -1,8 +1,10 @@
 {
 	"Ts" : 80,
-	"Nef" : 14,
-	"Capacity": 2000,
-	"Fossil_f": 1,
-	"FeedC_r": 35,
+	"Nef" : 12,
+	"FeedC_r" : 30,
+	"RR" : 0.5,
+	"Tin" : 15,
+	"Capacity": 1500,
+	"Fossil_f": 0,
 	"storage_hour":6
 }

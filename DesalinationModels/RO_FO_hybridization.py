@@ -4,11 +4,11 @@ Created on Tue Nov  5 14:35:50 2019
 @author: zzrfl
 """
 
-from DesalinationModels.RO_Fixed_Load_zz import RODesign
+from DesalinationModels.RO_Fixed_Load import RO
 from DesalinationModels.FO_Trevi import FO_Trevi
 
 # Initiate calculation from RO designing
-RO = RODesign(nominal_daily_cap_tmp=5723, R1=0.75, Cf = 6)
+RO = RO(nominal_daily_cap_tmp=5723, R1=0.75, Cf = 6)
 # Retreive system performance from RO model
 RO_feed = RO.Qf1*24
 RO_brine = RO.Qb1*24

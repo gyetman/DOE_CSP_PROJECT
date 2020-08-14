@@ -16,9 +16,9 @@ class RO_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  Area = 40.8 , # Membrane area (m2)
-                 Pflux = 1.1375,  # Permeate flow per module (m3/h/module)
+                 # Pflux = 1.1375,  # Permeate flow per module (m3/h/module)
                  NV=7,
-                 Nel=8,
+                 Nel=8,  
                  membrane_cost=30, # cost per unit area of membrane (USD/m2)
                  
                  pressure_vessel_cost= 1000, # cost per pressure vessel (USD/vessel)-- just guessing 1000 to fill value for now: 2/25/2020 
@@ -28,6 +28,7 @@ class RO_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
+                 sam_coe = 0.02,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
                  rep_rate=0.15,    # membrane replacement rate
@@ -39,13 +40,14 @@ class RO_cost(object):
                  BP_pump_flowrate=62.5, # booster pump flowrate (m3/hr)
                  ERD_flowrate=62.5,     # ERD flowrate set to brine flowrate(m3/hr)
                  ERD_pressure=49  ,      # ERD pressure set to brine pressure entering (bar)  
-                 disposal_cost=0.03    # specific waste disposal cost($/m3)
+                 disposal_cost=0.03,    # specific waste disposal cost($/m3)
                  #coh = 0.01 , # Unit cost of heat ($/kWh)
                  #sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  #solar_inlet = 85, # Solar field inlet temperature
                  #solar_outlet = 95, # Solar field outlet temperature
                  #HX_eff = 0.85, # Heat exchanger efficiency
                  #cost_module_re = 0.220 , # Cost of module replacement ($/m3)
+                 unit_capex=1100  # total EPC cost, USD/(m3/day)
                  ):
         self.HP_pump_pressure=HP_pump_pressure
         self.HP_pump_flowrate=HP_pump_flowrate
@@ -57,9 +59,9 @@ class RO_cost(object):
         self.chem_cost=chem_cost
         self.labor_cost=labor_cost
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
-        self.Pflux = Pflux
+        # self.Pflux = Pflux
         self.Area = Area
-        self.PF_module = self.Pflux * self.Area
+        # self.PF_module = self.Pflux * self.Area
         self.num_modules = NV*Nel
         self.total_area = self.num_modules*self.Area
         self.membrane_cost=membrane_cost
@@ -72,7 +74,7 @@ class RO_cost(object):
         self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.ann_prod
         self.disposal_cost=disposal_cost
 #        self.HX_eff = HX_eff
-
+        self.unit_capex = unit_capex
 #        self.th_module = th_module
 #        self.FFR = FFR
         if coe:
@@ -120,5 +122,5 @@ class RO_cost(object):
 #    def cost_method(self):
     
     #%%
-    rocost=RO_cost()
-    rocost.lcow()
+    # rocost=RO_cost()
+    # rocost.lcow()

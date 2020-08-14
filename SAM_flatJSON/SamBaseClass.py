@@ -3,6 +3,7 @@ import logging, json, os
 from pathlib import Path
 import numpy as np
 
+
 class SamBaseClass(object):
     """description of class"""
 
@@ -44,7 +45,7 @@ class SamBaseClass(object):
             self.cost_json_values = cost_json_value_filepath
         else:
             cost_values = self.desalination + "_cost.json"
-            self.cost_json_values = Path(self.samPath / "defaults" /cost_values)        
+            self.cost_json_values = Path(self.samPath / "defaults" /cost_values)  
 
     def create_ssc_module(self):
         try:
@@ -52,16 +53,65 @@ class SamBaseClass(object):
             #return self.data
         except Exception:
             self.logger.critical("Exception occurred while creating the SAM module. Please see the detailed error message below", exc_info=True)
-
+    """
+    To do:
+        Connect T_feedin to desal input
+        Convert lcoe to lcoh
+        Include more financial models
+        Modify input parameters structure
+        Edit report results and graph
+    """ 
     def main(self):
-        if self.cspModel=='StaticCollector':
-            from PSA.StaticCollector import StaticCollector
-            self.staticcollector=StaticCollector()
-            self.staticcollector.design()
-            staticcollector_sim=self.staticcollector.simulation()
+        if self.cspModel=='pvsamv1':
+            self.ssc = PySSC()
+            self.create_ssc_module()
+            self.data = self.ssc.data_create()
+            self.varListCsp = self.collect_model_variables()
+    
+            self.set_data(self.varListCsp)
+            # execute csp model
+            self.module_create_execute(self.cspModel)
+
+            # execute financial model, if any
+            if self.financialModel:
+                self.module_create_execute(self.financialModel)
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')
+            self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
+            self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
             
-            return staticcollector_sim
-        elif self.cspModel== 'linear_fresnel_dsg_iph':
+            
+            if self.desalination:
+                self.desal_simulation(self.desalination)
+                self.cost(self.desalination)
+                            
+            self.sam_calculation()
+            self.print_impParams()
+            self.data_free()
+      
+        
+        elif self.cspModel=='SC_FPC':
+            from PSA.StaticCollector import StaticCollector
+            
+            with open(self.json_values, "r") as read_file:
+                solar_input = json.load(read_file)
+            
+
+            self.staticcollector=StaticCollector(design_point_date = solar_input['design_point_date'],desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
+            self.heat_gen, sc_output = self.staticcollector.design()
+            sc_output_json_outfile =  self.samPath / 'results' /'Solar_output.json'
+            with open(sc_output_json_outfile, 'w') as outfile:
+                json.dump(sc_output, outfile)
+            
+            self.lcoh = 0.01
+            
+            if self.desalination:
+                self.desal_simulation(self.desalination)
+                self.cost(self.desalination)
+            
+
+        
+        elif self.cspModel== 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat':
             self.ssc = PySSC()
             self.create_ssc_module()
             self.data = self.ssc.data_create()
@@ -80,8 +130,10 @@ class SamBaseClass(object):
                     self.module_create_execute('cashloan')
                 elif self.financialModel == 'iph_to_lcoefcr':
                     self.module_create_execute('lcoefcr')
-                self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
-                print(self.lcoh)
+            self.heat_gen = self.ssc.data_get_array(self.data, b'gen')
+            self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+
+
             # execute desalination model, if any
             if self.desalination:
                 self.desal_simulation(self.desalination)
@@ -90,8 +142,10 @@ class SamBaseClass(object):
             self.sam_calculation()
             self.print_impParams()
             self.data_free()
-        
-        elif self.cspModel== 'tcslinear_fresnel':
+      
+
+        elif self.cspModel== 'tcslinear_fresnel' or self.cspModel== 'tcsdirect_steam':
+            
             self.ssc = PySSC()
             self.create_ssc_module()
             self.data = self.ssc.data_create()
@@ -109,7 +163,29 @@ class SamBaseClass(object):
 
                 if self.financialModel == 'utilityrate5':
                     self.module_create_execute('cashloan')
- 
+            self.P_cond = self.ssc.data_get_array(self.data, b'P_cond') # Pa
+            self.T_cond = self.P_T_conversion(self.P_cond) # oC
+            
+            # self.mass_fr = self.ssc.data_get_array(self.data, b'm_dot') # kg/s
+            # self.mass_fr_hr = np.dot(self.mass_fr, 3600) # kg/hr
+            if  self.cspModel== 'tcslinear_fresnel':
+                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_field') # kg/hr
+            elif self.cspModel== 'tcsdirect_steam':
+                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            
+            P_cond = np.dot(self.P_cond, 1e-6)
+            
+            # if  self.cspModel== 'tcslinear_fresnel':
+            #     mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            # elif self.cspModel== 'tcsdirect_steam':
+            #     self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            
+            # P_cond = np.dot(self.P_cond, 1e-6)
+            # self.mass_fr_hr = np.dot(mass_fr_hr, 50)
+            
+            
+            self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, P_cond=P_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
+            self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
             # execute desalination model, if any
             if self.desalination:
                 self.desal_simulation(self.desalination)
@@ -118,6 +194,31 @@ class SamBaseClass(object):
             self.sam_calculation()
             self.print_impParams()
             self.data_free()
+        
+        elif self.cspModel== 'tcstrough_physical':
+            
+            self.ssc = PySSC()
+            self.create_ssc_module()
+            self.data = self.ssc.data_create()
+            self.varListCsp = self.collect_model_variables()
+    
+            self.set_data(self.varListCsp)
+            # execute csp model
+            self.module_create_execute(self.cspModel)
+
+            # execute financial model, if any
+            if self.financialModel:
+                annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+                self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
+                self.module_create_execute(self.financialModel)
+
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')          
+            
+            self.sam_calculation()
+            # self.print_impParams()
+            self.data_free()
+                    
         
     def sam_calculation(self):
         with open(self.json_values, "r") as read_file:
@@ -132,6 +233,14 @@ class SamBaseClass(object):
         
         with open(self.desal_json_values, "r") as read_file:
             self.desal_values_json = json.load(read_file)
+
+        if desal == 'RO':
+            from DesalinationModels.RO_Fixed_Load import RO
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'])
+            self.design_output = self.RO.RODesign()
+            design_json_outfile =  self.samPath / 'results' /'RO_design_output.json'
+            with open(design_json_outfile, 'w') as outfile:
+                json.dump(self.design_output, outfile)
 
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
@@ -152,7 +261,7 @@ class SamBaseClass(object):
         
         elif desal == 'LTMED':
             from DesalinationModels.LT_MED_General import lt_med_general
-            self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
+            self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.design_output = self.LTMED.design()
             design_json_outfile =  self.samPath / 'results' /'LTMED_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
@@ -160,6 +269,20 @@ class SamBaseClass(object):
                 
     
     def desal_simulation(self, desal):
+        if desal == 'RO':
+            from DesalinationModels.RO_Fixed_Load import RO
+            with open(self.desal_json_values, "r") as read_file:
+                self.desal_values_json = json.load(read_file)
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'])
+            self.RO.RODesign()
+            self.simu_output = self.RO.simulation(gen = self.elec_gen)
+            
+            simu_json_outfile = self.samPath / 'results' /'RO_simulation_output.json'
+            with open(simu_json_outfile, 'w') as outfile:
+                json.dump(self.simu_output, outfile)
+
+        
+        
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
             with open(self.desal_json_values, "r") as read_file:
@@ -167,9 +290,7 @@ class SamBaseClass(object):
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f = self.desal_values_json['Fossil_f'])
             self.VAGMD.design()
 
-            heat_gen = self.ssc.data_get_array(self.data, b'gen')
-
-            self.simu_output = self.VAGMD.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
+            self.simu_output = self.VAGMD.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
             
             simu_json_outfile = self.samPath / 'results' /'VAGMD_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
@@ -179,10 +300,10 @@ class SamBaseClass(object):
             from DesalinationModels.LT_MED_General import lt_med_general
             with open(self.desal_json_values, "r") as read_file:
                 self.desal_values_json = json.load(read_file)
-            self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'], Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
+            self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.LTMED.design()
-            heat_gen = self.ssc.data_get_array(self.data, b'gen')
-            self.simu_output = self.LTMED.simulation(gen = heat_gen, storage = self.desal_values_json['storage_hour'])
+
+            self.simu_output = self.LTMED.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'LTMED_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)
@@ -194,14 +315,24 @@ class SamBaseClass(object):
     def cost(self, desal):
         with open(self.cost_json_values, "r") as read_file:
             self.cost_values_json = json.load(read_file)     
-        
+
+        if desal == 'RO':
+            from DesalinationModels.RO_cost import RO_cost
+
+            self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), Area = self.cost_values_json['Area'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
+                                Nel = self.cost_values_json['Nel'], membrane_cost =  self.cost_values_json['membrane_cost'], pressure_vessel_cost =  self.cost_values_json['pressure_vessel_cost'], chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
+                                equip_cost_method =  self.cost_values_json['equip_cost_method'],unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe)
+
+            self.cost_output = self.LCOW.lcow()
+
+            cost_json_outfile = self.samPath / 'results' /'VAGMD_cost_output.json'
+    
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
-            lcoh = self.lcoh
 
             self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
                                    MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
 
             self.cost_output = self.LCOW.lcow()
 
@@ -209,9 +340,11 @@ class SamBaseClass(object):
               
         elif desal == 'LTMED':
             from DesalinationModels.LTMED_cost import LTMED_cost
-            self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], HEX_area = self.LTMED.system.sum_A, Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
+            self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], 
+                                   # HEX_area = self.LTMED.system.sum_A,
+                                   Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.ssc.data_get_number(self.data, b'lcoe_fcr'), cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
             cost_json_outfile = self.samPath / 'results' /'LTMED_cost_output.json'
                     
@@ -238,6 +371,10 @@ class SamBaseClass(object):
         # Load variable values from JSON
         with open(self.json_values, "r") as read_file:
             values_json = json.load(read_file)
+        
+        with open(self.cost_json_values, "r") as read_file:
+            cost_json = json.load(read_file)
+        values_json.update(cost_json)
             
         # Load variable names from JSON
         for json_file in json_files:
@@ -248,9 +385,18 @@ class SamBaseClass(object):
             for model, items in ssc_json.items():
                 for item in items:
                     all_variables.append(item)
-
+            
+     
             for variable in all_variables:
                 # Set default value for non-specified variables
+                if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1': 
+                    if variable['Name'] == 'file_name':
+                        varValue = values_json['file_name']
+                        variableValues.append({'name': 'solar_resource_file',
+                                               'value': varValue,
+                                               'datatype': variable['DataType'] })   
+                        continue
+                
                 if variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':
                     if 'Require' in variable:
                         if variable['Require'] == "*":
@@ -309,6 +455,10 @@ class SamBaseClass(object):
                                            'datatype': variable['DataType'] })
     
             #variable.valu
+            inputfile = self.samPath / 'results' /'inputdata.json'
+                    
+            with open(inputfile, 'w') as outfile:
+                json.dump(variableValues, outfile)
         return variableValues 
 
 
@@ -401,8 +551,7 @@ class SamBaseClass(object):
                 idx = idx + 1
             self.logger.critical("Exception occurred while executing the SAM module. Please see the detailed error message below", exc_info=True)
 
-    def P_T_conversion(self):
-        Cond_p = self.ssc.data_get_array(self.data, b'P_cond')
+    def P_T_conversion(self, Cond_p):
         Cond_temp=[]
         Cond_temp_root2=[]
         for i in Cond_p:
@@ -428,6 +577,18 @@ class SamBaseClass(object):
                 temp = 80
         #print(Cond_temp_root2)        
         return Cond_temp_root2
+    
+    def temp_to_heat(self, T_cond, P_cond, mass_fr, T_feedin):
+        Q_capacity = []
+        
+        for i in range(len(T_cond)):
+
+            try:
+                Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600))
+            except:
+                Q_capacity.append(0)
+                        
+        return Q_capacity
     
         
     def LT_MED_water_empirical(self, T_cond):
@@ -473,8 +634,11 @@ class SamBaseClass(object):
             
             if 'Unit' in variable:
                 unit = variable['Unit']
+            elif 'Units' in variable:
+                unit = variable['Units']
+            
             else:
-                unit = None
+                unit = ''
             
             outputs.append({'Name': variable['Label'],
                             'Value': value,
@@ -484,13 +648,25 @@ class SamBaseClass(object):
             outputs.append({'Name': 'Actual aperture',
                             'Value': self.actual_aper,
                             'Unit': 'm2'})
+        if self.cspModel == 'tcslinear_fresnel' or self.cspModel== 'tcsdirect_steam':
+            outputs.append({'Name': 'Condenser steam temperature',
+                            'Value': self.T_cond,
+                            'Unit': 'oC'})  
+            outputs.append({'Name': 'Steam mass flow rate',
+                            'Value': self.mass_fr_hr,
+                            'Unit': 'kg/hr'})   
+            outputs.append({'Name': 'Waste heat generation',
+                            'Value': self.heat_gen,
+                            'Unit': 'kWh'})  
+        
+        
 
-        capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
-        print ('\nCapacity factor (year 1) = ', capacity_factor)
-#        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
-#        print ('Annual Water Usage = ', annual_total_water_use)
-        annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
-        print ('Annual energy (year 1) = ', annual_energy)
+#         capacity_factor = self.ssc.data_get_number(self.data, b'capacity_factor')
+#         print ('\nCapacity factor (year 1) = ', capacity_factor)
+# #        annual_total_water_use = self.ssc.data_get_number(self.data, b'annual_total_water_use');
+# #        print ('Annual Water Usage = ', annual_total_water_use)
+#         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
+#         print ('Annual energy (year 1) = ', annual_energy)
         
         lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_fcr')
         print ('LCOE_real = ', lcoe_real)
@@ -543,11 +719,12 @@ class SamBaseClass(object):
 
 
 if __name__ == '__main__':
-    sam = SamBaseClass(CSP = 'linear_fresnel_dsg_iph',
+    sam = SamBaseClass( CSP = 'linear_fresnel_dsg_iph',
+                       desalination =  'VAGMD',
                   financial = 'iph_to_lcoefcr')
     # sam = SamBaseClass(CSP = 'tcslinear_fresnel',
     #           financial = 'lcoefcr')
-    sam.desal_design(sam.desalination)
+    # sam.desal_design(sam.desalination)
     sam.main()
     
     #Argument for the unit test makes sure the unit test does not fail if system_capacity 

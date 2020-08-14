@@ -1,39 +1,2412 @@
 {
-    "TcslinearFresnel_LFDS": [
+    "Output": [
         {
-            "Data": "SSC_NUMBER",
-            "Name": "PFlux",
-            "Label": "Permeate flux",
-            "Units": "l/h/m2",
-            "Group": "Desalination",
+            "Data": "SSC_ARRAY",
+            "Name": "dc_degrade_factor",
+            "Label": "Annual module degrade factor",
+            "Group": "Annual",
+            "Constraints": "system_use_lifetime_output=1"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gh",
+            "Label": "Irradiance GHI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dn",
+            "Label": "Irradiance DNI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "df",
+            "Label": "Irradiance DHI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "wfpoa",
+            "Label": "Irradiance POA from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gh_calc",
+            "Label": "Irradiance GHI calculated",
+            "Units": "W/m2",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dn_calc",
+            "Label": "Irradiance DNI calculated",
+            "Units": "W/m2",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "df_calc",
+            "Label": "Irradiance DHI calculated",
+            "Units": "W/m2",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "wspd",
+            "Label": "Weather file wind speed",
+            "Units": "m/s",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "tdry",
+            "Label": "Weather file ambient temperature",
+            "Units": "C",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "alb",
+            "Label": "Weather file albedo",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "snowdepth",
+            "Label": "Weather file snow depth",
+            "Units": "cm",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sol_zen",
+            "Label": "Sun zenith angle",
+            "Units": "deg",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sol_alt",
+            "Label": "Sun altitude angle",
+            "Units": "deg",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sol_azi",
+            "Label": "Sun azimuth angle",
+            "Units": "deg",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sunup",
+            "Label": "Sun up over horizon",
+            "Units": "0/1/2/3",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sunpos_hour",
+            "Label": "Sun position time",
+            "Units": "hour",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "airmass",
+            "Label": "Absolute air mass",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_surf_tilt",
+            "Label": "Subarray 1 Surface tilt",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_surf_azi",
+            "Label": "Subarray 1 Surface azimuth",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_aoi",
+            "Label": "Subarray 1 Angle of incidence",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_aoi_modifier",
+            "Label": "Subarray 1 Angle of incidence Modifier",
+            "Units": "0-1",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_axisrot",
+            "Label": "Subarray 1 Axis rotation for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_idealrot",
+            "Label": "Subarray 1 Axis rotation ideal for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_eff_beam",
+            "Label": "Subarray 1 POA front beam irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_eff_diff",
+            "Label": "Subarray 1 POA front diffuse irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_nom",
+            "Label": "Subarray 1 POA front total irradiance nominal",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_shaded",
+            "Label": "Subarray 1 POA front total irradiance after shading only",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_shaded_soiled",
+            "Label": "Subarray 1 POA front total irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_front",
+            "Label": "Subarray 1 POA front total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_rear",
+            "Label": "Subarray 1 POA rear total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_poa_eff",
+            "Label": "Subarray 1 POA total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_soiling_derate",
+            "Label": "Subarray 1 Soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_beam_shading_factor",
+            "Label": "Subarray 1 External shading and soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_linear_derate",
+            "Label": "Subarray 1 Self-shading linear beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_ss_diffuse_derate",
+            "Label": "Subarray 1 Self-shading non-linear sky diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_ss_reflected_derate",
+            "Label": "Subarray 1 Self-shading non-linear ground diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_ss_derate",
+            "Label": "Subarray 1 Self-shading non-linear DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "shadedb_subarray1_shade_frac",
+            "Label": "Subarray 1 Partial external shading DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_snow_coverage",
+            "Label": "Subarray 1 Snow cover",
+            "Units": "0..1",
+            "Group": "Time Series (Subarray 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_snow_loss",
+            "Label": "Subarray 1 Snow cover DC power loss",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_modeff",
+            "Label": "Subarray 1 Module efficiency",
+            "Units": "%",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_celltemp",
+            "Label": "Subarray 1 Cell temperature",
+            "Units": "C",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_dc_voltage",
+            "Label": "Subarray 1 Operating DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_dc_gross",
+            "Label": "Subarray 1 DC power gross",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_voc",
+            "Label": "Subarray 1 Open circuit DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray1_isc",
+            "Label": "Subarray 1 Short circuit DC current",
+            "Units": "A",
+            "Group": "Time Series (Subarray 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_surf_tilt",
+            "Label": "Subarray 2 Surface tilt",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_surf_azi",
+            "Label": "Subarray 2 Surface azimuth",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_aoi",
+            "Label": "Subarray 2 Angle of incidence",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_aoi_modifier",
+            "Label": "Subarray 2 Angle of incidence Modifier",
+            "Units": "0-1",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_axisrot",
+            "Label": "Subarray 2 Axis rotation for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_idealrot",
+            "Label": "Subarray 2 Axis rotation ideal for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_eff_beam",
+            "Label": "Subarray 2 POA front beam irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_eff_diff",
+            "Label": "Subarray 2 POA front diffuse irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_nom",
+            "Label": "Subarray 2 POA front total irradiance nominal",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_shaded",
+            "Label": "Subarray 2 POA front total irradiance after shading only",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_shaded_soiled",
+            "Label": "Subarray 2 POA front total irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_front",
+            "Label": "Subarray 2 POA front total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_rear",
+            "Label": "Subarray 2 POA rear irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_poa_eff",
+            "Label": "Subarray 2 POA total irradiance after module reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_soiling_derate",
+            "Label": "Subarray 2 Soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_beam_shading_factor",
+            "Label": "Subarray 2 External shading and soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_linear_derate",
+            "Label": "Subarray 2 Self-shading linear beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_ss_diffuse_derate",
+            "Label": "Subarray 2 Self-shading non-linear sky diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_ss_reflected_derate",
+            "Label": "Subarray 2 Self-shading non-linear ground diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_ss_derate",
+            "Label": "Subarray 2 Self-shading non-linear DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "shadedb_subarray2_shade_frac",
+            "Label": "Subarray 2 Partial shading DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_snow_coverage",
+            "Label": "Subarray 2 Snow cover",
+            "Units": "0..1",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_snow_loss",
+            "Label": "Subarray 2 Snow cover DC power loss",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_modeff",
+            "Label": "Subarray 2 Module efficiency",
+            "Units": "%",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_celltemp",
+            "Label": "Subarray 2 Cell temperature",
+            "Units": "C",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_dc_voltage",
+            "Label": "Subarray 2 Operating DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_dc_gross",
+            "Label": "Subarray 2 DC power gross",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_voc",
+            "Label": "Subarray 2 Open circuit DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray2_isc",
+            "Label": "Subarray 2 Short circuit DC current",
+            "Units": "A",
+            "Group": "Time Series (Subarray 2)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_surf_tilt",
+            "Label": "Subarray 3 Surface tilt",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_surf_azi",
+            "Label": "Subarray 3 Surface azimuth",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_aoi",
+            "Label": "Subarray 3 Angle of incidence",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_aoi_modifier",
+            "Label": "Subarray 3 Angle of incidence Modifier",
+            "Units": "0-1",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_axisrot",
+            "Label": "Subarray 3 Axis rotation for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_idealrot",
+            "Label": "Subarray 3 Axis rotation ideal for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_eff_beam",
+            "Label": "Subarray 3 POA front beam irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_eff_diff",
+            "Label": "Subarray 3 POA front diffuse irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_nom",
+            "Label": "Subarray 3 POA font total irradiance nominal",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_shaded",
+            "Label": "Subarray 3 POA front total irradiance after shading only",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_shaded_soiled",
+            "Label": "Subarray 3 POA front total irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_front",
+            "Label": "Subarray 3 POA front total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_rear",
+            "Label": "Subarray 3 POA rear irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_poa_eff",
+            "Label": "Subarray 3 POA total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_soiling_derate",
+            "Label": "Subarray 3 Soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_beam_shading_factor",
+            "Label": "Subarray 3 External shading and soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_linear_derate",
+            "Label": "Subarray 3 Self-shading linear beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_ss_diffuse_derate",
+            "Label": "Subarray 3 Self-shading non-linear sky diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_ss_reflected_derate",
+            "Label": "Subarray 3 Self-shading non-linear ground diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_ss_derate",
+            "Label": "Subarray 3 Self-shading non-linear DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "shadedb_subarray3_shade_frac",
+            "Label": "Subarray 3 Partial external shading DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_snow_coverage",
+            "Label": "Subarray 3 Snow cover",
+            "Units": "0..1",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_snow_loss",
+            "Label": "Subarray 3 Snow cover DC power loss",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_modeff",
+            "Label": "Subarray 3 Module efficiency",
+            "Units": "%",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_celltemp",
+            "Label": "Subarray 3 Cell temperature",
+            "Units": "C",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_dc_voltage",
+            "Label": "Subarray 3 Operating DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_dc_gross",
+            "Label": "Subarray 3 DC power gross",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_voc",
+            "Label": "Subarray 3 Open circuit DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray3_isc",
+            "Label": "Subarray 3 Short circuit DC current",
+            "Units": "A",
+            "Group": "Time Series (Subarray 3)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_surf_tilt",
+            "Label": "Subarray 4 Surface tilt",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_surf_azi",
+            "Label": "Subarray 4 Surface azimuth",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_aoi",
+            "Label": "Subarray 4 Angle of incidence",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_aoi_modifier",
+            "Label": "Subarray 4 Angle of incidence Modifier",
+            "Units": "0-1",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_axisrot",
+            "Label": "Subarray 4 Axis rotation for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_idealrot",
+            "Label": "Subarray 4 Axis rotation ideal for 1 axis trackers",
+            "Units": "deg",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_eff_beam",
+            "Label": "Subarray 4 POA front beam irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_eff_diff",
+            "Label": "Subarray 4 POA front diffuse irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_nom",
+            "Label": "Subarray 4 POA front total irradiance nominal",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_shaded",
+            "Label": "Subarray 4 POA front total irradiance after shading only",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_shaded_soiled",
+            "Label": "Subarray 4 POA front total irradiance after shading and soiling",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_front",
+            "Label": "Subarray 4 POA front total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_rear",
+            "Label": "Subarray 4 POA rear irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_poa_eff",
+            "Label": "Subarray 4 POA total irradiance after reflection (IAM)",
+            "Units": "W/m2",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_soiling_derate",
+            "Label": "Subarray 4 Soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_beam_shading_factor",
+            "Label": "Subarray 4 External shading and soiling beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_linear_derate",
+            "Label": "Subarray 4 Self-shading linear beam irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_ss_diffuse_derate",
+            "Label": "Subarray 4 Self-shading non-linear sky diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_ss_reflected_derate",
+            "Label": "Subarray 4 Self-shading non-linear ground diffuse irradiance factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_ss_derate",
+            "Label": "Subarray 4 Self-shading non-linear DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "shadedb_subarray4_shade_frac",
+            "Label": "Subarray 4 Partial external shading DC factor",
+            "Units": "frac",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_snow_coverage",
+            "Label": "Subarray 4 Snow cover",
+            "Units": "0..1",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_snow_loss",
+            "Label": "Subarray 4 Snow cover DC power loss",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_modeff",
+            "Label": "Subarray 4 Module efficiency",
+            "Units": "%",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_celltemp",
+            "Label": "Subarray 4 Cell temperature",
+            "Units": "C",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_dc_voltage",
+            "Label": "Subarray 4 Operating DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_dc_gross",
+            "Label": "Subarray 4 DC power gross",
+            "Units": "kW",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_voc",
+            "Label": "Subarray 4 Open circuit DC voltage",
+            "Units": "V",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "subarray4_isc",
+            "Label": "Subarray 4 Short circuit DC current",
+            "Units": "A",
+            "Group": "Time Series (Subarray 4)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_nom",
+            "Label": "Array POA front-side total radiation nominal",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_beam_nom",
+            "Label": "Array POA front-side beam radiation nominal",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_beam_eff",
+            "Label": "Array POA beam radiation after shading and soiling",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_shaded",
+            "Label": "Array POA front-side total radiation after shading only",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_shaded_soiled",
+            "Label": "Array POA front-side total radiation after shading and soiling",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_front",
+            "Label": "Array POA front-side total radiation after reflection (IAM)",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_rear",
+            "Label": "Array POA rear-side total radiation after reflection (IAM)",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_eff",
+            "Label": "Array POA radiation total after reflection (IAM)",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dc_snow_loss",
+            "Label": "Array DC power loss due to snow",
+            "Units": "kW",
+            "Group": "Time Series (Array)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dc_net",
+            "Label": "Array DC power",
+            "Units": "kW",
+            "Group": "Time Series (Array)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inverterMPPT1_DCVoltage",
+            "Label": "Inverter MPPT 1 Nominal DC voltage",
+            "Units": "V",
+            "Group": "Time Series (MPPT)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inverterMPPT2_DCVoltage",
+            "Label": "Inverter MPPT 2 Nominal DC voltage",
+            "Units": "V",
+            "Group": "Time Series (MPPT)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inverterMPPT3_DCVoltage",
+            "Label": "Inverter MPPT 3 Nominal DC voltage",
+            "Units": "V",
+            "Group": "Time Series (MPPT)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inverterMPPT4_DCVoltage",
+            "Label": "Inverter MPPT 4 Nominal DC voltage",
+            "Units": "V",
+            "Group": "Time Series (MPPT)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_eff",
+            "Label": "Inverter efficiency",
+            "Units": "%",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dc_invmppt_loss",
+            "Label": "Inverter clipping loss DC MPPT voltage limits",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_cliploss",
+            "Label": "Inverter clipping loss AC power limit",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_psoloss",
+            "Label": "Inverter power consumption loss",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_pntloss",
+            "Label": "Inverter night time loss",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_tdcloss",
+            "Label": "Inverter thermal derate loss",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "inv_total_loss",
+            "Label": "Inverter total power loss",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "ac_wiring_loss",
+            "Label": "AC wiring loss",
+            "Units": "kW",
+            "Group": "Time Series (Inverter)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "xfmr_nll_ts",
+            "Label": "Transformer no load loss",
+            "Units": "kW",
+            "Group": "Time Series (Transformer)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "xfmr_ll_ts",
+            "Label": "Transformer load loss",
+            "Units": "kW",
+            "Group": "Time Series (Transformer)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "xfmr_loss_ts",
+            "Label": "Transformer total loss",
+            "Units": "kW",
+            "Group": "Time Series (Transformer)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "ac_transmission_loss",
+            "Label": "Transmission loss",
+            "Units": "kW",
+            "Group": "Time Series (Transmission)"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "TCO",
-            "Label": "Condenser outlet temperatrue",
-            "Units": "oC",
-            "Group": "Desalination",
+            "Name": "ac_loss",
+            "Label": "AC wiring loss",
+            "Units": "%",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "ThPower",
-            "Label": "Thermal power consumption",
-            "Units": "kW(th)",
-            "Group": "Desalination",
+            "Name": "annual_energy",
+            "Label": "Annual AC energy",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "STEC",
-            "Label": "Specific thermal energy consumption",
-            "Units": "kWh(th)/m3",
-            "Group": "Desalination",
+            "Name": "annual_dc_invmppt_loss",
+            "Label": "Inverter clipping loss DC MPPT voltage limits",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "GOR",
-            "Label": "Gained output ratio",
-            "Units": "",
-            "Group": "Desalination",
+            "Name": "annual_inv_cliploss",
+            "Label": "Inverter clipping loss AC power limit",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_inv_psoloss",
+            "Label": "Inverter power consumption loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_inv_pntloss",
+            "Label": "Inverter night time loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_inv_tdcloss",
+            "Label": "Inverter thermal derate loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "subarray1_dcloss",
+            "Label": "Subarray 1 Total DC power loss",
+            "Units": "%",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "subarray2_dcloss",
+            "Label": "Subarray 2 Total DC power loss",
+            "Units": "%",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "subarray3_dcloss",
+            "Label": "Subarray 3 Total DC power loss",
+            "Units": "%",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "subarray4_dcloss",
+            "Label": "Subarray 4 Total DC power loss",
+            "Units": "%",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "xfmr_nll_year1",
+            "Label": "Transformer no load loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "xfmr_ll_year1",
+            "Label": "Transformer load loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "xfmr_loss_year1",
+            "Label": "Transformer total loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_nom",
+            "Label": "POA front-side irradiance total nominal",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_beam_nom",
+            "Label": "POA front-side irradiance beam nominal",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_front",
+            "Label": "POA front-side irradiance total",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_rear",
+            "Label": "POA rear-side irradiance total",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_eff",
+            "Label": "POA irradiance total after shading and soiling",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_poa_beam_eff",
+            "Label": "POA front-side irradiance beam after shading and soiling",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_dc",
+            "Label": "PV array DC energy",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_energy",
+            "Label": "System AC energy",
+            "Units": "kWh/mo",
+            "Group": "Monthly",
+            "Constraints": "*",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_gh",
+            "Label": "Annual GHI",
+            "Units": "Wh/m2/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_nom",
+            "Label": "POA front-side irradiance total nominal",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_beam_nom",
+            "Label": "POA front-side irradiance beam nominal",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_shaded",
+            "Label": "POA front-side irradiance total after shading",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_shaded_soiled",
+            "Label": "POA front-side irradiance total after shading and soiling",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_front",
+            "Label": "POA front-side irradiance total after reflection (IAM)",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_rear",
+            "Label": "POA rear-side irradiance total after reflection (IAM)",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_eff",
+            "Label": "POA irradiance total after reflection (IAM)",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_beam_eff",
+            "Label": "POA front-side irradiance beam after shading and soiling",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_nominal",
+            "Label": "Annual DC energy nominal",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_gross",
+            "Label": "Annual DC energy gross",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_net",
+            "Label": "Annual DC energy",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_gross",
+            "Label": "Annual AC energy gross",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_loss_ond",
+            "Label": "Annual DC loss OND model",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_loss_ond",
+            "Label": "Annual AC loss OND model",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_snow_loss",
+            "Label": "Snow DC energy loss",
+            "Units": "kWh/mo",
+            "Group": "Monthly"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_snow_loss",
+            "Label": "Snow DC energy loss",
+            "Units": "kWh/yr",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_gross",
+            "Label": "Subarray 1 Gross DC energy",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_mismatch_loss",
+            "Label": "Subarray 1 DC mismatch loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_diodes_loss",
+            "Label": "Subarray 1 DC diodes and connections loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_wiring_loss",
+            "Label": "Subarray 1 DC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_tracking_loss",
+            "Label": "Subarray 1 DC tracking loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray1_dc_nameplate_loss",
+            "Label": "Subarray 1 DC nameplate loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_gross",
+            "Label": "Subarray 2 Gross DC energy",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_mismatch_loss",
+            "Label": "Subarray 2 DC mismatch loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_diodes_loss",
+            "Label": "Subarray 2 DC diodes and connections loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_wiring_loss",
+            "Label": "Subarray 2 DC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_tracking_loss",
+            "Label": "Subarray 2 DC tracking loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray2_dc_nameplate_loss",
+            "Label": "Subarray 2 DC nameplate loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_gross",
+            "Label": "Subarray 3 Gross DC energy",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_mismatch_loss",
+            "Label": "Subarray 3 DC mismatch loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_diodes_loss",
+            "Label": "Subarray 3 DC diodes and connections loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_wiring_loss",
+            "Label": "Subarray 3 DC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_tracking_loss",
+            "Label": "Subarray 3 DC tracking loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray3_dc_nameplate_loss",
+            "Label": "Subarray 3 DC nameplate loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_gross",
+            "Label": "Subarray 4 Gross DC energy",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_mismatch_loss",
+            "Label": "Subarray 4 DC mismatch loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_diodes_loss",
+            "Label": "Subarray 4 DC diodes and connections loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_wiring_loss",
+            "Label": "Subarray 4 DC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_tracking_loss",
+            "Label": "Subarray 4 DC tracking loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_subarray4_dc_nameplate_loss",
+            "Label": "Subarray 4 DC nameplate loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_mismatch_loss",
+            "Label": "DC mismatch loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_diodes_loss",
+            "Label": "DC diodes and connections loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_wiring_loss",
+            "Label": "DC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_tracking_loss",
+            "Label": "DC tracking loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_nameplate_loss",
+            "Label": "DC nameplate loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_optimizer_loss",
+            "Label": "DC power optimizer loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_shading_loss_percent",
+            "Label": "POA front-side shading loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_soiling_loss_percent",
+            "Label": "POA front-side soiling loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_cover_loss_percent",
+            "Label": "POA front-side reflection (IAM) loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_poa_rear_gain_percent",
+            "Label": "POA rear-side bifacial gain",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_module_loss_percent",
+            "Label": "DC module modeled loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_snow_loss_percent",
+            "Label": "DC snow loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_mppt_clip_loss_percent",
+            "Label": "DC inverter MPPT clipping loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_mismatch_loss_percent",
+            "Label": "DC mismatch loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_diodes_loss_percent",
+            "Label": "DC diodes and connections loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_wiring_loss_percent",
+            "Label": "DC wiring loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_tracking_loss_percent",
+            "Label": "DC tracking loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_nameplate_loss_percent",
+            "Label": "DC nameplate loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_optimizer_loss_percent",
+            "Label": "DC power optimizer loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_perf_adj_loss_percent",
+            "Label": "DC performance adjustment loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_lifetime_loss_percent",
+            "Label": "Lifetime daily DC loss- year 1",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_battery_loss_percent",
+            "Label": "DC connected battery loss- year 1",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_inv_clip_loss_percent",
+            "Label": "AC inverter power clipping loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_inv_pso_loss_percent",
+            "Label": "AC inverter power consumption loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_inv_pnt_loss_percent",
+            "Label": "AC inverter night tare loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_inv_tdc_loss_percent",
+            "Label": "AC inverter thermal derate loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_inv_eff_loss_percent",
+            "Label": "AC inverter efficiency loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_wiring_loss_percent",
+            "Label": "AC wiring loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_transmission_loss_percent",
+            "Label": "Transmission loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_lifetime_loss_percent",
+            "Label": "Lifetime daily AC loss- year 1",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_battery_loss_percent",
+            "Label": "AC connected battery loss- year 1",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_xfmr_loss_percent",
+            "Label": "Transformer loss percent",
+            "Units": "%",
+            "Group": "Loss"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_perf_adj_loss_percent",
+            "Label": "AC performance adjustment loss",
+            "Units": "%",
+            "Group": "Loss",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_wiring_loss",
+            "Label": "AC wiring loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_transmission_loss",
+            "Label": "Transmission loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_dc_optimizer_loss",
+            "Label": "DC power optimizer loss",
+            "Units": "kWh",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_a",
+            "Label": "CEC 6-parameter: a",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_Io",
+            "Label": "CEC 6-parameter: Io",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_Il",
+            "Label": "CEC 6-parameter: Il",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_Rs",
+            "Label": "CEC 6-parameter: Rs",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_Rsh",
+            "Label": "CEC 6-parameter: Rsh",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "6par_Adj",
+            "Label": "CEC 6-parameter: Adj",
+            "Group": "Module CEC 6-parameter model parameters",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "performance_ratio",
+            "Label": "Performance ratio",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "capacity_factor",
+            "Label": "Capacity factor",
+            "Units": "%",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "capacity_factor_ac",
+            "Label": "Capacity factor based on AC system capacity",
+            "Units": "%",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "kwh_per_kw",
+            "Label": "First year kWh(AC)/kW(DC)",
+            "Units": "kWh/kW",
+            "Group": "Annual (Year 1)",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "ts_shift_hours",
+            "Label": "Sun position time offset",
+            "Units": "hours",
+            "Group": "Miscellaneous",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "nameplate_dc_rating",
+            "Label": "System nameplate DC rating",
+            "Units": "kW",
+            "Group": "Miscellaneous",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "System power generated",
+            "Units": "kW",
+            "Group": "Time Series",
+            "Constraints": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_q0",
+            "Label": "Battery total charge",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_q1",
+            "Label": "Battery available charge",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_q2",
+            "Label": "Battery bound charge",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_SOC",
+            "Label": "Battery state of charge",
+            "Units": "%",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_DOD",
+            "Label": "Battery cycle depth of discharge",
+            "Units": "%",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_qmaxI",
+            "Label": "Battery maximum capacity at current",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_qmax",
+            "Label": "Battery maximum charge with degradation",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_qmax_thermal",
+            "Label": "Battery maximum charge at temperature",
+            "Units": "Ah",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_I",
+            "Label": "Battery current",
+            "Units": "A",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_voltage_cell",
+            "Label": "Battery cell voltage",
+            "Units": "V",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_voltage",
+            "Label": "Battery voltage",
+            "Units": "V",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_DOD_cycle_average",
+            "Label": "Battery average cycle DOD",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_cycles",
+            "Label": "Battery number of cycles",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_temperature",
+            "Label": "Battery temperature",
+            "Units": "C",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_capacity_percent",
+            "Label": "Battery capacity percent for lifetime",
+            "Units": "%",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_capacity_thermal_percent",
+            "Label": "Battery capacity percent for temperature",
+            "Units": "%",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_bank_replacement",
+            "Label": "Battery bank replacements per year",
+            "Units": "number/year",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_power",
+            "Label": "Electricity to/from battery",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "grid_power",
+            "Label": "Electricity to/from grid",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "pv_to_load",
+            "Label": "Electricity to load from PV",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_to_load",
+            "Label": "Electricity to load from battery",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "grid_to_load",
+            "Label": "Electricity to load from grid",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "pv_to_batt",
+            "Label": "Electricity to battery from PV",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "grid_to_batt",
+            "Label": "Electricity to battery from grid",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "pv_to_grid",
+            "Label": "Electricity to grid from PV",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_to_grid",
+            "Label": "Electricity to grid from battery",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_conversion_loss",
+            "Label": "Electricity loss in battery power electronics",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_system_loss",
+            "Label": "Electricity loss from battery ancillary equipment",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "grid_power_target",
+            "Label": "Electricity grid power target for automated dispatch",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_power_target",
+            "Label": "Electricity battery power target for automated dispatch",
+            "Units": "kW",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_cost_to_cycle",
+            "Label": "Battery computed cost to cycle",
+            "Units": "$/cycle",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "market_sell_rate_series_yr1",
+            "Label": "Market sell rate (Year 1)",
+            "Units": "$/MWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_pv_to_load",
+            "Label": "Energy to load from PV",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_batt_to_load",
+            "Label": "Energy to load from battery",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_grid_to_load",
+            "Label": "Energy to load from grid",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_pv_to_grid",
+            "Label": "Energy to grid from PV",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_batt_to_grid",
+            "Label": "Energy to grid from battery",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_pv_to_batt",
+            "Label": "Energy to battery from PV",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_grid_to_batt",
+            "Label": "Energy to battery from grid",
+            "Units": "kWh",
+            "Group": "Battery",
+            "undefined": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_charge_from_pv",
+            "Label": "Battery annual energy charged from PV",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_charge_from_grid",
+            "Label": "Battery annual energy charged from grid",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_charge_energy",
+            "Label": "Battery annual energy charged",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_discharge_energy",
+            "Label": "Battery annual energy discharged",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_energy_loss",
+            "Label": "Battery annual energy loss",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "batt_annual_energy_system_loss",
+            "Label": "Battery annual system energy loss",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "annual_export_to_grid_energy",
+            "Label": "Annual energy exported to grid",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "annual_import_to_grid_energy",
+            "Label": "Annual energy imported from grid",
+            "Units": "kWh",
+            "Group": "Battery"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "average_battery_conversion_efficiency",
+            "Label": "Battery average cycle conversion efficiency",
+            "Units": "%",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "average_battery_roundtrip_efficiency",
+            "Label": "Battery average roundtrip efficiency",
+            "Units": "%",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "batt_pv_charge_percent",
+            "Label": "Battery percent energy charged from PV",
+            "Units": "%",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "batt_bank_installed_capacity",
+            "Label": "Battery bank installed capacity",
+            "Units": "kWh",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "batt_dispatch_sched",
+            "Label": "Battery dispatch schedule",
+            "Group": "Battery"
         }
     ]
 }
