@@ -12,6 +12,10 @@ from shapely import speedups
 
 from rtree import index
 
+# TODO: 
+# Check if multiple runs append or recreate the index files
+# update to create new if they are appending. 
+
 def _setup_logging(verbose=False):
     if verbose:
         level = logging.DEBUG
@@ -83,11 +87,13 @@ if __name__ == '__main__':
         help='Log more verbosely.')
     args = parser.parse_args()
     _setup_logging(args.verbose)
-    if not Path(args.spatial_file).exists():
-        logging.error(f'Input file:\n{args.spatial_file}\nnot found!')
+    inFile = Path(args.spatial_file)
+    if not inFile.exists():
+        logging.error(f'Input file:\n{inFile}\nnot found!')
         sys.exit(1)
     logging.debug(args)
-
+    # build the index
     idx = build_index(args.spatial_file)
     logging.info('Writing index...')
-    write_index(idx,r'C:\DOE\test.STRTree')
+    outPath = inFile.resolve().parent
+    write_index(idx,outPath/(inFile.stem + '.rtree'))
