@@ -84,60 +84,117 @@ chart_navbar = dbc.NavbarSimple(
     style={'margin-bottom':60}
 )
 
-solar_radios = html.Div([
-    dbc.Row([
-        dbc.Col(
-            dcc.RadioItems(
-                id='select-solar-chart',
-                options=[{'label': f" {name}", 'value': name}
-                        for name in solar_names[helpers.json_load(cfg.app_json)['solar']]],
-                value=solar_names[helpers.json_load(cfg.app_json)['solar']][0],
-                labelStyle = {'display': 'block'}),
-            width=4),
-        dbc.Col(
-            dcc.RadioItems(
-                id='select-solar-time',
-                options=time_series,
-                value='Hourly',
-                labelStyle={'display': 'block'}),
-        width=2)
-    ], justify="center")
-])
+# solar_radios = html.Div([
+#     dbc.Row([
+#         dbc.Col(
+#             dcc.RadioItems(
+#                 id='select-solar-chart',
+#                 options=[{'label': f" {name}", 'value': name}
+#                         for name in solar_names[helpers.json_load(cfg.app_json)['solar']]],
+#                 value=solar_names[helpers.json_load(cfg.app_json)['solar']][0],
+#                 labelStyle = {'display': 'block'}),
+#             width=4),
+#         dbc.Col(
+#             dcc.RadioItems(
+#                 id='select-solar-time',
+#                 options=time_series,
+#                 value='Hourly',
+#                 labelStyle={'display': 'block'}),
+#         width=2)
+#     ], justify="center")
+# ])
 
-desal_radios = html.Div([
-    dbc.Row([
-        dbc.Col(
-            dcc.RadioItems(
-                id='select-desal-chart',
-                options=[{'label': f" {name}", 'value': name}
-                        for name in desal_names[helpers.json_load(cfg.app_json)['desal']]],
-                value=desal_names[helpers.json_load(cfg.app_json)['desal']][0],
-                labelStyle = {'display': 'block'}),
-            width=2),
-        dbc.Col(
-            dcc.RadioItems(
-                id='select-desal-time',
-                options=time_series,
-                value='Hourly',
-                labelStyle={'display': 'block'}),
-        width=2)
-    ], justify="center")
-])
+# desal_radios = html.Div([
+#     dbc.Row([
+#         dbc.Col(
+#             dcc.RadioItems(
+#                 id='select-desal-chart',
+#                 options=[{'label': f" {name}", 'value': name}
+#                         for name in desal_names[helpers.json_load(cfg.app_json)['desal']]],
+#                 value=desal_names[helpers.json_load(cfg.app_json)['desal']][0],
+#                 labelStyle = {'display': 'block'}),
+#             width=2),
+#         dbc.Col(
+#             dcc.RadioItems(
+#                 id='select-desal-time',
+#                 options=time_series,
+#                 value='Hourly',
+#                 labelStyle={'display': 'block'}),
+#         width=2)
+#     ], justify="center")
+# ])
 
-chart_results_layout = html.Div([
-    html.Div(id='initialize'),
-    chart_navbar,
-    dcc.Store(id='solar-storage'),
-    dcc.Store(id='desal-storage'),
-    dbc.Container([ 
-        html.H3(cfg.Solar[helpers.json_load(cfg.app_json)['solar']], className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
-        dcc.Graph(id='solar-graph'),
-        solar_radios,
-        html.H3(cfg.Desal[helpers.json_load(cfg.app_json)['desal']], className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
-        dcc.Graph(id='desal-graph'),
-        desal_radios,
-    ],style={'margin-bottom':150})
-])
+# chart_results_layout = html.Div([
+#     html.Div(id='initialize'),
+#     chart_navbar,
+#     dcc.Store(id='solar-storage'),
+#     dcc.Store(id='desal-storage'),
+#     dbc.Container([ 
+#         html.H3(cfg.Solar[helpers.json_load(cfg.app_json)['solar']], className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
+#         dcc.Graph(id='solar-graph'),
+#         solar_radios,
+#         html.H3(cfg.Desal[helpers.json_load(cfg.app_json)['desal']], className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
+#         dcc.Graph(id='desal-graph'),
+#         desal_radios,
+#     ],style={'margin-bottom':150})
+# ])
+
+def real_time_layout():
+    solar_radios = html.Div([
+        dbc.Row([
+            dbc.Col(
+                dcc.RadioItems(
+                    id='select-solar-chart',
+                    options=[{'label': f" {name}", 'value': name}
+                            for name in solar_names[helpers.json_load(cfg.app_json)['solar']]],
+                    value=solar_names[helpers.json_load(cfg.app_json)['solar']][0],
+                    labelStyle = {'display': 'block'}),
+                width=4),
+            dbc.Col(
+                dcc.RadioItems(
+                    id='select-solar-time',
+                    options=time_series,
+                    value='Hourly',
+                    labelStyle={'display': 'block'}),
+            width=2)
+        ], justify="center")
+    ])
+    
+    desal_radios = html.Div([
+        dbc.Row([
+            dbc.Col(
+                dcc.RadioItems(
+                    id='select-desal-chart',
+                    options=[{'label': f" {name}", 'value': name}
+                            for name in desal_names[helpers.json_load(cfg.app_json)['desal']]],
+                    value=desal_names[helpers.json_load(cfg.app_json)['desal']][0],
+                    labelStyle = {'display': 'block'}),
+                width=2),
+            dbc.Col(
+                dcc.RadioItems(
+                    id='select-desal-time',
+                    options=time_series,
+                    value='Hourly',
+                    labelStyle={'display': 'block'}),
+            width=2)
+        ], justify="center")
+    ])
+    
+    chart_results_layout = html.Div([
+        html.Div(id='initialize'),
+        chart_navbar,
+        dcc.Store(id='solar-storage'),
+        dcc.Store(id='desal-storage'),
+        dbc.Container([ 
+            html.H3(cfg.Solar[helpers.json_load(cfg.app_json)['solar']], className='text-success', style={'margin-bottom':0, 'text-align':'center'}),
+            dcc.Graph(id='solar-graph'),
+            solar_radios,
+            html.H3(cfg.Desal[helpers.json_load(cfg.app_json)['desal']], className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
+            dcc.Graph(id='desal-graph'),
+            desal_radios,
+        ],style={'margin-bottom':150})
+    ])    
+    return chart_results_layout
 
 #
 ### CALLBACKS 
@@ -236,6 +293,7 @@ def update_solar_graph(solarValue, timeAggValue, solarData):
             'yaxis':{'title': solar_units[solarValue]},
         }
     }
+    # print(solarValue)
     return figure
 
 @app.callback(
