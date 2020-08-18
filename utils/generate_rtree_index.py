@@ -6,10 +6,11 @@ import sys
 
 from pathlib import Path
 
-from shapely.strtree import STRtree
-from shapely.geometry import Point, Polygon, shape, box as shapely_box
+from shapely.geometry import Polygon, shape
 from shapely.geos import geos_version
-from shapely import speedups, wkt
+from shapely import speedups
+
+from rtree import index
 
 def _setup_logging(verbose=False):
     if verbose:
@@ -36,34 +37,33 @@ def build_index(shp):
     else:
         logging.info('GEOS speedups not available.')
 
-    bboxes = []
+    #bboxes = []
+    idx = index.Rtree('rtree')
     logging.info(f'Opening {Path(shp).name} for reading.')
     with fiona.open(shp,'r') as source:
         logging.info(f'Generating indexes for {len(source):,} polygons.')
         i = 0
-        for item in source:
-            i += 1
-            # need to create a geomtry from the coords in the 
-            # geometry, then coerce to bbox
-            geom = Polygon(shape(item['geometry']))
-            box = shapely_box(*geom.bounds)
-            setattr(box, 'uid', item['id'])
-            bboxes.append(box)
-            if i % 10000 == 0:
-                logging.info(f'Processed {i:,} geometries.')
-    try:
-        sidx = STRtree(bboxes)
+        try:
+            for item in source:
+                i += 1
+                # need to create a geomtry from the coords in the 
+                # geometry, then coerce to bbox
+                geom = Polygon(shape(item['geometry']))
+                # insert ID and bounding box in the index
+                idx.insert(int(item['id']),geom.bounds)
+                if i % 10000 == 0:
+                    logging.info(f'Processed {i:,} geometries.')
 
-    except Exception as e:
-        logging.error('Error generating spatial index from bounding boxes.')
-        print(e)
-        sys.exit(1)
-    return sidx
+        except Exception as e:
+            logging.error('Error generating spatial index from bounding boxes.')
+            print(e)
+            sys.exit(1)
+        return idx 
  
 def write_index(idx, fullPath):
     '''
     Writes out the index to the specified path. 
-    @param [idx]: STRTree object
+    @param [idx]: rtree object
     @param [fullPath]: Path where object should be written
     '''
     logging.debug(f'Writing out file {fullPath}')
