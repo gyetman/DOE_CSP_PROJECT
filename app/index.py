@@ -19,7 +19,7 @@ def display_page(pathname):
     elif pathname == '/model-variables':
         return model_parameters.model_tables_layout
     elif pathname == '/chart-results':
-        return chart_results.chart_results_layout
+        return chart_results.real_time_layout()
     elif pathname == '/analysis-report':
         return analysis_report.analysis_report_layout
     else:
