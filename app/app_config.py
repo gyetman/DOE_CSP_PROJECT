@@ -11,6 +11,7 @@ json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 sam_results_dir = base_path / 'SAM_flatJSON' / 'results'
 sam_solar_simulation_outfile = sam_results_dir / 'Solar_output.json'
 json_outpath = base_path / 'app' / 'user-generated-inputs'
+gis_query_path = base_path / 'GISQueryData'
 
 def build_file_lookup(solar,desal,finance):
     '''
