@@ -96,21 +96,29 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
     # make the point a geometry
-    queryPoint = (pt[0], pt[1],pt[0]+.001,pt[1]+.001)
+    queryPoint = (pt[0], pt[1],pt[0]+.1,pt[1]+.1)
     print(queryPoint)
     # open each layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
     if rtreeFile.exists:
         logging.info('Using pre-built rtree index')
-        idx = index.Index(rtreeFile.resolve().name)
-        print(idx)
-        possibleMatches = idx.intersection(queryPoint,objects='raw')
-        for match in possibleMatches:
-            print(match)
+        idx = index.Index(str(rtreeFile.absolute()))
+        possibleMatches = [x for x in idx.intersection(queryPoint)]
+        print(len(possibleMatches))
     else:
         logging.info('No index found, using slow method')
         # TODO: open & find with slow method
+    
+    if possibleMatches is None:
+        return None
+    elif len(possibleMatches) > 1:
+        # call the method to do polygon intersection
+        print('multiple matches')
+    else:
+        # single match concept
+        print('single match')
+        print(possibleMatches)
 
 def _findClosestPoint(pt,lyr,maxDist=150):
     ''' find the closest point or line to the supplied point
@@ -176,5 +184,5 @@ if __name__ == '__main__':
     ''' main method for testing/development '''
     _setup_logging(False)
     logging.info('starting test...')
-    ptCoords = (-119.611,32.254)
+    ptCoords = (-116.6,33.2)
     lookupLocation(ptCoords)
