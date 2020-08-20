@@ -8,6 +8,7 @@ import numpy as np
 
 from pathlib import Path
 from scipy.spatial import KDTree
+from rtree import index
 
 # patch module-level attribute to enable pickle to work
 #kdtree.node = kdtree.KDTree.node
@@ -95,9 +96,14 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
     # open each layer and find the matches
-    intersectMatches = {}
-    # do the intersection
     logging.info(f'Finding intersections with {intersectLyr}...')
+    rtreeFile = Path(f'{lyr.parent}/{lyr.stem}.rtree')
+    if rtreeFile.exists:
+        logging.info('Using pre-built rtree index')
+
+    else:
+        logging.info('No index found, using slow method')
+        # TODO: open & find with slow method
 
 def _findClosestPoint(pt,lyr,maxDist=150):
     ''' find the closest point or line to the supplied point
@@ -106,8 +112,6 @@ def _findClosestPoint(pt,lyr,maxDist=150):
     ''' 
     queryPoint = np.asarray(pt)
     # open each layer and find the matches
-    closestMatches = {}
-    # do the search
     logging.info(f'Finding closes point for {lyr}...')
     # check for kdtree
     kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
@@ -119,13 +123,18 @@ def _findClosestPoint(pt,lyr,maxDist=150):
             logging.info(closestPt)
 
     else:
-        with fiona.collection(lyr) as source:
+        with fiona.open(lyr) as source:
             features = list(source)
         pts = np.asarray([feat['geometry']['coordinates'] for feat in features])
-
+        # TODO: finish the search function for non-KDTree points
         
-
-
+    if not closestPt:
+        return None    
+    # get the matching point
+    with fiona.open(lyr) as source:
+        features = list(source)
+        match = features[closestPt[1]]
+        return(match)
 
 
 def _paramHelper(dfAtts):
@@ -160,5 +169,5 @@ if __name__ == '__main__':
     ''' main method for testing/development '''
     _setup_logging(False)
     logging.info('starting test...')
-    ptCoords = (-90,38)
+    ptCoords = (-119.611,32.254)
     lookupLocation(ptCoords)
