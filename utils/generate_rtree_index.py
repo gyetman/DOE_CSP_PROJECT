@@ -97,8 +97,8 @@ if __name__ == '__main__':
     idx = build_index(args.spatial_file,outPath)
     print(idx)
     logging.info('Writing index...')
-    idx.dumps(outPath.name)
-    idx.close()
+    #idx.dumps(outPath.name)
+    #idx.close()
 
     #write_index(idx,outPath/(inFile.stem + '.rtree'))
     
