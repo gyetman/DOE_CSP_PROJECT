@@ -98,7 +98,7 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 solar_input = json.load(read_file)
             
-
+            print(solar_input['file_name'])
             self.staticcollector=StaticCollector(design_point_date = solar_input['design_point_date'],desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
             self.heat_gen, sc_output = self.staticcollector.design()
             sc_output_json_outfile =  self.samPath / 'results' /'Solar_output.json'

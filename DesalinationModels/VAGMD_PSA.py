@@ -346,10 +346,10 @@ class VAGMD_PSA(object):
 #STEC =[]
 #GOR =[]
 #for f in Feed:
-case = VAGMD_PSA()
-output = case.design()
-a = [0.0, 0.0,  1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0]
-simu = case.simulation(gen = a, storage = 6)
+# case = VAGMD_PSA()
+# output = case.design()
+# a = [0.0, 0.0,  1031.3695068359375, 2253.046630859375, 2805.6748046875, 2788.9150390625, 1669.11767578125, 1146.8067626953125, 246.9362030029297, 0.0, 0.0]
+# simu = case.simulation(gen = a, storage = 6)
 ##print(simu)
 #
 ##    Plux.append(case.PFlux)

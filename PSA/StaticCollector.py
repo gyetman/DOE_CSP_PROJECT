@@ -219,9 +219,9 @@ class StaticCollector(object):
  
 #%%
 
-case =StaticCollector()
-case.design()
-# # case.simulation()
+# case =StaticCollector()
+# case.design()
+# # # case.simulation()
 
             
         
