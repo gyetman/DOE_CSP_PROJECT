@@ -1,0 +1,169 @@
+{
+    "FO": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Mprod",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Costraint": "<106,>34"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "T_sw",
+            "Label": "Seawater temperature ",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "NF_rr",
+            "Label": "Nanofilter recovery rate  fuel fraction",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "RO_rr",
+            "Label": "RO recovery rate",
+            "Units": "none",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "A",
+            "Label": "Concentration of pure draw in strong draw",
+            "Units": "",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "p_margin",
+            "Label": "Desired DP of strong draw over seawater osmotic pressure in psi",
+            "Units": "psi",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "r",
+            "Label": "FO recovery rate",
+            "Units": "*",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hm",
+            "Label": "Heat of mixing per m3 of product water for swing",
+            "Units": "MJ",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_DS",
+            "Label": "Temperature of DS entering the membrane system",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_sw_sup",
+            "Label": "Temperature difference between the inlet/outlet supplimental seawater ",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_prod",
+            "Label": "Temperature difference between the feed and produced water",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_separator",
+            "Label": "Operational temperature of separator",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loss_sep",
+            "Label": "Temperature loss within the separator",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_hotin",
+            "Label": "Temperature difference between hot water and separator",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_hotout",
+            "Label": "Temperature difference between inlet and outlet hot water",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_app_C",
+            "Label": "Approach temperature at HX 1C and 2C",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_app_1B",
+            "Label": "Approach temperature at HX 1B",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_app_2B",
+            "Label": "Approach temperature at HX 2B",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hour",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
+        }
+    ]
+}

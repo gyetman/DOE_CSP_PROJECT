@@ -40,7 +40,7 @@ solar_names = {'linear_fresnel_dsg_iph':('System power generated','Receiver mass
                'tcsdirect_steam':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
                'trough_physical_process_heat':('Heat sink thermal power','Field total mass flow delivered', 'Receiver thermal losses','Resource Beam normal irradiance'),
                'pvsamv1':('System power generated','Irradiance GHI from weather file')}    
-desal_names = {'RO': ('Water production','Water production2'),'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),'LTMED':('Water production','Fossil fuel usage', 'Storage status')}    
+desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),'RO': ('Water production','Storage status','Fossil fuel usage'),'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),'LTMED':('Water production','Fossil fuel usage', 'Storage status')}    
 sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation'}
 
 

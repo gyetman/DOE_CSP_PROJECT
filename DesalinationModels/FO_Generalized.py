@@ -34,7 +34,7 @@ class FO_generalized(object):
                  RO_rr    = 0.9    , # RO recovery rate
                  A        = 0.8    , # Percentage of pure draw in strong draw
                  p_margin = 0      , # Desired DP of strong draw over seawater osmotic pressure in psi
-                 salinity = 0.035  , # Salinity (%)      
+                 FeedC_r  = 35     , # Salinity (g/L)      
                  r        = 0.3    , # Recovery rate     
                  hm       = 105    , # Heat of mixing per m3 of product water for swing (MJ)                
                  T_DS     = 20     , # Temperature of DS entering the membrane system (oC)
@@ -49,7 +49,9 @@ class FO_generalized(object):
                  T_app_1B   = 5.95 , # Approach temperature at HX 1B
                  T_app_2B   = 5.62 , # Approach temeprature at HX 2B
                 
-   
+                 Fossil_f = 1, # Fossil fuel fraction
+                 
+                 
                  DS_c_p   = [[3.23608, 30.32329, 84.258, 174.14918, 316.77652, 516.69451, 825.68047, 1344.052947, 1753.477316],[1.00258,10.055,19.9824,29.9461,40.0552,49.9181,60.0252,70.0398,72.9075]],
                  # Polymer concentration as function of osmotic pressure (look-up table)
                  DS_density = [[0,0.57492,1.01314,2.06163,4.00907,8.07857,10.29748,20.322,38.57126,56.59887,66.45577,71.81646,84.16594,100],[1000,1001,1001.4,1002.95,1005.6,1011.26,1013.99,1027.94,1053.67,1073.775,1080.52,1086.355,1083.684,1069.866]],
@@ -172,12 +174,13 @@ class FO_generalized(object):
         self.RO_r   = 1 - RO_rr # RO retentate reject rate
         self.A      = A
         self.p_margin = p_margin
-        self.salinity = salinity
+        self.salinity = FeedC_r / 1000
         self.r      = r       
         self.hm     = hm
-        self.T_DS   = T_DS
+        self.T_DS   = T_sw + 7
         self.T_sw_sup = self.T_sw + dT_sw_sup        
         self.T_prod = self.T_sw + dT_prod
+        self.Fossil_f = Fossil_f
 
         self.T_cout_1C = T_separator
         self.T_cout_2C = T_separator
@@ -394,6 +397,28 @@ class FO_generalized(object):
     def T_memb_solver(self):
         def opt_funtion(params):
             
+            # SD, T_brine = params[0:2]
+            
+            # T_memb = (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) * self.T_DS + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.T_sw) / (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) )
+            # p_brine = 0.93*2* self.sb*10*100/58.5*0.08314472*14.50377*(273+T_brine)
+            # p_weak = self.p_margin + p_brine
+            # B = self.OneDInterp('Draw concentration', p_weak) / 100
+            # SD_x = B * self.NF_pf * (1-self.A) / (self.A - B)
+            # SD_y = self.A * SD_x / (1-self.A)
+            # WD_M = self.NF_pf + SD_x + SD_y
+            # h_wd, dT_b = self.find_deltaT(WD_M, B, T_memb) 
+            
+            # T_out = T_memb + dT_b  # outlet brine temperature from FO
+            
+            # d_h =  self.OneDInterp('Draw density', B * 100)
+            # cp_h=  self.OneDInterp('Draw cp', B*100)
+            # d_c =  self.TwoDInterp('Seawater density', (T_out+T_brine)/2, self.sb) 
+            # cp_c=  self.TwoDInterp('Seawater Cp', (T_out+T_brine)/2, self.sb) 
+            
+            # T_brine_cal = T_out + WD_M * d_h * cp_h * (T_out - T_memb) / (self.e_s * d_c * cp_c)
+        
+            # return abs(T_brine_cal - T_brine) + abs(SD - SD_x - SD_y)
+                        
             SD, T_brine = params[0:2]
             
             T_memb = (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) * self.T_DS + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.T_sw) / (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) )
@@ -528,7 +553,8 @@ class FO_generalized(object):
         self.Q_2C = self.f_cin_2C * (self.T_cout_2C-self.T_cout_2B) *self.OneDInterp('Draw density', self.BHx*100)*self.OneDInterp('Draw cp', self.BHx*100)/24/3600 / self.Mprod
         self.Q_1C = self.f_cin_1C * (self.T_cout_2C-self.T_cout_2B) *self.OneDInterp('Draw density', self.BHx*100)*self.OneDInterp('Draw cp', self.BHx*100)/24/3600 / self.Mprod
 
-        self.STEC = 24 * (self.Q_2C + self.Q_1C)
+        self.STEC = 24 * (self.Q_2C + self.Q_1C) # kWh/m3
+        self.Thermal_power = self.STEC /24 * self.Mprod # kW
         
     def membrane_heat_calculations(self):
         # To weak draw solution
@@ -654,9 +680,71 @@ class FO_generalized(object):
         
         self.Heat = self.HX1C['Hot side heat load(kW)'][0] +  self.HX2C['Hot side heat load(kW)'][0] #kW
         
-                                                    
-#%%
+    def FO_design(self):
+        self.flow_rate_calculations()
+        self.T_memb_solver()
+        self.find_operational_parameters()
+        
+        self.design_output = []
+        self.design_output.append({'Name':'Weak draw solution concentration','Value':self.B*100,'Unit':'%'})
+        self.design_output.append({'Name':'Strong draw solution flow rate','Value':self.SD,'Unit':'m3/day'}) 
+        self.design_output.append({'Name':'Thermal power consumption','Value':self.Thermal_power[0],'Unit':'kW(th)'})
+        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC[0],'Unit':'kWh(th)/m3'})
 
+        return self.design_output
+        
+    def FO_simulation(self, gen , storage):
+        self.thermal_load = self.Thermal_power[0] # kWh
+        self.max_prod = self.Mprod / 24 # m3/h
+        self.storage_cap = storage * self.thermal_load # kWh
+        
+        to_desal = [0 for i in range(len(gen))]
+        to_storage =  [0 for i in range(len(gen))]
+        storage_load =  [0 for i in range(len(gen))]
+        storage_cap_1 =  [0 for i in range(len(gen))]
+        storage_cap_2 = [0 for i in range(len(gen))]
+        storage_status =  [0 for i in range(len(gen))]
+        solar_loss =  [0 for i in range(len(gen))]
+        load =  [0 for i in range(len(gen))]
+        prod =  [0 for i in range(len(gen))]
+        fuel =  [0 for i in range(len(gen))]
+        
+        for i in range(len(gen)):
+            to_desal[i] = min(self.thermal_load, gen[i])
+            to_storage[i] = abs(gen[i] - to_desal[i])
+            storage_load[i] = gen[i] - self.thermal_load
+            if i != 0:
+                storage_cap_1[i] = storage_status[i-1]
+            storage_cap_2[i] = max(storage_load[i] + storage_cap_1[i], 0)
+            storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
+            solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
+            load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
+            if load[i] / self.thermal_load < self.Fossil_f:
+                fuel[i] = self.thermal_load - load[i]
+
+           
+            prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
+
+            
+        Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
+        Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
+    
+        simu_output = []
+
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
+        simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
+        simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
+        simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
+        simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        
+        # Add brine volume and concentration (using 100% rejection(make it a variable))
+        
+        return simu_output        
+    
+#%%
+'''
 import matplotlib.pyplot  as plt
 capacity = [1,10,100,500,1000,2000,5000,10000,50000,100000,200000,500000]
 Unit_heat = []
@@ -675,24 +763,26 @@ plt.show()
 
 T_sw = range(10,36)
 Unit_heat = []
+SD = []
 for t in T_sw:
-    case = FO_generalized(Mprod = 1,T_sw = t, salinity=0.035)
+    case = FO_generalized(Mprod = 1, T_sw = t, FeedC_r=35)
     case.flow_rate_calculations()  
     case.T_memb_solver()
     case.find_operational_parameters()      
     case.system_calculations()
     Unit_heat.append(case.STEC)
+    SD.append(case.T_cout_2B)
     
 plt.plot(T_sw, Unit_heat)
 plt.xlabel('Seawater temperature')
-plt.ylabel('STEC (kWh/m3)')
+plt.ylabel('Strong draw solution flow rate (m3/day)')
 plt.show()   
 
-s = [x/100 for x in range(30,60,5)]
+s = [x for x in range(10,85,5)]
 Unit_heat = []
 SD = []
 for ss in s:
-    case = FO_generalized(Mprod = 1, T_sw = 15, r=0.5)
+    case = FO_generalized(Mprod = 1, T_sw = 13, FeedC_r= ss)
     case.flow_rate_calculations()  
     case.T_memb_solver()
     case.find_operational_parameters()      
@@ -703,10 +793,10 @@ for ss in s:
 fig, ax1 = plt.subplots()
 # ax2 = ax1.twinx()
 
-ax1.plot(s, Unit_heat, 'g-')
+ax1.plot(s, SD, 'g-')
 # ax2.plot(s, SD, 'b-')
 
-ax1.set_xlabel('FO recovery rate')
+ax1.set_xlabel('Feed salinity (g/L)')
 ax1.set_ylabel('STEC (kWh/m3)', color = 'g')
 # ax2.set_ylabel('Strong draw solution flow rate (m3/day)', color = 'b')
 plt.show()  
@@ -737,3 +827,4 @@ ax.set_zlabel('STEC(kWh/m3)')
 
 ax.view_init(65, 95)
 fig
+'''
