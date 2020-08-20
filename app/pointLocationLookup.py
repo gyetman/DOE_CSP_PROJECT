@@ -95,12 +95,18 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
+    # make the point a geometry
+    queryPoint = (pt[0], pt[1],pt[0]+.001,pt[1]+.001)
+    print(queryPoint)
     # open each layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
-    rtreeFile = Path(f'{lyr.parent}/{lyr.stem}.rtree')
+    rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}.rtree')
     if rtreeFile.exists:
         logging.info('Using pre-built rtree index')
-
+        idx = index.Index(rtreeFile.resolve().name)
+        possibleMatches = idx.intersection(queryPoint,objects=True)
+        for match in possibleMatches:
+            print(match)
     else:
         logging.info('No index found, using slow method')
         # TODO: open & find with slow method
