@@ -8,7 +8,6 @@ import numpy as np
 
 from pathlib import Path
 from scipy.spatial import KDTree
-from shapely.geometry import Point, Polygon, shape
 from rtree import index
 
 # patch module-level attribute to enable pickle to work
@@ -82,7 +81,6 @@ def lookupLocation(pt, mapTheme='default'):
         elif 'poly' in value.keys():
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
 
-
 def _getThemeLayers(mapTheme):
     ''' return the list of layers to search based on the map theme '''
     # TODO: read the lists from a JSON file using the helper module
@@ -92,19 +90,6 @@ def _getThemeLayers(mapTheme):
     elif mapTheme.lower() == 'restrictions':
         return {**defaultLayers, **restrictionsLayers}
 
-def _findMatchFromCandidates(pt,intersectLyr,candidates):
-    '''open the layer and search through the candidate matches
-    to find the true intersection with the point. '''
-    ptGeom = Point(pt)
-    # open the polygon and subset to the candidates
-    with fiona.open(intersectLyr) as source:
-        features = list(source)
-    featureSubset = map(features.__getitem__,candidates)
-    for poly in featureSubset:
-        if ptGeom.within(Polygon(shape(poly['geometry']))):
-            return(poly)
-    pass
-
 def _findIntersectFeatures(pt,intersectLyr):
     ''' find features in the supplied layers that intersect the provided point 
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
@@ -112,6 +97,7 @@ def _findIntersectFeatures(pt,intersectLyr):
     '''
     # make the point a geometry
     queryPoint = (pt[0], pt[1],pt[0]+.1,pt[1]+.1)
+    print(queryPoint)
     # open each layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
@@ -119,24 +105,26 @@ def _findIntersectFeatures(pt,intersectLyr):
         logging.info('Using pre-built rtree index')
         idx = index.Index(str(rtreeFile.absolute()))
         possibleMatches = [x for x in idx.intersection(queryPoint)]
+        print(len(possibleMatches))
     else:
         logging.info('No index found, using slow method')
         # TODO: open & find with slow method
     
-    print(len(possibleMatches))
-    if len(possibleMatches) == 0:
+    if possibleMatches is None:
         return None
     elif len(possibleMatches) > 1:
-        # single match 
+        # call the method to do polygon intersection
+        print('multiple matches')
+    else:
+        # single match concept
+        print('single match')
+        print(possibleMatches)
         with fiona.open(intersectLyr) as source:
             features = list(source)
             return features[possibleMatches[0]]
-    else:
-        # call the method to do polygon intersection to 
-        # get the exact match from the list of possibles
-        return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
 
         
+
 def _findClosestPoint(pt,lyr,maxDist=150):
     ''' find the closest point or line to the supplied point
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
@@ -202,7 +190,5 @@ if __name__ == '__main__':
     ''' main method for testing/development '''
     _setup_logging(False)
     logging.info('starting test...')
-    #ptCoords = (-73.988033,41.035572) # matches two counties
-    #ptCoords = (-119.0, 26.0) # doesn't match any counties
-    ptCoords = (-115.0, 34.0) # matches one county
+    ptCoords = (-116.6,33.2)
     lookupLocation(ptCoords)
