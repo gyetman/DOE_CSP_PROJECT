@@ -14,7 +14,15 @@
             "Label": "Feed concentration",
             "Units": "g/L",
             "Require": "*",
-            "Costraint": "<106,>34"
+            "Costraint": "<60,>30"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "RR",
+            "Label": "Recovery rate",
+            "Units": "",
+            "Require": "*",
+            "Constraint": ">0.3, <0.5"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -30,6 +38,14 @@
             "Units": "C",
             "Require": "*",
             "Constraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Tin",
+            "Label": "Inlet feedwater temperature",
+            "Units": "C",
+            "Require": "*",
+            "Constraint": ">15, <35"
         },
 		{
             "DataType": "SSC_NUMBER",

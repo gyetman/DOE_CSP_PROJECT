@@ -2,12 +2,15 @@
 	"yrs" : 20,
 	"int_rate" : 0.04,
 	"coe" : 0.05,
-	"coh" : 0.01,
-	"f_HEX" : 0.4,
-	"cost_storage": 26,
-	"Chemicals": 0.04,
-	"Labor": 0.033,
-	"Miscellaneous": 0.1,
-	"Discharge": 0.02,
-	"Maintenance": 2
+	"Nel" : 8,
+	"Area" : 40.8,
+	"membrane_cost" : 30,
+	"pressure_vessel_cost": 1000,
+	"chem_cost": 0.05,
+	"labor_cost": 0.1,
+	"rep_rate": 0.15,
+	"equip_cost_method": "general",
+	"unit_capex": 1100,
+	"sec": 2.5,
+	"disposal_cost": 0.03
 }
