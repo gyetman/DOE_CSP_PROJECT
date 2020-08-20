@@ -123,7 +123,7 @@ def gather_data(x):
         updates.update({'water_prod':ds[index]['Value']})
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
-        updates.update({'RR':ddin['RR']})        
+        updates.update({'RR':ddin['RR'] * 100})        
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
@@ -158,7 +158,7 @@ def gather_data(x):
                         'Capacity':d['nominal_daily_cap_tmp'],
                         'storage_hour':d['storage_hour'],
                         'fossil_fuel': fossil_fuel,
-                        'RR': d['R1']})
+                        'RR': d['R1'] * 100})
         # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')

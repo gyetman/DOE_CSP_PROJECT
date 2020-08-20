@@ -422,6 +422,7 @@ class SamBaseClass(object):
                         variableValues.append({'name': 'solar_resource_file',
                                                'value': varValue,
                                                'datatype': variable['DataType'] })   
+ 
                         continue
                 
                 if variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':

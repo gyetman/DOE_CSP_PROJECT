@@ -120,5 +120,5 @@ class RO_cost(object):
 #    def cost_method(self):
     
     #%%
-    rocost=RO_cost()
-    rocost.lcow()
+    # rocost=RO_cost()
+    # rocost.lcow()
