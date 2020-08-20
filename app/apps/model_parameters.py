@@ -212,18 +212,21 @@ tab_selected_style = {
 
 app.title = 'Model Parameters'
 
-# loading = html.Div([
-#     html.P(''),
-#     dcc.Loading(id="model-loading", children=[html.Div(id="model-loading-output")], type="default", color="#18BC9C")]
-# )
 loading = html.Div([
     html.P(''),
     dcc.Loading(id="model-loading", type="default", color="#18BC9C")]
 )
 
-model_vars_title = html.Div([
-    html.H3('System Configuration', className='page-header'),
-    html.P(id='initialize')])
+parameters_navbar = dbc.NavbarSimple(
+    children=[dbc.NavItem(dbc.NavLink("Models", href='/model-selection')),
+              dbc.NavItem(dbc.NavLink("Parameters"), active=True),
+              dbc.NavItem(dbc.NavLink('Help', href='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf', target='_blank'))
+              ],
+    brand="System Configuration",
+    color="primary",
+    dark=True,
+    style={'margin-bottom':60}
+)
 
 tabs_accordion = dbc.Card('TEST',
     className="accordion h-100", 
@@ -283,7 +286,7 @@ side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],cla
 
 tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9, id='tabs-data-initialize')],no_gutters=True)
 
-model_tables_layout = html.Div([model_vars_title, tabs])
+model_tables_layout = html.Div([parameters_navbar, tabs])
 
 #
 ### CALLBACKS
