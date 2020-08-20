@@ -119,12 +119,18 @@ def _findIntersectFeatures(pt,intersectLyr):
         # single match concept
         print('single match')
         print(possibleMatches)
+        with fiona.open(intersectLyr) as source:
+            features = list(source)
+            return features[possibleMatches[0]]
+
+        
 
 def _findClosestPoint(pt,lyr,maxDist=150):
     ''' find the closest point or line to the supplied point
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [closestLayers]: list of point or line layers
     ''' 
+    # TODO: update max dist, I believe it's in DD, not meters or km
     queryPoint = np.asarray(pt)
     # open each layer and find the matches
     logging.info(f'Finding closes point for {lyr}...')
