@@ -58,8 +58,7 @@
             "Label": "Equivalent full-load thermal storage hours",
             "Units": "hr",
             "Group": "solarfield",
-            "Require": "*",
-            "Tab": "0"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",

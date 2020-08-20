@@ -3,18 +3,16 @@
         {
             "DataType": "SSC_STRING",
             "Name": "file_name",
-            "Label": "Weather file in TMY2, TMY3, EPW, or SAM CSV.",
+            "Label": "Weather file in TMY2, TMY3, EPW, or SAM CSV",
             "Group": "pvsamv1",
-            "Require": "?",
-            "Tab": "Part1"
+            "Require": "?"
         },
         {
             "DataType": "SSC_TABLE",
             "Name": "solar_resource_data",
             "Label": "Weather data",
             "Group": "pvsamv1",
-            "Require": "?",
-            "Tab": "Part2"
+            "Require": "?"
         },
         {
             "DataType": "SSC_NUMBER",
