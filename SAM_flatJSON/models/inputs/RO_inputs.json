@@ -38,6 +38,22 @@
             "Require": "*",
             "Tab": "Plant Design Specifications"
         },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hour",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        },		
         {
             "DataType": "SSC_NUMBER",
             "Name": "nERD",

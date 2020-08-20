@@ -7,5 +7,7 @@
 	"nERD": 0.95,
 	"nBP": 0.8,
 	"nHP": 0.8,
-	"nFP": 0.8
+	"nFP": 0.8,
+	"Fossil_f": 0,
+	"storage_hour": 0
 }

@@ -4,7 +4,11 @@ Created on Tue Feb 25 02:38:36 2020
 RO COST MODEL
 Following a structure similar to VAGMD_cost.py
 @author: adama
+
+Battery cost
 """
+
+
 
 import numpy as np
 import math
@@ -113,6 +117,7 @@ class RO_cost(object):
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
+        cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
         
         return cost_output
     
