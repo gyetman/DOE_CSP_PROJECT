@@ -50,7 +50,8 @@ class RO(object):
                 Pfp=1    ,            # Pressure of intake feed pumps
                 Tmax = 318.15,
                 minQb = 2.7,
-                maxQf = 17
+                maxQf = 17,
+                Fossil_f = 0
                 ):
     
         # self.CP=CP
@@ -72,7 +73,7 @@ class RO(object):
         self.Ctest1 = Ctest1
         self.Pdropmax = Pdropmax
         self.maxQf = maxQf
-
+        self.Fossil_f = Fossil_f
         
     def RODesign(self):
         vhfactor =2
@@ -135,33 +136,78 @@ class RO(object):
         self.HP_power=HP_power
         self.FP_power=FP_power
         self.PowerTotal=PowerTotal
+
         
         design_output = []
         design_output.append({'Name':'Permeate flow rate of the system','Value':self.Qp1,'Unit':'m3/h'})
         design_output.append({'Name':'Number of vessels','Value':self.NV1,'Unit':''})
     #            design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
-    #            design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules,'Unit':'kW(th)'})
-    #            design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        design_output.append({'Name':'Electric energy consumption','Value':self.PowerTotal,'Unit':'kW(e)'})
+        design_output.append({'Name':'Specific energy consumption','Value':self.SEC,'Unit':'kWh(e)/m3'})
     #            design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         return design_output
 
     def simulation(self, gen, storage=None):
-        if not isinstance(gen,np.ndarray):
-            count_hours= np.asarray(gen)>=self.PowerTotal
-        else:
-            count_hours= gen>=self.PowerTotal
+        # if not isinstance(gen,np.ndarray):
+        #     count_hours= np.asarray(gen)>=self.PowerTotal
+        # else:
+        #     count_hours= gen>=self.PowerTotal
 
-        self.Qp_hourly_sim=np.zeros(8760)
-        self.Qp_hourly_sim=count_hours.reshape(1,-1)*repmat(self.Qp1,1,8760)
-        self.Qp_annual_total= np.sum(count_hours)*self.Qp1
+        # self.Qp_hourly_sim=np.zeros(8760)
+        # self.Qp_hourly_sim=count_hours.reshape(1,-1)*repmat(self.Qp1,1,8760)
+        # self.Qp_annual_total= np.sum(count_hours)*self.Qp1
         
-        self.Qp = self.Qp_hourly_sim.tolist()[0]
+        # self.Qp = self.Qp_hourly_sim.tolist()[0]
         
+        # simu_output = []
+        # simu_output.append({'Name':'Water production','Value': self.Qp,'Unit':'m3/h'})
+        # simu_output.append({'Name':'Water production2','Value': self.Qp,'Unit':'m3/h'})
+        # simu_output.append({'Name':'Annual total water production','Value':self.Qp_annual_total,'Unit':'m3/year'})
+        
+        
+        self.thermal_load = self.PowerTotal # kWh
+        self.max_prod = self.nominal_daily_cap_tmp / 24 # m3/h
+        self.storage_cap = storage * self.thermal_load # kWh
+        
+        to_desal = [0 for i in range(len(gen))]
+        to_storage =  [0 for i in range(len(gen))]
+        storage_load =  [0 for i in range(len(gen))]
+        storage_cap_1 =  [0 for i in range(len(gen))]
+        storage_cap_2 = [0 for i in range(len(gen))]
+        storage_status =  [0 for i in range(len(gen))]
+        solar_loss =  [0 for i in range(len(gen))]
+        load =  [0 for i in range(len(gen))]
+        prod =  [0 for i in range(len(gen))]
+        fuel =  [0 for i in range(len(gen))]
+        
+        for i in range(len(gen)):
+            to_desal[i] = min(self.thermal_load, gen[i])
+            to_storage[i] = abs(gen[i] - to_desal[i])
+            storage_load[i] = gen[i] - self.thermal_load
+            if i != 0:
+                storage_cap_1[i] = storage_status[i-1]
+            storage_cap_2[i] = max(storage_load[i] + storage_cap_1[i], 0)
+            storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
+            solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
+            load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
+            if load[i] / self.thermal_load < self.Fossil_f:
+                fuel[i] = self.thermal_load - load[i]
+
+           
+            prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
+            
+        Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
+        Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
+    
         simu_output = []
-        simu_output.append({'Name':'Water production','Value': self.Qp,'Unit':'m3/h'})
-        simu_output.append({'Name':'Water production2','Value': self.Qp,'Unit':'m3/h'})
-        simu_output.append({'Name':'Annual total water production','Value':self.Qp_annual_total,'Unit':'m3/year'})
-        
+
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
+        simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
+        simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
+        simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
+        simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
         
         return simu_output
 

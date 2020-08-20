@@ -10,6 +10,8 @@ import numpy as np
 import math
 import DesalinationModels.IAPWS97_thermo_functions as TD_func
 from DesalinationModels.LT_MED_calculation import lt_med_calculation
+from scipy.optimize import fmin
+# from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
 class lt_med_general(object):
     
@@ -63,9 +65,12 @@ class lt_med_general(object):
 #    def gammataureg1(self, tau, pic):
 #        for i in len(self.nreg1):
     def __init__(self,
+         Xf      =  35 , # Feedwater salinity  (g/L)
          Ts      =  80     , # The temperature of the steam at the inlet of the first bundle tube, C
          Nef     =  14  , # The feed water salinity, ppm
          Capacity = 2000,    # Capacity of the plant (m3/day)
+         Tin     = 15 , # Inlet seawater temperature
+         RR      = 0.5 , # recovery ratio
          Fossil_f = 1 # Fossil fuel fraction
          ):
         
@@ -73,44 +78,86 @@ class lt_med_general(object):
         self.Nef = Nef
         self.Capacity = Capacity
         self.Fossil_f = Fossil_f
+        self.Xf = Xf *1000
+        self.RR = RR
+        self.Tin  = Tin
     
     def design(self):
-        
+        p1 = self.Xf
+        p2 = self.RR
+        p3 = self.Tin
+        p4 = self.Capacity
+        p5 = self.Ts
+        qF_paras = [p1, p1**2, p2, p2*p1, p2*p1**2, p2**2, p2**2*p1, p3, p3*p1, p3*p1**2, p3**p2, p3*p2*p1, p3*p2**2, p3**2,
+                    p3**2*p1, p3**2*p2, p4, p4*p1, p4*p1**2, p4*p2, p4*p2*p1, p4*p2**2, p4*p3, p4*p3*p1, p4*p3*p2, p4*p3**2, p4**2, p4**2*p1,
+                    p4**2*p2, p4**2*p3, p5, p5*p1, p5*p1**2, p5*p2, p5*p2*p1, p5*p2**2, p5*p3, p5*p3*p1, p5*p3*p2, p5*p3**2, p5*p4, p5*p4*p1,
+                    p5*p4*p2, p5*p4*p3, p5*p4**2, p5**2, p5**2*p1, p5**2*p2, p5**2*p3, p5**2*p4, 1, p5**3, p4**3, p3**3, p2**3, p1**3]
+        paras = [p1, p2, p2*p1, p3, p3*p1, p3*p2, p4, p4*p1, p4*p2, p4*p3, p5, p5*p1, p5*p2, p5*p3, p5*p4, 1, p5**2, p4**2, p3**2, p2**2,p1**2]
         if self.Nef == 12:
-            self.GOR = 8.744 - 0.02817 * self.Ts -4.426e-6 *self.Capacity+0.0004547*self.Ts**2 + 3.932e-8*self.Ts*self.Capacity
-            self.qs = -1.211 + 0.0321 * self.Ts +0.001666 *self.Capacity - 2.12e-4*self.Ts**2 - 5.55e-6*self.Ts*self.Capacity
-            self.qF = 0.3312 - 0.00881 * self.Ts + 0.03835 * self.Capacity +5.832e-5 * self.Ts **2 -1.13e-6 * self.Ts * self.Capacity
+            coeffs = [
+                [3.88E-06, 9.94537509, -6.60E-06, 0.02081813, -5.88E-08, 0.00382407, 4.63E-06, 7.68E-13, -6.27E-07, 3.70E-08, -0.02673288, 1.87E-08, -0.00525926, -2.94E-05, -6.87E-08, 7.89712504, 0.0001129, 4.78E-12, -0.00012154, -7.46728395, -1.26E-12],
+                [-1.89E-05, -42.7147269, 4.46E-05, -0.09264028, 3.72E-07, 0.05007407, 0.0012586, -1.48E-10, -0.00041252, -2.30E-06, 0.18383092, -1.25E-07, -0.05408333, 0.00036713, 2.31E-06, 3.24567278, -0.00117469, -1.10E-10, 0.00068253, 54.1938272, 1.35E-11],
+                [1.36E-06, 0.39846, -1.59E-05, -0.05117797, -6.68E-08, 0.00298148, -1.40E-05, -3.43E-13, -2.45E-06, 1.00E-07, 0.11720644, -6.30E-08, 0.00010185, -0.00019016, 1.65E-07, -2.6717911, -0.00020008, -3.20E-11, -0.00029527, -0.38061728, -5.07E-11]
+                ]
+            
+            qf_coeffs = [0.043289853, -1.02E-06, 0, 0.00346228, -1.95E-09, 0, -0.004132482, 0, 6.93E-06, -9.32E-12, 0, -1.01E-05, 0, 0, -7.28E-08, 0, 0, -1.63E-07, 5.76E-14, -0.814943893, 1.97E-07, 0.671904382, -3.18E-07, 7.87E-11, 1.38E-06, 2.06E-08, 9.15E-06, -1.03E-15, -4.00E-10, 2.95E-12, 0, 8.91E-07, -3.70E-11, 0, 3.38E-06, 0, -0.004071561, 1.91E-08, 0.005631214, -5.83E-05, -1.13E-05, -1.51E-12, 9.35E-06, -6.55E-08, -9.72E-12, 0.000991866, 4.94E-09, -0.002346965, 2.65E-05, 3.89E-08, 0, -5.75E-06, -5.98E-11, 9.80E-05, 0, 7.56E-12]
+
         if self.Nef == 14:
-            self.GOR = 9.683 - 0.03048 * self.Ts - 7.639e-6 *self.Capacity+ 0.0004896*self.Ts**2 + 7.227e-8*self.Ts*self.Capacity
-            self.qs = -1.176 + 0.03098 * self.Ts +0.001503 *self.Capacity - 2.039e-4*self.Ts**2 - 4.94e-6*self.Ts*self.Capacity
-            self.qF = 0.3513 - 0.0094 * self.Ts + 0.03834 * self.Capacity + 6.24e-5 * self.Ts **2 - 9.89e-7 * self.Ts * self.Capacity
+            coeffs = [
+                [5.09E-06, 12.5382496, -9.14E-06, 0.02337875, -9.14E-08, 0.00388889, 5.35E-06, 6.30E-13, -5.29E-07, 4.37E-08, -0.02950567, 3.09E-08, -0.0062037, 3.36E-18, -8.05E-08, 8.60476584, 0.00011852, 5.63E-12, -0.00017037, -9.33333333, -3.29E-12],
+                [-2.16E-05, -43.3374773, 5.12E-05, -0.0844156, 4.36E-07, 0.04958333, 0.00112458, -1.31E-10, -0.0004077, -1.97E-06, 0.16401696, -1.47E-07, -0.04817593, 0.00017259, 2.01E-06, 4.02589763, -0.00101407, -9.88E-11, 0.00074556, 54.0981481, 1.56E-11],
+                [1.53E-06, 0.58337733, -1.64E-05, -0.04490381, -7.16E-08, 0.00127685, -1.01E-05, 1.11E-13, -1.75E-06, 7.31E-08, 0.09611935, -6.41E-08, -0.00077222, -0.00013631, 1.19E-07, -2.18700134, -0.00014286, -2.31E-11, -0.00025182, -0.47691358, -5.10E-11]
+                ]
+
+            qf_coeffs = [0.043302615, -1.01E-06, 0, 0.003420977, -2.32E-09, 0, -0.004143076, 0, 8.29E-06, -1.81E-11, 0, -9.32E-06, 0, 0, -4.07E-08, 0, 0, -1.64E-07, 5.82E-14, -0.81504284, 1.97E-07, 0.67213148, -1.80E-06, 8.33E-11, 1.33E-06, 2.02E-08, 9.15E-06, 1.00E-15, -5.48E-11, 4.08E-12, 0, -6.41E-06, 2.02E-11, 0, 4.23E-06, 0, -0.00472654, -1.18E-08, 0.005339018, 7.19E-05, -8.87E-06, 3.97E-12, 7.45E-06, -5.27E-08, -7.48E-12, 0.003005769, 2.04E-08, -0.00235648, -1.52E-06, 2.72E-08, 0, -1.44E-05, -5.98E-11, -5.11E-05, 0, 7.49E-12]
+            
+            
         if self.Nef == 16:
-            self.GOR = 10.55 - 0.03405 * self.Ts - 8.205e-6 *self.Capacity+0.0005344*self.Ts**2 + 7.227e-8*self.Ts*self.Capacity
-            self.qs = -1.127 + 0.02981 * self.Ts +0.001381 *self.Capacity - 1.97e-4*self.Ts**2 - 4.48e-6*self.Ts*self.Capacity
-            self.qF = 0.3312 - 0.00881 * self.Ts + 0.03835 * self.Capacity +5.894e-5 * self.Ts **2 -1.128e-6 * self.Ts * self.Capacity
-       
+            coeffs = [
+                [4.38E-06, 12.7628206, -8.62E-06, 0.02240759, -8.28E-08, 0.00364815, -7.01E-05, 5.17E-13, -1.99E-05, 2.28E-08, -0.02745567, 3.23E-08, -0.0057963, 8.80E-06, -4.89E-08, 9.81244591, 9.77E-05, 5.43E-10, -0.00016377, -8.80432099, -2.25E-12],
+                [-1.89E-05, -42.6863898, 4.48E-05, -0.09177962, 3.74E-07, 0.0502037, 0.00127438, -1.49E-10, -0.0004128, -2.31E-06, 0.18307881, -1.26E-07, -0.05415741, 0.00036463, 2.32E-06, 2.72511178, -0.00117346, -2.16E-10, 0.00068451, 54.1839506, 1.39E-11],
+                [1.24E-06, 0.40745493, -1.62E-05, -0.03508409, -6.90E-08, 0.00286019, 1.00E-06, 3.67E-12, -2.24E-06, -1.02E-07, 0.09919098, -6.37E-08, 9.81E-05, -0.00018564, 3.80E-07, -2.61290998, -0.00020005, -2.06E-10, -0.0002832, -0.39753086, -5.09E-11]
+                ]
+            
+            qf_coeffs = [0.043271339, -1.02E-06, 0, 0.003467941, -2.10E-09, 0, -0.004128463, 0, 6.90E-06, -8.36E-12, 0, -1.00E-05, 0, 0, -7.51E-08, 0, 0, -1.63E-07, 5.66E-14, -0.814945185, 1.97E-07, 0.671902186, -3.50E-07, 7.89E-11, 1.35E-06, 2.12E-08, 9.15E-06, -1.08E-15, -4.37E-10, 2.75E-12, 0, 8.18E-07, -4.03E-11, 0, 3.44E-06, 0, -0.004003383, 1.93E-08, 0.005621816, -5.45E-05, -1.17E-05, -1.89E-12, 9.49E-06, -6.51E-08, -9.22E-12, 0.001211251, 7.41E-09, -0.002442261, 2.45E-05, 4.06E-08, 0, -7.46E-06, -5.98E-11, 9.48E-05, 0, 7.56E-12]
+            
+        self.GOR = np.dot(paras,coeffs[0])
+        self.qs = np.dot(paras,coeffs[1])
+        self.DELTAT = np.dot(paras,coeffs[2]) # the difference between the condensation temperature in the evaporator and the vapor temperature in such effect
+        
+        self.qF = np.dot(qF_paras, qf_coeffs)
+        
         self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *1000/3600
         self.P_req = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *self.Capacity *1000/24/3600
-    
-        self.system = lt_med_calculation(Nef = self.Nef, Ts = self.Ts, Ms = self.qs, Mf = self.qF)
-        self.system.model_execution() 
-#        print('calculated STEC:', system.STE)
-#        print('calculated GOR:', system.GOR)
-#        print('calculated production:', system.Mprod_m3_day)
         
-        design_output = []
+        # self.system = lt_med_calculation(Nef = self.Nef, Ts = self.Ts, Ms = self.qs, Mf = self.qF, Tcwin = self.Tin)
+        # self.system.model_execution() 
+        # print('calculated STEC:', system.STE)
+        # print('calculated GOR:', system.GOR)
+        # print('calculated production:', system.Mprod_m3_day)
+        
+        from DesalinationModels.LTMED_cost import LTMED_cost
+        lcow = LTMED_cost(STEC = self.STEC )
+        
+        self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
 #        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
 #        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
-        design_output.append({'Name':'Thermal power consumption','Value':self.P_req,'Unit':'kW(th)'})
-        design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
-        design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
-        design_output.append({'Name':'Specific heat exchanger area','Value':self.system.sA,'Unit':'m2/(kg/s)'}) 
-        design_output.append({'Name':'Recovery ratio','Value':self.Capacity / self.qF * 100/24/3.6,'Unit':'%'}) 
-                
-        return design_output
+        self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req,'Unit':'kW(th)'})
+        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
+        self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
+        if self.DELTAT < 2:
+            self.design_output.append({'Name':'Warning','Value':'Delta T is too small, cost might be high','Unit':''})
+        
+        
+        
+        
+        # self.design_output.append({'Name':'Specific heat exchanger area','Value':self.system.sA,'Unit':'m2/(kg/s)'}) 
+        
+        return self.design_output
     
     # class variables
 #    DELTAT_loss = 0.05
@@ -461,8 +508,9 @@ class lt_med_general(object):
             
 #%% MODEL EXECUTION            
 
-case = lt_med_general(Capacity = 1000)
-case.design()
+# case = lt_med_general(Xf = 30000, RR = 0.5, Tin = 15, Capacity = 1000, Ts = 80, Nef = 12)
+# case.design()
+# print(case.design_output)
 #case.simulation(gen = [5000,6000,5000,3000,2500], storage =6)
             
         

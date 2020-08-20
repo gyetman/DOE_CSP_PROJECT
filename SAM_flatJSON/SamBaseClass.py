@@ -83,7 +83,9 @@ class SamBaseClass(object):
             
             if self.desalination:
                 self.desal_simulation(self.desalination)
-                self.cost(self.desalination)
+                # FO doesnt have cost model for now
+                if self.desalination != 'FO':
+                    self.cost(self.desalination)
                             
             self.sam_calculation()
             self.print_impParams()
@@ -107,7 +109,9 @@ class SamBaseClass(object):
             
             if self.desalination:
                 self.desal_simulation(self.desalination)
-                self.cost(self.desalination)
+                # FO doesnt have cost model for now
+                if self.desalination != 'FO':
+                    self.cost(self.desalination)
             
 
         
@@ -134,10 +138,11 @@ class SamBaseClass(object):
             self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
 
 
-            # execute desalination model, if any
             if self.desalination:
                 self.desal_simulation(self.desalination)
-                self.cost(self.desalination)
+                # FO doesnt have cost model for now
+                if self.desalination != 'FO':
+                    self.cost(self.desalination)
             
             self.sam_calculation()
             self.print_impParams()
@@ -186,10 +191,12 @@ class SamBaseClass(object):
             
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, P_cond=P_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
             self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
-            # execute desalination model, if any
+
             if self.desalination:
                 self.desal_simulation(self.desalination)
-                self.cost(self.desalination)
+                # FO doesnt have cost model for now
+                if self.desalination != 'FO':
+                    self.cost(self.desalination)
             
             self.sam_calculation()
             self.print_impParams()
@@ -236,7 +243,7 @@ class SamBaseClass(object):
 
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
-            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'])
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'],Fossil_f =self.desal_values_json['Fossil_f'] )
             self.design_output = self.RO.RODesign()
             design_json_outfile =  self.samPath / 'results' /'RO_design_output.json'
             with open(design_json_outfile, 'w') as outfile:
@@ -267,15 +274,23 @@ class SamBaseClass(object):
             with open(design_json_outfile, 'w') as outfile:
                 json.dump(self.design_output, outfile)
                 
+        elif desal == 'FO':
+            from DesalinationModels.FO_Generalized import FO_generalized
+            self.FO = FO_generalized(Mprod = self.desal_values_json['Mprod'],FeedC_r =self.desal_values_json['FeedC_r'], T_sw =self.desal_values_json['T_sw'], NF_rr = self.desal_values_json['NF_rr'] ,RO_rr = self.desal_values_json['RO_rr'], A  = self.desal_values_json['A'], Fossil_f= self.desal_values_json['Fossil_f'], p_margin= self.desal_values_json['p_margin'], r= self.desal_values_json['r'], hm= self.desal_values_json['hm'], T_DS= self.desal_values_json['T_DS'], dT_sw_sup= self.desal_values_json['dT_sw_sup'], dT_prod= self.desal_values_json['dT_prod'], T_separator= self.desal_values_json['T_separator'], T_loss_sep= self.desal_values_json['T_loss_sep'], dT_hotin= self.desal_values_json['dT_hotin'], dT_hotout= self.desal_values_json['dT_hotout'], T_app_C= self.desal_values_json['T_app_C'], T_app_1B= self.desal_values_json['T_app_1B'], T_app_2B= self.desal_values_json['T_app_2B'])
+            self.design_output = self.FO.FO_design()
+            design_json_outfile =  self.samPath / 'results' /'FO_design_output.json'
+            with open(design_json_outfile, 'w') as outfile:
+                json.dump(self.design_output, outfile)
+                
     
     def desal_simulation(self, desal):
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
             with open(self.desal_json_values, "r") as read_file:
                 self.desal_values_json = json.load(read_file)
-            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'])
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'], Fossil_f =self.desal_values_json['Fossil_f'] )
             self.RO.RODesign()
-            self.simu_output = self.RO.simulation(gen = self.elec_gen)
+            self.simu_output = self.RO.simulation(gen = self.elec_gen, storage = self.desal_values_json['storage_hour'])
             
             simu_json_outfile = self.samPath / 'results' /'RO_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
@@ -307,10 +322,22 @@ class SamBaseClass(object):
             simu_json_outfile = self.samPath / 'results' /'LTMED_simulation_output.json'
             with open(simu_json_outfile, 'w') as outfile:
                 json.dump(self.simu_output, outfile)
-                
 
             solar_loss = self.simu_output[6]['Value']
             np.savetxt("gen.csv",solar_loss,delimiter=',')
+            
+        elif desal == 'FO':
+            from DesalinationModels.FO_Generalized import FO_generalized
+            with open(self.desal_json_values, "r") as read_file:
+                self.desal_values_json = json.load(read_file)
+            self.FO = FO_generalized(Mprod = self.desal_values_json['Mprod'],FeedC_r =self.desal_values_json['FeedC_r'], T_sw =self.desal_values_json['T_sw'], NF_rr = self.desal_values_json['NF_rr'] ,RO_rr = self.desal_values_json['RO_rr'], A  = self.desal_values_json['A'], Fossil_f= self.desal_values_json['Fossil_f'], p_margin= self.desal_values_json['p_margin'], r= self.desal_values_json['r'], hm= self.desal_values_json['hm'], T_DS= self.desal_values_json['T_DS'], dT_sw_sup= self.desal_values_json['dT_sw_sup'], dT_prod= self.desal_values_json['dT_prod'], T_separator= self.desal_values_json['T_separator'], T_loss_sep= self.desal_values_json['T_loss_sep'], dT_hotin= self.desal_values_json['dT_hotin'], dT_hotout= self.desal_values_json['dT_hotout'], T_app_C= self.desal_values_json['T_app_C'], T_app_1B= self.desal_values_json['T_app_1B'], T_app_2B= self.desal_values_json['T_app_2B'])
+            self.FO.FO_design()
+
+            self.simu_output = self.FO.FO_simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
+            
+            simu_json_outfile = self.samPath / 'results' /'FO_simulation_output.json'
+            with open(simu_json_outfile, 'w') as outfile:
+                json.dump(self.simu_output, outfile)
     
     def cost(self, desal):
         with open(self.cost_json_values, "r") as read_file:
@@ -325,7 +352,7 @@ class SamBaseClass(object):
 
             self.cost_output = self.LCOW.lcow()
 
-            cost_json_outfile = self.samPath / 'results' /'VAGMD_cost_output.json'
+            cost_json_outfile = self.samPath / 'results' /'RO_cost_output.json'
     
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
@@ -720,7 +747,7 @@ class SamBaseClass(object):
 
 if __name__ == '__main__':
     sam = SamBaseClass( CSP = 'linear_fresnel_dsg_iph',
-                       desalination =  'VAGMD',
+                       desalination =  'FO',
                   financial = 'iph_to_lcoefcr')
     # sam = SamBaseClass(CSP = 'tcslinear_fresnel',
     #           financial = 'lcoefcr')
