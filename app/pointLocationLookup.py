@@ -100,11 +100,12 @@ def _findIntersectFeatures(pt,intersectLyr):
     print(queryPoint)
     # open each layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
-    rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}.rtree')
+    rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
     if rtreeFile.exists:
         logging.info('Using pre-built rtree index')
         idx = index.Index(rtreeFile.resolve().name)
-        possibleMatches = idx.intersection(queryPoint,objects=True)
+        print(idx)
+        possibleMatches = idx.intersection(queryPoint,objects='raw')
         for match in possibleMatches:
             print(match)
     else:

@@ -29,7 +29,7 @@ def _setup_logging(verbose=False):
         format=frmt,
     )
 
-def build_index(shp):
+def build_index(shp,outPath):
     '''
     Builds an index for the supplied polygon geometry. 
     Supports geojson and shapefile inputs. 
@@ -42,7 +42,7 @@ def build_index(shp):
         logging.info('GEOS speedups not available.')
 
     #bboxes = []
-    idx = index.Rtree('rtree')
+    idx = index.Rtree(outPath.resolve().name)
     logging.info(f'Opening {Path(shp).name} for reading.')
     with fiona.open(shp,'r') as source:
         logging.info(f'Generating indexes for {len(source):,} polygons.')
@@ -64,17 +64,17 @@ def build_index(shp):
             sys.exit(1)
         return idx 
  
-def write_index(idx, fullPath):
-    '''
-    Writes out the index to the specified path. 
-    @param [idx]: rtree object
-    @param [fullPath]: Path where object should be written
-    '''
-    logging.debug(f'Writing out file {fullPath}')
+# def write_index(idx, fullPath):
+#     '''
+#     Writes out the index to the specified path. 
+#     @param [idx]: rtree object
+#     @param [fullPath]: Path where object should be written
+#     '''
+#     logging.debug(f'Writing out file {fullPath}')
 
-    with open(fullPath, 'wb') as f:
-        pickle.dump(idx,f)
-
+#     #with open(fullPath, 'wb') as f:
+#     #    pickle.dump(idx,f)
+#     idx.dumps(fullPath)
 
 if __name__ == '__main__':
     # parse input args and check that they exist
@@ -93,7 +93,12 @@ if __name__ == '__main__':
         sys.exit(1)
     logging.debug(args)
     # build the index
-    idx = build_index(args.spatial_file)
+    outPath = Path(inFile.resolve().parent / inFile.stem)
+    idx = build_index(args.spatial_file,outPath)
+    print(idx)
     logging.info('Writing index...')
-    outPath = inFile.resolve().parent
-    write_index(idx,outPath/(inFile.stem + '.rtree'))
+    idx.dumps(outPath.name)
+    idx.close()
+
+    #write_index(idx,outPath/(inFile.stem + '.rtree'))
+    
