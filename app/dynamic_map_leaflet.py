@@ -175,12 +175,12 @@ def register_map(app):
                   [Input(MAP_ID, 'click_lat_lng')])
     def get_point_info(coords):
         if coords is None:
-            return('Click on Map')
+            return('Click on the Map to see site details.')
         else:
             # TODO: use coords and theme to lookup layers. 
             # theme should come from a state in the callback...
             # module to lookup info will called...
-            return('Placeholder text: clicked!')
+            return('Information for {}'.format(coords))
 
     @app.callback(Output('info', 'children'),
                  [Input("geojson", "featureHover")])
@@ -189,14 +189,14 @@ def register_map(app):
 
 # app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
 app = dash.Dash(__name__)
-
+app.title = 'Site Selection (Beta)'
 app.layout = html.Div(
     render_map()
 )
 register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8150)
+    app.run_server(debug=False, port=8150)
 
 
 ''' Example code for different types. 
