@@ -10,17 +10,17 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "FeedC_r",
-            "Label": "Feed TDS",
-            "Units": "g/L",
+            "Name": "T",
+            "Label": "Feedwater Temperature",
+            "Units": "C",
             "Require": "*",
             "Tab": "Plant Design Specifications"
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "T",
-            "Label": "Feedwater Temperature",
-            "Units": "C",
+            "Name": "FeedC_r",
+            "Label": "Feed TDS",
+            "Units": "g/L",
             "Require": "*",
             "Tab": "Plant Design Specifications"
         },
