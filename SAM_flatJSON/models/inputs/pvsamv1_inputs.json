@@ -2415,7 +2415,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_c_fa_U0",
             "Label": "Extended Faiman model U_0",
-            "Units": "W/m虏K",
+            "Units": "W/mK",
             "Group": "pvsamv1",
             "Require": "module_model=5"
         },
