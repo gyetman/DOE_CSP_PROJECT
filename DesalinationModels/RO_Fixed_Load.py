@@ -17,7 +17,7 @@ class RO(object):
     def __init__(self,
     ###### (soon to be)JSON Inputs (Inputs available in GUI for user to modify)
                 # Fluid properties
-                FeedC_r=32,                # Feed TDS, g/L or parts per trillion
+                FeedC_r=32,                # Feed TDS, g/L or parts per thousand
                 T=25,            # Feedwater Temperature [C]
                 #Fossil_f = 0.8 , # Fossil fuel fraction 
     
@@ -46,7 +46,7 @@ class RO(object):
                 Ctest1=32,           #membrane manufacturer's test feed salinity (TDS) for each element (parts per thousand)
                 SR1=99.8,            #rated salt rejection of each element (%)
                 Rt1=.1,              #Test recovery rate for each element
-                Pdropmax=1,          #maximum pressure drop per membrane element (bar)
+                Pdropmax=0.6895,     #maximum pressure drop per membrane element (bar)
                 Pfp=1    ,            # Pressure of intake feed pumps
                 Tmax = 318.15,
                 minQb = 2.7,
