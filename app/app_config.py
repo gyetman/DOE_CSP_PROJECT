@@ -106,7 +106,7 @@ solarToDesal = {
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
 solarToFinance = {
-    'pvsamv1': [('utilityrate5',False),('lcoefcr',False),('iph_to_lcoefcr',True),('none',True),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
+    'pvsamv1': [('utilityrate5',True),('lcoefcr',False),('iph_to_lcoefcr',True),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'SC_FPC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'SC_ETC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'trough_physical_process_heat': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('none',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
