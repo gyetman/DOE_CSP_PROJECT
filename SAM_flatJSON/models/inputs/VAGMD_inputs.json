@@ -60,14 +60,6 @@
             "Units": "l/h",
             "Require": "*",
             "Costraint": "<1111,>399"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "storage",
-            "Label": "Storage hours",
-            "Units": "h",
-            "Require": "*",
-            "Costraint": "<1111,>399"
         }
     ]
 }

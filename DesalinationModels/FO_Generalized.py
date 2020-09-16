@@ -418,9 +418,31 @@ class FO_generalized(object):
             # T_brine_cal = T_out + WD_M * d_h * cp_h * (T_out - T_memb) / (self.e_s * d_c * cp_c)
         
             # return abs(T_brine_cal - T_brine) + abs(SD - SD_x - SD_y)
-                        
-            SD, T_brine = params[0:2]
+
+ # Old script with two parameters
+            # SD, T_brine = params[0:2]
             
+            # T_memb = (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) * self.T_DS + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.T_sw) / (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) )
+            # p_brine = 0.93*2* self.sb*10*100/58.5*0.08314472*14.50377*(273+T_brine)
+            # p_weak = self.p_margin + p_brine
+            # B = self.OneDInterp('Draw concentration', p_weak) / 100
+            # SD_x = B * self.NF_pf * (1-self.A) / (self.A - B)
+            # SD_y = self.A * SD_x / (1-self.A)
+            # WD_M = self.NF_pf + SD_x + SD_y
+            # h_wd, dT_b = self.find_deltaT(WD_M, B, T_memb) 
+            
+            # T_out = T_memb + dT_b  # outlet brine temperature from FO
+            
+            # d_h =  self.OneDInterp('Draw density', B * 100)
+            # cp_h=  self.OneDInterp('Draw cp', B*100)
+            # d_c =  self.TwoDInterp('Seawater density', (T_out+T_brine)/2, self.sb) 
+            # cp_c=  self.TwoDInterp('Seawater Cp', (T_out+T_brine)/2, self.sb) 
+            
+            # T_brine_cal = T_out + WD_M * d_h * cp_h * (T_out - T_memb) / (self.e_s * d_c * cp_c)
+            #return abs(T_brine_cal - T_brine) + abs(SD - SD_x - SD_y) 
+            
+            SD = params
+            T_brine = self.T_DS
             T_memb = (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) * self.T_DS + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.T_sw) / (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) )
             p_brine = 0.93*2* self.sb*10*100/58.5*0.08314472*14.50377*(273+T_brine)
             p_weak = self.p_margin + p_brine
@@ -437,15 +459,22 @@ class FO_generalized(object):
             d_c =  self.TwoDInterp('Seawater density', (T_out+T_brine)/2, self.sb) 
             cp_c=  self.TwoDInterp('Seawater Cp', (T_out+T_brine)/2, self.sb) 
             
-            T_brine_cal = T_out + WD_M * d_h * cp_h * (T_out - T_memb) / (self.e_s * d_c * cp_c)
+
         
-            return abs(T_brine_cal - T_brine) + abs(SD - SD_x - SD_y)
+            return abs(SD - SD_x - SD_y)
             
-        x0 =  np.asarray([2.03 * self.Mprod, self.T_sw + 10])
+        
+        
+        
+        
+      #  x0 =  np.asarray([2.03 * self.Mprod, self.T_sw + 10])
+        x0 =  2.03 * self.Mprod
         self.xopt = fmin(opt_funtion, x0)
         self.yopt = opt_funtion(self.xopt)
         
-        SD,T_brine = self.xopt[0:2]
+        # SD,T_brine = self.xopt[0:2]
+        SD         = self.xopt
+        T_brine    = self.T_DS
         self.T_memb = (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) * self.T_DS + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.T_sw) / (self.OneDInterp('Draw density', self.A*100) * SD * self.OneDInterp('Draw cp', self.A*100) + self.TwoDInterp('Seawater density', (self.T_sw + self.T_sw_sup)/2, self.salinity) * self.sw * self.TwoDInterp('Seawater Cp', (self.T_sw + self.T_sw_sup)/2, self.salinity) )
         self.p_brine = 0.93*2* self.sb*10*100/58.5*0.08314472*14.50377*(273+T_brine)
         self.p_weak = self.p_margin + self.p_brine
@@ -744,12 +773,12 @@ class FO_generalized(object):
         return simu_output        
     
 #%%
-'''
+
 import matplotlib.pyplot  as plt
 capacity = [1,10,100,500,1000,2000,5000,10000,50000,100000,200000,500000]
 Unit_heat = []
 for c in capacity:
-    case = FO_generalized(Mprod = c,T_sw = 13, salinity=0.035)
+    case = FO_generalized(Mprod = c,T_sw = 13, FeedC_r=35)
     case.flow_rate_calculations()  
     case.T_memb_solver()
     case.find_operational_parameters()      
@@ -775,10 +804,27 @@ for t in T_sw:
     
 plt.plot(T_sw, Unit_heat)
 plt.xlabel('Seawater temperature')
-plt.ylabel('Strong draw solution flow rate (m3/day)')
-plt.show()   
+plt.ylabel('STEC (kWh/m3)')
+plt.show() 
 
-s = [x for x in range(10,85,5)]
+rrr = [x / 100 for x in range(30,60,5)]
+Unit_heat = []
+SD = []
+for rr in rrr:
+    case = FO_generalized(Mprod = 1, T_sw = 15, FeedC_r=35, r = rr)
+    case.flow_rate_calculations()  
+    case.T_memb_solver()
+    case.find_operational_parameters()      
+    case.system_calculations()
+    Unit_heat.append(case.STEC)
+    SD.append(case.T_cout_2B)
+    
+plt.plot(rrr, Unit_heat)
+plt.xlabel('FO recovery rate')
+plt.ylabel('STEC (kWh/m3)')
+plt.show()    
+
+s = [x for x in range(10,85,2)]
 Unit_heat = []
 SD = []
 for ss in s:
@@ -793,7 +839,7 @@ for ss in s:
 fig, ax1 = plt.subplots()
 # ax2 = ax1.twinx()
 
-ax1.plot(s, SD, 'g-')
+ax1.plot(s, Unit_heat, 'g-')
 # ax2.plot(s, SD, 'b-')
 
 ax1.set_xlabel('Feed salinity (g/L)')
@@ -827,4 +873,3 @@ ax.set_zlabel('STEC(kWh/m3)')
 
 ax.view_init(65, 95)
 fig
-'''
