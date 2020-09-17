@@ -60,6 +60,7 @@ def create_data_table(table_data, table_index, model_type):
             columns=cols,
             data=table_data,
             editable=True,
+            row_selectable='multi',
             style_cell={
                 'textAlign': 'left',
                 'maxWidth': '360px',
@@ -69,10 +70,16 @@ def create_data_table(table_data, table_index, model_type):
             },
             style_cell_conditional=[
                 {'if': {'column_id': 'Label'},
-                    'width': '80%'},
+                    'width': '65%'},
                 {'if': {'column_id': 'Value'},
                     'width': '15%','textAlign': 'right'},
                 {'if': {'column_id': 'Units'},
+                    'width': '5%','textAlign': 'right'},
+                {'if': {'column_id': 'Min'},
+                    'width': '5%','textAlign': 'right'},
+                 {'if': {'column_id': 'Max'},
+                    'width': '5%','textAlign': 'right'},
+                 {'if': {'column_id': 'Interval'},
                     'width': '5%','textAlign': 'right'},
                 #hide DataType this field is used for processing
                 {'if': {'column_id': 'DataType'},
@@ -156,6 +163,8 @@ def create_variable_lists(model_name, json_vars, json_vals):
         tempdict=defaultdict(lambda:'000General')
         tempdict.update(var)
         #add the value from the solar_model_values dict
+        #HERE
+        tempdict['id']=var['Name']
         tempdict['Value']=json_vals_load.get(var['Name'],None)
         #clean up spaces in the tab, section, subsection names
         tempdict['Tab']=tempdict['Tab'].strip()
@@ -177,7 +186,7 @@ def create_variable_lists(model_name, json_vars, json_vals):
                     pass
     return model_vars
 
-def run_model(csp, desal, finance, json_file, desal_file, finance_file):
+def run_model(csp, desal, finance, json_file, desal_file, finance_file, timestamps):
     '''
     runs solar thermal desal system with financial model
     '''
@@ -186,7 +195,9 @@ def run_model(csp, desal, finance, json_file, desal_file, finance_file):
                         financial=finance,
                         json_value_filepath=json_file,
                         desal_json_value_filepath=desal_file,
-                        cost_json_value_filepath=finance_file)
+                        cost_json_value_filepath=finance_file,
+                        timestamp = timestamps)
+    stdm.desal_design(desal)
     stdm.main()
 
 #
@@ -197,7 +208,11 @@ def run_model(csp, desal, finance, json_file, desal_file, finance_file):
 cols = [{'name':'Variable', 'id':'Label','editable':False},
         {'name':'Value',    'id':'Value','editable':True},
         {'name':'Units',    'id':'Units','editable':False},
-        {'name':'DataType', 'id':'DataType'}]
+        {'name':'DataType', 'id':'DataType'},
+        {'name':'Min',      'id':'Min',  'editable':True},
+        {'name':'Max',      'id':'Max',  'editable':True},
+        {'name':'Interval',     'id':'Interval', 'editable':True}
+        ]
 
 tab_style = {
     'borderBottom': '1px solid #300C2D',
@@ -480,10 +495,16 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     [Input('model-button','n_clicks')],
     [State({'type':'solar-table', 'index': ALL}, 'data'),
     State({'type':'desal-table', 'index': ALL}, 'data'),
-    State({'type':'finance-table', 'index': ALL}, 'data'),],
+    State({'type':'finance-table', 'index': ALL}, 'data'),
+    State({'type':'solar-table', 'index': ALL}, 'selected_row_ids'),
+    State({'type':'desal-table', 'index': ALL}, 'selected_row_ids'),
+    State({'type':'finance-table', 'index': ALL}, 'selected_row_ids')],
     prevent_initial_call=True)
-def update_model_variables_and_run_model(n_clicks, solTableData, 
-                                         desTableData, finTableData): 
+    # For pulling the selected parametric variables???
+    #  Input('datatable-row-ids', 'selected_row_ids'),
+
+def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, finTableData,
+                                         selectedSolarRows, selectedDesalRows, selectedFinRows  ): 
     '''
     Once someone is done editing the tables they hit the Run Model button
     This triggers the callback.
@@ -502,16 +523,44 @@ def update_model_variables_and_run_model(n_clicks, solTableData,
         solar_output_vars = dict()
         desal_output_vars = dict()
         finance_output_vars = dict()
+        solar_parametric_info = dict()
+        desal_parametric_info = dict()
+        finance_parametric_info = dict()
 
+        # Collect selected variables from all tables into a single list
+        selected_solar = []
+        selected_desal = []
+        selected_fin   = []
+        for sR in selectedSolarRows:
+            if sR:
+                selected_solar.extend(sR)
+        for dR in selectedDesalRows:
+            if dR:
+                selected_desal.extend(dR)
+        for fR in selectedFinRows:
+            if fR:
+                selected_fin.extend(fR)
+
+        #NOTE need to transform the selectedXRows data to simple lists or sets
+        # so that we can do a simple inclusion case  i.e. if x in y:
+        
         # pull out variable names and values and add to new dict
+
         for solTable in solTableData:
             for sRow in solTable:
+                if sRow['id'] in selected_solar:
+                    solar_parametric_info[sRow['id']] = [sRow['Min'], sRow['Max'], sRow['Interval']]     
                 solar_output_vars[sRow['Name']]=convert_strings_to_literal(sRow)
+
         for desTable in desTableData:
             for dRow in desTable:
+                if dRow['id'] in selected_desal:
+                    desal_parametric_info[dRow['id']] = [dRow['Min'], dRow['Max'], dRow['Interval']] 
                 desal_output_vars[dRow['Name']]=convert_strings_to_literal(dRow)
         for finTable in finTableData:
             for fRow in finTable:
+                if fRow['id'] in selected_solar:
+                    finance_parametric_info[fRow['id']] = [fRow['Min'], fRow['Max'], fRow['Interval']] 
                 finance_output_vars[fRow['Name']]=convert_strings_to_literal(fRow)
 
         #create the solar JSON file that will be the input to the model
@@ -537,13 +586,29 @@ def update_model_variables_and_run_model(n_clicks, solTableData,
                         'finance_outfile': finance_model_outfile}
         helpers.json_update(gui_out_files, cfg.app_json) 
             
-        #run the model
-        run_model(csp=app['solar'],
-                  desal=app['desal'],
-                  finance=app['finance'],
-                  json_file=solar_model_outfile_path,
-                  desal_file=desal_model_outfile_path,
-                  finance_file=finance_model_outfile_path)
+        # Update input json files according to the selected rows
+        if len(desal_parametric_info) + len(solar_parametric_info) + len(finance_parametric_info) > 0:
+            
+            # Create dict to collect interval values
+            input_combinations = {}
+            
+            key_index = 0
+            parametric_simulation(desal_parametric_info, key_index, desal_output_vars, input_combinations, solar_model_outfile_path, desal_model_outfile_path,finance_model_outfile_path )   
+            
+            comb_outfile = f"Combinations.json"
+            combination_outfile_path = Path(cfg.sam_results_dir / comb_outfile)
+            with combination_outfile_path.open('w') as write_file:
+                json.dump(input_combinations, write_file)
+                    
+        #run the model once if no parametric variables selected
+        else:
+            run_model(csp=app['solar'],
+                      desal=app['desal'],
+                      finance=app['finance'],
+                      json_file=solar_model_outfile_path,
+                      desal_file=desal_model_outfile_path,
+                      finance_file=finance_model_outfile_path,
+                      timestamps = timestamp)
         #HERE
         # return a new button with a link to the analysis report
         return (   (html.Div([
@@ -554,4 +619,61 @@ def update_model_variables_and_run_model(n_clicks, solTableData,
         html.Div(''),
         # and replace the old button
         html.P()   )
+    
+def find_interval_values(Min, Max, Interval):
 
+    try:
+        Min = float(Min)
+        Max = float(Max)
+        Interval = float(Interval)
+
+    except:
+        print('Invalid input for Min, Max and Interval values')
+        
+    if Min>Max or Interval <= 0:
+        raise Exception('Invalid input for Min, Max and Interval values')
+    values = [Min]        
+    while values[-1] + Interval < Max:
+        values.append(values[-1] + Interval)
+    if values[-1] + Interval >= Max:
+        values.append(Max)
+        return values
+        
+        
+def parametric_simulation(parametric_dict, 
+                          key_index, 
+                          desal_output_vars, 
+                          input_combinations,           # Carry on the dict recording the parametric info
+                          solar_model_outfile_path,     # Carry on the model input JSON files path
+                          desal_model_outfile_path,
+                          finance_model_outfile_path ):
+    
+    app = helpers.json_load(cfg.app_json)    
+    
+    if key_index < len(parametric_dict):
+        variable_name = list(parametric_dict.keys())[key_index]
+        interval_values = find_interval_values(parametric_dict[variable_name][0], parametric_dict[variable_name][1], parametric_dict[variable_name][2])                
+        input_combinations[variable_name] = interval_values
+        key_index += 1 
+        
+        # Update variable values in a nested loop
+        for v in interval_values:
+            desal_output_vars[variable_name] = v           
+            parametric_simulation(parametric_dict, key_index, desal_output_vars, input_combinations, solar_model_outfile_path,desal_model_outfile_path,finance_model_outfile_path )
+    
+            # Update JSON and run model when the last variable is assigned
+            if key_index == len(parametric_dict):
+                timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')
+                desal_model_outfile = f"{app['desal']}{timestamp}_inputs.json"
+                desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
+                with desal_model_outfile_path.open('w') as write_file:
+                    json.dump(desal_output_vars, write_file)
+                            
+                run_model(csp=app['solar'],
+                          desal=app['desal'],
+                          finance=app['finance'],
+                          json_file=solar_model_outfile_path,
+                          desal_file=desal_model_outfile_path,
+                          finance_file=finance_model_outfile_path,
+                          timestamps = timestamp)                        
+        
