@@ -523,9 +523,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         solar_output_vars = dict()
         desal_output_vars = dict()
         finance_output_vars = dict()
-        solar_parametric_info = dict()
-        desal_parametric_info = dict()
-        finance_parametric_info = dict()
+        parametric_info = dict()
 
         # Collect selected variables from all tables into a single list
         selected_solar = []
@@ -549,18 +547,18 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         for solTable in solTableData:
             for sRow in solTable:
                 if sRow['id'] in selected_solar:
-                    solar_parametric_info[sRow['id']] = [sRow['Min'], sRow['Max'], sRow['Interval']]     
+                    parametric_info[sRow['id']] = [sRow['Min'], sRow['Max'], sRow['Interval'],'solar']     
                 solar_output_vars[sRow['Name']]=convert_strings_to_literal(sRow)
 
         for desTable in desTableData:
             for dRow in desTable:
                 if dRow['id'] in selected_desal:
-                    desal_parametric_info[dRow['id']] = [dRow['Min'], dRow['Max'], dRow['Interval']] 
+                    parametric_info[dRow['id']] = [dRow['Min'], dRow['Max'], dRow['Interval'],'desal'] 
                 desal_output_vars[dRow['Name']]=convert_strings_to_literal(dRow)
         for finTable in finTableData:
             for fRow in finTable:
-                if fRow['id'] in selected_solar:
-                    finance_parametric_info[fRow['id']] = [fRow['Min'], fRow['Max'], fRow['Interval']] 
+                if fRow['id'] in selected_fin:
+                    parametric_info[fRow['id']] = [fRow['Min'], fRow['Max'], fRow['Interval'],'finance'] 
                 finance_output_vars[fRow['Name']]=convert_strings_to_literal(fRow)
 
         #create the solar JSON file that will be the input to the model
@@ -587,16 +585,22 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         helpers.json_update(gui_out_files, cfg.app_json) 
             
         # Update input json files according to the selected rows
-        if len(desal_parametric_info) + len(solar_parametric_info) + len(finance_parametric_info) > 0:
+        if len(parametric_info) > 0:
             
             # Create dict to collect interval values
             input_combinations = {}
             
+            # Loop to update the variables            
             key_index = 0
-            parametric_simulation(desal_parametric_info, key_index, desal_output_vars, input_combinations, solar_model_outfile_path, desal_model_outfile_path,finance_model_outfile_path )   
+            parametric_simulation(parametric_info,
+                                  key_index,
+                                  solar_output_vars, desal_output_vars, finance_output_vars,
+                                  input_combinations,
+                                  solar_model_outfile_path, desal_model_outfile_path, finance_model_outfile_path )   
             
+            # Export the parametric info
             comb_outfile = f"Combinations.json"
-            combination_outfile_path = Path(cfg.sam_results_dir / comb_outfile)
+            combination_outfile_path = Path(cfg.parametric_results_dir / comb_outfile)
             with combination_outfile_path.open('w') as write_file:
                 json.dump(input_combinations, write_file)
                     
@@ -608,7 +612,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                       json_file=solar_model_outfile_path,
                       desal_file=desal_model_outfile_path,
                       finance_file=finance_model_outfile_path,
-                      timestamps = timestamp)
+                      timestamps = '')
         #HERE
         # return a new button with a link to the analysis report
         return (   (html.Div([
@@ -640,13 +644,12 @@ def find_interval_values(Min, Max, Interval):
         return values
         
         
-def parametric_simulation(parametric_dict, 
+def parametric_simulation(parametric_dict,
                           key_index, 
-                          desal_output_vars, 
-                          input_combinations,           # Carry on the dict recording the parametric info
-                          solar_model_outfile_path,     # Carry on the model input JSON files path
-                          desal_model_outfile_path,
-                          finance_model_outfile_path ):
+                          solar_output_vars, desal_output_vars, finance_output_vars,   # Carry on the dataframe of each JSON file
+                          input_combinations,                                          # Carry on the dict recording the parametric info
+                          solar_model_outfile_path,  desal_model_outfile_path,  finance_model_outfile_path  # Carry on the model input JSON files path
+                          ):
     
     app = helpers.json_load(cfg.app_json)    
     
@@ -654,20 +657,34 @@ def parametric_simulation(parametric_dict,
         variable_name = list(parametric_dict.keys())[key_index]
         interval_values = find_interval_values(parametric_dict[variable_name][0], parametric_dict[variable_name][1], parametric_dict[variable_name][2])                
         input_combinations[variable_name] = interval_values
-        key_index += 1 
+        key_index += 1
         
-        # Update variable values in a nested loop
+        # Update variable values till the last variable
         for v in interval_values:
-            desal_output_vars[variable_name] = v           
-            parametric_simulation(parametric_dict, key_index, desal_output_vars, input_combinations, solar_model_outfile_path,desal_model_outfile_path,finance_model_outfile_path )
+            if parametric_dict[variable_name][3] == 'solar':
+                solar_output_vars[variable_name] = v            
+            elif parametric_dict[variable_name][3] == 'desal':
+                desal_output_vars[variable_name] = v    
+            elif parametric_dict[variable_name][3] == 'finance':
+                finance_output_vars[variable_name] = v
+                
+            parametric_simulation(parametric_dict, key_index, solar_output_vars, desal_output_vars, finance_output_vars,  input_combinations, solar_model_outfile_path,desal_model_outfile_path,finance_model_outfile_path )
     
             # Update JSON and run model when the last variable is assigned
             if key_index == len(parametric_dict):
                 timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')
+                solar_model_outfile = f"{app['solar']}{timestamp}_inputs.json"
+                solar_model_outfile_path = Path(cfg.json_outpath / solar_model_outfile)
+                with solar_model_outfile_path.open('w') as write_file:
+                    json.dump(solar_output_vars, write_file)                
                 desal_model_outfile = f"{app['desal']}{timestamp}_inputs.json"
                 desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
                 with desal_model_outfile_path.open('w') as write_file:
                     json.dump(desal_output_vars, write_file)
+                finance_model_outfile = f"{app['finance']}{timestamp}_inputs.json"
+                finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
+                with finance_model_outfile_path.open('w') as write_file:
+                    json.dump(finance_output_vars, write_file)
                             
                 run_model(csp=app['solar'],
                           desal=app['desal'],
@@ -676,4 +693,4 @@ def parametric_simulation(parametric_dict,
                           desal_file=desal_model_outfile_path,
                           finance_file=finance_model_outfile_path,
                           timestamps = timestamp)                        
-        
+         

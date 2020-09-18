@@ -103,7 +103,11 @@ class SamBaseClass(object):
                 self.staticcollector=StaticCollector(design_point_date = solar_input['design_point_date'],desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
                 self.heat_gen, sc_output = self.staticcollector.design()
                 filename = 'Solar_output' + self.timestamp +'.json'
-                sc_output_json_outfile =  self.samPath / 'results' /filename
+                
+                if self.timestamp:
+                    sc_output_json_outfile = self.samPath / 'parametric_results' / filename  
+                else:
+                    sc_output_json_outfile =  self.samPath / 'results' /filename
                 with open(sc_output_json_outfile, 'w') as outfile:
                     json.dump(sc_output, outfile)
                 
@@ -276,7 +280,10 @@ class SamBaseClass(object):
             self.design_output = self.FO.FO_design()
 
         filename = desal + '_design_output' + self.timestamp + '.json'
-        design_json_outfile =  self.samPath / 'results' / filename
+        if self.timestamp:
+            design_json_outfile = self.samPath / 'parametric_results' / filename  
+        else:
+            design_json_outfile =  self.samPath / 'results' / filename
         with open(design_json_outfile, 'w') as outfile:
             json.dump(self.design_output, outfile)
     
@@ -325,7 +332,11 @@ class SamBaseClass(object):
             
 
         filename = desal + '_simulation_output' + self.timestamp + '.json'
-        simulation_json_outfile =  self.samPath / 'results' / filename
+        
+        if self.timestamp:
+            simulation_json_outfile = self.samPath / 'parametric_results' / filename  
+        else:
+            simulation_json_outfile =  self.samPath / 'results' / filename
         with open(simulation_json_outfile, 'w') as outfile:
             json.dump(self.simu_output, outfile)
 
@@ -364,7 +375,11 @@ class SamBaseClass(object):
             self.cost_output = self.LCOW.lcow()
 
         filename = desal + '_cost_output' + self.timestamp + '.json'
-        cost_json_outfile = self.samPath / 'results' /filename                   
+        
+        if self.timestamp:
+            cost_json_outfile = self.samPath / 'parametric_results' / filename  
+        else:
+            cost_json_outfile = self.samPath / 'results' /filename                   
         with open(cost_json_outfile, 'w') as outfile:
             json.dump(self.cost_output, outfile)
             
@@ -694,9 +709,12 @@ class SamBaseClass(object):
 #
 #        outputs.append({'name': 'annual_energy',
 #                        'value': annual_energy})
- 
+
         filename = 'Solar_output' + self.timestamp + '.json'
-        json_outfile = self.samPath / 'results' / filename
+        if self.timestamp:
+            json_outfile = self.samPath / 'parametric_results' / filename     
+        else:
+            json_outfile = self.samPath / 'results' / filename
         with open(json_outfile, 'w') as outfile:
             json.dump(outputs, outfile)
         #print ('outputs = ', outputs)
