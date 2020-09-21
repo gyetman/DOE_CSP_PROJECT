@@ -9,11 +9,13 @@ report_json = base_path / 'app' / 'report-data.json'
 json_infiles_dir = base_path / 'SAM_flatJSON' / 'models' / 'inputs'
 json_defaults_dir = base_path / 'SAM_flatJSON' / 'defaults'
 sam_results_dir = base_path / 'SAM_flatJSON' / 'results'
-parametric_results_dir = base_path / 'SAM_flatJSON' / 'parametric_results'
-parametric_info = parametric_results_dir / 'Parametric_Info.json'
 sam_solar_simulation_outfile = sam_results_dir / 'Solar_output.json'
 json_outpath = base_path / 'app' / 'user-generated-inputs'
 gis_query_path = base_path / 'GISQueryData'
+parametric_results_dir = base_path / 'SAM_flatJSON' / 'parametric_results'
+parametric_info = parametric_results_dir / 'Parametric_Info.json'
+#NOTE does not include timestamp + '.json'
+parametric_solar_simulation_outfile = parametric_results_dir / 'Solar_output'
 
 def build_file_lookup(solar,desal,finance):
     '''
@@ -31,9 +33,13 @@ def build_file_lookup(solar,desal,finance):
     #desal variables and corresponding default values
     'desal_values_file': json_defaults_dir / f'{desal}.json',
     'desal_variables_file': json_infiles_dir/ f'{desal}_inputs.json',
-    #finance model vaariables and corresponding default values
+    #finance model variables and corresponding default values
     'finance_values_file': json_defaults_dir / f'{solar}_{finance}.json',
     'finance_variables_file': json_infiles_dir/ f'{finance}_inputs.json',
+    #parametric desal cost and simulation files
+    #NOTE does not include timestamp + '.json'
+    'parametric_desal_finance_outfile': parametric_results_dir / f'{desal}_cost_output',
+    'parametric_desal_simulation_outfile': parametric_results_dir / f'{desal}_simulation_output',
     #desal-finance cost output file after SamBaseClass is run
     'sam_desal_finance_outfile': sam_results_dir / f'{desal}_cost_output.json',
     #desal design simulation output file after SamBaseClass.desal_design is run
