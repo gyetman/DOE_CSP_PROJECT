@@ -626,11 +626,12 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                       desal_file=desal_model_outfile_path,
                       finance_file=finance_model_outfile_path,
                       timestamps = '')
-        #HERE
-        # return a new button with a link to the analysis report
+        # return a new button with a link to charts
+        link = '/parametric-charts' if len(parametric_info)>0 else '/chart-results'
         return (   (html.Div([
                     html.H5("Model run complete", className='text-primary'),
-                    dcc.Link(dbc.Button("View Results", color="primary"), href='/chart-results')
+                    dcc.Link(dbc.Button("View Results", color="primary"),
+                    href=link) 
         ])),
         # send 'nothing' to dcc.Loading (since it will be removed)
         html.Div(''),
