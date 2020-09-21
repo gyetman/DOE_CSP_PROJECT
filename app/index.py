@@ -20,10 +20,12 @@ def display_page(pathname):
         return model_parameters.model_tables_layout
     elif pathname == '/chart-results':
         return chart_results.real_time_layout()
+    elif pathname == '/parametric-charts':
+        return parametric_charts.real_time_layout()
     elif pathname == '/analysis-report':
         return analysis_report.analysis_report_layout
     else:
         return html.H5('404 URL not found')
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8077)
+    app.run_server(debug=True, port=8077)
