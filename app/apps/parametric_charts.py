@@ -13,14 +13,15 @@ import plotly.express as px
 
 import app_config as cfg
 import helpers
+from app import app
 
 # To chart priority
 # 1. "Total water production" from simulation_output files
 # 2. "Levelized cost of water" from cost_output files
 
-# from app import app
-external_stylesheets = [dbc.themes.FLATLY]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+# external_stylesheets = [dbc.themes.FLATLY]
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
@@ -32,13 +33,14 @@ chart_navbar = dbc.NavbarSimple(
 )
 
 def real_time_layout():
+    print('printing is working')
     parametric_charts_layout = html.Div([
         html.Div(id='initialize'),
         chart_navbar,
         dcc.Store(id='solar-storage'),
-        dcc.Store(id='desal-storage'),
+        dcc.Store(id='parametric-desal-storage'),
         dbc.Container([ 
-            html.H3('Levelized Cost of Water',className='text-success', 
+            html.H3('Total Water Production',className='text-success', 
             style={'margin-bottom':0, 'text-align':'center'}),
             dcc.Graph(id='parametric-desal-graph'),
             # solar_radios,
@@ -46,8 +48,8 @@ def real_time_layout():
             # dcc.Graph(id='desal-graph'),
             # desal_radios,
         ],style={'margin-bottom':150})
-    ])    
-    return parametric_study_layout
+    ])  
+    return parametric_charts_layout
 
 ## CREATE STORE
 # read in paramatric json to get variables and steps info 
@@ -55,38 +57,49 @@ def real_time_layout():
 # read in output JSONs to get values from each run
 # store as lists
 @app.callback(
-    Output('desal-storage', 'data'),
+    Output('parametric-desal-storage', 'data'),
     [Input('initialize', 'children')])
 def store_desal_data(x):
-    outf = 'VAGMD_cost_output_'
-    var1 = 'desal_thermal_power_req'
-    var1_steps = 3
-    var2 = 'TEI_r'
-    var2_steps = 4
-    pr = Path('D:\GitHub\DOE_CSP_PROJECT\SAM_flatJSON\parametric_results')
-    # read in files
-    para_files=list(pr.glob(f'{outf}*'))
-    # create empty dataframe
-    df = pd.DataFrame(index=range(var1_steps),columns=range(var2_steps))
-    # read through each file and add values to dataframe
-    for pf in para_files:
-        # extract the parametric study step numbers from the filenames
-        steps = [int(s) for s in re.findall('\d+', str(pf))]
-        # load the json
-        para_dict = helpers.json_load(pf)
-        # find the specific value for the variable
-        index = helpers.index_in_list_of_dicts(para_dict,'Name','Levelized cost of water')
-        # and update the dataframe
-        df.at[steps[0],steps[1]]=para_dict[index]['Value']
-    return df.to_dict()
+    print('store_desal_data trigger')
+    # create a file lookup 
+    alkup = helpers.json_load(cfg.app_json)
+    flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
+                                  alkup['finance'])
+    # get the desal directory and file prefix
+    path = flkup['parametric_desal_simulation_outfile']
 
+    # load simulation result info
+    info = helpers.json_load(cfg.parametric_info)
+    timestamps = list(info['Timestamps'].keys())
+
+    #NOTE QUESTION: How to know if variable is desal/solar or finance?
+
+    # two variable route
+    if len(info['Variables'])==2:
+        print('entered if')
+        var1,var2 = info['Variables']
+        #build empty dataframe using values of variable intervals
+        #for index and column labels
+        df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']], columns=[str(c) for c in info['Variables'][var2]['Values']])
+        # read through files one timestamp at a time and add values to dataframe
+        for t in timestamps:
+            #load the json
+            para_dict=helpers.json_load(f'{path}{t}.json')
+            #find the location of the specific value for the variable
+            index = helpers.index_in_list_of_dicts(para_dict,'Name','Total water production')
+            #get location within dataframe 
+            loc = [str(l) for l in info['Timestamps'][t]]
+            #set dataframe value at location
+            df.at[loc[0],loc[1]]=para_dict[index]['Value']
+        print(df)
+        return df.to_dict()
 
 @app.callback(
     Output('parametric-desal-graph','figure'),
     # [Input('select-desal-chart', 'value'),
     # Input('select-desal-time', 'value'),
     # Input('desal-storage', 'data')])
-    [Input('desal-storage', 'data')])
+    [Input('parametric-desal-storage', 'data')])
 # def update_desal_graph(desalValue, timeAggValue, desalData):
 def update_desal_graph(desalData):
     ''' update the desal figure object '''
@@ -108,15 +121,11 @@ def update_desal_graph(desalData):
     #         'yaxis':{'title': desal_units[desalValue]},
     #     }
     # }
+    print('update_desal_graph triggered')
     dd = pd.DataFrame.from_dict(desalData)
     fig = px.bar(dd, barmode='group')
     return fig
 
-
-
-app.layout = parametric_charts_layout
-if __name__ == '__main__':
-    app.run_server(debug=True)
 
 
 
