@@ -220,7 +220,21 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
 
+        # add specific data from desal cost output
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat')
+        updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal Annualized CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        updates.update({'energy_cost':dc[index]['Value']})
 
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'lcoe':f['coe']})
 
     if updates['solar'] == 'linear_fresnel_dsg_iph':
         # add specific data from solar GUI output
@@ -431,13 +445,13 @@ def set_system_performance(x):
 def set_cost_analysis(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
-    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD':
+    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'FO':
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
         html.Div(f"Levelized cost of heat (LCOH): {r['lcoh']:.3f} $/kWh"),
     #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
-        html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/kWh"),
+        html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
@@ -454,3 +468,4 @@ def set_cost_analysis(x):
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
           
         ])
+

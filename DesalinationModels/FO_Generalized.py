@@ -774,102 +774,102 @@ class FO_generalized(object):
     
 #%%
 
-import matplotlib.pyplot  as plt
-capacity = [1,10,100,500,1000,2000,5000,10000,50000,100000,200000,500000]
-Unit_heat = []
-for c in capacity:
-    case = FO_generalized(Mprod = c,T_sw = 13, FeedC_r=35)
-    case.flow_rate_calculations()  
-    case.T_memb_solver()
-    case.find_operational_parameters()      
-    Unit_heat.append(case.STEC)
+# import matplotlib.pyplot  as plt
+# capacity = [1,10,100,500,1000,2000,5000,10000,50000,100000,200000,500000]
+# Unit_heat = []
+# for c in capacity:
+#     case = FO_generalized(Mprod = c,T_sw = 13, FeedC_r=35)
+#     case.flow_rate_calculations()  
+#     case.T_memb_solver()
+#     case.find_operational_parameters()      
+#     Unit_heat.append(case.STEC)
     
-plt.plot(capacity, Unit_heat)
-plt.xlabel('Capacity')
-plt.ylabel('STEC (kWh/m3)')
-plt.xscale("log")
-plt.show()  
+# plt.plot(capacity, Unit_heat)
+# plt.xlabel('Capacity')
+# plt.ylabel('STEC (kWh/m3)')
+# plt.xscale("log")
+# plt.show()  
 
-T_sw = range(10,36)
-Unit_heat = []
-SD = []
-for t in T_sw:
-    case = FO_generalized(Mprod = 1, T_sw = t, FeedC_r=35)
-    case.flow_rate_calculations()  
-    case.T_memb_solver()
-    case.find_operational_parameters()      
-    case.system_calculations()
-    Unit_heat.append(case.STEC)
-    SD.append(case.T_cout_2B)
+# T_sw = range(10,36)
+# Unit_heat = []
+# SD = []
+# for t in T_sw:
+#     case = FO_generalized(Mprod = 1, T_sw = t, FeedC_r=35)
+#     case.flow_rate_calculations()  
+#     case.T_memb_solver()
+#     case.find_operational_parameters()      
+#     case.system_calculations()
+#     Unit_heat.append(case.STEC)
+#     SD.append(case.T_cout_2B)
     
-plt.plot(T_sw, Unit_heat)
-plt.xlabel('Seawater temperature')
-plt.ylabel('STEC (kWh/m3)')
-plt.show() 
+# plt.plot(T_sw, Unit_heat)
+# plt.xlabel('Seawater temperature')
+# plt.ylabel('STEC (kWh/m3)')
+# plt.show() 
 
-rrr = [x / 100 for x in range(30,60,5)]
-Unit_heat = []
-SD = []
-for rr in rrr:
-    case = FO_generalized(Mprod = 1, T_sw = 15, FeedC_r=35, r = rr)
-    case.flow_rate_calculations()  
-    case.T_memb_solver()
-    case.find_operational_parameters()      
-    case.system_calculations()
-    Unit_heat.append(case.STEC)
-    SD.append(case.T_cout_2B)
+# rrr = [x / 100 for x in range(30,60,5)]
+# Unit_heat = []
+# SD = []
+# for rr in rrr:
+#     case = FO_generalized(Mprod = 1, T_sw = 15, FeedC_r=35, r = rr)
+#     case.flow_rate_calculations()  
+#     case.T_memb_solver()
+#     case.find_operational_parameters()      
+#     case.system_calculations()
+#     Unit_heat.append(case.STEC)
+#     SD.append(case.T_cout_2B)
     
-plt.plot(rrr, Unit_heat)
-plt.xlabel('FO recovery rate')
-plt.ylabel('STEC (kWh/m3)')
-plt.show()    
+# plt.plot(rrr, Unit_heat)
+# plt.xlabel('FO recovery rate')
+# plt.ylabel('STEC (kWh/m3)')
+# plt.show()    
 
-s = [x for x in range(10,85,2)]
-Unit_heat = []
-SD = []
-for ss in s:
-    case = FO_generalized(Mprod = 1, T_sw = 13, FeedC_r= ss)
-    case.flow_rate_calculations()  
-    case.T_memb_solver()
-    case.find_operational_parameters()      
-    case.system_calculations()
-    Unit_heat.append(case.STEC)
-    SD.append(case.SD)
+# s = [x for x in range(10,85,2)]
+# Unit_heat = []
+# SD = []
+# for ss in s:
+#     case = FO_generalized(Mprod = 1, T_sw = 13, FeedC_r= ss)
+#     case.flow_rate_calculations()  
+#     case.T_memb_solver()
+#     case.find_operational_parameters()      
+#     case.system_calculations()
+#     Unit_heat.append(case.STEC)
+#     SD.append(case.SD)
     
-fig, ax1 = plt.subplots()
-# ax2 = ax1.twinx()
+# fig, ax1 = plt.subplots()
+# # ax2 = ax1.twinx()
 
-ax1.plot(s, Unit_heat, 'g-')
-# ax2.plot(s, SD, 'b-')
+# ax1.plot(s, Unit_heat, 'g-')
+# # ax2.plot(s, SD, 'b-')
 
-ax1.set_xlabel('Feed salinity (g/L)')
-ax1.set_ylabel('STEC (kWh/m3)', color = 'g')
-# ax2.set_ylabel('Strong draw solution flow rate (m3/day)', color = 'b')
-plt.show()  
+# ax1.set_xlabel('Feed salinity (g/L)')
+# ax1.set_ylabel('STEC (kWh/m3)', color = 'g')
+# # ax2.set_ylabel('Strong draw solution flow rate (m3/day)', color = 'b')
+# plt.show()  
 
-STEC = np.zeros([len(T_sw),len(s)])
-for t in range(len(T_sw)):
-    for ss in range(len(s)):
-        case = FO_generalized(Mprod = 1,T_sw = T_sw[t], salinity=s[ss])
-        case.flow_rate_calculations()  
-        case.T_memb_solver()
-        case.find_operational_parameters()      
-        case.system_calculations()
+# STEC = np.zeros([len(T_sw),len(s)])
+# for t in range(len(T_sw)):
+#     for ss in range(len(s)):
+#         case = FO_generalized(Mprod = 1,T_sw = T_sw[t], salinity=s[ss])
+#         case.flow_rate_calculations()  
+#         case.T_memb_solver()
+#         case.find_operational_parameters()      
+#         case.system_calculations()
         
-        STEC[t,ss] = case.Unit_heat
+#         STEC[t,ss] = case.Unit_heat
         
         
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
+# from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 
-import matplotlib.pyplot as plt
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-X,Y = np.meshgrid(s,T_sw)
+# import matplotlib.pyplot as plt
+# fig = plt.figure()
+# ax = plt.axes(projection='3d')
+# X,Y = np.meshgrid(s,T_sw)
 
-ax.contour3D(X, Y, STEC, 50, cmap='viridis')
-ax.set_xlabel('Feed water temperature')
-ax.set_ylabel('Feed salinity (%)')
-ax.set_zlabel('STEC(kWh/m3)')
+# ax.contour3D(X, Y, STEC, 50, cmap='viridis')
+# ax.set_xlabel('Feed water temperature')
+# ax.set_ylabel('Feed salinity (%)')
+# ax.set_zlabel('STEC(kWh/m3)')
 
-ax.view_init(65, 95)
-fig
+# ax.view_init(65, 95)
+# fig
