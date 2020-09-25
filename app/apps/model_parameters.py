@@ -626,11 +626,12 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                       desal_file=desal_model_outfile_path,
                       finance_file=finance_model_outfile_path,
                       timestamps = '')
-        #HERE
-        # return a new button with a link to the analysis report
+        # return a new button with a link to charts
+        link = '/parametric-charts' if len(parametric_info)>0 else '/chart-results'
         return (   (html.Div([
                     html.H5("Model run complete", className='text-primary'),
-                    dcc.Link(dbc.Button("View Results", color="primary"), href='/chart-results')
+                    dcc.Link(dbc.Button("View Results", color="primary"),
+                    href=link) 
         ])),
         # send 'nothing' to dcc.Loading (since it will be removed)
         html.Div(''),
@@ -643,12 +644,11 @@ def find_interval_values(Min, Max, Interval):
         Min = float(Min)
         Max = float(Max)
         Interval = float(Interval)
-
     except:
         print('Invalid input for Min, Max and Interval values')
         
     if Min>Max or Interval <= 0:
-        raise Exception('Invalid input for Min, Max and Interval values')
+        raise Exception('Min, Max and Interval values must be greater than 0')
     values = [Min]        
     while values[-1] + Interval < Max:
         values.append(values[-1] + Interval)
@@ -659,10 +659,16 @@ def find_interval_values(Min, Max, Interval):
         
 def parametric_simulation(parametric_dict,
                           key_index, 
-                          timestamps,    
-                          solar_output_vars, desal_output_vars, finance_output_vars,   # Carry on the dataframe of each JSON file
-                          input_combinations,                                          # Carry on the dict recording the parametric info
-                          solar_model_outfile_path,  desal_model_outfile_path,  finance_model_outfile_path  # Carry on the model input JSON files path
+                          timestamps,
+                          # Carry on the dataframe of each JSON file  
+                          solar_output_vars, 
+                          desal_output_vars, 
+                          finance_output_vars,
+                          # Carry on the dict recording the parametric info  
+                          input_combinations,
+                          # Carry on the model input JSON files path
+                          solar_model_outfile_path,  
+                          desal_model_outfile_path,  finance_model_outfile_path  
                           ):
     
     app = helpers.json_load(cfg.app_json)    
@@ -674,7 +680,7 @@ def parametric_simulation(parametric_dict,
         key_index += 1
         
 
-        # Update variable values till the last variable
+        # Update variable values for each interval
         for v in interval_values:
 
             if parametric_dict[variable_name][3] == 'solar':
