@@ -15,13 +15,12 @@ import app_config as cfg
 import helpers
 from app import app
 
-# To chart priority
-# 1. "Total water production" from simulation_output files
-# 2. "Levelized cost of water" from cost_output files
-
-
-# external_stylesheets = [dbc.themes.FLATLY]
-# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+desal_outputs = {
+    'Total water production':'parametric_desal_simulation_outfile',
+    'Levelized cost of water':'parametric_desal_finance_outfile'}
+desal_units = {
+    'Total water production':'m3',
+    'Levelized cost of water':'$/m3'}
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
@@ -33,20 +32,27 @@ chart_navbar = dbc.NavbarSimple(
 )
 
 def real_time_layout():
-    print('printing is working')
+    parametric_radios = html.Div([
+        dbc.Row([
+            dbc.Col(
+                dcc.RadioItems(
+                    id='select-parametric-chart',
+                    options=[{'label': f" {name}", 'value': name}
+                            for name in desal_outputs],
+                    value=list(desal_outputs.keys())[0],
+                    labelStyle = {'display': 'block'}),
+                width=3),
+        ], justify="center")
+    ])
     parametric_charts_layout = html.Div([
         html.Div(id='initialize'),
         chart_navbar,
-        dcc.Store(id='solar-storage'),
-        dcc.Store(id='parametric-desal-storage'),
+        dcc.Store(id='parametric-storage'),
         dbc.Container([ 
-            html.H3('Total Water Production',className='text-success', 
+            html.H3(id='title', className='text-success', 
             style={'margin-bottom':0, 'text-align':'center'}),
-            dcc.Graph(id='parametric-desal-graph'),
-            # solar_radios,
-            # html.H3(cfg.Desal[helpers.json_load(cfg.app_json)['desal']], className='text-success',style={'margin-top':45, 'margin-bottom':0, 'text-align':'center'}),
-            # dcc.Graph(id='desal-graph'),
-            # desal_radios,
+            dcc.Graph(id='parametric-graph'),
+            parametric_radios,
         ],style={'margin-bottom':150})
     ])  
     return parametric_charts_layout
@@ -57,7 +63,7 @@ def real_time_layout():
 # read in output JSONs to get values from each run
 # store as lists
 @app.callback(
-    Output('parametric-desal-storage', 'data'),
+    Output('parametric-storage', 'data'),
     [Input('initialize', 'children')])
 def store_desal_data(x):
     print('store_desal_data trigger')
@@ -65,66 +71,62 @@ def store_desal_data(x):
     alkup = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
                                   alkup['finance'])
-    # get the desal directory and file prefix
-    path = flkup['parametric_desal_simulation_outfile']
 
     # load simulation result info
     info = helpers.json_load(cfg.parametric_info)
     timestamps = list(info['Timestamps'].keys())
 
-    #NOTE QUESTION: How to know if variable is desal/solar or finance?
+    desal_dict = {}
 
-    # two variable route
-    if len(info['Variables'])==2:
-        print('entered if')
-        var1,var2 = info['Variables']
-        #build empty dataframe using values of variable intervals
-        #for index and column labels
-        df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']], columns=[str(c) for c in info['Variables'][var2]['Values']])
-        # read through files one timestamp at a time and add values to dataframe
-        for t in timestamps:
-            #load the json
-            para_dict=helpers.json_load(f'{path}{t}.json')
-            #find the location of the specific value for the variable
-            index = helpers.index_in_list_of_dicts(para_dict,'Name','Total water production')
-            #get location within dataframe 
-            loc = [str(l) for l in info['Timestamps'][t]]
-            #set dataframe value at location
-            df.at[loc[0],loc[1]]=para_dict[index]['Value']
-        print(df)
-        return df.to_dict()
+    for desal_output in desal_outputs:
+        # get the desal directory and file prefix
+        path = flkup[desal_outputs[desal_output]]
+
+        # two variable route
+    
+        if len(info['Variables'])==2:
+            var1,var2 = info['Variables']
+            labels = list([info['Variables'][var1]['Label'],info['Variables'][var2]['Label']])
+            units = list([info['Variables'][var1]['Unit'],info['Variables'][var2]['Unit']])
+            #build empty dataframe using values of variable intervals
+            #for index and column labels
+            df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']], columns=[str(c) for c in info['Variables'][var2]['Values']])
+            # read through files one timestamp at a time and add values to dataframe
+            for t in timestamps:
+                #load the json
+                para_dict=helpers.json_load(f'{path}{t}.json')
+                #find the location of the specific value for the variable
+                index = helpers.index_in_list_of_dicts(para_dict,'Name',desal_output)
+                #get location within dataframe 
+                loc = [str(l) for l in info['Timestamps'][t]]
+                #set dataframe value at location
+                df.at[loc[0],loc[1]]=para_dict[index]['Value']
+            #pass on dataframe, label and units for output variable
+            desal_dict[desal_output]={'df':df.to_dict(),'label':labels,'unit':units}
+    return desal_dict
 
 @app.callback(
-    Output('parametric-desal-graph','figure'),
-    # [Input('select-desal-chart', 'value'),
-    # Input('select-desal-time', 'value'),
-    # Input('desal-storage', 'data')])
-    [Input('parametric-desal-storage', 'data')])
+    Output('parametric-graph','figure'),
+    [Input('select-parametric-chart', 'value'),
+     Input('parametric-storage', 'data')])
 # def update_desal_graph(desalValue, timeAggValue, desalData):
-def update_desal_graph(desalData):
+def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
-    # figure={
-    #     'data': [
-    #         {
-    #             'x': df_tmp.index,
-    #             'y': df_tmp[desalValue],
-    #             'name': desalValue,
-    #             'mode': 'bar',
-    #             'marker': {'size': 12, 'color':'#2C3E50'},
-    #         }
-    #     ],
-    #     'layout': {
-    #         'title': {'text':gen_title(desalValue,timeAggValue),
-    #                   'font':{'color':'#2C3E50'}},
-    #         'clickmode': 'event+select',
-    #         'xaxis':{'title': '{} values'.format(timeAggValue)},
-    #         'yaxis':{'title': desal_units[desalValue]},
-    #     }
-    # }
-    print('update_desal_graph triggered')
-    dd = pd.DataFrame.from_dict(desalData)
-    fig = px.bar(dd, barmode='group')
+    pD=parametricData[paramValue]
+    dd = pd.DataFrame.from_dict(pD['df'])
+    fig = px.bar(dd, 
+                barmode='group', 
+                labels={'index':f"{pD['label'][0].title()} {pD['unit'][0]}",    'value':f"{paramValue.title()} {desal_units[paramValue]}", 
+                'variable':f"{pD['label'][1].title()} {pD['unit'][1]}"})
     return fig
+
+@app.callback(
+    Output('title','children'),
+    [Input('select-parametric-chart', 'value')])
+def title_chart(chartTitle):
+    return chartTitle.title()
+
+
 
 
 
