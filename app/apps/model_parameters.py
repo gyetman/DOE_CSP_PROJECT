@@ -51,7 +51,7 @@ def convert_strings_to_literal(v):
     else:
         return v['Value']
                         
-def create_data_table(table_data, table_index, model_type):
+def create_data_table(table_data, table_index, model_type, selectable):
     return html.Div([
         html.P(),
         dash_table.DataTable(
@@ -61,7 +61,7 @@ def create_data_table(table_data, table_index, model_type):
             columns=cols,
             data=table_data,
             editable=True,
-            row_selectable='multi',
+            row_selectable='multi' if selectable else False,
             style_cell={
                 'textAlign': 'left',
                 'maxWidth': '360px',
@@ -77,10 +77,13 @@ def create_data_table(table_data, table_index, model_type):
                 {'if': {'column_id': 'Units'},
                     'width': '5%','textAlign': 'right'},
                 {'if': {'column_id': 'Min'},
+                    'display':'none' if not selectable else 'true',
                     'width': '5%','textAlign': 'right'},
                  {'if': {'column_id': 'Max'},
+                    'display':'none' if not selectable else 'true',
                     'width': '5%','textAlign': 'right'},
                  {'if': {'column_id': 'Interval'},
+                    'display':'none' if not selectable else 'true',
                     'width': '5%','textAlign': 'right'},
                 #hide DataType this field is used for processing
                 {'if': {'column_id': 'DataType'},
@@ -114,6 +117,7 @@ def create_model_variable_page(tab, model_vars, model_type):
     subsec = None
     tableID = None
     
+    app = helpers.json_load(cfg.app_json)
     #subset the variables belonging to the tab
     tab_vars = [mv for mv in model_vars if mv['Tab']==tab]
 
@@ -127,7 +131,7 @@ def create_model_variable_page(tab, model_vars, model_type):
         else:
             if sec:
                 tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
-                tab_page.append(create_data_table(tableData,tableID,model_type))
+                tab_page.append(create_data_table(tableData,tableID,model_type,app['parametric']))
                 tableData=[dict(tv)]
             if tv['Section']!=sec:
                 sec=tv['Section']
@@ -139,7 +143,7 @@ def create_model_variable_page(tab, model_vars, model_type):
                     tab_page.append(html.H6(subsec))
     #add the final table
     tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
-    tab_page.append(create_data_table(tableData,tableID,model_type))
+    tab_page.append(create_data_table(tableData,tableID,model_type,app['parametric']))
     return tab_page
 
 def create_variable_lists(model_name, json_vars, json_vals):
