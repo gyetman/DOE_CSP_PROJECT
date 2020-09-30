@@ -25,7 +25,16 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
 
 app.title = 'Model Selection'
 
+chart_navbar = dbc.NavbarSimple(
+    brand="Model Selection",
+    color="primary",
+    dark=True,
+    sticky='top',
+    style={'margin-bottom':60}
+)
+
 model_selection_layout = html.Div([
+    chart_navbar,
     dbc.FormGroup([
         dbc.Label("Solar Thermal System", width=2, size='lg',color='warning',style={'text-align':'center'}),
         dbc.Col(
@@ -63,7 +72,7 @@ model_selection_layout = html.Div([
     ],row=True),
     dbc.FormGroup([
         #dbc.Label("Desalination System", width=2, size='lg',color='success',style={'text-align':'center'}),
-        dbc.Label("Desalination System",width=2, size='lg',color='success',style={'text-align':'center'}),
+        dbc.Label("Desalination System",width=2, size='lg',color='info',style={'text-align':'center'}),
         dbc.Col(
             dbc.RadioItems(
                 id='select-desal',
@@ -71,17 +80,27 @@ model_selection_layout = html.Div([
         ),
     ],row=True,),
     dbc.FormGroup([
-        dbc.Label("Financial Model",width=2, size='lg',color='primary',style={'text-align':'center'}),
+        dbc.Label("Financial Model",width=2, size='lg',color='success',style={'text-align':'center'}),
         dbc.Col(
             dbc.RadioItems(
                 id='select-finance',
             ),width=10,
         ),
     ],row=True,),
+    dbc.FormGroup([
+        dbc.Label("Parametric Study",width=2, size='lg',color='primary',style={'text-align':'center', 'padding':0}),
+        dbc.Col(
+            dbc.Checklist(
+                options=[{'label': 'Enable Parametric Study Option', 'value': 'YES'}],
+                id='parametric-study',
+                switch=True,
+            ),width=10,
+        ),
+    ],row=True, inline=True), 
     dbc.Col(id='model-parameters',
     width=2, 
     style={'horizontal-align':'center'})
-])
+],style={'margin-bottom':150})
 
 @app.callback(
     Output('model-parameters', 'children'),
@@ -95,7 +114,7 @@ def display_model_parameters(solar, desal, finance):
     '''
     if solar and desal and finance:
         try:
-            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':True}, filename=cfg.app_json)
         except FileNotFoundError:
             helpers.initialize_json(cfg.app_json_init,cfg.app_json)
             helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
