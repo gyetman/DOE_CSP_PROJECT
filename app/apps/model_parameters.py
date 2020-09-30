@@ -241,6 +241,7 @@ parameters_navbar = dbc.NavbarSimple(
     brand="System Configuration",
     color="primary",
     dark=True,
+    sticky='top',
     style={'margin-bottom':60}
 )
 

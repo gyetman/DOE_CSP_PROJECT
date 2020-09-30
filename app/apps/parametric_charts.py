@@ -28,6 +28,7 @@ chart_navbar = dbc.NavbarSimple(
     brand="Parametric Study",
     color="primary",
     dark=True,
+    sticky='top',
     style={'margin-bottom':60}
 )
 
@@ -66,7 +67,6 @@ def real_time_layout():
     Output('parametric-storage', 'data'),
     [Input('initialize', 'children')])
 def store_desal_data(x):
-    print('store_desal_data trigger')
     # create a file lookup 
     alkup = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
