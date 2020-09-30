@@ -91,8 +91,8 @@ model_selection_layout = html.Div([
         dbc.Label("Parametric Study",width=2, size='lg',color='primary',style={'text-align':'center', 'padding':0}),
         dbc.Col(
             dbc.Checklist(
-                options=[{'label': 'Enable Parametric Study Option', 'value': 'YES'}],
-                id='parametric-study',
+                options=[{'label': 'Enable Parametric Study Option', 'value':True}],
+                id='parametric-toggle',
                 switch=True,
             ),width=10,
         ),
@@ -106,15 +106,17 @@ model_selection_layout = html.Div([
     Output('model-parameters', 'children'),
     [Input('select-solar', 'value'),
      Input('select-desal', 'value'),
-     Input('select-finance', 'value')])
-def display_model_parameters(solar, desal, finance):
+     Input('select-finance', 'value'),
+     Input('parametric-toggle', 'value')])
+def display_model_parameters(solar, desal, finance, parametric):
     '''
     After all 3 models are selected updates app JSON file and 
     creates button to navigate to model variables page
     '''
     if solar and desal and finance:
+        toggle=True if parametric else False
         try:
-            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':True}, filename=cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle}, filename=cfg.app_json)
         except FileNotFoundError:
             helpers.initialize_json(cfg.app_json_init,cfg.app_json)
             helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)
