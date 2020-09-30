@@ -21,6 +21,7 @@ chart_navbar = dbc.NavbarSimple(
     brand="Analysis Report",
     color="primary",
     dark=True,
+    sticky='top',
     style={'margin-bottom':60},  
     id='report-title'
 )
