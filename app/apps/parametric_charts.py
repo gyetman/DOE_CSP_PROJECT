@@ -82,8 +82,32 @@ def store_desal_data(x):
         # get the desal directory and file prefix
         path = flkup[desal_outputs[desal_output]]
 
+        # one variable route
+        if len(info['Variables'])==1:
+            var1 = [key for key in info['Variables']][0]
+            print(f'var1: {var1}')
+            # labels = list([var1['Label']])
+            labels=info['Variables'][var1]['Label']
+            print(f'labels: {labels}')
+            units = info['Variables'][var1]['Unit']
+            #build empty dataframe using values of variable intervals
+            #for index and column labels
+            df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']])
+            print(f'first df: {df}')
+            # read through files one timestamp at a time and add values to dataframe
+            for t in timestamps:
+                #load the json
+                para_dict=helpers.json_load(f'{path}{t}.json')
+                #find the location of the specific value for the variable
+                index = helpers.index_in_list_of_dicts(para_dict,'Name',desal_output)
+                #get location within dataframe 
+                loc = [str(l) for l in info['Timestamps'][t]]
+                #set dataframe value at location
+                df.at[loc[0],0]=para_dict[index]['Value']
+            #pass on dataframe, label and units for output variable
+            print(f'filled df: {df}')
+            desal_dict[desal_output]={'df':df.to_dict(),'label':labels,'unit':units}
         # two variable route
-    
         if len(info['Variables'])==2:
             var1,var2 = info['Variables']
             labels = list([info['Variables'][var1]['Label'],info['Variables'][var2]['Label']])
