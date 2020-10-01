@@ -41,6 +41,7 @@ def build_file_lookup(solar,desal,finance):
     #NOTE does not include timestamp + '.json'
     'parametric_desal_finance_outfile': parametric_results_dir / f'{desal}_cost_output',
     'parametric_desal_simulation_outfile': parametric_results_dir / f'{desal}_simulation_output',
+    'parametric_desal_design_outfile': parametric_results_dir / f'{desal}_design_output',
     #desal-finance cost output file after SamBaseClass is run
     'sam_desal_finance_outfile': sam_results_dir / f'{desal}_cost_output.json',
     #desal design simulation output file after SamBaseClass.desal_design is run
