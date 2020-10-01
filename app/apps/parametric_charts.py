@@ -17,10 +17,15 @@ from app import app
 
 desal_outputs = {
     'Total water production':'parametric_desal_simulation_outfile',
-    'Levelized cost of water':'parametric_desal_finance_outfile'}
+    'Levelized cost of water':'parametric_desal_finance_outfile',
+    'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+    'Specific thermal power consumption': 'parametric_desal_design_outfile'
+}
 desal_units = {
     'Total water production':'m3',
-    'Levelized cost of water':'$/m3'}
+    'Levelized cost of water':'$/m3',
+    'Total fossil fuel usage':'kWh',
+    'Specific thermal power consumption':'kWh(th)/m3'}
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
@@ -33,6 +38,8 @@ chart_navbar = dbc.NavbarSimple(
 )
 
 def real_time_layout():
+    app = helpers.json_load(cfg.app_json)
+    title=f"{cfg.Solar[app['solar']]} / {cfg.Desal[app['desal']]}"
     parametric_radios = html.Div([
         dbc.Row([
             dbc.Col(
@@ -50,7 +57,8 @@ def real_time_layout():
         chart_navbar,
         dcc.Store(id='parametric-storage'),
         dbc.Container([ 
-            html.H3(id='title', className='text-success', 
+            html.H4(children=title,
+                id='title', className='text-success', 
             style={'margin-bottom':0, 'text-align':'center'}),
             dcc.Graph(id='parametric-graph'),
             parametric_radios,
@@ -138,17 +146,19 @@ def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
     pD=parametricData[paramValue]
     dd = pd.DataFrame.from_dict(pD['df'])
+    # cast as float because column types need to be the same
+    dd = dd.astype(float)
     fig = px.bar(dd, 
                 barmode='group', 
-                labels={'index':f"{pD['label'][0].title()} {pD['unit'][0]}",    'value':f"{paramValue.title()} {desal_units[paramValue]}", 
-                'variable':f"{pD['label'][1].title()} {pD['unit'][1]}"})
+                labels={'index':f"{pD['label'][0].title()} ({pD['unit'][0]})",    'value':f"{paramValue.title()} ({desal_units[paramValue]})", 
+                'variable':f"{pD['label'][1].title()} ({pD['unit'][1]})"})
     return fig
 
-@app.callback(
-    Output('title','children'),
-    [Input('select-parametric-chart', 'value')])
-def title_chart(chartTitle):
-    return chartTitle.title()
+# @app.callback(
+#     Output('title','children'),
+#     [Input('select-parametric-chart', 'value')])
+# def title_chart(chartTitle):
+#     return chartTitle.title()
 
 
 
