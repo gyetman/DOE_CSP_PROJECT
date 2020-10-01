@@ -268,7 +268,7 @@ class VAGMD_PSA(object):
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
-        simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        simu_output.append({'Name':'Total fossil fuel usage','Value':float(sum(fuel)),'Unit':'kWh'})
         
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
