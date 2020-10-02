@@ -12,6 +12,7 @@ class VAGMD_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
+                 fuel_usage = 0, # %
                  Area = 25.92 , # Membrane area (m2)
                  Pflux = 2.832,  # Permeate flux per module (l/h/module)
                  TCO  = 76.288, # Condenser channel outlet temperature (ºC)
@@ -58,6 +59,8 @@ class VAGMD_cost(object):
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         self.Pflux = Pflux
         self.Area = Area
+        
+        self.fuel_usage = fuel_usage
         self.PF_module = self.Pflux * self.Area
         self.num_modules = math.ceil(Capacity *1000 / self.PF_module / self.operation_hour) # Number of module required
         self.TEI = TEI
@@ -115,7 +118,7 @@ class VAGMD_cost(object):
         
         self.cost_elec = self.SEEC * self.coe
         self.other_OM = self.cost_sys *1000 *0.018 / (self.Prod+0.1) +0.1
-        self.cost_th = self.STEC * self.coh
+        self.cost_th = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh)
         self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM
         
         self.LCOW = self.CAPEX + self.OPEX

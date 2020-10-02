@@ -35,8 +35,17 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "coh",
-            "Label": "Unit cost of heat",
-            "Units": "$/kWh",
+            "Label": "Unit cost of fossil fuel",
+            "Units": "$/kWh(th)",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sam_coh",
+            "Label": "Unit cost of heat from solar field",
+            "Units": "$/kWh(th)",
             "Require": "*",
             "Costraint": "",
 			"Tab": "Desalination"
