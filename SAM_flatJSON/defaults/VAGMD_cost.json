@@ -3,6 +3,7 @@
 	"int_rate" : 0.04,
 	"coe" : 0.05,
 	"coh" : 0.01,
+	"sam_coh": 0.01,
 	"solar_inlet" : 85,
 	"solar_outlet" : 95,
 	"HX_eff": 0.85,

@@ -9,9 +9,9 @@ import numpy as np
 
 class FO_cost(object):
     def __init__(self,
-                 Capacity = 1000, # Desalination plant capacity (m3/day)
-                 Prod = 328500, # Annual permeate production (m3)
-
+                 Capacity = 10000, # Desalination plant capacity (m3/day)
+                 Prod = 3285000, # Annual permeate production (m3)
+                 fuel_usage = 0, # Total fuel usage (%)
 
                  # OPEX parameters
                  STEC = 30 , # Specifc thermal energy consumption (kWh/m3)
@@ -19,7 +19,7 @@ class FO_cost(object):
                  Maintenance = 0.05, # Unit maintenance cost ($/m3)
                  
                  # Capital items
-                 total_CAPEX     = 1345000, # Total capital cost ($)
+                 total_CAPEX     = 1, # Total capital cost ($)
                  Cap_membrane    = 11.5, # FO membrane cost (per unit capacity) ($ per m3/day)
                  Cap_HXs         = 13.8,
                  Cap_construct   = 22.3,
@@ -43,7 +43,7 @@ class FO_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.04 , # Unit cost of electricity ($/kWh)
-                 coh = 0.01 , # Unit cost of heat ($/kWh)
+                 coh = 0.01 , # Unit cost of fossil fuel ($/kWh(th))
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 13422 # Capacity of thermal storage (kWh)
@@ -55,10 +55,13 @@ class FO_cost(object):
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
-
+        self.fuel_usage = fuel_usage
         self.coh = coh
         self.sam_coh = sam_coh
-        self.total_CAPEX = total_CAPEX
+        if total_CAPEX:
+            self.total_CAPEX = 4500000
+        else:
+            self.total_CAPEX = 1333000
         self.Prod = Prod
         self.SEEC = SEEC
         self.CAP_system =Cap_membrane + Cap_HXs + Cap_construct + Cap_DS + Cap_coalescers + Cap_structural + Cap_polishing \
@@ -74,9 +77,9 @@ class FO_cost(object):
         
     def lcow(self):
         
-        self.CAPEX = ((self.CAP_system * self.total_CAPEX /100+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
-        
-        self.OPEX = self.coh * self.STEC + self.coe * self.SEEC + self.Maintenance
+        self.CAPEX = ((self.total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
+        self.energy_cost = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC
+        self.OPEX = self.energy_cost + self.Maintenance
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -85,11 +88,11 @@ class FO_cost(object):
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
-        cost_output.append({'Name':'Energy cost','Value':self.coh * self.STEC + self.coe * self.SEEC,'Unit':'$/m3'})
+        cost_output.append({'Name':'Energy cost','Value':self.energy_cost,'Unit':'$/m3'})
          
         
         return cost_output
 #%%
 if __name__ == '__main__':
-    case = FO_cost(Capacity = 1000,Prod = 365000)
+    case = FO_cost(Capacity = 10000,Prod = 3650000)
     print(case.lcow())

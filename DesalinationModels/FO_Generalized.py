@@ -169,7 +169,10 @@ class FO_generalized(object):
         # Assign instance variables
         self.Salt_rej = Salt_rej
         self.T_sw = T_sw
-        self.Mprod  = Mprod
+        if Mprod:
+            self.Mprod  = 10000
+        else:
+            self.Mprod  = 500
         self.NF_rcr = 1 - NF_rr # Nanofilter retentate recirculation rate 
         self.RO_r   = 1 - RO_rr # RO retentate reject rate
         self.A      = A
@@ -737,7 +740,7 @@ class FO_generalized(object):
         load =  [0 for i in range(len(gen))]
         prod =  [0 for i in range(len(gen))]
         fuel =  [0 for i in range(len(gen))]
-        
+        energy_consumption =  [0 for i in range(len(gen))]
         for i in range(len(gen)):
             to_desal[i] = min(self.thermal_load, gen[i])
             to_storage[i] = abs(gen[i] - to_desal[i])
@@ -751,8 +754,8 @@ class FO_generalized(object):
             if load[i] / self.thermal_load < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
 
-           
-            prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
+            energy_consumption[i] = fuel[i]+load[i]          
+            prod[i] = energy_consumption[i]/ self.thermal_load * self.max_prod
 
             
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
@@ -767,6 +770,7 @@ class FO_generalized(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
         
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         

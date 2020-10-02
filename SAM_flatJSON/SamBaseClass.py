@@ -84,9 +84,7 @@ class SamBaseClass(object):
                 
                 if self.desalination:
                     self.desal_simulation(self.desalination)
-                    # FO doesnt have cost model for now
-                    if self.desalination != 'FO':
-                        self.cost(self.desalination)
+                    self.cost(self.desalination)
                                 
                 self.sam_calculation()
                 self.print_impParams()
@@ -115,9 +113,7 @@ class SamBaseClass(object):
                 
                 if self.desalination:
                     self.desal_simulation(self.desalination)
-                    # FO doesnt have cost model for now
-                    if self.desalination != 'FO':
-                        self.cost(self.desalination)
+                    self.cost(self.desalination)
                 
     
             
@@ -146,9 +142,7 @@ class SamBaseClass(object):
     
                 if self.desalination:
                     self.desal_simulation(self.desalination)
-                    # FO doesnt have cost model for now
-                    if self.desalination != 'FO':
-                        self.cost(self.desalination)
+                    self.cost(self.desalination)
                 
                 self.sam_calculation()
                 self.print_impParams()
@@ -200,9 +194,7 @@ class SamBaseClass(object):
     
                 if self.desalination:
                     self.desal_simulation(self.desalination)
-                    # FO doesnt have cost model for now
-                    if self.desalination != 'FO':
-                        self.cost(self.desalination)
+                    self.cost(self.desalination)
                 
                 self.sam_calculation()
                 self.print_impParams()
@@ -358,9 +350,9 @@ class SamBaseClass(object):
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
 
-            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = sum(self.simu_output[0]['Value']), Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
+            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
                                    MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh =self.cost_values_json['sam_coh'], solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] )
 
             self.cost_output = self.LCOW.lcow()
 
@@ -373,6 +365,17 @@ class SamBaseClass(object):
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
+
+        elif desal == 'FO':
+            from DesalinationModels.FO_cost import FO_cost
+            self.LCOW = FO_cost(    Capacity = self.desal_values_json['Mprod'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.cost_values_json['STEC'], Maintenance = self.cost_values_json['Maintenance'], 
+                                    Cap_membrane = self.cost_values_json['Cap_membrane'], Cap_HXs = self.cost_values_json['Cap_HXs'], Cap_construct = self.cost_values_json['Cap_construct'], Cap_DS = self.cost_values_json['Cap_DS'],
+                                    Cap_coalescers = self.cost_values_json['Cap_coalescers'], Cap_structural = self.cost_values_json['Cap_structural'], Cap_polishing = self.cost_values_json['Cap_polishing'], Cap_pipes = self.cost_values_json['Cap_pipes'],
+                                    Cap_filtration = self.cost_values_json['Cap_filtration'], Cap_electrical = self.cost_values_json['Cap_electrical'], Cap_pumps = self.cost_values_json['Cap_pumps'], Cap_instrumentation = self.cost_values_json['Cap_instrumentation'],
+                                    Cap_valves = self.cost_values_json['Cap_valves'], Cap_CIP = self.cost_values_json['Cap_CIP'], Cap_tanks = self.cost_values_json['Cap_tanks'], Cap_pretreatment = self.cost_values_json['Cap_pretreatment'],
+                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.cost_values_json['sam_coh'], cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.FO.storage_cap)
+            self.cost_output = self.LCOW.lcow()
+
 
         filename = desal + '_cost_output' + self.timestamp + '.json'
         
