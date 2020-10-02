@@ -11,7 +11,6 @@ class LTMED_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
-                 fuel_usage = 0, # %
                  f_HEX = 0.4, # Cost fraction of the evaporator 
                  HEX_area = 389, # Heat exchanger area (m2)
                  STEC = 60 , # Thermal energy consumption (kW)
@@ -42,7 +41,7 @@ class LTMED_cost(object):
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
-        self.fuel_usage = fuel_usage
+
         self.coh = coh
         self.sam_coh = sam_coh
 
@@ -65,7 +64,7 @@ class LTMED_cost(object):
         
         
 
-        self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX + self.Miscellaneous + self.Discharge
+        self.OPEX = self.coh * self.STEC + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX + self.Miscellaneous + self.Discharge
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -74,7 +73,7 @@ class LTMED_cost(object):
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat','Value':self.coh,'Unit':'$/m3'})
-        cost_output.append({'Name':'Energy cost','Value':self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC,'Unit':'$/m3'})
+        cost_output.append({'Name':'Energy cost','Value':self.coh * self.STEC + self.coe * self.SEEC,'Unit':'$/m3'})
          
         
         return cost_output

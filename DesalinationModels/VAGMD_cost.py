@@ -71,10 +71,11 @@ class VAGMD_cost(object):
         self.th_module = th_module
         self.FFR = FFR
         self.coe = coe
-
+        if coh == 100:
+            self.coh = sam_coh
+        else:
+            self.coh = coh
         self.sam_coh = sam_coh
-        self.coh = coh
-
 
         self.cost_module_re = cost_module_re
         self.Prod = Prod
