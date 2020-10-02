@@ -479,7 +479,7 @@ class lt_med_general(object):
         load =  [0 for i in range(len(gen))]
         prod =  [0 for i in range(len(gen))]
         fuel =  [0 for i in range(len(gen))]   
-        
+        energy_consumption =  [0 for i in range(len(gen))]
         for i in range(len(gen)):
             to_desal[i] = min(self.thermal_load, gen[i])
             to_storage[i] = abs(gen[i] - to_desal[i])
@@ -492,18 +492,22 @@ class lt_med_general(object):
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
             if load[i] / self.thermal_load < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
-                
+            energy_consumption[i] = fuel[i]+load[i]    
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
-            
+        Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
+        Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]   
+        
+        
         simu_output = []
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Solar energy curtailment','Value':solar_loss,'Unit':'kWh'})
-               
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Solar energy curtailment','Value':solar_loss,'Unit':'kWh'})               
         return simu_output
             
 #%% MODEL EXECUTION            
