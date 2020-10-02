@@ -19,12 +19,14 @@ desal_outputs = {
     'Total water production':'parametric_desal_simulation_outfile',
     'Levelized cost of water':'parametric_desal_finance_outfile',
     'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+    'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
     'Specific thermal power consumption': 'parametric_desal_design_outfile'
 }
 desal_units = {
     'Total water production':'m3',
     'Levelized cost of water':'$/m3',
     'Total fossil fuel usage':'kWh',
+    'Percentage of fossil fuel consumption':'%',
     'Specific thermal power consumption':'kWh(th)/m3'}
 
 chart_navbar = dbc.NavbarSimple(
@@ -49,7 +51,7 @@ def real_time_layout():
                             for name in desal_outputs],
                     value=list(desal_outputs.keys())[0],
                     labelStyle = {'display': 'block'}),
-                width=3),
+                width=4),
         ], justify="center")
     ])
     parametric_charts_layout = html.Div([
@@ -145,13 +147,22 @@ def store_desal_data(x):
 def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
     pD=parametricData[paramValue]
+    if len(pD['df'])==2:
+        varlabel=f"{pD['label'][1].title()} ({pD['unit'][1]})"
+        indexlabel=f"{pD['label'][0].title()} ({pD['unit'][0]})"
+    else:
+        varlabel=''
+        indexlabel=f"{pD['label'].title()} ({pD['unit']})"
+    print(f'pD: {pD}')
     dd = pd.DataFrame.from_dict(pD['df'])
     # cast as float because column types need to be the same
     dd = dd.astype(float)
+
     fig = px.bar(dd, 
                 barmode='group', 
-                labels={'index':f"{pD['label'][0].title()} ({pD['unit'][0]})",    'value':f"{paramValue.title()} ({desal_units[paramValue]})", 
-                'variable':f"{pD['label'][1].title()} ({pD['unit'][1]})"})
+                labels={'index':indexlabel,  'value':f"{paramValue.title()} ({desal_units[paramValue]})",
+                'variable':varlabel
+                })
     return fig
 
 # @app.callback(
