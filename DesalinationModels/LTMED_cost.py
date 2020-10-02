@@ -42,7 +42,7 @@ class LTMED_cost(object):
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
-        self.fuel_usage = fuel_usage
+        self.fuel_usage = fuel_usage/100
         self.coh = coh
         self.sam_coh = sam_coh
 

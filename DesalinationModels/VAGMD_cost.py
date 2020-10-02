@@ -60,7 +60,7 @@ class VAGMD_cost(object):
         self.Pflux = Pflux
         self.Area = Area
         
-        self.fuel_usage = fuel_usage
+        self.fuel_usage = fuel_usage/100
         self.PF_module = self.Pflux * self.Area
         self.num_modules = math.ceil(Capacity *1000 / self.PF_module / self.operation_hour) # Number of module required
         self.TEI = TEI
