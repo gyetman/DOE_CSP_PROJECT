@@ -310,8 +310,8 @@ class SamBaseClass(object):
             self.simu_output = self.LTMED.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
             simu_json_outfile = self.samPath / 'results' /'LTMED_simulation_output.json'
 
-            solar_loss = self.simu_output[6]['Value']
-            np.savetxt("gen.csv",solar_loss,delimiter=',')
+            # solar_loss = self.simu_output[6]['Value']
+            # np.savetxt("gen.csv",solar_loss,delimiter=',')
             
         elif desal == 'FO':
             from DesalinationModels.FO_Generalized import FO_generalized
@@ -361,9 +361,9 @@ class SamBaseClass(object):
             from DesalinationModels.LTMED_cost import LTMED_cost
             self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], 
                                    # HEX_area = self.LTMED.system.sum_A,
-                                   Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
+                                   Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.cost_values_json['sam_coh'], cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
 
         elif desal == 'FO':
