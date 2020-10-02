@@ -23,6 +23,7 @@ SAM_flatJSON/__pycache__/*
 SAM_flatJSON/results/VAGMD_cost_output.json
 SAM_flatJSON/results/VAGMD_simulation_output.json
 SAM_flatJSON/results/*
+SAM_flatJSON/parametric_results/*
 .ipynb_checkpoints/Untitled-checkpoint.ipynb
 *.xml
 *.ini
