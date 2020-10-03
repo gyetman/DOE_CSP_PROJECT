@@ -720,7 +720,7 @@ class FO_generalized(object):
         self.design_output = []
         self.design_output.append({'Name':'Weak draw solution concentration','Value':self.B*100,'Unit':'%'})
         self.design_output.append({'Name':'Strong draw solution flow rate','Value':self.SD,'Unit':'m3/day'}) 
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.Thermal_power[0],'Unit':'kW(th)'})
+        self.design_output.append({'Name':'Thermal power consumption','Value':self.Thermal_power[0] / 1000,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC[0],'Unit':'kWh(th)/m3'})
 
         return self.design_output
