@@ -148,8 +148,8 @@ def store_desal_data(x):
 def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
     pD=parametricData[paramValue]
-    if len(pD['df'])==2:
-        varlabel=f"{pD['label'][1].title()} ({pD['unit'][1]})"
+    if len(pD['label'])==2:
+        varlabel=f"{pD['label'][1].title()} {pD['unit'][1]}"
         indexlabel=f"{pD['label'][0].title()} ({pD['unit'][0]})"
     else:
         varlabel=' '
