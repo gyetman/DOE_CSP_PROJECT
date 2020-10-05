@@ -136,9 +136,15 @@ class SamBaseClass(object):
                         self.module_create_execute('cashloan')
                     elif self.financialModel == 'iph_to_lcoefcr':
                         self.module_create_execute('lcoefcr')
-                self.heat_gen = self.ssc.data_get_array(self.data, b'gen')
+                if self.cspModel== 'linear_fresnel_dsg_iph':
+                    self.heat_gen = self.ssc.data_get_array(self.data, b'gen')
+                else:
+                    heat_genn = self.ssc.data_get_array(self.data, b'q_dot_to_heat_sink')
+                    self.heat_gen = np.dot(heat_genn, 1000)
+                
                 self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
-    
+                
+                
     
                 if self.desalination:
                     self.desal_simulation(self.desalination)
@@ -340,9 +346,9 @@ class SamBaseClass(object):
         if desal == 'RO':
             from DesalinationModels.RO_cost import RO_cost
 
-            self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), Area = self.cost_values_json['Area'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
+            self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), fuel_usage = self.simu_output[7]['Value'], Area = self.cost_values_json['Area'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 Nel = self.cost_values_json['Nel'], membrane_cost =  self.cost_values_json['membrane_cost'], pressure_vessel_cost =  self.cost_values_json['pressure_vessel_cost'], chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
-                                equip_cost_method =  self.cost_values_json['equip_cost_method'],unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe)
+                                equip_cost_method =  self.cost_values_json['equip_cost_method'],unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.cost_values_json['sam_coe'])
 
             self.cost_output = self.LCOW.lcow()
 
@@ -555,8 +561,8 @@ class SamBaseClass(object):
 
             except Exception as error:
                 self.logger.critical(error)
-                # print(error)
-                # print(ssc_var)
+                print(error)
+                print(ssc_var)
 #                self.logger.info(stringsInJson)
 #        print(added_variables)
 
