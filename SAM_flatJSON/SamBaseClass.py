@@ -183,7 +183,8 @@ class SamBaseClass(object):
                     self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_field') # kg/hr
                 elif self.cspModel== 'tcsdirect_steam':
                     self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
-                
+                    for i in range(len(self.mass_fr_hr)):
+                        self.mass_fr_hr[i] *= 50
                 P_cond = np.dot(self.P_cond, 1e-6)
                 
                 # if  self.cspModel== 'tcslinear_fresnel':
