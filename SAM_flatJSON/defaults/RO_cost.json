@@ -1,7 +1,8 @@
 {
 	"yrs" : 20,
 	"int_rate" : 0.04,
-	"coe" : 0.05,
+	"coe" : 0.04,
+	"sam_coe" : 0.05,
 	"Nel" : 8,
 	"Area" : 40.8,
 	"membrane_cost" : 30,

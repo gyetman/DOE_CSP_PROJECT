@@ -179,7 +179,7 @@ class RO(object):
         load =  [0 for i in range(len(gen))]
         prod =  [0 for i in range(len(gen))]
         fuel =  [0 for i in range(len(gen))]
-        
+        energy_consumption =  [0 for i in range(len(gen))]
         for i in range(len(gen)):
             to_desal[i] = min(self.thermal_load, gen[i])
             to_storage[i] = abs(gen[i] - to_desal[i])
@@ -193,7 +193,7 @@ class RO(object):
             if load[i] / self.thermal_load < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
 
-           
+            energy_consumption[i] = fuel[i]+load[i]
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
             
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
@@ -208,6 +208,7 @@ class RO(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
         
         return simu_output
 
