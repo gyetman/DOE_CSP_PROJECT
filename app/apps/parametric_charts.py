@@ -15,13 +15,23 @@ import app_config as cfg
 import helpers
 from app import app
 
-desal_outputs = {
-    'Total water production':'parametric_desal_simulation_outfile',
-    'Levelized cost of water':'parametric_desal_finance_outfile',
-    'Total fossil fuel usage':'parametric_desal_simulation_outfile',
-    'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-    'Specific thermal power consumption': 'parametric_desal_design_outfile'
-}
+
+if helpers.json_load(cfg.app_json)['desal'] == 'RO':
+    desal_outputs = {
+        'Total water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'Specific energy consumption': 'parametric_desal_design_outfile'
+    }
+else:
+    desal_outputs = {
+        'Total water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'
+    }
 desal_units = {
     'Total water production':'m3',
     'Levelized cost of water':'$/m3',
@@ -107,7 +117,7 @@ def store_desal_data(x):
             for i,t in enumerate(timestamps):
                 #load the json
                 para_dict=helpers.json_load(f'{path}{t}.json')
-                #find the location of the specific value for the variable
+                #find the location of the specific value for the variable 
                 index = helpers.index_in_list_of_dicts(para_dict,'Name',desal_output)
                 #get location within dataframe 
                 loc = [str(l) for l in info['Timestamps'][t]]
@@ -149,7 +159,7 @@ def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
     pD=parametricData[paramValue]
     if len(pD['label'])==2:
-        varlabel=f"{pD['label'][1].title()} {pD['unit'][1]}"
+        varlabel=f"{pD['label'][1].title()} ({pD['unit'][1]})"
         indexlabel=f"{pD['label'][0].title()} ({pD['unit'][0]})"
     else:
         varlabel=' '

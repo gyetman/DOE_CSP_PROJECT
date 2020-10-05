@@ -19,7 +19,15 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "coe",
-            "Label": "Unit cost of electricity",
+            "Label": "Unit cost of electricity from fossil fuel (LCOE)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sam_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE)",
             "Units": "$/kWh",
             "Require": "",
 			"Tab": "Desalination"
