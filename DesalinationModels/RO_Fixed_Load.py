@@ -190,7 +190,7 @@ class RO(object):
             storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
             solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
-            if load[i] / self.thermal_load < self.Fossil_f:
+            if max(0,load[i] / self.thermal_load) < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
 
             energy_consumption[i] = fuel[i]+load[i]
