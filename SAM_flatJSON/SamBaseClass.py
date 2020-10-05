@@ -295,8 +295,8 @@ class SamBaseClass(object):
             self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'], Fossil_f =self.desal_values_json['Fossil_f'] )
             self.RO.RODesign()
             self.simu_output = self.RO.simulation(gen = self.elec_gen, storage = self.desal_values_json['storage_hour'])
-                   
-        
+
+            
         if desal == 'VAGMD':
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
             with open(self.desal_json_values, "r") as read_file:
@@ -711,8 +711,8 @@ class SamBaseClass(object):
 #         annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
 #         print ('Annual energy (year 1) = ', annual_energy)
         
-        lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_fcr')
-        print ('LCOE_real = ', lcoe_real)
+        # lcoe_real = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+        # print ('LCOE_real = ', lcoe_real)
         
 #        outputs.append({'name': 'capacity_factor',
 #                        'value': capacity_factor})

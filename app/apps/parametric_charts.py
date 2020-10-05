@@ -15,29 +15,40 @@ import app_config as cfg
 import helpers
 from app import app
 
-
-if helpers.json_load(cfg.app_json)['desal'] == 'RO':
-    desal_outputs = {
+desal_outputs = {
+        'RO': {
         'Total water production':'parametric_desal_simulation_outfile',
         'Levelized cost of water':'parametric_desal_finance_outfile',
         'Total fossil fuel usage':'parametric_desal_simulation_outfile',
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-        'Specific energy consumption': 'parametric_desal_design_outfile'
-    }
-else:
-    desal_outputs = {
+        'Specific energy consumption': 'parametric_desal_design_outfile'},
+        'LTMED':{
         'Total water production':'parametric_desal_simulation_outfile',
         'Levelized cost of water':'parametric_desal_finance_outfile',
         'Total fossil fuel usage':'parametric_desal_simulation_outfile',
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-        'Specific thermal power consumption': 'parametric_desal_design_outfile'
-    }
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'},
+        'FO':{
+        'Total water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'},        
+        'VAGMD':{
+        'Total water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'}
+        }
+    
 desal_units = {
     'Total water production':'m3',
     'Levelized cost of water':'$/m3',
     'Total fossil fuel usage':'kWh',
     'Percentage of fossil fuel consumption':'%',
-    'Specific thermal power consumption':'kWh(th)/m3'}
+    'Specific thermal power consumption':'kWh(th)/m3',
+    'Specific energy consumption':'kWh(e)/m3'}
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
@@ -58,12 +69,13 @@ def real_time_layout():
                 dcc.RadioItems(
                     id='select-parametric-chart',
                     options=[{'label': f" {name}", 'value': name}
-                            for name in desal_outputs],
-                    value=list(desal_outputs.keys())[0],
+                            for name in desal_outputs[helpers.json_load(cfg.app_json)['desal']]],
+                    value=list(desal_outputs[helpers.json_load(cfg.app_json)['desal']].keys())[0],
                     labelStyle = {'display': 'block'}),
                 width=4),
         ], justify="center")
     ])
+
     parametric_charts_layout = html.Div([
         html.Div(id='initialize'),
         chart_navbar,
@@ -98,10 +110,9 @@ def store_desal_data(x):
 
     desal_dict = {}
 
-    for desal_output in desal_outputs:
+    for desal_output in desal_outputs[alkup['desal']]:
         # get the desal directory and file prefix
-        path = flkup[desal_outputs[desal_output]]
-
+        path = flkup[desal_outputs[alkup['desal']][desal_output]]
         # one variable route
         if len(info['Variables'])==1:
             var1 = [key for key in info['Variables']][0]
@@ -112,22 +123,24 @@ def store_desal_data(x):
             #build empty dataframe using values of variable intervals
             #for index and column labels
             # df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']])
-            df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']],columns=['param'])
+            df = pd.DataFrame(index=[str(i) for i in info['Variables'][var1]['Values']],columns=[f'{labels}'])
             # read through files one timestamp at a time and add values to dataframe
             for i,t in enumerate(timestamps):
                 #load the json
                 para_dict=helpers.json_load(f'{path}{t}.json')
+
                 #find the location of the specific value for the variable 
                 index = helpers.index_in_list_of_dicts(para_dict,'Name',desal_output)
                 #get location within dataframe 
                 loc = [str(l) for l in info['Timestamps'][t]]
                 #set dataframe value at location
                 # df.at[loc[0],0]=para_dict[index]['Value']
-                df['param'][i]=para_dict[index]['Value']
+                df[f'{labels}'][i]=para_dict[index]['Value']
             
             #pass on dataframe, label and units for output variable
 
             desal_dict[desal_output]={'df':df.to_dict(),'label':labels,'unit':units}
+
         # two variable route
         if len(info['Variables'])==2:
             var1,var2 = info['Variables']
@@ -148,6 +161,7 @@ def store_desal_data(x):
                 df.at[loc[0],loc[1]]=para_dict[index]['Value']
             #pass on dataframe, label and units for output variable
             desal_dict[desal_output]={'df':df.to_dict(),'label':labels,'unit':units}
+
     return desal_dict
 
 @app.callback(
@@ -157,6 +171,7 @@ def store_desal_data(x):
 # def update_desal_graph(desalValue, timeAggValue, desalData):
 def update_parametric_graph(paramValue, parametricData):
     ''' update the desal figure object '''
+
     pD=parametricData[paramValue]
     if len(pD['label'])==2:
         varlabel=f"{pD['label'][1].title()} ({pD['unit'][1]})"
