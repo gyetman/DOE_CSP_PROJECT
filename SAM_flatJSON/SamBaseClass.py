@@ -555,8 +555,8 @@ class SamBaseClass(object):
 
             except Exception as error:
                 self.logger.critical(error)
-                print(error)
-                print(ssc_var)
+                # print(error)
+                # print(ssc_var)
 #                self.logger.info(stringsInJson)
 #        print(added_variables)
 
