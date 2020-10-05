@@ -256,7 +256,10 @@ tabs_accordion = dbc.Card('TEST',
 
 desal_side_panel = dbc.CardBody([
     html.H4("Desalination Design Model", className="card-title"),
-    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. Please run the design model first and specify the thermal load in the solar thermal model accordingly.", className='card-text'),
+    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. For thermal desalination models, you should run the design model first if you change any variable in the desalination system. Then you should size the solar field capacity according to the resulted thermal power consumption. \nThe solar system capacity in different solar thermal models can be found as below:", className='card-text'),
+    html.P("Static Collector model: System Design - Design capacity", className='card-text'),
+    html.P("Industrial Process Heat Parabolic Trough: Controller - Design heat input to power block ", className='card-text'),
+    html.P("Industrial Process Linear Fresnel: System Design - Heat sink power", className='card-text'),
     dbc.Button('Run Design Model', 
         color="primary", 
         id='run-desal-design'),
@@ -442,8 +445,13 @@ def run_desal_design(desalDesign, desalData):
         elif isinstance(dd_val,float):
             dd_val = f'{dd_val:,.2f}'
         dd_outputs.append(html.Div(f"{dd['Name']}: {dd_val} {dd['Unit']}"))
-    return (html.H4('Desalination Design Results',className="card-title"),
-            dbc.Alert(dd_outputs))
+        
+    if desalDesign:
+        return (html.H5("Model run complete", className='text-primary'),
+                html.H4('Desalination Design Results',className="card-title"),
+                dbc.Alert(dd_outputs))
+    else:
+        return
 
 @app.callback([Output(f"collapse-title-{i}", 'children') for i in models],
             [Input('tabs-card','children')])
@@ -468,9 +476,9 @@ def toggle_model_side_panel(m1,m2,m3):
         button_id = 'default'
 
     if button_id == 'solar-toggle':
-        return solar_side_panel
+        return desal_side_panel
     elif button_id == 'finance-toggle':
-        return finance_side_panel
+        return desal_side_panel
     else: #default and 'Desalination_System-toggle'
         return desal_side_panel
 
