@@ -200,6 +200,8 @@ def gather_data(x):
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
+        updates.update({'sam_lcoe':f['sam_coe']})        
+        
         
     elif updates['desal'] == 'FO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -459,7 +461,7 @@ def set_cost_analysis(x):
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
         html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
-        html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} v"),
+        html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
@@ -471,7 +473,8 @@ def set_cost_analysis(x):
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
     #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
-        html.Div(f"Levelized cost of energy (LCOE): {r['lcoe']:.2f} $/kWh"),
+        html.Div(f"Levelized cost of electricity (LCOE, from fossil fuel): {r['lcoe']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of electricity (LCOE, from solar field): {r['sam_lcoe']:.3f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),

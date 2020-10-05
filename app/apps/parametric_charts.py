@@ -105,7 +105,7 @@ def store_desal_data(x):
         # one variable route
         if len(info['Variables'])==1:
             var1 = [key for key in info['Variables']][0]
-            print(f'var1: {var1}')
+
             # labels = list([var1['Label']])
             labels=info['Variables'][var1]['Label']
             units = info['Variables'][var1]['Unit']
@@ -126,7 +126,7 @@ def store_desal_data(x):
                 df['param'][i]=para_dict[index]['Value']
             
             #pass on dataframe, label and units for output variable
-            print(f'filled df: {df}')
+
             desal_dict[desal_output]={'df':df.to_dict(),'label':labels,'unit':units}
         # two variable route
         if len(info['Variables'])==2:
@@ -164,7 +164,7 @@ def update_parametric_graph(paramValue, parametricData):
     else:
         varlabel=' '
         indexlabel=f"{pD['label'].title()} ({pD['unit']})"
-    print(f'pD: {pD}')
+
     dd = pd.DataFrame.from_dict(pD['df'])
 
     # cast as float because column types need to be the same
@@ -175,7 +175,7 @@ def update_parametric_graph(paramValue, parametricData):
                 'variable':varlabel
                 })
     fig.update_layout(xaxis_type='category')
-    if len(pD['df'])==1: fig.update_layout(showlegend=False)
+
     return fig
 
 # @app.callback(
