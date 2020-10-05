@@ -3,15 +3,15 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Capacity",
-            "Label": "Plant capacity",
+            "Label": "Plant capacity (2000 to 100,000)",
             "Units": "m3/day",
             "Require": "*",
-            "Constraint": ">2000,<10000"
+            "Constraint": ">2000,<100000"
         },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration",
+            "Label": "Feed concentration (30 to 60)",
             "Units": "g/L",
             "Require": "*",
             "Costraint": "<60,>30"
@@ -19,7 +19,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "RR",
-            "Label": "Recovery rate",
+            "Label": "Recovery ratio (0.3 to 0.5)",
             "Units": "",
             "Require": "*",
             "Constraint": ">0.3, <0.5"
@@ -27,14 +27,14 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Nef",
-            "Label": "Number of effects",
+            "Label": "Number of effects (12, 14 or 16)",
             "Units": "none",
             "Require": "*"
         },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Ts",
-            "Label": "The temperature of the steam at the inlet",
+            "Label": "The temperature of the steam at the inlet (65 to 80)",
             "Units": "C",
             "Require": "*",
             "Constraint": ">0"
@@ -42,7 +42,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Tin",
-            "Label": "Inlet feedwater temperature",
+            "Label": "Inlet feedwater temperature (15 to 35)",
             "Units": "C",
             "Require": "*",
             "Constraint": ">15, <35"
