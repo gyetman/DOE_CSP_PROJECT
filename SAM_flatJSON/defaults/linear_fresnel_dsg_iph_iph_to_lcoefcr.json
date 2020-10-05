@@ -86,5 +86,6 @@
 	"metric_4" : "lcoe_fcr",
 	"metric_4_label" : "Levelized cost of heat",
 	"number_compute_modules" : 3,
-	"number_metrics" : 5
+	"number_metrics" : 5,
+	"annual_electricity_consumption" : 0
 }
