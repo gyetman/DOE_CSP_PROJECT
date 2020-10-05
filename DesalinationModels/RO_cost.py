@@ -20,6 +20,7 @@ class RO_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  Area = 40.8 , # Membrane area (m2)
+                 fuel_usage = 0, # Total fuel usage (%)
                  # Pflux = 1.1375,  # Permeate flow per module (m3/h/module)
                  NV=7,
                  Nel=8,  
@@ -81,10 +82,10 @@ class RO_cost(object):
         self.unit_capex = unit_capex
 #        self.th_module = th_module
 #        self.FFR = FFR
-        if coe:
-            self.coe = coe
-        else:
-            self.coe = sam_coe
+
+        self.coe = coe
+        self.sam_coe = sam_coe
+        self.fuel_usage = fuel_usage / 100
 #        self.cost_module_re = cost_module_re
         self.yrs = yrs
         self.int_rate = int_rate
@@ -108,7 +109,7 @@ class RO_cost(object):
 #           self.equip_cost=
 #        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
 #        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
-        self.cost_elec = self.SEC * self.coe
+        self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
         self.OPEX = self.disposal_cost+self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
         #### ADD disposal cost
         self.LCOW = self.CAPEX + self.OPEX
@@ -117,6 +118,8 @@ class RO_cost(object):
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of electricity (from fossile fuel)','Value':self.coe,'Unit':'$/m3'})
+        cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/m3'})
         cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
         
         return cost_output
