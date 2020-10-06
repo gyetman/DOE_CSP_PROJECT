@@ -1,3 +1,4 @@
+import app_config
 import json
 import dash
 import dash_core_components as dcc
@@ -5,12 +6,15 @@ import dash_html_components as html
 import dash_leaflet as dl
 import pandas as pd
 import helpers
+import pointLocationLookup
 
-from dash.dependencies import Output, Input
-from dash_leaflet import express as dlx
+from dash.dependencies import Output, Input, State
+from dash.exceptions import PreventUpdate
+from dash_leaflet import express as dlx 
+import dash_leaflet as dl
 from pathlib import Path
 
-gis_data = Path('./GISdata')
+gis_data = app_config.gis_data_path
 
 # TODO:
 # 1. separate map theme loading (regulatory, solar, etc.) from
@@ -22,11 +26,9 @@ gis_data = Path('./GISdata')
 # 4. transfer & adapt code to write out parameters as json
 # 5. style to be consistent with menu interface
 
-# GREG'S REGULATORY LAYER (by itself)
-test_layer = 'mapbox://styles/gyetman/ckbgyarss0sm41imvpcyl09fp'
-
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
+# public mapbox token
 mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1In0.uOqHLjY8vJEVndoGbugWWg'
 
 # Dictionary to hold map theme labels and ID values
@@ -34,9 +36,9 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 # list of radio buttons. note: first item is the 
 # default for when map loads, change order to update. 
 mapbox_ids = {
-    'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j',
-    'Outdoors': 'mapbox/outdoors-v9',
     'Satellite': 'mapbox/satellite-streets-v9', 
+    'Outdoors': 'mapbox/outdoors-v9',
+    # 'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j', # duplicate entry
 }
 
 MAP_ID = "map-id"
@@ -52,34 +54,36 @@ def get_d_style(feature):
     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
 def get_info(feature=None):
-    header = [html.H4("US Power Plants")]
+    header = [html.H4("Feature Details")]
     if not feature:
-        return header + ["Hover over a power plant"]
+        return header + ["Hover over a feature"]
     return header + [html.B(feature["properties"]["name"]), html.Br(),
                      f"{float(feature['properties']['capacity_mw']):.3f} capacity MW"]
 
 # load power plants JSON
-power_plants_json = gis_data / 'power_plants.geojson'
-pp_data = helpers.json_load(power_plants_json)
-power_plants = dlx.geojson(pp_data, id="geojson", style=get_style, defaultStyle=dict(fillColor='orange', weight=2, opacity=1, color='white'))
-# power_plants = dlx.geojson(pp_data, id="geojson", style=get_style)
-# print(power_plants.featureStyle[0])
-# power_plants.featureStyle[0]={'color':'orange'}
-# print({power_plants.available_properties[0]})
-# print({power_plants})
-# should see if we can get Canvas circle markers instead? 
-# they draw faster and can be styled#
-
-#load canals JSON
-canals_json = gis_data / 'canals.geojson'
-ca_data = helpers.json_load(canals_json)
-canals = dlx.geojson(ca_data, id='canals', style=get_style, defaultStyle=dict(fillColor='blue', weight=2, opacity=1, color='blue'))
+power_plants = dl.GeoJSON(
+    url='/assets/power_plants.geojson',
+    id='geojson_power',
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={"radius": 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray='')
+)
 
 
-info = html.Div(children=get_info(), id="info", className="mapinfo",
-                style={"position": "absolute", "top": "10px", "right": "10px", "z-index": "1000"})
+# load canals json
+canals = dl.GeoJSON(
+    url='/assets/canals.geojson', 
+    id='geojson_canals', 
+    #defaultstyle=dict(fillColor='blue', weight=2, opacity=1, color='blue'),
+)
 
+# regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
+
+# placeholder for mouseover data
+info = html.Div(children=get_info(), id="info", className="mapinfo",
+                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"})
 
 def render_map():
     comment = """ Click on a location to examine site details.  """
@@ -105,14 +109,9 @@ def render_map():
                         dl.Tooltip("Selected site")
                 ]),
                 html.Div(id='theme-layer')
-                # power_plants,
-                # canals,
-                # info,
-
-                # TODO: load layers for default selection
-
-                # power plants
-                #plantMarkers = loadPowerPlants()
+            ]),
+        html.Div([
+            html.Div(id='next-button')
         ]),
 
         # map theme selection
@@ -141,7 +140,7 @@ def render_map():
 
 
 theme_ids = {
-    'canals': canals,
+    'canals': html.Div([canals]),
     'pplants': html.Div([power_plants, info]),
     'regulatory': regulatory
 }
@@ -156,7 +155,6 @@ def register_map(app):
                  [Input('theme-dropdown', 'value')])
     def set_theme_layer(theme):
         return theme_ids[theme]
-
 
     @app.callback(Output(USER_POINT, 'position'),
                   [Input(MAP_ID, 'click_lat_lng')])
@@ -173,19 +171,49 @@ def register_map(app):
 
     @app.callback(Output(SITE_DETAILS, 'children'),
                   [Input(MAP_ID, 'click_lat_lng')])
-    def get_point_info(coords):
-        if coords is None:
+
+    def get_point_info(lat_lng):
+        ''' callback to update the site information '''
+        if lat_lng is None:
             return('Click on the Map to see site details.')
         else:
-            # TODO: use coords and theme to lookup layers. 
-            # theme should come from a state in the callback...
-            # module to lookup info will called...
-            return('Information for {}'.format(coords))
+            return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+            
+    @app.callback(
+        Output(component_id='next-button',component_property='children'),
+        [Input(component_id=SITE_DETAILS,component_property='children')],
+        [State(MAP_ID,'children')],
+        prevent_initial_call=True
+    )
+    def enableButton(site,site_properties):
+        if site == 'Click on the Map to see site details.':
+            raise PreventUpdate
+        else:
+            return(
+                html.Div([
+                    html.Div(id='button-div'),
+                    html.Div(html.A(
+                        html.Button('Select Models', 
+                                id='model-button',
+                            ),
+                        href='http://127.0.0.1:8077/model-selection'
+                        )
+                      )
+                ], className='row',
+                ) 
+            )
 
     @app.callback(Output('info', 'children'),
-                 [Input("geojson", "featureHover")])
-    def info_hover(feature):
+        [Input("geojson_power", "hover_feature")],
+        [State("theme-dropdown",'value')]
+    )
+    def info_hover(feature,theme):
+        print(theme)
         return get_info(feature)
+
+    # @app.callback(Output('info', 'children'),[Input("info", "featureHover")])
+    # def info_hover(feature):
+    #     return get_info(feature)
 
 # app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
 app = dash.Dash(__name__)
@@ -196,51 +224,6 @@ app.layout = html.Div(
 register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8150)
+    app.run_server(debug=True, port=8150)
 
 
-''' Example code for different types. 
-see: https://dash-leaflet.herokuapp.com/ for documentation
-# TODO: remove before alpha release. 
-
-            dl.Marker(position=[56, 9.8], children=[
-                dl.Tooltip("Marker tooltip"),
-                dl.Popup([
-                    html.H1("Marker popup"),
-                    html.P("with inline html")
-                ])
-            ]),
-            # Marker with custom icon.
-            dl.Marker(position=[55.94, 9.96], icon={
-                "iconUrl": "/assets/149059.svg",
-                "iconSize": [25, 25]
-            }, children=[
-                dl.Tooltip("Marker with custom icon")
-            ]),
-            # Circle marker (with fixed radius in pixel).
-            dl.CircleMarker(center=[56.05, 10.15], radius=20, children=[
-                dl.Popup('Circle marker, 20px')
-            ]),
-            # Circle with fixed radius in meters.
-            dl.Circle(center=[56.145, 10.21], radius=2000, color='rgb(255,128,0)', children=[
-                dl.Tooltip('Circle, 2km radius')
-            ]),
-            # Polyline marker.
-            dl.Polyline(id='polyline', positions=[[56.06, 10.0],
-                                                  [56.056, 10.01],
-                                                  [56.064, 10.028],
-                                                  [56.0523, 10.0717],
-                                                  [56.044, 10.073]], children=[
-                dl.Tooltip('Polyline')
-            ]),
-            # Polygon marker.
-            dl.Polygon(id='polygon', positions=[[56.013, 9.84],
-                                                [56.0544, 9.939],
-                                                [56.003, 10.001]], children=[
-                dl.Tooltip('Polygon')
-            ]),
-            # Rectangle marker.
-            dl.Rectangle(id='rectangle', bounds=[[55.9, 10.2], [56.0, 10.5]], children=[
-                dl.Tooltip('Rectangle')
-            ]
-'''
