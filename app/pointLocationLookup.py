@@ -85,7 +85,7 @@ def lookupLocation(pt, mapTheme='default'):
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
 
     return(_generateMarkdown(mapTheme,closestFeatures))
-
+    #return(str(closestFeatures))
 
 
 
@@ -207,7 +207,7 @@ def _generateMarkdown(theme, atts):
     ''' generate the markdown to be returned for the current theme '''
     # handle the standard theme layers (all cases)
     mdown = f"### Site properties near {atts['dni']['properties'].get('City')}, {atts['dni']['properties'].get('State')}\n"
-    mdown += f"#### Closest desalination plant: {atts['desalPlants']['properties'].get('Project_Na')}\n"
+    mdown += f"#### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
     mdown += f"Capacity: {desal.get('Capacity__')}\n\n"
@@ -220,6 +220,9 @@ def _generateMarkdown(theme, atts):
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
     mdown += f"Production: {power.get('Plant_tota')}\n\n"
     mdown += f"Annual production: {power.get('Plant_annu')}\n\n"
+
+    water = atts['waterPrice']['properties']
+    mdown += f"#### Water Prices"
 
 
     return mdown

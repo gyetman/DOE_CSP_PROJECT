@@ -17,12 +17,9 @@ from pathlib import Path
 gis_data = app_config.gis_data_path
 
 # TODO:
-# 1. separate map theme loading (regulatory, solar, etc.) from
-# basemap selection. Default to satellite, but allow streets,
-# outdoor, any others ??
+# add link (lines) and symbols for closest features
+# add legend(s)
 # 2. use a map-config file to load data, file locations, etc. 
-# 3. use a geo helper module to lookup nearest features by theme and
-# all required features used as input parameters. 
 # 4. transfer & adapt code to write out parameters as json
 # 5. style to be consistent with menu interface
 
@@ -103,7 +100,6 @@ def render_map():
                 dl.ScaleControl(metric=True, imperial=True),
 
                 # Placeholder for user-selected site. 
-                # TODO: get an icon that's "invisible"
                 dl.Marker(id=USER_POINT,position=[0, 0], icon={
                     "iconUrl": "/assets/149059.svg",
                     "iconSize": [20, 20]
@@ -176,7 +172,7 @@ def register_map(app):
                   [Input(MAP_ID, 'click_lat_lng')])
 
     def get_point_info(lat_lng):
-        ''' callback to update the site information '''
+        ''' callback to update the site information based on the user selected point'''
         if lat_lng is None:
             return('Click on the Map to see site details.')
         else:
@@ -189,6 +185,7 @@ def register_map(app):
         prevent_initial_call=True
     )
     def enableButton(site,site_properties):
+        ''' output to enable next button after a site has been selected '''
         if site == 'Click on the Map to see site details.':
             raise PreventUpdate
         else:
@@ -212,6 +209,7 @@ def register_map(app):
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
     )
     def info_hover(feature):
+        ''' callback for feature hover '''
         if feature:
             print(len(feature))
             return get_info(feature)
