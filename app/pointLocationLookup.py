@@ -5,6 +5,7 @@ import pickle
 import sys
 import fiona
 import numpy as np
+import helpers
 
 from pathlib import Path
 from scipy.spatial import KDTree
@@ -84,8 +85,11 @@ def lookupLocation(pt, mapTheme='default'):
         elif 'poly' in value.keys():
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
 
-    return(_generateMarkdown(mapTheme,closestFeatures))
-    #return(str(closestFeatures))
+    # update the map data JSON file
+    _updateMapJson(closestFeatures)
+    # return the markdown
+    #return(_generateMarkdown(mapTheme,closestFeatures))
+    return(str(closestFeatures))
 
 
 
@@ -210,7 +214,7 @@ def _generateMarkdown(theme, atts):
     mdown += f"#### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
-    mdown += f"Capacity: {desal.get('Capacity__')}\n\n"
+    mdown += f"Capacity: {desal.get('Capacity__'):,.1f} m3/day\n\n"
     mdown += f"Technology: {desal.get('Technology')}\n\n"
     mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
@@ -218,15 +222,44 @@ def _generateMarkdown(theme, atts):
     power = atts['powerPlants']['properties']
     mdown += f"#### Closest power plant: {power.get('Plant_name')}\n\n"
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
-    mdown += f"Production: {power.get('Plant_tota')}\n\n"
-    mdown += f"Annual production: {power.get('Plant_annu')}\n\n"
+    mdown += f"Production: {power.get('Plant_tota'):,.1f}\n\n"
+    mdown += f"Annual production: {power.get('Plant_annu'):,.1f} \n\n"
+    mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re')} MJ (91 C < T < 128 C)\n\n"
+    mdown += f"Condenser Heat: {power.get('Total_Pote')} MJ (29 C < T < 41 C)\n\n"
 
     water = atts['waterPrice']['properties']
     mdown += f"#### Water Prices"
-
+    mdown += f"Residential price: ${waterPrice.get('Water_Bill'):,.2f}\n\n"
+    mdown += f"Residential provider: {waterPrice.get('Utility_na')}\n\n"
 
     return mdown
 
+def _updateMapJson(atts):
+    '''Write out data to map JSON file '''
+    mParams = dict()
+    # update dictionary
+    wx = atts['weatherFile']['properties']
+    mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
+    mParams['county'] = atts.get('County')
+    mParams['state'] = wx.get('State')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
+    # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
+
+    #mParams['latitude'] = atts['geometry'].get('coordinates')[1]
+    #mParams['longitude'] = atts['geometry'].get('coordinates')[0]
+    # mParams['dni'] = dfAtts.ANN_DNI.values[0]
+    # mParams['ghi'] = dfAtts.GHI.values[0]
+    # mParams['dist_desal_plant'] = dfAtts.DesalDist.values[0] / 1000
+    # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
+    # mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
+
+    # dump to config file
+        # update json file
+    print('Writing out JSON...')
+    try:
+        helpers.json_update(data=mParams, filename=cfg.map_json)
+    except FileNotFoundError:
+        helpers.initialize_json(data=mParams, filename=cfg.map_json)
 
 if __name__ == '__main__':
     ''' main method for testing/development '''
