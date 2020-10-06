@@ -3,5 +3,8 @@
 	"T_s" : 64.5,
 	"T_f" : 35,
 	"Capacity": 9000,
-	"Fossil_f": 1
+	"FeedC_r": 40,
+	"X_b": 70,
+	"Fossil_f": 0,
+	"storage_hour": 0
 }

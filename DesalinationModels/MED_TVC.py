@@ -4,31 +4,36 @@
 # In[1]:
 
 
-from datascience import*
+# from datascience import*
 from iapws import IAPWS95
 import numpy as np
 import math
 import warnings
 from iapws import SeaWater
-
+import DesalinationModels.IAPWS97_thermo_functions as TD_func
 
 class MED_TVC(object):
     def __init__(self,
              # Design parameters
              N     = 12,      # Number of effect
              T_VN  = 37,      # Vapor temperature in the last cell (C)
+             X_f = 40,  # Feed salinity (g/L)
+             X_b = 70,  # Brine salinity (g/L)
              T_s   = 64.5,    # Saturated external steam temperature (C)
              T_f   = 35,      # Feed seawater temperature (C)
 
-             Capacity = 9000, # System Capcity (m3/day)
-             Fossil_f = 1 # Fossil fuel fraction
+             Capacity = 10000, # System Capcity (m3/day)
+             Fossil_f = 0# Fossil fuel fraction
+ 
              ):
         self.N = N
         self.T_VN = T_VN
         self.T_s = T_s
         self.q_D_m3d = Capacity
         self.T_f = T_f
-    
+        self.X_f = X_f * 1000
+        self.X_b = X_b * 1000
+        self.Fossil_f = Fossil_f
 ## input to test the model and the real data from the plant; not all inputs are used, some are copy and paste from EES model.
 ## Take Table 1 and table 2 in the paper as reference for the base model.
 #N=12
@@ -90,8 +95,8 @@ class MED_TVC(object):
         delta_w=0.28         #[mm]     {Grid holes diameter}
         D_evap_int=0.018   #[m]      {Internal diameter of evaporator tubes}
         L_evap=7             #[m]    {Length of evaporator tubes}
-        X_f=40000            #[ppm]    {Salinity of seawater feed}
-        X_b=70000            #[ppm]    {Salinity of brine output}
+        X_f=self.X_f            #[ppm]    {Salinity of seawater feed}
+        X_b=self.X_b            #[ppm]    {Salinity of brine output}
         p_m=4414500         #[MPa]     {Steam pressure}
         
         q_in=5               #[kg/s]   {Seawater inlet flow}
@@ -886,23 +891,79 @@ class MED_TVC(object):
 # ## Number of tubes of evaporator
         N_evap = A/(math.pi*D_evap_int*L_evap) # number of tubes
 #print('number of tubes',N_evap)
-
-        design_output = []
-        design_output.append({'Name':'Vapor temperature in the 1st effect','Value':T[0],'Unit':'C'})
-        design_output.append({'Name':'Vapor temperature in the 5th effect','Value':T[4],'Unit':'C'})
-        design_output.append({'Name':'Vapor temperature in the 11th effect','Value':T[10],'Unit':'C'})
-        design_output.append({'Name':'Feed water flow rate','Value':q_F_Th,'Unit':'m3/h'})    
-        design_output.append({'Name':'Brine Blowdown mass flow rate','Value':q_B_Th,'Unit':'m3/h'})
-        design_output.append({'Name':'Brine blowdown salinity','Value':X[11],'Unit':'g/L'})
-        design_output.append({'Name':'Intake sea water mass flow rate','Value':q_intake_Th,'Unit':'m3/h'})
+        self.STEC = 1/GOR * (TD_func.enthalpySatVapTW(self.T_s+273.15)-TD_func.enthalpySatLiqTW(self.T_s+273.15))[0] *1000/3600
+        self.P_req =  self.STEC * self.q_D_m3d / 24      
         
-        design_output.append({'Name':'Cooling mass flow rate','Value':q_cw_Th,'Unit':'m3/h'})    
-        design_output.append({'Name':'Motive steam flow rate','Value':q_m_Th,'Unit':'m3/h'})
-        design_output.append({'Name':'GOR','Value':GOR,'Unit':''})
-        design_output.append({'Name':'Number of tubes in evaporators','Value':N_evap,'Unit':''})
-             
-        return design_output
+        
+        self.design_output = []
+        self.design_output.append({'Name':'Vapor temperature in the 1st effect','Value':T[0],'Unit':'C'})
+        self.design_output.append({'Name':'Vapor temperature in the 5th effect','Value':T[4],'Unit':'C'})
+        self.design_output.append({'Name':'Vapor temperature in the 11th effect','Value':T[10],'Unit':'C'})
+        self.design_output.append({'Name':'Feed water flow rate','Value':q_F_Th,'Unit':'m3/h'})    
+        self.design_output.append({'Name':'Brine Blowdown mass flow rate','Value':q_B_Th,'Unit':'m3/h'})
+        self.design_output.append({'Name':'Brine blowdown salinity','Value':X[11],'Unit':'g/L'})
+        self.design_output.append({'Name':'Intake sea water mass flow rate','Value':q_intake_Th,'Unit':'m3/h'})
+        self.design_output.append({'Name':'Heat transfer area of evaporator','Value':A,'Unit':'m2'})
+
+        self.design_output.append({'Name':'Cooling mass flow rate','Value':q_cw_Th,'Unit':'m3/h'})    
+        self.design_output.append({'Name':'Motive steam flow rate','Value':q_m_Th,'Unit':'m3/h'})
+        self.design_output.append({'Name':'Gained output ratio','Value':GOR,'Unit':''})
+
+        
+        self.design_output.append({'Name':'Number of tubes in evaporators','Value':N_evap,'Unit':''})
+        
+        self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        
+        
+        return self.design_output
 # ## TRAPANI ERROR VALIDATION 
+
+    def simulation(self, gen, storage):
+        self.thermal_load = self.P_req # kW
+        self.max_prod = self.q_D_m3d /24 # m3/h
+        self.storage_cap = storage * self.thermal_load # kWh
+        
+        to_desal = [0 for i in range(len(gen))]
+        to_storage =  [0 for i in range(len(gen))]
+        storage_load =  [0 for i in range(len(gen))]
+        storage_cap_1 =  [0 for i in range(len(gen))]
+        storage_cap_2 = [0 for i in range(len(gen))]
+        storage_status =  [0 for i in range(len(gen))]
+        solar_loss =  [0 for i in range(len(gen))]
+        load =  [0 for i in range(len(gen))]
+        prod =  [0 for i in range(len(gen))]
+        fuel =  [0 for i in range(len(gen))]   
+        energy_consumption =  [0 for i in range(len(gen))] 
+        for i in range(len(gen)):
+            to_desal[i] = min(self.thermal_load, gen[i])
+            to_storage[i] = abs(gen[i] - to_desal[i])
+            storage_load[i] = gen[i] - self.thermal_load
+            if i != 0:
+                storage_cap_1[i] = storage_status[i-1]
+            storage_cap_2[i] = max(storage_load[i] + storage_cap_1[i], 0)
+            storage_status[i] = min(storage_cap_2[i] , self.storage_cap)
+            solar_loss[i] = abs(storage_status[i] - storage_cap_2[i])
+            load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
+            if load[i] / self.thermal_load < self.Fossil_f:
+                fuel[i] = self.thermal_load - load[i]
+            energy_consumption[i] = fuel[i]+load[i]     
+            prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
+        Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
+        Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
+               
+        simu_output = []
+        simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
+        simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
+        simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
+        simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
+        simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Solar energy curtailment','Value':solar_loss,'Unit':'kWh'})
+               
+        return simu_output
 
 # In[52]:
 
@@ -930,5 +991,6 @@ class MED_TVC(object):
 #E_Nt = 100*(N_evap-11000)/11000
 #print('Number of tubes in evaporators',E_Nt)
 
-case = MED_TVC()
-case.design()
+# case = MED_TVC(Capacity = 10000)
+# case.design()
+# print(case.design_output)

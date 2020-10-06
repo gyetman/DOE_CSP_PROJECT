@@ -19,7 +19,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",
-            "Label": "Thermal storage hour",
+            "Label": "Thermal storage hours",
             "Units": "hour",
             "Require": "*",
             "Costraint": ">0"

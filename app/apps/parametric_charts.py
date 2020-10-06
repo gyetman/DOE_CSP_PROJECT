@@ -39,6 +39,12 @@ desal_outputs = {
         'Levelized cost of water':'parametric_desal_finance_outfile',
         'Total fossil fuel usage':'parametric_desal_simulation_outfile',
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'},
+        'MEDTVC':{
+        'Total water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
         'Specific thermal power consumption': 'parametric_desal_design_outfile'}
         }
     

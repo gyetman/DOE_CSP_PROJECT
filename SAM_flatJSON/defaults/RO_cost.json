@@ -13,5 +13,6 @@
 	"equip_cost_method": "general",
 	"unit_capex": 1100,
 	"sec": 2.5,
-	"disposal_cost": 0.03
+	"disposal_cost": 0.03,
+	"cost_storage": 26
 }

@@ -41,7 +41,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",
-            "Label": "Battery storage hour",
+            "Label": "Battery storage hours",
             "Units": "hour",
             "Require": "*",
             "Costraint": ">0"

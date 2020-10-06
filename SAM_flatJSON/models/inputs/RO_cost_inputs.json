@@ -32,7 +32,7 @@
             "Require": "",
 			"Tab": "Desalination"
         },
-        {
+		{
             "DataType": "SSC_NUMBER",
             "Name": "Nel",
             "Label": "Number of elements per vessel",
@@ -45,22 +45,6 @@
             "Name": "Area",
             "Label": "Membrane area",
             "Units": "m2",
-            "Require": "",
-			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "membrane_cost",
-            "Label": "Cost per unit area of membrane",
-            "Units": "$/m2",
-            "Require": "",
-			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "pressure_vessel_cost",
-            "Label": "Cost per pressure vessel",
-            "Units": "$/vessel",
             "Require": "",
 			"Tab": "Desalination"
         },
@@ -87,20 +71,20 @@
             "Units": "",
             "Require": "",
 			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_STRING",
-            "Name": "equip_cost_method",
-            "Label": "Option 1:'general' capex breakdown by cost factor; Option 2: 'specify' equipment costs",
-            "Units": "",
-            "Require": "",
-			"Tab": "Desalination"
-        },
+        },	
         {
             "DataType": "SSC_NUMBER",
             "Name": "unit_capex",
             "Label": "Total EPC cost",
             "Units": "$/(m3/day)",
+            "Require": "*",
+			"Tab": "Desalination"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_storage",
+            "Label": "Battery cost",
+            "Units": "$/kWh",
             "Require": "*",
 			"Tab": "Desalination"
         },		
