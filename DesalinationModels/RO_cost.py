@@ -52,7 +52,10 @@ class RO_cost(object):
                  #solar_outlet = 95, # Solar field outlet temperature
                  #HX_eff = 0.85, # Heat exchanger efficiency
                  #cost_module_re = 0.220 , # Cost of module replacement ($/m3)
-                 unit_capex=1100  # total EPC cost, USD/(m3/day)
+                 unit_capex=1100,  # total EPC cost, USD/(m3/day)
+                 cost_storage = 26 , # Cost of battery ($/kWh)
+                 storage_cap = 0 # Capacity of battery (kWh)
+
                  ):
         self.HP_pump_pressure=HP_pump_pressure
         self.HP_pump_flowrate=HP_pump_flowrate
@@ -89,7 +92,9 @@ class RO_cost(object):
 #        self.cost_module_re = cost_module_re
         self.yrs = yrs
         self.int_rate = int_rate
-        
+        self.cost_storage = cost_storage
+        self.storage_cap = storage_cap
+                
     def lcow(self):
         if self.equip_cost_method=='specify':
             self.total_module_cost = self.total_area*self.membrane_cost + self.NV*self.pressure_vessel_cost
@@ -104,8 +109,8 @@ class RO_cost(object):
             self.unit_capex=self.total_module_cost/self.capacity  
 #        elif self.equip_cost_method=='general':
         else:    
-            self.unit_capex=1100  # total EPC cost, USD/(m3/day)
-            self.CAPEX =self.unit_capex*self.capacity*CR_factor(self.yrs,self.int_rate) / self.ann_prod
+
+            self.CAPEX =(self.unit_capex*self.capacity +  self.cost_storage * self.storage_cap)*CR_factor(self.yrs,self.int_rate) / self.ann_prod
 #           self.equip_cost=
 #        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
 #        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)

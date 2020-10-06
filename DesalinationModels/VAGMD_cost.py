@@ -32,7 +32,7 @@ class VAGMD_cost(object):
                  solar_outlet = 95, # Solar field outlet temperature
                  HX_eff = 0.85, # Heat exchanger efficiency
                  cost_module_re = 0.220 , # Cost of module replacement ($/m3)
-                 
+
                  MD_membrane = 0.075*1.11, # Base price of AGMD membrane (k$/m2)
                  HX = 0.35 * 1.11, # Base price of heat exchanger (k$/m2)
                  
@@ -52,14 +52,16 @@ class VAGMD_cost(object):
                  pump_capacity = 5, # Base capacity of pump (m3/h)
                  other = 15* 1.11,  # Base price of controller, cabling and programming (k$/base capacity)
                  other_capacity = 3, # Base capacity of controller, cabling and programming (modules)
-     
+                 cost_storage = 26 , # Cost of thermal storage ($/kWh)
+                 storage_cap = 13422 # Capacity of thermal storage (kWh)     
                  
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         self.Pflux = Pflux
         self.Area = Area
-        
+        self.cost_storage = cost_storage
+        self.storage_cap = storage_cap
         self.fuel_usage = fuel_usage/100
         self.PF_module = self.Pflux * self.Area
         self.num_modules = math.ceil(Capacity *1000 / self.PF_module / self.operation_hour) # Number of module required
@@ -110,7 +112,7 @@ class VAGMD_cost(object):
         self.HX_cost = 2 * ( self.endplates * (self.HX_area/self.endplates_capacity)**0.6 + self.HX * self.HX_area) 
         self.Feed = self.FFR * self.num_modules / 1000
         self.other_cap = (self.h_r * (self.num_modules/self.h_r_capacity)**0.6 + self.tank * (self.num_modules/self.tank_capacity)**0.5 + self.pump*(self.Feed/self.pump_capacity)**0.6 + self.other *(self.num_modules/self.other_capacity)**0.3 + 0.25*5 + 2*self.heat_cool*(self.Feed/self.heat_cool_capacity)**0.6) 
-        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
+        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap)
         
         self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
         

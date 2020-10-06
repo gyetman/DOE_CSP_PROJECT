@@ -32,7 +32,7 @@ class LTMED_cost(object):
                  coh = 0.01 , # Unit cost of heat ($/kWh)
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
-                 storage_cap = 13422 # Capacity of thermal storage (kWh)
+                 storage_cap = 0 # Capacity of thermal storage (kWh)
 
                  ):
         
@@ -81,5 +81,5 @@ class LTMED_cost(object):
         return cost_output
 #%%
 
-case = LTMED_cost(Capacity = 1000,Prod = 328500,HEX_area = 400)
-print(case.lcow())
+# case = LTMED_cost(Capacity = 1000,Prod = 328500,HEX_area = 400)
+# print(case.lcow())

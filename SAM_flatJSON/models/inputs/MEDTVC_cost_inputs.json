@@ -27,7 +27,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "coe",
-            "Label": "Unit cost of electricity",
+            "Label": "Unit cost of electricity (LCOE)",
             "Units": "$/kWh",
             "Require": "",
 			"Tab": "Desalination"
@@ -35,10 +35,19 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "coh",
-            "Label": "Unit cost of heat",
+            "Label": "Unit cost of heat from fossil fuel (LCOH)",
             "Units": "$/kWh",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sam_coh",
+            "Label": "Unit cost of heat from solar field (LCOH)",
+            "Units": "$/kWh(th)",
+            "Require": "*",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
         {
@@ -47,7 +56,7 @@
             "Label": "Cost of thermal storage",
             "Units": "$/kWh",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -56,7 +65,7 @@
             "Label": "Specific electric energy consumption",
             "Units": "kWh/m3",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -65,7 +74,7 @@
             "Label": "Chemical unit cost",
             "Units": "$/kWh",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -74,7 +83,7 @@
             "Label": "Labor unit cost",
             "Units": "$/m3",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -83,7 +92,7 @@
             "Label": "Water discharge/disposal cost",
             "Units": "$/m3",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -92,7 +101,7 @@
             "Label": "Maintenance cost (percentage to the capital cost)",
             "Units": "%",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         },
 		{
@@ -101,7 +110,7 @@
             "Label": "Miscellaneous cost ",
             "Units": "$/m3",
             "Require": "*",
-            "Costraint": "",
+            "Constraint": "",
 			"Tab": "Desalination"
         }
     ]

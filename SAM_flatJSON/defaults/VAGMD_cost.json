@@ -9,6 +9,7 @@
 	"HX_eff": 0.85,
 	"SEEC": 1.25,
 	"cost_module_re": 0.220,
+	"cost_storage": 26,
 	"MD_membrane": 0.083,
 	"HX": 0.39,
 	"MD_module": 2.16,

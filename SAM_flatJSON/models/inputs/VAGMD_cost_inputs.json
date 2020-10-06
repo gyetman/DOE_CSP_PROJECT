@@ -86,6 +86,15 @@
             "Costraint": "",
 			"Tab": "Desalination"
         },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_storage",
+            "Label": "Cost of thermal storage",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination"
+        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "MD_membrane",
