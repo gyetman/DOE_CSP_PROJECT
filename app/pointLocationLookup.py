@@ -17,6 +17,7 @@ from rtree import index
 #kdtree.leafnode = kdtree.KDTree.leafnode
 #kdtree.innernode = kdtree.KDTree.innernode
 
+
 ''' Module to lookup features based on a point location. Uses rtrees if they exist. '''
 
 ''' GLOBALS '''
@@ -25,6 +26,7 @@ from rtree import index
 # layer dictionaries. defaultLayers is always queried for model parameters. Other layers are added
 # to the defaultLayers in the method call. 
 # TODO: need to move to JSON files
+# TODO: calculate distances to water plants, desal & power plant
 
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'county.shp'},
@@ -88,8 +90,8 @@ def lookupLocation(pt, mapTheme='default'):
     # update the map data JSON file
     _updateMapJson(closestFeatures)
     # return the markdown
-    #return(_generateMarkdown(mapTheme,closestFeatures))
-    return(str(closestFeatures))
+    return(_generateMarkdown(mapTheme,closestFeatures))
+    #return(str(closestFeatures))
 
 
 
@@ -209,12 +211,16 @@ def _paramHelper(dfAtts,pt):
 
 def _generateMarkdown(theme, atts):
     ''' generate the markdown to be returned for the current theme '''
+    # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"### Site properties near {atts['dni']['properties'].get('City')}, {atts['dni']['properties'].get('State')}\n"
+    mdown = f"### Site properties near {atts['dni']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['dni']['properties'].get('State')}\n"
     mdown += f"#### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
-    mdown += f"Capacity: {desal.get('Capacity__'):,.1f} m3/day\n\n"
+    try:
+        mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day\n\n"
+    except:
+        mdown += f"Capacity: -\n\n"
     mdown += f"Technology: {desal.get('Technology')}\n\n"
     mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
@@ -222,15 +228,29 @@ def _generateMarkdown(theme, atts):
     power = atts['powerPlants']['properties']
     mdown += f"#### Closest power plant: {power.get('Plant_name')}\n\n"
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
-    mdown += f"Production: {power.get('Plant_tota'):,.1f}\n\n"
-    mdown += f"Annual production: {power.get('Plant_annu'):,.1f} \n\n"
-    mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re')} MJ (91 C < T < 128 C)\n\n"
-    mdown += f"Condenser Heat: {power.get('Total_Pote')} MJ (29 C < T < 41 C)\n\n"
+    try:
+        mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh\n\n"
+    except:
+        mdown += f"Production: -\n\n"
+
+    mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ\n\n"
+    try:
+        mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)\n\n"
+    except:
+        mdown += f"Exhaust Residual Heat: -\n\n"
+    try:
+        mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)\n\n"
+    except:
+        mdown += f"Condenser Heat: -\n\n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"#### Water Prices"
-    mdown += f"Residential price: ${waterPrice.get('Water_Bill'):,.2f}\n\n"
-    mdown += f"Residential provider: {waterPrice.get('Utility_na')}\n\n"
+    mdown += f"#### Water Prices\n\n"
+    try:
+        mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
+    except:
+        mdown += f"Residential price: -\n\n"
+    mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
+    # add legal info
 
     return mdown
 
