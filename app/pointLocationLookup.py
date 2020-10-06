@@ -58,35 +58,35 @@ def lookupLocation(pt, mapTheme='default'):
     model. 
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [mapTheme]: name of map theme. '''
-    _setup_logging(verbose=True)
+    _setup_logging(verbose=False)
 
     # check that coord is lat/long 
     logging.debug('Checking point coords...')
-    if not -180 < float(pt[0]) < 180:
-        logging.error('longitude out of bounds, check point location')
-        return None
-    if not -90 < float(pt[1]) < 90:
+    if not -90 < float(pt[0]) < 90:
         logging.error('latitude out of bounds, check point location')
         return None
+    if not -180 < float(pt[1]) < 180:
+        logging.error('longitude out of bounds, check point location')
+        return None
+
+    logging.info(f'Clicked point: {pt}')
 
     # get layer dictionary based on theme name
     themeLyrs = _getThemeLayers(mapTheme)
-    logging.info(f'finding locations of {len(themeLyrs)} layers.')
+    logging.debug(f'finding locations of {len(themeLyrs)} layers.')
 
     # parse the dictionary, getting intersecting / closest features for each
     closestFeatures = dict()
-    logging.info('Performing intersections')
+    logging.debug('Performing intersections')
     for key, value in themeLyrs.items():
         if 'point' in value.keys():
             closestFeatures[key] = _findClosestPoint(pt,value['point'])
         elif 'poly' in value.keys():
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
 
-    print(closestFeatures.keys())
-    print(closestFeatures['county']['properties'])
-    #print(closestFeatures['county']['properties']['filename'])
+    return(_generateMarkdown(mapTheme,closestFeatures))
 
-    # update the output parameters
+
 
 
 def _getThemeLayers(mapTheme):
@@ -117,16 +117,16 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
     # make the point a geometry
-    queryPoint = (pt[0], pt[1],pt[0]+.1,pt[1]+.1)
+    queryPoint = (pt[1], pt[0],pt[1]+.01,pt[0]+.01)
     # open each layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
     if rtreeFile.exists:
-        logging.info('Using pre-built rtree index')
+        logging.debug('Using pre-built rtree index')
         idx = index.Index(str(rtreeFile.absolute()))
         possibleMatches = [x for x in idx.intersection(queryPoint)]
     else:
-        logging.info('No index found, using slow method')
+        logging.debug('No index found, using slow method')
         # TODO: open & find with slow method
     
     print(len(possibleMatches))
@@ -143,23 +143,23 @@ def _findIntersectFeatures(pt,intersectLyr):
         return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
 
         
-def _findClosestPoint(pt,lyr,maxDist=150):
+def _findClosestPoint(pt,lyr,maxDist=10):
     ''' find the closest point or line to the supplied point
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [closestLayers]: list of point or line layers
     ''' 
     # TODO: update max dist, I believe it's in DD, not meters or km
-    queryPoint = np.asarray(pt)
+    queryPoint = np.asarray([pt[1],pt[0]]) # is this backwards? 
     # open each layer and find the matches
     logging.info(f'Finding closes point for {lyr}...')
     # check for kdtree
     kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
     if kdFile.exists:
-        logging.info('using pre-built index')
+        logging.debug('using pre-built index')
         with open(kdFile,'rb') as f:
             idx = pickle.load(f)
             closestPt = idx.query(queryPoint)
-            logging.info(closestPt)
+            logging.debug(closestPt)
 
     else:
         with fiona.open(lyr) as source:
@@ -205,6 +205,24 @@ def _paramHelper(dfAtts,pt):
 
 def _generateMarkdown(theme, atts):
     ''' generate the markdown to be returned for the current theme '''
+    # handle the standard theme layers (all cases)
+    mdown = f"### Site properties near {atts['dni']['properties'].get('City')}, {atts['dni']['properties'].get('State')}\n"
+    mdown += f"#### Closest desalination plant: {atts['desalPlants']['properties'].get('Project_Na')}\n"
+    
+    desal = atts['desalPlants']['properties']
+    mdown += f"Capacity: {desal.get('Capacity__')}\n\n"
+    mdown += f"Technology: {desal.get('Technology')}\n\n"
+    mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
+    mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
+    
+    power = atts['powerPlants']['properties']
+    mdown += f"#### Closest power plant: {power.get('Plant_name')}\n\n"
+    mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
+    mdown += f"Production: {power.get('Plant_tota')}\n\n"
+    mdown += f"Annual production: {power.get('Plant_annu')}\n\n"
+
+
+    return mdown
 
 
 if __name__ == '__main__':
@@ -213,5 +231,5 @@ if __name__ == '__main__':
     logging.info('starting test...')
     #ptCoords = (-73.988033,41.035572) # matches two counties
     #ptCoords = (-119.0, 26.0) # doesn't match any counties
-    ptCoords = (-115.0, 34.0) # matches one county
+    ptCoords = (34.0, -115.0) # matches one county
     lookupLocation(ptCoords)
