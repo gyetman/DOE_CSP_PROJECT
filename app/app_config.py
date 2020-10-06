@@ -17,6 +17,7 @@ parametric_results_dir = base_path / 'SAM_flatJSON' / 'parametric_results'
 parametric_info = parametric_results_dir / 'Parametric_Info.json'
 #NOTE does not include timestamp + '.json'
 parametric_solar_simulation_outfile = parametric_results_dir / 'Solar_output'
+weather_path = base_path / 'SAM_flatJSON' / 'solar_resource'
 
 def build_file_lookup(solar,desal,finance):
     '''
