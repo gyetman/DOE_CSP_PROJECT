@@ -8,7 +8,7 @@ import pandas as pd
 import helpers
 import pointLocationLookup
 
-from dash.dependencies import Output, Input, State
+from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
 from dash_leaflet import express as dlx 
 import dash_leaflet as dl
@@ -55,15 +55,18 @@ def get_d_style(feature):
 
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
-    if not feature:
+    if feature:
+        return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
+            f"{float(feature[0]['properties']['capacity_mw']):.3f} capacity MW"]
+    else:
         return header + ["Hover over a feature"]
-    return header + [html.B(feature["properties"]["name"]), html.Br(),
-                     f"{float(feature['properties']['capacity_mw']):.3f} capacity MW"]
+
 
 # load power plants JSON
 power_plants = dl.GeoJSON(
     url='/assets/power_plants.geojson',
-    id='geojson_power',
+    #id='geojson_power',
+    id = {'type':'json_theme','index':'geojson_power'},
     cluster=True,
     zoomToBoundsOnClick=True,
     superClusterOptions={"radius": 75},
@@ -140,7 +143,7 @@ def render_map():
 
 
 theme_ids = {
-    'canals': html.Div([canals]),
+    'canals': html.Div([canals, info]),
     'pplants': html.Div([power_plants, info]),
     'regulatory': regulatory
 }
@@ -203,13 +206,18 @@ def register_map(app):
                 ) 
             )
 
+        # [Input("geojson_power", "hover_feature")],
+        # [State("theme-dropdown",'value')]
     @app.callback(Output('info', 'children'),
-        [Input("geojson_power", "hover_feature")],
-        [State("theme-dropdown",'value')]
+        [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
     )
-    def info_hover(feature,theme):
-        print(theme)
-        return get_info(feature)
+    def info_hover(feature):
+        if feature:
+            print(len(feature))
+            return get_info(feature)
+        else:
+            header = [html.H4("Feature Details")]
+            return header + ["Hover over a feature"]
 
     # @app.callback(Output('info', 'children'),[Input("info", "featureHover")])
     # def info_hover(feature):
