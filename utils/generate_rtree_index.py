@@ -15,6 +15,9 @@ from rtree import index
 # TODO: 
 # Check if multiple runs append or recreate the index files
 # update to create new if they are appending. 
+# Update output to write to same folder as input file! Currently,
+# indexes are output to the calling folder (script) and need to be
+# moved/copied. 
 
 def _setup_logging(verbose=False):
     if verbose:
