@@ -30,7 +30,7 @@ from haversine import haversine, Unit
 # TODO: calculate distances to water plants, desal & power plant
 
 defaultLayers = {
-    'county':{'poly':cfg.gis_query_path / 'county.shp'},
+    'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
     'dni':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
@@ -73,7 +73,7 @@ def lookupLocation(pt, mapTheme='default'):
         logging.error('longitude out of bounds, check point location')
         return None
 
-    logging.info(f'Clicked point: {pt}')
+    logging.debug(f'Clicked point: {pt}')
 
     # get layer dictionary based on theme name
     themeLyrs = _getThemeLayers(mapTheme)
@@ -91,8 +91,8 @@ def lookupLocation(pt, mapTheme='default'):
     # update the map data JSON file
     _updateMapJson(closestFeatures)
     # return the markdown
-    return(_generateMarkdown(mapTheme,closestFeatures))
-    #return(str(closestFeatures))
+    #return(_generateMarkdown(mapTheme,closestFeatures))
+    return(str(closestFeatures))
 
 def getClosestPlants(pnt):
     ''' Get the closest desal and power plant locations '''
@@ -137,30 +137,36 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
-    # make the point a geometry
-    queryPoint = (pt[1], pt[0],pt[1]+.01,pt[0]+.01)
-    # open each layer and find the matches
+    # make the point a poly geometry
+    queryPoly = Point(pt).buffer(0.01)
+    bounds = list(queryPoly.bounds)
+    # rtree uses a different order: left, bottom, right, top
+    bounds = (bounds[1],bounds[0],bounds[3],bounds[2])
+    # open the layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
     if rtreeFile.exists:
-        logging.debug('Using pre-built rtree index')
+        logging.info('Using pre-built rtree index')
         idx = index.Index(str(rtreeFile.absolute()))
-        possibleMatches = [x for x in idx.intersection(queryPoint)]
+        print(idx.get_bounds())
+        possibleMatches = [x for x in idx.intersection(bounds)]
     else:
-        logging.debug('No index found, using slow method')
+        logging.info('No index found, using slow method!!!')
         # TODO: open & find with slow method
     
     if len(possibleMatches) == 0:
         return None
     elif len(possibleMatches) > 1:
-        # single match 
+        # for now, grabbing first county 
         with fiona.open(intersectLyr) as source:
             features = list(source)
             return features[possibleMatches[0]]
     else:
         # call the method to do polygon intersection to 
         # get the exact match from the list of possibles
-        return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
+        # currently not being used...
+        #return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
+        return None
 
         
 def _findClosestPoint(pt,lyr,maxDist=10):
@@ -301,7 +307,8 @@ if __name__ == '__main__':
     logging.info('starting test...')
     #ptCoords = (-73.988033,41.035572) # matches two counties
     #ptCoords = (-119.0, 26.0) # doesn't match any counties
-    ptCoords = (34.0, -115.0) # matches one county
+    #ptCoords = (34.0, -115.0) # matches one county
+    ptCoords = (37.0,-110.0)
     lookupLocation(ptCoords)
-    print(getClosestPlants(ptCoords))
-    print(_calcDistance([0,0],[1,1]))
+    #print(getClosestPlants(ptCoords))
+    #print(_calcDistance([0,0],[1,1]))
