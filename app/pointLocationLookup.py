@@ -93,6 +93,16 @@ def lookupLocation(pt, mapTheme='default'):
     return(_generateMarkdown(mapTheme,closestFeatures))
     #return(str(closestFeatures))
 
+def getClosestPlants(pnt):
+    ''' Get the closest desal and power plant locations '''
+    logging.info('Getting plant info...')
+    desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
+    plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
+    return {
+        'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
+        'plant':[plant['geometry']['coordinates'][1],
+        plant['geometry']['coordinates'][0]]
+    }
 
 
 def _getThemeLayers(mapTheme):
@@ -135,7 +145,6 @@ def _findIntersectFeatures(pt,intersectLyr):
         logging.debug('No index found, using slow method')
         # TODO: open & find with slow method
     
-    print(len(possibleMatches))
     if len(possibleMatches) == 0:
         return None
     elif len(possibleMatches) > 1:
@@ -275,7 +284,6 @@ def _updateMapJson(atts):
 
     # dump to config file
         # update json file
-    print('Writing out JSON...')
     try:
         helpers.json_update(data=mParams, filename=cfg.map_json)
     except FileNotFoundError:
@@ -289,3 +297,4 @@ if __name__ == '__main__':
     #ptCoords = (-119.0, 26.0) # doesn't match any counties
     ptCoords = (34.0, -115.0) # matches one county
     lookupLocation(ptCoords)
+    print(getClosestPlants(ptCoords))
