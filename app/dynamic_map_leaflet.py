@@ -10,8 +10,6 @@ import pointLocationLookup
 
 from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
-from dash_leaflet import express as dlx 
-import dash_leaflet as dl
 from pathlib import Path
 
 gis_data = app_config.gis_data_path
@@ -98,7 +96,8 @@ def render_map():
             children=[
                 dl.TileLayer(id=BASE_LAYER_ID),
                 dl.ScaleControl(metric=True, imperial=True),
-
+                # placeholder for lines to nearby plants
+                dl.LayerGroup(id="closest-facilities"),
                 # Placeholder for user-selected site. 
                 dl.Marker(id=USER_POINT,position=[0, 0], icon={
                     "iconUrl": "/assets/149059.svg",
@@ -168,15 +167,21 @@ def register_map(app):
         else:
             return coords
 
-    @app.callback(Output(SITE_DETAILS, 'children'),
+    @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
                   [Input(MAP_ID, 'click_lat_lng')])
 
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
         if lat_lng is None:
+            print('no coords')
             return('Click on the Map to see site details.')
         else:
-            return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+            markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+            #positions = 
+            desal = dl.Polyline(positions=[lat_lng,[45,-90]], color='#FF0000')
+            plant = dl.Polyline(positions=[lat_lng,[45,-95]],color='#ffa500')
+            return markdown, [desal,plant]
+            #return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             
     @app.callback(
         Output(component_id='next-button',component_property='children'),
