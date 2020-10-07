@@ -135,3 +135,8 @@ app/.DS_Store
 .DS_Store
 app/logs/applog.log
 app/logs/applog.log
+GISQueryData/us_county.dbf
+GISQueryData/us_county.prj
+GISQueryData/us_county.qpj
+GISQueryData/us_county.shp
+GISQueryData/us_county.shx
