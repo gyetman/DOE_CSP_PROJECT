@@ -11,6 +11,7 @@ from pathlib import Path
 from scipy.spatial import KDTree
 from shapely.geometry import Point, Polygon, shape
 from rtree import index
+from haversine import haversine, Unit
 
 # patch module-level attribute to enable pickle to work
 #kdtree.node = kdtree.KDTree.node
@@ -104,6 +105,10 @@ def getClosestPlants(pnt):
         plant['geometry']['coordinates'][0]]
     }
 
+def _calcDistance(start_pnt, end_pnt):
+    ''' get the great circle distance from two lat/long coordinate pairs
+    using the Haversine method (approximation)'''
+    return(haversine(start_pnt,end_pnt,unit=Unit.KILOMETERS))
 
 def _getThemeLayers(mapTheme):
     ''' return the list of layers to search based on the map theme '''
@@ -278,9 +283,10 @@ def _updateMapJson(atts):
     #mParams['longitude'] = atts['geometry'].get('coordinates')[0]
     # mParams['dni'] = dfAtts.ANN_DNI.values[0]
     # mParams['ghi'] = dfAtts.GHI.values[0]
-    # mParams['dist_desal_plant'] = dfAtts.DesalDist.values[0] / 1000
+    mParams['dist_desal_plant'] = 0.0
+    mParams['dist_power_plant'] = 0.0
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
-    # mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
+
 
     # dump to config file
         # update json file
@@ -298,3 +304,4 @@ if __name__ == '__main__':
     ptCoords = (34.0, -115.0) # matches one county
     lookupLocation(ptCoords)
     print(getClosestPlants(ptCoords))
+    print(_calcDistance([0,0],[1,1]))
