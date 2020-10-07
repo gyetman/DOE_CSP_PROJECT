@@ -173,13 +173,13 @@ def register_map(app):
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
         if lat_lng is None:
-            print('no coords')
             return('Click on the Map to see site details.')
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+            closest = pointLocationLookup.getClosestPlants(lat_lng)
             #positions = 
-            desal = dl.Polyline(positions=[lat_lng,[45,-90]], color='#FF0000')
-            plant = dl.Polyline(positions=[lat_lng,[45,-95]],color='#ffa500')
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000')
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']],color='#ffa500')
             return markdown, [desal,plant]
             #return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             
@@ -216,7 +216,6 @@ def register_map(app):
     def info_hover(feature):
         ''' callback for feature hover '''
         if feature:
-            print(len(feature))
             return get_info(feature)
         else:
             header = [html.H4("Feature Details")]
