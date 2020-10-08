@@ -30,7 +30,7 @@ from haversine import haversine, Unit
 
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
-    'dni':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
+    'dni':{'point':cfg.gis_query_path / 'dni_ghi.shp'},
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
@@ -151,7 +151,7 @@ def _findIntersectFeatures(pt,intersectLyr):
     @param [lyrs]: list or tuple of polygon layers to find the point
     '''
     # make the point a poly geometry
-    queryPoly = Point(pt).buffer(0.01)
+    queryPoly = Point(pt).buffer(0.1)
     bounds = list(queryPoly.bounds)
     # rtree uses a different order: left, bottom, right, top
     bounds = (bounds[1],bounds[0],bounds[3],bounds[2])
@@ -165,19 +165,6 @@ def _findIntersectFeatures(pt,intersectLyr):
         possibleMatches = [x for x in idx.intersection(bounds)]
     else:
         logging.info('No index found, using slow method!!!')
-        # TODO: open & find with slow method
-    
-  
-    queryPoint = (pt[1], pt[0],pt[1]+.01,pt[0]+.01)
-    # open each layer and find the matches
-    logging.info(f'Finding intersections with {intersectLyr}...')
-    rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
-    if rtreeFile.exists:
-        logging.debug('Using pre-built rtree index')
-        idx = index.Index(str(rtreeFile.absolute()))
-        possibleMatches = [x for x in idx.intersection(queryPoint)]
-    else:
-        logging.debug('No index found, using slow method')
         # TODO: open & find with slow method
     
     print(len(possibleMatches))
@@ -227,28 +214,6 @@ def _findClosestPoint(pt,lyr):
         match = features[closestPt[1]]
         return(match)
 
-
-def _paramHelper(dfAtts,pt):
-    ''' helper method to write out parameters. Uses the solar dataframe point ID 
-    to write out map paramers to  '''
-    #TODO: object based in likely to be dict, not pandas data frame! 
-    # update the code to reflect this
-    logging.debug('updating model params')
-    mParams = dict()
-    # update dictionary
-    weatherPath = cfg.base_path
-    mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts['weatherFile']['properties']['filename'])
-    mParams['county'] = dfAtts['county']['properties']['NAME']
-    mParams['state'] = dfAtts['county']['properties']['STUSAB']
-    mParams['water_price'] =  dfAtts.WaterPrice.values[0]
-    mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
-    mParams['latitude'] = pt[1]
-    mParams['dni'] = dfAtts.ANN_DNI.values[0]
-    mParams['ghi'] = dfAtts.GHI.values[0]
-    mParams['dist_desal_plant'] = dfAtts.DesalDist.values[0] / 1000
-    mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
-    mParams['dist_power_plant'] = dfAtts.PowerPlantDistance.values[0] / 1000
-
     # update json file
     try:
         helpers.json_update(data=mParams, filename=cfg.map_json)
@@ -259,8 +224,8 @@ def _generateMarkdown(theme, atts):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"### Site properties near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
-    mdown += f"#### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
+    mdown = f"##### Site properties near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
+    mdown += f"###### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
@@ -291,18 +256,19 @@ def _generateMarkdown(theme, atts):
         mdown += f"Condenser Heat: -\n\n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"##### Water Prices\n\n"
+    mdown += f"###### Water Prices\n\n"
     try:
         mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
     except:
         mdown += f"Residential price: -\n\n"
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
     # add legal info
-    mdown += f"##### Regulatory Framework\n\n"
-    state = atts['county']['properties'].get('STATEAB')
-    #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
-    link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
-    mdown += link + '\n\n'
+    mdown += f"###### Regulatory Framework\n\n"
+    if 'county' in atts.keys():
+        state = atts['county']['properties'].get('STATEAB')
+        #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
+        link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
+        mdown += link + '\n\n'
     return mdown
 
 def _updateMapJson(atts, pnt):

@@ -195,7 +195,7 @@ def register_map(app):
             return coords
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
-                  [Input(MAP_ID, 'click_lat_lng')])
+                  [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
 
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
