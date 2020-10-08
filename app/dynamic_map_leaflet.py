@@ -47,7 +47,6 @@ USER_POINT = 'user_point'
 
 def get_style(feature):
     return dict()
-
 def get_d_style(feature):
     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
@@ -61,9 +60,12 @@ def get_d_style(feature):
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
     if feature:
-        print(feature)
+        if 'Technology' in list(feature[0]["properties"].keys()):
+            units = 'm3/day'
+        else:
+            units = 'MW'
         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
-            f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity MW"]
+            f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity {units}"]
     else:
         return header + ["Hover over a feature"]
 
@@ -250,20 +252,6 @@ def register_map(app):
                 ) 
             )
 
-        # [Input("geojson_power", "hover_feature")],
-        # [State("theme-dropdown",'value')]
-
-    # @app.callback(Output('info', 'children'),
-    #     [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
-    #     prevent_initial_call=True
-    # )
-    # def info_hover(feature):
-    #     ''' callback for feature hover '''
-    #     #return(get_info(feature))
-    #     if feature:
-    #         return "hi"
-    #     else:
-    #         html.H4("Feature Details")
 
     @app.callback(Output('info', 'children'),
             [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
