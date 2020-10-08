@@ -51,14 +51,21 @@ def get_style(feature):
 def get_d_style(feature):
     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
+# def get_info(feature=None):
+#     header = html.H4("Feature Details")
+#     if feature:
+#         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
+#             f"{float(feature[0]['properties']['capacity_mw']):.3f} capacity MW"]
+#     else:
+#         return [header, "Hover over a feature"]
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
     if feature:
+        print(feature)
         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
-            f"{float(feature[0]['properties']['capacity_mw']):.3f} capacity MW"]
+            f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity MW"]
     else:
         return header + ["Hover over a feature"]
-
 
 # load power plants JSON
 power_plants = dl.GeoJSON(
@@ -68,9 +75,18 @@ power_plants = dl.GeoJSON(
     cluster=True,
     zoomToBoundsOnClick=True,
     superClusterOptions={"radius": 75},
-    hoverStyle=dict(weight=5, color='#666', dashArray='')
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
 )
 
+# load Desal plants
+desal = dl.GeoJSON(
+    url='/assets/desal_plants_update.geojson',
+    id = {'type':'json_theme','index':'geojson_desal'},
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={'radius': 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
+)
 
 # load canals json
 canals = dl.GeoJSON(
@@ -83,8 +99,10 @@ canals = dl.GeoJSON(
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
 # placeholder for mouseover data
-info = html.Div(children=get_info(), id="info", className="mapinfo",
-                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"})
+info = html.Div(children='Hover over a Feature',
+                className="mapinfo",
+                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
+                id="info")
 
 map_navbar = dbc.NavbarSimple(
     children='',
@@ -97,7 +115,7 @@ map_navbar = dbc.NavbarSimple(
 
 legend = html.Img(
     id='legend',
-    src='assets/legend.png'
+    src='assets/legend_update.png'
 )
 
 site_selection_map = dl.Map(
@@ -126,6 +144,7 @@ radios = dbc.FormGroup([
         id='theme-dropdown',
         options=[{'label':'Canals', 'value':'canals'},
                     {'label':'Power Plants', 'value':'pplants'},
+                    {'label':'Desalination Plants', 'value':'desal'},
                     {'label': 'Regulatory', 'value':'regulatory'}],
         labelStyle={'display': 'inline-block'},
         value='canals',
@@ -151,7 +170,7 @@ def render_map():
             dbc.Col([
                 site_selection_map,
                 dbc.Row([
-                    dbc.Col(radios),
+                    dbc.Col(radios, width=7),
                     dbc.Col(legend)
                 ]),
                 html.Div(id='next-button'),
@@ -167,6 +186,7 @@ def render_map():
 theme_ids = {
     'canals': html.Div([canals]),
     'pplants': html.Div([power_plants, info]),
+    'desal': html.Div([desal, info]),
     'regulatory': regulatory
 }
 
@@ -232,17 +252,26 @@ def register_map(app):
 
         # [Input("geojson_power", "hover_feature")],
         # [State("theme-dropdown",'value')]
+
+    # @app.callback(Output('info', 'children'),
+    #     [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
+    #     prevent_initial_call=True
+    # )
+    # def info_hover(feature):
+    #     ''' callback for feature hover '''
+    #     #return(get_info(feature))
+    #     if feature:
+    #         return "hi"
+    #     else:
+    #         html.H4("Feature Details")
+
     @app.callback(Output('info', 'children'),
-        [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
-        prevent_initial_call=True
-    )
+            [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
+        )
     def info_hover(feature):
         ''' callback for feature hover '''
         return(get_info(feature))
 
-    # @app.callback(Output('info', 'children'),[Input("info", "featureHover")])
-    # def info_hover(feature):
-    #     return get_info(feature)
 
 external_stylesheets = [dbc.themes.FLATLY]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -253,6 +282,6 @@ app.layout = html.Div(
 register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8150)
+    app.run_server(debug=True, port=8150)
 
 

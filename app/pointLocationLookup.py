@@ -231,7 +231,7 @@ def _generateMarkdown(theme, atts, pnt):
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     desal_dist = _calcDistance(pnt,desal_pt)
 
-    mdown += f"##### Closest desalination plant ({desal_dist:,.1f}) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
+    mdown += f"##### Closest desalination plant ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
@@ -245,7 +245,7 @@ def _generateMarkdown(theme, atts, pnt):
     power = atts['powerPlants']['properties']
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
     power_dist = _calcDistance(pnt,power_pt)
-    mdown += f"##### Closest power plant ({power_dist:,.1f}km), name: {power.get('Plant_name')}\n\n"
+    mdown += f"##### Closest power plant ({power_dist:,.1f} km), name: {power.get('Plant_name')}\n\n"
 
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
     try:
@@ -305,7 +305,7 @@ def _updateMapJson(atts, pnt):
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
     mParams['ghi'] = atts['dni']['properties'].get('GHI')
     mParams['dni'] = atts['dni']['properties'].get('GHI')
-    mParams['dist_water_network'] = '-'
+    mParams['dist_water_network'] = 0
 
     mParams['state'] = wx.get('State')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
