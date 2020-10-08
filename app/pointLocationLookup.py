@@ -224,18 +224,20 @@ def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"##### Site properties near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
+    mdown = f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
+    dni = atts['dni']['properties'].get('DNI')
+    ghi = atts['dni']['properties'].get('GHI')
+    mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day\n\n" 
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     desal_dist = _calcDistance(pnt,desal_pt)
 
-    mdown += f"##### Closest desalination plant ({desal_dist:,.1f}) name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
+    mdown += f"##### Closest desalination plant ({desal_dist:,.1f}) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
         mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day\n\n"
     except:
         mdown += f"Capacity: -\n\n"    
-    mdown += f"Capacity: {desal.get('Capacity__'):,.1f} m3/day\n\n"
     mdown += f"Technology: {desal.get('Technology')}\n\n"
     mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
@@ -250,8 +252,6 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh\n\n"
     except:
         mdown += f"Production: -\n\n"
-
-
     mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ\n\n"
     try:
         mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)\n\n"
@@ -271,17 +271,19 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Residential price: -\n\n"
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
     # add legal info
-    mdown += f"##### Regulatory Framework\n\n"
+
     print(atts['county'])
     if atts['county']:
-        print('getting county')
         state = atts['county']['properties'].get('STATEAB')
+        
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
-        link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
-        mdown += link + '\n\n'
-    else:
-        [print("No county")]
+        if state in regulatory_links.keys():
+            mdown += f"##### Regulatory Framework\n\n"
+            link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
+            mdown += link + '\n\n'
+
     return mdown
+    return(str(atts))
 
 def _updateMapJson(atts, pnt):
 
@@ -298,10 +300,12 @@ def _updateMapJson(atts, pnt):
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     mParams['dist_desal_plant'] = _calcDistance(pnt,desal_pt)
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
-    #mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
+    mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
 
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
-
+    mParams['ghi'] = atts['dni']['properties'].get('GHI')
+    mParams['dni'] = atts['dni']['properties'].get('GHI')
+    mParams['dist_water_network'] = '-'
 
     mParams['state'] = wx.get('State')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')

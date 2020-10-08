@@ -35,7 +35,7 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 # default for when map loads, change order to update. 
 mapbox_ids = {
     'Satellite': 'mapbox/satellite-streets-v9', 
-    'Outdoors': 'mapbox/outdoors-v9',
+    'Topographic': 'mapbox/outdoors-v9',
     # 'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j', # duplicate entry
 }
 
@@ -208,7 +208,7 @@ def register_map(app):
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Closest Desal Plant")])          
             plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Closest Power Plant")])
             return markdown, [desal,plant]
-            #return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+
             
     @app.callback(
         Output(component_id='next-button',component_property='children'),
@@ -253,6 +253,6 @@ app.layout = html.Div(
 register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8150)
+    app.run_server(debug=False, port=8150)
 
 
