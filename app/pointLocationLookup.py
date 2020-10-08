@@ -100,7 +100,7 @@ def lookupLocation(pt, mapTheme='default'):
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
     # return the markdown
-    return(_generateMarkdown(mapTheme,closestFeatures))
+    return(_generateMarkdown(mapTheme,closestFeatures,pt))
     #return(str(closestFeatures))
 
 def getClosestPlants(pnt):
@@ -220,12 +220,15 @@ def _findClosestPoint(pt,lyr):
     except FileNotFoundError:
         helpers.initialize_json(data=mParams, filename=cfg.map_json)
 
-def _generateMarkdown(theme, atts):
+def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
     mdown = f"##### Site properties near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
-    mdown += f"###### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
+    desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
+    desal_dist = _calcDistance(pnt,desal_pt)
+
+    mdown += f"##### Closest desalination plant ({desal_dist:,.1f}) name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
@@ -238,12 +241,16 @@ def _generateMarkdown(theme, atts):
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
     
     power = atts['powerPlants']['properties']
-    mdown += f"###### Closest power plant: {power.get('Plant_name')}\n\n"
+    power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
+    power_dist = _calcDistance(pnt,power_pt)
+    mdown += f"##### Closest power plant ({power_dist:,.1f}km), name: {power.get('Plant_name')}\n\n"
+
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
     try:
         mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh\n\n"
     except:
         mdown += f"Production: -\n\n"
+
 
     mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ\n\n"
     try:
@@ -255,6 +262,7 @@ def _generateMarkdown(theme, atts):
     except:
         mdown += f"Condenser Heat: -\n\n"
 
+
     water = atts['waterPrice']['properties']
     mdown += f"###### Water Prices\n\n"
     try:
@@ -263,7 +271,7 @@ def _generateMarkdown(theme, atts):
         mdown += f"Residential price: -\n\n"
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
     # add legal info
-    mdown += f"###### Regulatory Framework\n\n"
+    mdown += f"##### Regulatory Framework\n\n"
     print(atts['county'])
     if atts['county']:
         print('getting county')

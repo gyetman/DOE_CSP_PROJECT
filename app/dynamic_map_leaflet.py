@@ -95,9 +95,9 @@ map_navbar = dbc.NavbarSimple(
     style={'margin-bottom':20}
 )
 
-legend = html.Div(
+legend = html.Img(
     id='legend',
-    children=['Legend Here',] 
+    src='assets/legend.png'
 )
 
 site_selection_map = dl.Map(
@@ -165,7 +165,7 @@ def render_map():
 
 
 theme_ids = {
-    'canals': html.Div([canals, info]),
+    'canals': html.Div([canals]),
     'pplants': html.Div([power_plants, info]),
     'regulatory': regulatory
 }
@@ -234,14 +234,11 @@ def register_map(app):
         # [State("theme-dropdown",'value')]
     @app.callback(Output('info', 'children'),
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
+        prevent_initial_call=True
     )
     def info_hover(feature):
         ''' callback for feature hover '''
-        if feature:
-            return get_info(feature)
-        else:
-            header = [html.H4("Feature Details")]
-            return header + ["Hover over a feature"]
+        return(get_info(feature))
 
     # @app.callback(Output('info', 'children'),[Input("info", "featureHover")])
     # def info_hover(feature):
