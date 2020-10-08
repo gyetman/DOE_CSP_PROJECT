@@ -52,7 +52,7 @@ def get_d_style(feature):
     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
 def get_info(feature=None):
-    :qer = [html.H4("Feature Details")]
+    header = [html.H4("Feature Details")]
     if feature:
         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
             f"{float(feature[0]['properties']['capacity_mw']):.3f} capacity MW"]
