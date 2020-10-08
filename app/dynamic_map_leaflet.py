@@ -1,6 +1,7 @@
 import app_config
 import json
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_leaflet as dl
@@ -13,6 +14,8 @@ from dash.exceptions import PreventUpdate
 from pathlib import Path
 
 gis_data = app_config.gis_data_path
+# Div for legend
+# Site Selection
 
 # TODO:
 # add link (lines) and symbols for closest features
@@ -83,57 +86,81 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 info = html.Div(children=get_info(), id="info", className="mapinfo",
                 style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"})
 
-def render_map():
-    comment = """ Click on a location to examine site details.  """
-    return [
-        html.H1("Site Selection"),
-        html.P(comment),
-        dl.Map(
-            id=MAP_ID, 
-            style={'width': '1000px', 'height': '500px'}, 
-            center=[30.25,-97.05], 
-            zoom=10,
-            children=[
-                dl.TileLayer(id=BASE_LAYER_ID),
-                dl.ScaleControl(metric=True, imperial=True),
-                # placeholder for lines to nearby plants
-                dl.LayerGroup(id="closest-facilities"),
-                # Placeholder for user-selected site. 
-                dl.Marker(id=USER_POINT,position=[0, 0], icon={
-                    "iconUrl": "/assets/149059.svg",
-                    "iconSize": [20, 20]
-                    },
-                    children=[
-                        dl.Tooltip("Selected site")
-                ]),
-                html.Div(id='theme-layer')
-            ]),
-        html.Div([
-            html.Div(id='next-button')
-        ]),
+map_navbar = dbc.NavbarSimple(
+    children='',
+    brand='Site Selection',
+    color='primary',
+    dark=True,
+    sticky='top',
+    style={'margin-bottom':20}
+)
 
-        # map theme selection
-        # TODO: change to tabs / buttons
-        dcc.RadioItems(
-            id='theme-dropdown',
-            options=[{'label':'Canals', 'value':'canals'},
-                     {'label':'Power Plants', 'value':'pplants'},
-                     {'label': 'Regulatory', 'value':'regulatory'}],
-            labelStyle={'display': 'inline-block'},
-            value='canals'
-        ),
-        dcc.RadioItems(
-            id=BASE_LAYER_DROPDOWN_ID,
-            options = [
-                {'label': name, 'value': mapbox_url.format(id = url, access_token=mapbox_token)}
-                for name,url in mapbox_ids.items()
-            ],
-            labelStyle={'display': 'inline-block'},
-            # use the first item as the default
-            value=mapbox_url.format(id=next(iter(mapbox_ids.values())), access_token=mapbox_token)
-        ),
-        dcc.Markdown('#### Site details:'),
-        html.Div(id=SITE_DETAILS),
+legend = html.Div(
+    id='legend',
+    children=['Legend Here',] 
+)
+
+site_selection_map = dl.Map(
+    id=MAP_ID, 
+    style={'width': '100%', 'height': '500px'}, 
+    center=[30.25,-97.05], 
+    zoom=10,
+    children=[
+        dl.TileLayer(id=BASE_LAYER_ID),
+        dl.ScaleControl(metric=True, imperial=True),
+        # placeholder for lines to nearby plants
+        dl.LayerGroup(id="closest-facilities"),
+        # Placeholder for user-selected site. 
+        dl.Marker(id=USER_POINT,position=[0, 0], icon={
+            "iconUrl": "/assets/149059.svg",
+            "iconSize": [20, 20]
+            },
+            children=[
+                dl.Tooltip("Selected site")
+        ]),
+        html.Div(id='theme-layer')
+    ])
+
+radios = dbc.FormGroup([
+    dbc.RadioItems(
+        id='theme-dropdown',
+        options=[{'label':'Canals', 'value':'canals'},
+                    {'label':'Power Plants', 'value':'pplants'},
+                    {'label': 'Regulatory', 'value':'regulatory'}],
+        labelStyle={'display': 'inline-block'},
+        value='canals',
+        inline=True
+    ),
+    dbc.RadioItems(
+        id=BASE_LAYER_DROPDOWN_ID,
+        options = [
+            {'label': name, 'value': mapbox_url.format(id = url, access_token=mapbox_token)}
+            for name,url in mapbox_ids.items()
+        ],
+        labelStyle={'display': 'inline-block'},
+        # use the first item as the default
+        value=mapbox_url.format(id=next(iter(mapbox_ids.values())), access_token=mapbox_token),
+        inline=True
+    ),
+],row=True)
+
+def render_map():
+    return [
+        map_navbar,
+        dbc.Row([
+            dbc.Col([
+                site_selection_map,
+                dbc.Row([
+                    dbc.Col(radios),
+                    dbc.Col(legend)
+                ]),
+                html.Div(id='next-button'),
+            ],width=8),
+            dbc.Col([
+                html.H3('Site details:', className='text-success'),
+                html.Div(id=SITE_DETAILS)
+            ],width=3)
+        ],style={'padding':20})
     ]
 
 
@@ -173,13 +200,13 @@ def register_map(app):
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
         if lat_lng is None:
-            return('Click on the Map to see site details.')
+            return('Click on the Map to see site details.'), [0,0]
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             closest = pointLocationLookup.getClosestPlants(lat_lng)
             #positions = 
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000')
-            plant = dl.Polyline(positions=[lat_lng,closest['plant']],color='#ffa500')
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Closest Desal Plant")])          
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Closest Power Plant")])
             return markdown, [desal,plant]
             #return dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             
@@ -197,13 +224,8 @@ def register_map(app):
             return(
                 html.Div([
                     html.Div(id='button-div'),
-                    html.Div(html.A(
-                        html.Button('Select Models', 
-                                id='model-button',
-                            ),
-                        href='http://127.0.0.1:8077/model-selection'
-                        )
-                      )
+                    dbc.Button('Select Models', color="primary",
+                            href='http://127.0.0.1:8077/model-selection'), 
                 ], className='row',
                 ) 
             )
@@ -225,8 +247,8 @@ def register_map(app):
     # def info_hover(feature):
     #     return get_info(feature)
 
-# app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
-app = dash.Dash(__name__)
+external_stylesheets = [dbc.themes.FLATLY]
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Site Selection (Beta)'
 app.layout = html.Div(
     render_map()

@@ -31,11 +31,21 @@ from haversine import haversine, Unit
 
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
-    'dni':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
+    #'dni-ghi':{'point':cfg.gis_query_path / 'dni_ghi_point.shp'},
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
+}
+
+# lookup for URLs of regulatory information by state
+regulatory_links = {
+    'TX': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1175080604&single=true',
+    'AZ': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=802223381&single=true',
+    'FL': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1153194759&single=true',
+    'CA': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=1162276707&single=true',
+    'NV': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=736651906&single=true',
+    'CO': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgOANT2xM5CppPXMk42iBLMJypBpnY-tDaTxYFoibcuF_kaPvjYbJczqu6N5ImNL8d7aXU6WU16iXy/pubhtml?gid=334054884&single=true',
 }
 
 restrictionsLayers = {
@@ -89,10 +99,10 @@ def lookupLocation(pt, mapTheme='default'):
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
 
     # update the map data JSON file
-    _updateMapJson(closestFeatures)
+    _updateMapJson(closestFeatures, pt)
     # return the markdown
-    #return(_generateMarkdown(mapTheme,closestFeatures))
-    return(str(closestFeatures))
+    return(_generateMarkdown(mapTheme,closestFeatures))
+    #return(str(closestFeatures))
 
 def getClosestPlants(pnt):
     ''' Get the closest desal and power plant locations '''
@@ -169,7 +179,7 @@ def _findIntersectFeatures(pt,intersectLyr):
         return None
 
         
-def _findClosestPoint(pt,lyr,maxDist=10):
+def _findClosestPoint(pt,lyr):
     ''' find the closest point or line to the supplied point
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [closestLayers]: list of point or line layers
@@ -213,7 +223,7 @@ def _paramHelper(dfAtts,pt):
     weatherPath = cfg.base_path
     mParams['file_name'] = str(weatherPath / 'SAM_flatJSON' / 'solar_resource' / dfAtts['weatherFile']['properties']['filename'])
     mParams['county'] = dfAtts['county']['properties']['NAME']
-    mParams['state'] = dfAtts['county']['properties']['STUSPS']
+    mParams['state'] = dfAtts['county']['properties']['STUSAB']
     mParams['water_price'] =  dfAtts.WaterPrice.values[0]
     mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = pt[1]
@@ -233,7 +243,7 @@ def _generateMarkdown(theme, atts):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"### Site properties near {atts['dni']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['dni']['properties'].get('State')}\n"
+    mdown = f"### Site properties near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
     mdown += f"#### Closest desalination plant name: {atts['desalPlants']['properties'].get('Project_Na')}\n"
     
     desal = atts['desalPlants']['properties']
@@ -246,7 +256,7 @@ def _generateMarkdown(theme, atts):
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
     
     power = atts['powerPlants']['properties']
-    mdown += f"#### Closest power plant: {power.get('Plant_name')}\n\n"
+    mdown += f"###### Closest power plant: {power.get('Plant_name')}\n\n"
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
     try:
         mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh\n\n"
@@ -264,33 +274,40 @@ def _generateMarkdown(theme, atts):
         mdown += f"Condenser Heat: -\n\n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"#### Water Prices\n\n"
+    mdown += f"##### Water Prices\n\n"
     try:
         mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
     except:
         mdown += f"Residential price: -\n\n"
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
     # add legal info
-
+    mdown += f"##### Regulatory Framework\n\n"
+    state = atts['county']['properties'].get('STATEAB')
+    #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
+    link = f"[Regulatory information for {state}]({regulatory_links[state]})"
+    mdown += link + '\n\n'
     return mdown
 
-def _updateMapJson(atts):
+def _updateMapJson(atts, pnt):
     '''Write out data to map JSON file '''
     mParams = dict()
     # update dictionary
     wx = atts['weatherFile']['properties']
     mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
-    mParams['county'] = atts.get('County')
-    mParams['state'] = wx.get('State')
+    mParams['county'] = atts['county']['properties'].get('NAME')
+    mParams['state'] = atts['county']['properties'].get('STATEAB')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
 
-    #mParams['latitude'] = atts['geometry'].get('coordinates')[1]
-    #mParams['longitude'] = atts['geometry'].get('coordinates')[0]
+    mParams['latitude'] = pnt[0]
+    mParams['longitude'] = pnt[1]
     # mParams['dni'] = dfAtts.ANN_DNI.values[0]
     # mParams['ghi'] = dfAtts.GHI.values[0]
-    mParams['dist_desal_plant'] = 0.0
-    mParams['dist_power_plant'] = 0.0
+    desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
+    mParams['dist_desal_plant'] = _calcDistance(pnt,desal_pt)
+    power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
+    #mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
+
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
 
 
