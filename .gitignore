@@ -119,7 +119,7 @@ GISQueryData/USAWeatherStations.prj
 GISQueryData/USAWeatherStations.sbn
 GISQueryData/USAWeatherStations.sbx
 GISQueryData/USAWeatherStations.shp
-SAM_flatJSON/SamBaseClass.py
+
 utils/county.dat
 utils/county.idx
 utils/rtree.dat
