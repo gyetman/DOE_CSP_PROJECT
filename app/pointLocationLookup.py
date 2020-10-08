@@ -264,11 +264,15 @@ def _generateMarkdown(theme, atts):
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
     # add legal info
     mdown += f"###### Regulatory Framework\n\n"
-    if 'county' in atts.keys():
+    print(atts['county'])
+    if atts['county']:
+        print('getting county')
         state = atts['county']['properties'].get('STATEAB')
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
         mdown += link + '\n\n'
+    else:
+        [print("No county")]
     return mdown
 
 def _updateMapJson(atts, pnt):
