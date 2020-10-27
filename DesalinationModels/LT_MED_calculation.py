@@ -317,11 +317,11 @@ class lt_med_calculation(object):
         
 #%% MODEL EXECUTION            
 
-default_case = lt_med_calculation(Nef=16,Ts=80)
-default_case.preheater_calculations()
-default_case.effects_calculation()
-default_case.condenser_calculations()
-default_case.distilllates_calculations()
+# default_case = lt_med_calculation(Nef=16,Ts=80)
+# default_case.preheater_calculations()
+# default_case.effects_calculation()
+# default_case.condenser_calculations()
+# default_case.distilllates_calculations()
     
         
         
