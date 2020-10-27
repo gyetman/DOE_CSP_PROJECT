@@ -220,10 +220,11 @@ def register_map(app):
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
             #positions = 
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Closest Desal Plant")])          
-            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Closest Power Plant")])
-            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Closest Canal")])
-            return markdown, [desal,plant,canal]
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+            return markdown, [desal,plant,canal,water]
 
             
     @app.callback(

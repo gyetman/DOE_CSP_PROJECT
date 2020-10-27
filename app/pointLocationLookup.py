@@ -36,6 +36,7 @@ defaultLayers = {
     'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
     'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
+    'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
 
 }
 
@@ -111,10 +112,12 @@ def getClosestInfrastructure(pnt):
     desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
     plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
     canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
+    water = _findClosestPoint(pnt,defaultLayers['waterProxy']['point'])
     return {
         'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
         'plant':[plant['geometry']['coordinates'][1],plant['geometry']['coordinates'][0]],
         'canal':[canal['geometry']['coordinates'][1],canal['geometry']['coordinates'][0]],
+        'water':[water['properties']['latitude'],water['properties']['longitude']],
     }
 
 def _calcDistance(start_pnt, end_pnt):
@@ -146,7 +149,6 @@ def _findMatchFromCandidates(pt,intersectLyr,candidates):
     for poly in featureSubset:
         if ptGeom.within(Polygon(shape(poly['geometry']))):
             return(poly)
-    pass
 
 def _findIntersectFeatures(pt,intersectLyr):
     ''' find features in the supplied layers that intersect the provided point 
@@ -251,6 +253,16 @@ def _generateMarkdown(theme, atts, pnt):
     else:
         mdown += f"{canal_name}\n\n"
 
+    # water proxy
+    water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+    water_dist = _calcDistance(pnt,water_pt)
+    mdown +=f"##### Closest Water Proxy Location ({water_dist:,.1f} km) "
+    water_name = atts['waterProxy']['properties'].get('FULLNAME')
+    if water_name is None:
+        mdown+= '\n\n'
+    else:
+        mdown+= f"{water_name}\n\n"
+
     power = atts['powerPlants']['properties']
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
     power_dist = _calcDistance(pnt,power_pt)
@@ -271,7 +283,6 @@ def _generateMarkdown(theme, atts, pnt):
     except:
         mdown += f"Condenser Heat: -\n\n"
 
-
     water = atts['waterPrice']['properties']
     mdown += f"###### Water Prices\n\n"
     try:
@@ -279,6 +290,8 @@ def _generateMarkdown(theme, atts, pnt):
     except:
         mdown += f"Residential price: -\n\n"
     mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
+
+
     # add legal info
 
     print(atts['county'])
