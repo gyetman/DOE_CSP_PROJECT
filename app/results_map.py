@@ -8,21 +8,21 @@ import dash_leaflet as dl
 import pandas as pd
 import helpers
 import pointLocationLookup
+import dash_leaflet.express as dlx
 
 from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
 from pathlib import Path
+
 
 gis_data = app_config.gis_data_path
 # Div for legend
 # Site Selection
 
 # TODO:
-# add link (lines) and symbols for closest features
-# add legend(s)
 # 2. use a map-config file to load data, file locations, etc. 
 # 4. transfer & adapt code to write out parameters as json
-# 5. style to be consistent with menu interface
+# 5. finish styling to be consistent with menu interface
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -45,10 +45,20 @@ BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS = "site-details"
 USER_POINT = 'user_point'
 
-def get_style(feature):
-    return dict()
-def get_d_style(feature):
-    return dict(fillColor='orange', weight=2, opacity=1, color='white')
+map_data = helpers.json_load(app_config.map_json)
+site_lat=map_data['latitude']
+site_long=map_data['longitude']
+
+classes = [0.0,1.0,2.0,3.0,4.0,5.0]
+color_scale = ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']
+style = dict(weight=2, opacity=1, color='white', dashArray='3', fillOpacity=0.7)
+ctg = ["${:,.2f}".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["${:,.2f}+".format(classes[-1])]
+colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, width=300, height=30, position="bottomright")
+
+# def get_style(feature):
+#     return dict()
+# def get_d_style(feature):
+#     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
@@ -93,6 +103,14 @@ canals = dl.GeoJSON(
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
+tx_counties = dl.GeoJSON(
+    url='/assets/tx_water_prices.geojson',
+    id='tx_water_prices',
+#     options=dict(style=dlx.choropleth.style),
+#         #hoverStyle=dict(weight=5, color='#666', dashArray=''),
+#         hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_avg"),
+)
+
 # placeholder for mouseover data
 info = html.Div(children='Hover over a Feature',
                 className="mapinfo",
@@ -101,11 +119,11 @@ info = html.Div(children='Hover over a Feature',
 
 map_navbar = dbc.NavbarSimple(
     children='',
-    brand='Site Selection',
+    brand='Site Details: Water Prices',
     color='primary',
     dark=True,
     sticky='top',
-    style={'margin-bottom':20}
+    style={'marginBottom':20}
 )
 
 legend = html.Img(
@@ -116,15 +134,18 @@ legend = html.Img(
 site_selection_map = dl.Map(
     id=MAP_ID, 
     style={'width': '100%', 'height': '500px'}, 
-    center=[30.25,-97.05], 
+    center=[site_lat,site_long], 
     zoom=10,
     children=[
         dl.TileLayer(id=BASE_LAYER_ID),
         dl.ScaleControl(metric=True, imperial=True),
+        #dl.GeoJSON(tx_counties),
+        colorbar,
         # placeholder for lines to nearby plants
         dl.LayerGroup(id="closest-facilities"),
-        # Placeholder for user-selected site. 
-        dl.Marker(id=USER_POINT,position=[0, 0], icon={
+        tx_counties,
+        # Site selected by user from map-data. 
+        dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
             "iconUrl": "/assets/149059.svg",
             "iconSize": [20, 20]
             },
@@ -159,7 +180,7 @@ radios = dbc.FormGroup([
 ],row=True)
 
 def render_map():
-    return [
+    return html.Div([
         map_navbar,
         dbc.Row([
             dbc.Col([
@@ -175,7 +196,7 @@ def render_map():
                 html.Div(id=SITE_DETAILS)
             ],width=3)
         ],style={'padding':20})
-    ]
+    ])
 
 
 theme_ids = {
@@ -196,21 +217,21 @@ def register_map(app):
     def set_theme_layer(theme):
         return theme_ids[theme]
 
-    @app.callback(Output(USER_POINT, 'position'),
-                  [Input(MAP_ID, 'click_lat_lng')])
-    def click_coord(coords):
-    # '''
-    # Callback for updating the map after a user click 
-    # TODO: in addition to returning 0,0, update icon
-    # to be "invisible".
-    # '''
-        if not coords:
-            return [0,0]
-        else:
-            return coords
+    # @app.callback(Output(USER_POINT, 'position'),
+    #               [Input(MAP_ID, 'click_lat_lng')])
+    # def click_coord(coords):
+    # # '''
+    # # Callback for updating the map after a user click 
+    # # TODO: in addition to returning 0,0, update icon
+    # # to be "invisible".
+    # # '''
+    #     if not coords:
+    #         return [0,0]
+    #     else:
+    #         return coords
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
-                  [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
+                  [Input(USER_POINT, 'position')],prevent_initial_call=False)
 
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
@@ -218,12 +239,11 @@ def register_map(app):
             return('Click on the Map to see site details.'), [0,0]
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
-            closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
+            closest = pointLocationLookup.getClosestPlants(lat_lng)
             #positions = 
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Closest Desal Plant")])          
             plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Closest Power Plant")])
-            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Closest Canal")])
-            return markdown, [desal,plant,canal]
+            return markdown, [desal,plant]
 
             
     @app.callback(
@@ -257,13 +277,14 @@ def register_map(app):
 
 external_stylesheets = [dbc.themes.FLATLY]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.title = 'Site Selection (Beta)'
-app.layout = html.Div(
-    render_map()
-)
+app.title = 'Site Details'
+# app.layout = html.Div(
+#     render_map()
+# )
+app.layout = render_map()
 register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8150)
+    app.run_server(debug=True, port=8155)
 
 

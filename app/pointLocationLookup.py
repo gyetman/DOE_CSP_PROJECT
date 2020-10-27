@@ -35,6 +35,8 @@ defaultLayers = {
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
+    'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
+
 }
 
 # lookup for URLs of regulatory information by state
@@ -103,15 +105,16 @@ def lookupLocation(pt, mapTheme='default'):
     return(_generateMarkdown(mapTheme,closestFeatures,pt))
     #return(str(closestFeatures))
 
-def getClosestPlants(pnt):
+def getClosestInfrastructure(pnt):
     ''' Get the closest desal and power plant locations '''
     logging.info('Getting plant info...')
     desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
     plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
+    canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
     return {
         'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
-        'plant':[plant['geometry']['coordinates'][1],
-        plant['geometry']['coordinates'][0]]
+        'plant':[plant['geometry']['coordinates'][1],plant['geometry']['coordinates'][0]],
+        'canal':[canal['geometry']['coordinates'][1],canal['geometry']['coordinates'][0]],
     }
 
 def _calcDistance(start_pnt, end_pnt):
@@ -161,13 +164,11 @@ def _findIntersectFeatures(pt,intersectLyr):
     if rtreeFile.exists:
         logging.info('Using pre-built rtree index')
         idx = index.Index(str(rtreeFile.absolute()))
-        print(idx.get_bounds())
         possibleMatches = [x for x in idx.intersection(bounds)]
     else:
         logging.info('No index found, using slow method!!!')
         # TODO: open & find with slow method
     
-    print(len(possibleMatches))
     if len(possibleMatches) == 0:
         return None
     elif len(possibleMatches) > 1:
@@ -230,7 +231,6 @@ def _generateMarkdown(theme, atts, pnt):
     mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day\n\n" 
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     desal_dist = _calcDistance(pnt,desal_pt)
-
     mdown += f"##### Closest desalination plant ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
     
     desal = atts['desalPlants']['properties']
@@ -241,7 +241,16 @@ def _generateMarkdown(theme, atts, pnt):
     mdown += f"Technology: {desal.get('Technology')}\n\n"
     mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
     mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
-    
+
+    canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
+    canal_dist = _calcDistance(pnt,canal_pt)
+    mdown +=f"##### Closest Canal / piped water infrastructure ({canal_dist:,.1f} km) "
+    canal_name = atts['canals']['properties'].get('Name')
+    if canal_name is None:
+        mdown += '\n\n'
+    else:
+        mdown += f"{canal_name}\n\n"
+
     power = atts['powerPlants']['properties']
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
     power_dist = _calcDistance(pnt,power_pt)
@@ -309,6 +318,9 @@ def _updateMapJson(atts, pnt):
 
     mParams['state'] = wx.get('State')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
+
+    mParams['latitude'] = pnt[0]
+    mParams['longitude'] = pnt[1]
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     # mParams['dni'] = dfAtts.ANN_DNI.values[0]
     # mParams['ghi'] = dfAtts.GHI.values[0]
