@@ -9,7 +9,7 @@ Created on Wed Aug 28 10:01:06 2019
 import numpy as np
 import math
 import DesalinationModels.IAPWS97_thermo_functions as TD_func
-from DesalinationModels.LT_MED_calculation import lt_med_calculation
+# from DesalinationModels.LT_MED_calculation import lt_med_calculation
 from scipy.optimize import fmin
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
