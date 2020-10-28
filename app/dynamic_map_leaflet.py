@@ -110,7 +110,7 @@ map_navbar = dbc.NavbarSimple(
 
 legend = html.Img(
     id='legend',
-    src='assets/legend_update.png'
+    src='assets/legend_update2.png'
 )
 
 site_selection_map = dl.Map(

@@ -128,7 +128,7 @@ map_navbar = dbc.NavbarSimple(
 
 legend = html.Img(
     id='legend',
-    src='assets/legend_update.png'
+    src='assets/legend_update2.png'
 )
 
 site_selection_map = dl.Map(
@@ -239,11 +239,13 @@ def register_map(app):
             return('Click on the Map to see site details.'), [0,0]
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
-            closest = pointLocationLookup.getClosestPlants(lat_lng)
+            closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
             #positions = 
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Closest Desal Plant")])          
-            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Closest Power Plant")])
-            return markdown, [desal,plant]
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+            return markdown, [desal,plant,canal,water]
 
             
     @app.callback(
