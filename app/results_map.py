@@ -51,14 +51,10 @@ site_long=map_data['longitude']
 
 classes = [0.0,1.0,2.0,3.0,4.0,5.0]
 color_scale = ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']
-style = dict(weight=2, opacity=1, color='white', dashArray='3', fillOpacity=0.7)
+style = dict(weight=1, opacity=1, color='white', fillColor=None, dashArray='3', fillOpacity=0.7)
 ctg = ["${:,.2f}".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["${:,.2f}+".format(classes[-1])]
 colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, width=300, height=30, position="bottomright")
 
-# def get_style(feature):
-#     return dict()
-# def get_d_style(feature):
-#     return dict(fillColor='orange', weight=2, opacity=1, color='white')
 
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
@@ -106,9 +102,17 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 tx_counties = dl.GeoJSON(
     url='/assets/tx_water_prices.geojson',
     id='tx_water_prices',
-#     options=dict(style=dlx.choropleth.style),
-#         #hoverStyle=dict(weight=5, color='#666', dashArray=''),
-#         hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_avg"),
+    #options=dict(style=dlx.choropleth.style),
+         #hoverStyle=dict(weight=5, color='#666', dashArray=''),
+    #     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_avg"),
+)
+
+us_counties = dl.GeoJSON(
+    url='/assets/us_counties2.geojson',
+    id='water_prices',
+    options=dict(style=dlx.choropleth.style),
+         #hoverStyle=dict(weight=5, color='#666', dashArray=''),
+         hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
 )
 
 # placeholder for mouseover data
@@ -139,11 +143,12 @@ site_selection_map = dl.Map(
     children=[
         dl.TileLayer(id=BASE_LAYER_ID),
         dl.ScaleControl(metric=True, imperial=True),
-        #dl.GeoJSON(tx_counties),
+        us_counties,
         colorbar,
+        #dl.GeoJSON(url='/assets/tx_counties.geojson',id='counties'),
+        #dl.GeoJSON(url='/assets/us_counties2.geojson',id='counties'),
         # placeholder for lines to nearby plants
-        dl.LayerGroup(id="closest-facilities"),
-        tx_counties,
+        dl.GeoJSON(id="closest-facilities"),
         # Site selected by user from map-data. 
         dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
             "iconUrl": "/assets/149059.svg",
@@ -217,18 +222,6 @@ def register_map(app):
     def set_theme_layer(theme):
         return theme_ids[theme]
 
-    # @app.callback(Output(USER_POINT, 'position'),
-    #               [Input(MAP_ID, 'click_lat_lng')])
-    # def click_coord(coords):
-    # # '''
-    # # Callback for updating the map after a user click 
-    # # TODO: in addition to returning 0,0, update icon
-    # # to be "invisible".
-    # # '''
-    #     if not coords:
-    #         return [0,0]
-    #     else:
-    #         return coords
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
                   [Input(USER_POINT, 'position')],prevent_initial_call=False)
@@ -240,14 +233,13 @@ def register_map(app):
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-            #positions = 
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
             plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
             canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
             water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
             return markdown, [desal,plant,canal,water]
 
-            
+
     @app.callback(
         Output(component_id='next-button',component_property='children'),
         [Input(component_id=SITE_DETAILS,component_property='children')],
@@ -259,14 +251,7 @@ def register_map(app):
         if site == 'Click on the Map to see site details.':
             raise PreventUpdate
         else:
-            return(
-                html.Div([
-                    html.Div(id='button-div'),
-                    dbc.Button('Select Models', color="primary",
-                            href='http://127.0.0.1:8077/model-selection'), 
-                ], className='row',
-                ) 
-            )
+            raise PreventUpdate
 
 
     @app.callback(Output('info', 'children'),
