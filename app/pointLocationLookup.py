@@ -327,7 +327,8 @@ def _updateMapJson(atts, pnt):
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
     mParams['ghi'] = atts['dni']['properties'].get('GHI')
     mParams['dni'] = atts['dni']['properties'].get('GHI')
-    mParams['dist_water_network'] = 0
+    water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+    mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
 
     mParams['state'] = wx.get('State')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
