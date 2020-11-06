@@ -17,6 +17,7 @@ from dash.dependencies import ALL, Input, Output, State
 import app_config as cfg
 sys.path.insert(0,str(cfg.base_path))
 
+import parameter_dependencies as pdeps
 import helpers
 from app import app
 from SAM_flatJSON.SamBaseClass import SamBaseClass
@@ -51,13 +52,13 @@ def convert_strings_to_literal(v):
     else:
         return v['Value']
                         
-def create_data_table(table_data, table_index, model_type, selectable):
+def create_data_table(table_data, table_index, model_type, model_name, selectable): #ZZZ
     return html.Div([
         html.P(),
         dash_table.DataTable(
             #type i.e. 'solar-table'
-            #index is the tab-section-subsection
-            id={'type':f'{model_type}-table', 'index':table_index},
+            #index is the tab-section-subsection 
+            id={'type':f'{model_type}-table', 'model': model_name, 'index':table_index}, #ZZZ
             columns=cols,
             data=table_data,
             editable=True,
@@ -131,11 +132,10 @@ def create_model_variable_page(tab, model_vars, model_type):
         else:
             if sec:
                 tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
-                tab_page.append(create_data_table(tableData,tableID,model_type,app['parametric']))
+                tab_page.append(create_data_table(tableData,tableID,model_type, app[model_type], app['parametric'])) #ZZZ
                 tableData=[dict(tv)]
             if tv['Section']!=sec:
                 sec=tv['Section']
-                #tab_page.append(html.Div([html.P(),html.H6(sec)]))
                 tab_page.append(html.H5(sec))
             if tv['Subsection']!=subsec:
                 subsec=tv['Subsection']
@@ -143,7 +143,7 @@ def create_model_variable_page(tab, model_vars, model_type):
                     tab_page.append(html.H6(subsec))
     #add the final table
     tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
-    tab_page.append(create_data_table(tableData,tableID,model_type,app['parametric']))
+    tab_page.append(create_data_table(tableData,tableID,model_type, app[model_type],app['parametric'])) #ZZZ
     return tab_page
 
 def create_variable_lists(model_name, json_vars, json_vals):
@@ -167,8 +167,6 @@ def create_variable_lists(model_name, json_vars, json_vals):
     for var in json_vars_load[model_name]:
         tempdict=defaultdict(lambda:'000General')
         tempdict.update(var)
-        #add the value from the solar_model_values dict
-        #HERE
         tempdict['id']=var['Name']
         tempdict['Value']=json_vals_load.get(var['Name'],None)
         #clean up spaces in the tab, section, subsection names
@@ -181,7 +179,7 @@ def create_variable_lists(model_name, json_vars, json_vals):
             tempdict['Value']=str(tempdict['Value'])
         model_vars.append(tempdict)
     # sort the lists by hierarchy
-    #model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
+    model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
     #fix 000General, which was a hack for sorting purposes
     for mv in model_vars:
             for k in mv.keys():
@@ -316,6 +314,67 @@ model_tables_layout = html.Div([parameters_navbar, tabs])
 ### CALLBACKS
 #     
 
+# @app.callback(
+#     Output({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'},'data'),
+#     [Input({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp'),Input({'type':'solar-table', 'index': 'Power_CycleOperationGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp')],
+#     [State({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data')],
+#     prevent_initial_call=True)
+# def upd_tbl(tblTime, tblTime2, tblData):
+#     inputs=dash.callback_context.inputs
+#     triggered=dash.callback_context.triggered
+#     print(tblData)
+#     for row in tblData:
+#         try:
+#             if row['Name'] == 'adjust:periods':
+#                 print('found row')
+#                 row['Value'] = str(tblData[helpers.index_in_list_of_dicts(tblData,'Name','adjust:hourly')]['Value'] + .001)
+#             else:
+#                 row['Value'] = float(row['Value']) ** 2
+#         except(ValueError):
+#             row['Value'] = 99
+#     print(f'states: {tblData}')
+#     print(f'type: {type(tblData)}')
+#     return tblData
+
+# NOTE: we'll want to eventually unpack the dict for the function call...
+for model, functions in pdeps.functions_per_model.items():
+    # output_ids=set()
+    # input_ids=set()
+    model_type=pdeps.find_model_type(model)
+    for function in functions: 
+        print(f'len function inputs: {len(function["inputs"])}')       
+        @app.callback(
+            [Output({'type': f'{model_type}-table',
+                    'index': pdeps.table_indexes[model][outp],
+                    'model': model},
+                    'data')
+                for outp in function['outputs']],
+            [Input({'type': f'{model_type}-table',
+                    'index': pdeps.table_indexes[model][inp],
+                    'model': model},
+                    'data_timestamp')
+                for inp in function['inputs']],
+            [State({'type': f'{model_type}-table',
+                    'index': pdeps.table_indexes[model][inp],
+                    'model': model},
+                    'data') 
+                for inp in function['inputs']],
+            prevent_initial_call=True)
+        def get_table_outputs(inputs, states):
+            print(f'inputs: {inputs}')
+            print(f'states: {states}')
+            print(f'type: {type(states)}')
+            for row in states:
+                try:
+                    if row['Name'] == 'adjust:periods':
+                        print('found row')
+                        row['Value'] = str(states[helpers.index_in_list_of_dicts(states,'Name','adjust:hourly')]['Value'] + .001)
+                    else:
+                        row['Value'] = float(row['Value']) ** 2
+                except(ValueError):
+                    row['Value'] = 99
+            return [states]
+
 @app.callback(
     Output('tabs-card', 'children'),
     [Input('tabs-data-initialize', 'children')]
@@ -411,7 +470,7 @@ def create_tabs_and_tables(x):
 @app.callback(
     Output('desal-design-results', 'children'),
     [Input('run-desal-design', 'n_clicks')],
-    [State({'type':'desal-table', 'index': ALL}, 'data')],
+    [State({'type':'desal-table', 'index': ALL}, 'data')], 
     prevent_initial_call=True)
 def run_desal_design(desalDesign, desalData):
 
@@ -507,7 +566,7 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     Output('model-loading', 'children'),
     Output('sim-button', 'children')],
     [Input('model-button','n_clicks')],
-    [State({'type':'solar-table', 'index': ALL}, 'data'),
+    [State({'type':'solar-table', 'index': ALL}, 'data'), 
     State({'type':'desal-table', 'index': ALL}, 'data'),
     State({'type':'finance-table', 'index': ALL}, 'data'),
     State({'type':'solar-table', 'index': ALL}, 'selected_row_ids'),
