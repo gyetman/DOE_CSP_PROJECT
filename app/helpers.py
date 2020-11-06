@@ -2,6 +2,26 @@
 
 import json
 
+def get_table_ids(pdict):
+    '''
+    NOTE: REWRITE TO PRINT TO SCREEN INSTEAD OF JSON!!
+    NOTE: REMOVE pdict
+    NOTE: ADD MODEL AS INPUT TO DETERMINE FILE TO READ 
+    NOTE: ADD LIST OF VARIABLES TO SEARCH FOR IN FILE
+
+    pull out the tab section and subsection that belongs to the 
+    dependent variable, create the table ID and write the information
+    to the dependencies json
+    '''
+    dvdict = dict()
+    dp = pdict['id']
+    dvdict[dp] = f"{pdict['Tab']}{pdict['Section']}{pdict['Subsection']}".replace(' ','_').replace('(','').replace(')','').replace('/','').replace('000General','General')
+    # update json file
+    try:
+        helpers.json_update(data=dvdict, filename=cfg.dependencies_json)
+    except FileNotFoundError:
+        helpers.initialize_json(data=dvdict, filename=cfg.dependencies_json)
+
 def index_in_lists_of_dicts(lists,key,value):
     '''
     checks lists to see if a key value exists in it
