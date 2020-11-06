@@ -314,6 +314,7 @@ model_tables_layout = html.Div([parameters_navbar, tabs])
 ### CALLBACKS
 #     
 
+#NOTE: EXAMPLE CALLBACK FOR CALLBACK DEPENDENCY - delete later
 # @app.callback(
 #     Output({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'},'data'),
 #     [Input({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp'),Input({'type':'solar-table', 'index': 'Power_CycleOperationGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp')],
@@ -341,8 +342,7 @@ for model, functions in pdeps.functions_per_model.items():
     # output_ids=set()
     # input_ids=set()
     model_type=pdeps.find_model_type(model)
-    for function in functions: 
-        print(f'len function inputs: {len(function["inputs"])}')       
+    for function in functions:     
         @app.callback(
             [Output({'type': f'{model_type}-table',
                     'index': pdeps.table_indexes[model][outp],
@@ -361,18 +361,15 @@ for model, functions in pdeps.functions_per_model.items():
                 for inp in function['inputs']],
             prevent_initial_call=True)
         def get_table_outputs(inputs, states):
-            print(f'inputs: {inputs}')
-            print(f'states: {states}')
-            print(f'type: {type(states)}')
-            for row in states:
-                try:
-                    if row['Name'] == 'adjust:periods':
-                        print('found row')
-                        row['Value'] = str(states[helpers.index_in_list_of_dicts(states,'Name','adjust:hourly')]['Value'] + .001)
-                    else:
-                        row['Value'] = float(row['Value']) ** 2
-                except(ValueError):
-                    row['Value'] = 99
+            # for row in states:
+            #     try:
+            #         if row['Name'] == 'adjust:periods':
+            #             print('found row')
+            #             row['Value'] = str(states[helpers.index_in_list_of_dicts(states,'Name','adjust:hourly')]['Value'] + .001)
+            #         else:
+            #             row['Value'] = float(row['Value']) ** 2
+            #     except(ValueError):
+            #         row['Value'] = 99
             return [states]
 
 @app.callback(
@@ -470,10 +467,9 @@ def create_tabs_and_tables(x):
 @app.callback(
     Output('desal-design-results', 'children'),
     [Input('run-desal-design', 'n_clicks')],
-    [State({'type':'desal-table', 'index': ALL}, 'data')], 
+    [State({'type':'desal-table', 'index': ALL, 'model': ALL}, 'data')], 
     prevent_initial_call=True)
 def run_desal_design(desalDesign, desalData):
-
     #create dict lookups for model and filenames
     app = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'])
@@ -566,12 +562,12 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     Output('model-loading', 'children'),
     Output('sim-button', 'children')],
     [Input('model-button','n_clicks')],
-    [State({'type':'solar-table', 'index': ALL}, 'data'), 
-    State({'type':'desal-table', 'index': ALL}, 'data'),
-    State({'type':'finance-table', 'index': ALL}, 'data'),
-    State({'type':'solar-table', 'index': ALL}, 'selected_row_ids'),
-    State({'type':'desal-table', 'index': ALL}, 'selected_row_ids'),
-    State({'type':'finance-table', 'index': ALL}, 'selected_row_ids')],
+    [State({'type':'solar-table', 'index': ALL, 'model': ALL}, 'data'), 
+    State({'type':'desal-table', 'index': ALL, 'model': ALL}, 'data'),
+    State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'data'),
+    State({'type':'solar-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
+    State({'type':'desal-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
+    State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'selected_row_ids')],
     prevent_initial_call=True)
     # For pulling the selected parametric variables???
     #  Input('datatable-row-ids', 'selected_row_ids'),
