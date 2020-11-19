@@ -55,6 +55,14 @@ style = dict(weight=1, opacity=1, color='white', fillColor=None, dashArray='3', 
 ctg = ["${:,.2f}".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["${:,.2f}+".format(classes[-1])]
 colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, width=300, height=30, position="bottomright")
 
+# Read in the model price from the right file via cfg and helpers
+# TODO: this needs to be part of a callback so that it dynamically updates 
+# after the model update! 
+app_json = helpers.json_load(app_config.app_json)
+model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
+finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
+model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
+
 
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
@@ -107,14 +115,39 @@ tx_counties = dl.GeoJSON(
     #     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_avg"),
 )
 
+
+# County price data
+print('county data')
+with open('./assets/us_counties2.geojson','r') as f:
+    counties= json.load(f)
+new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
+new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price]
+print(len(new_features))
+#new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
+
+counties['features'] = new_features
+
 us_counties = dl.GeoJSON(
-    url='/assets/us_counties2.geojson',
+    #url='/assets/us_counties2.geojson',
+    data=counties,
     id='water_prices',
     options=dict(style=dlx.choropleth.style),
          #hoverStyle=dict(weight=5, color='#666', dashArray=''),
          hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
 )
 
+
+# city price data
+with open('./assets/city_water_prices.geojson','r') as f:
+    city_prices = json.load(f)
+
+new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price]
+city_prices['features'] = new_features
+
+city_price_lyr = dl.GeoJSON(
+    data=city_prices,
+    id='city_water_prices',
+)
 # placeholder for mouseover data
 info = html.Div(children='Hover over a Feature',
                 className="mapinfo",
@@ -144,6 +177,7 @@ site_selection_map = dl.Map(
         dl.TileLayer(id=BASE_LAYER_ID),
         dl.ScaleControl(metric=True, imperial=True),
         us_counties,
+        city_price_lyr,
         colorbar,
         #dl.GeoJSON(url='/assets/tx_counties.geojson',id='counties'),
         #dl.GeoJSON(url='/assets/us_counties2.geojson',id='counties'),
@@ -183,6 +217,7 @@ radios = dbc.FormGroup([
         inline=True
     ),
 ],row=True)
+  ## TODO: make sure .3 factor includes more towns, 3 includes fewest. 
 
 def render_map():
     return html.Div([
@@ -192,11 +227,26 @@ def render_map():
                 site_selection_map,
                 dbc.Row([
                     dbc.Col(radios, width=7),
-                    dbc.Col(legend)
+                    dbc.Col(legend),
                 ]),
                 html.Div(id='next-button'),
             ],width=8),
             dbc.Col([
+                html.H4('Water Price:'),
+                html.P(f'Projected LCOW from desalination: ${model_price:,.2f}'),
+                html.P(f'Factor for changing LCOW: ', id='factor_tooltip'),
+                dcc.Input(
+                    id='price_factor',
+                    type="number",
+                    value=1.0,
+                    step = 0.1,
+                    min=0.3,
+                    max=3.0,
+                ),
+                dbc.Tooltip(
+                    "If subsidies, decrease LCOW. If additional costs, increase it. ",
+                    target='factor_tooltip'
+                ),
                 html.H3('Site details:', className='text-success'),
                 html.Div(id=SITE_DETAILS)
             ],width=3)

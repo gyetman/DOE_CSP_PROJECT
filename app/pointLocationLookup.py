@@ -233,7 +233,7 @@ def _generateMarkdown(theme, atts, pnt):
     mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day\n\n" 
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     desal_dist = _calcDistance(pnt,desal_pt)
-    mdown += f"##### Closest desalination plant ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
+    mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
@@ -246,7 +246,7 @@ def _generateMarkdown(theme, atts, pnt):
 
     canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
     canal_dist = _calcDistance(pnt,canal_pt)
-    mdown +=f"##### Closest Canal / piped water infrastructure ({canal_dist:,.1f} km) "
+    mdown +=f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) "
     canal_name = atts['canals']['properties'].get('Name')
     if canal_name is None:
         mdown += '\n\n'
@@ -256,7 +256,7 @@ def _generateMarkdown(theme, atts, pnt):
     # water proxy
     water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
     water_dist = _calcDistance(pnt,water_pt)
-    mdown +=f"##### Closest Water Proxy Location ({water_dist:,.1f} km) "
+    mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
     water_name = atts['waterProxy']['properties'].get('FULLNAME')
     if water_name is None:
         mdown+= '\n\n'
@@ -284,7 +284,7 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Condenser Heat: -\n\n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"###### Water Prices\n\n"
+    mdown += f"**Water Prices**\n\n"
     try:
         mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
     except:
