@@ -51,7 +51,7 @@ site_long=map_data['longitude']
 
 classes = [0.0,1.0,2.0,3.0,4.0,5.0]
 color_scale = ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']
-style = dict(weight=1, opacity=1, color='white', fillColor=None, dashArray='3', fillOpacity=0.7)
+style = dict(weight=1, opacity=1, color='white', fillColor=None, dashArray='3', fillOpacity=1)
 ctg = ["${:,.2f}".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["${:,.2f}+".format(classes[-1])]
 colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, width=300, height=30, position="bottomright")
 
@@ -107,22 +107,20 @@ canals = dl.GeoJSON(
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
-tx_counties = dl.GeoJSON(
-    url='/assets/tx_water_prices.geojson',
-    id='tx_water_prices',
+# tx_counties = dl.GeoJSON(
+#     url='/assets/tx_water_prices.geojson',
+#     id='tx_water_prices',
     #options=dict(style=dlx.choropleth.style),
          #hoverStyle=dict(weight=5, color='#666', dashArray=''),
     #     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_avg"),
-)
+#)
 
 
 # County price data
-print('county data')
 with open('./assets/us_counties2.geojson','r') as f:
     counties= json.load(f)
 new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
 new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price]
-print(len(new_features))
 #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
 
 counties['features'] = new_features
@@ -168,7 +166,7 @@ legend = html.Img(
     src='assets/legend_update2.png'
 )
 
-site_selection_map = dl.Map(
+site_results_map = dl.Map(
     id=MAP_ID, 
     style={'width': '100%', 'height': '500px'}, 
     center=[site_lat,site_long], 
@@ -176,6 +174,7 @@ site_selection_map = dl.Map(
     children=[
         dl.TileLayer(id=BASE_LAYER_ID),
         dl.ScaleControl(metric=True, imperial=True),
+        info,
         us_counties,
         city_price_lyr,
         colorbar,
@@ -224,12 +223,11 @@ def render_map():
         map_navbar,
         dbc.Row([
             dbc.Col([
-                site_selection_map,
+                site_results_map,
                 dbc.Row([
                     dbc.Col(radios, width=7),
                     dbc.Col(legend),
                 ]),
-                html.Div(id='next-button'),
             ],width=8),
             dbc.Col([
                 html.H4('Water Price:'),
@@ -272,12 +270,84 @@ def register_map(app):
     def set_theme_layer(theme):
         return theme_ids[theme]
 
+    @app.callback(Output(MAP_ID, 'children'),
+                [Input("price_factor",'value')],
+    )
+
+    def update_price_layers(price_factor):
+        ''' filter the Texas water data and City price data based on model or factor price '''
+        if not price_factor:
+            price_factor = 1.0 # handle null input
+        app_json = helpers.json_load(app_config.app_json)
+        model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
+        finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
+        model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
+        with open('./assets/us_counties2.geojson','r') as f:
+            counties= json.load(f)
+        new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
+        new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
+        print(len(new_features))
+        #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
+
+        counties['features'] = new_features
+
+        us_counties = dl.GeoJSON(
+            #url='/assets/us_counties2.geojson',
+            data=counties,
+            id='water_prices',
+            options=dict(style=dlx.choropleth.style),
+                 #hoverStyle=dict(weight=5, color='#666', dashArray=''),
+                 hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
+        )
+
+        with open('./assets/city_water_prices.geojson','r') as f:
+            city_prices = json.load(f)
+
+        new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price * price_factor]
+
+        city_prices['features'] = new_features
+
+        city_price_lyr = dl.GeoJSON(
+            data=city_prices,
+            id='city_water_prices',
+
+        )
+        markers = []
+        for pt in new_features:
+            markers.append(
+                dl.CircleMarker(center=(pt['properties']['Latitude'],pt['properties']['Longitude']), 
+                children=dl.Tooltip('Water Price: ${:0.2f}'.format(pt['properties']['Water_bill']))
+                
+            )
+        )
+        return(
+            dl.TileLayer(id=BASE_LAYER_ID),
+            dl.ScaleControl(metric=True, imperial=True),
+            us_counties,
+            dl.LayerGroup(markers),
+            colorbar,
+            info,
+            dl.GeoJSON(id="closest-facilities"),
+            # Site selected by user from map-data. 
+            dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
+                "iconUrl": "/assets/149059.svg",
+                "iconSize": [20, 20]
+                },
+                children=[
+                    dl.Tooltip("Selected site")
+            ],
+            )
+        )
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
-                  [Input(USER_POINT, 'position')],prevent_initial_call=False)
+                  [Input(USER_POINT, 'position'),
+                  State(SITE_DETAILS, 'children')],prevent_initial_call=False)
 
-    def get_point_info(lat_lng):
+    def get_point_info(lat_lng,site_details_state):
         ''' callback to update the site information based on the user selected point'''
+        # prevent the callback from triggering after initial load
+        if site_details_state:
+            raise PreventUpdate
         if lat_lng is None:
             return('Click on the Map to see site details.'), [0,0]
         else:
@@ -288,20 +358,6 @@ def register_map(app):
             canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
             water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
             return markdown, [desal,plant,canal,water]
-
-
-    @app.callback(
-        Output(component_id='next-button',component_property='children'),
-        [Input(component_id=SITE_DETAILS,component_property='children')],
-        [State(MAP_ID,'children')],
-        prevent_initial_call=True
-    )
-    def enableButton(site,site_properties):
-        ''' output to enable next button after a site has been selected '''
-        if site == 'Click on the Map to see site details.':
-            raise PreventUpdate
-        else:
-            raise PreventUpdate
 
 
     @app.callback(Output('info', 'children'),

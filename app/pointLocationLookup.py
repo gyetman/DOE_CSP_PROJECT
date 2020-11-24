@@ -266,7 +266,7 @@ def _generateMarkdown(theme, atts, pnt):
     power = atts['powerPlants']['properties']
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
     power_dist = _calcDistance(pnt,power_pt)
-    mdown += f"##### Closest power plant ({power_dist:,.1f} km), name: {power.get('Plant_name')}\n\n"
+    mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}\n\n"
 
     mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
     try:
@@ -300,7 +300,7 @@ def _generateMarkdown(theme, atts, pnt):
         
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         if state in regulatory_links.keys():
-            mdown += f"##### Regulatory Framework\n\n"
+            mdown += f"**Regulatory Framework\**n\n"
             link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
             mdown += link + '\n\n'
 
