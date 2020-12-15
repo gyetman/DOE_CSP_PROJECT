@@ -17,6 +17,7 @@ app.title = "Analysis Report"
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
               dbc.NavItem(dbc.NavLink("Report"), active=True),
+              dbc.NavItem(dbc.NavLink("Results Map", href='/results-map')),
               html.P(id='data-initialize')],
     brand="Analysis Report",
     color="primary",

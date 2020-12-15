@@ -76,7 +76,8 @@ time_series = [{'label':' Hourly', 'value':'Hourly'},
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
-              dbc.NavItem(dbc.NavLink("Report", href='/analysis-report'))],
+              dbc.NavItem(dbc.NavLink("Report", href='/analysis-report')),
+              dbc.NavItem(dbc.NavLink("Results Map", href='/results-map'))],
     brand="Model Results",
     color="primary",
     dark=True,

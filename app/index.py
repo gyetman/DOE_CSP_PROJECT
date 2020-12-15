@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from apps import analysis_report, chart_results, model_selection, model_parameters, parametric_charts
+from apps import analysis_report, chart_results, model_selection, model_parameters, parametric_charts, results_map
 
 layout = html.Div([
     dcc.Location(id='url', refresh=True),
@@ -24,6 +24,8 @@ def display_page(pathname):
         return parametric_charts.real_time_layout()
     elif pathname == '/analysis-report':
         return analysis_report.analysis_report_layout
+    elif pathname == '/results-map':
+        return results_map.render_map()
     else:
         return html.H5('404 URL not found')
 
