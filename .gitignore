@@ -37,6 +37,7 @@ app/gen.csv
 utils/test_read_rtree.py
 app/rtree.dat
 app/rtree.idx
+GISQueryData/*
 GISQueryData/CityWaterCosts.cpg
 GISQueryData/CityWaterCosts.dbf
 GISQueryData/CityWaterCosts.kdtree

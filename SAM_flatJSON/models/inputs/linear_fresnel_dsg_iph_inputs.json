@@ -33,6 +33,27 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "hl_mode",
+            "Label": "Heat loss model ('0' for polynomial heat loss model, '1' for evacuated tube heat loss model) ",
+            "Units": "",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Receiver Geometry and Heat Loss"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "specified_solar_multiple",
+            "Label": "Target solar multiple",
+            "Units": "",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
+        },		
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "P_turb_des",
             "Label": "Heat sink inlet pressure",
             "Units": "bar",

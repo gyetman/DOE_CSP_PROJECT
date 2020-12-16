@@ -30,8 +30,8 @@ def index_in_lists_of_dicts(lists,key,value):
 
     none: index 0 can be returned, so use explicit tests with result
     '''
-    for l in lists:
-        for index, d in enumerate(l):
+    for l in range(len(lists)):
+        for index, d in enumerate(lists[l]):
             if d[key] == value:
                 return l,index
     return None,None

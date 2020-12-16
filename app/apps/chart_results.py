@@ -34,7 +34,10 @@ solar_names = {'linear_fresnel_dsg_iph':('System power generated','Receiver mass
                'tcslinear_fresnel':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
                'tcsdirect_steam':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
                'trough_physical_process_heat':('Heat sink thermal power','Field total mass flow delivered', 'Receiver thermal losses','Resource Beam normal irradiance'),
-               'pvsamv1':('System power generated','Irradiance GHI from weather file')}    
+               'pvsamv1':('System power generated','Irradiance GHI from weather file'),
+               'tcstrough_physical':('Steam mass flow rate', 'Waste heat generation'),
+               'tcsMSLF':('Steam mass flow rate', 'Waste heat generation'),
+               'tcsmolten_salt':('Steam mass flow rate', 'Waste heat generation')}    
 desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),
                'RO': ('Water production','Storage status','Fossil fuel usage'),
                'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),

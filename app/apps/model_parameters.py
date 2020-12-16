@@ -313,48 +313,65 @@ model_tables_layout = html.Div([parameters_navbar, tabs])
 #
 ### CALLBACKS
 #     
+
+#NOTE: EXAMPLE CALLBACK FOR CALLBACK DEPENDENCY - delete later
+# @app.callback(
+#     Output({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'},'data'),
+#     [Input({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp'),Input({'type':'solar-table', 'index': 'Power_CycleOperationGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp')],
+#     [State({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data')],
+#     prevent_initial_call=True)
+# def upd_tbl(tblTime, tblTime2, tblData):
+#     inputs=dash.callback_context.inputs
+#     triggered=dash.callback_context.triggered
+#     print(tblData)
+#     for row in tblData:
+#         try:
+#             if row['Name'] == 'adjust:periods':
+#                 print('found row')
+#                 row['Value'] = str(tblData[helpers.index_in_list_of_dicts(tblData,'Name','adjust:hourly')]['Value'] + .001)
+#             else:
+#                 row['Value'] = float(row['Value']) ** 2
+#         except(ValueError):
+#             row['Value'] = 99
+#     print(f'states: {tblData}')
+#     print(f'type: {type(tblData)}')
+#     return tblData
+
+# NOTE: we'll want to eventually unpack the dict for the function call... 
 for model, functions in pdeps.functions_per_model.items():
+    # output_ids=set()
+    # input_ids=set()
     model_type=pdeps.find_model_type(model)
-    for function in functions:
+    for function in functions:    
         @app.callback(
             [Output({'type': f'{model_type}-table',
-                    'index': pdeps.table_indexes[model][outp],
+                    'index': outp,
                     'model': model},
                     'data')
-                for outp in function['outputs']],
+                for outp in function['output_ids']],
             [Input({'type': f'{model_type}-table',
-                    'index': pdeps.table_indexes[model][inp],
+                    'index': inp,
                     'model': model},
                     'data_timestamp')
-                for inp in function['inputs']],
+                for inp in function['input_ids']],
             [State({'type': f'{model_type}-table',
-                    'index': pdeps.table_indexes[model][inp],
+                    'index': state,
                     'model': model},
                     'data') 
-                for inp in function['inputs'] + function['outputs']],
+                for state in function['input_ids'] + function['output_ids']],
             prevent_initial_call=True)
-        def get_table_outputs(*states):
-            '''
-            determines the function needed to update the output
-            table then sends the tables to that function using
-            function_switcher
+        def get_table_outputs(*states, function = function):
 
-            states is a tuple that contains (in order):
-            input table timestamps,
-            input table data in list of dicts format,
-            output table data in list of dict format
-            '''
-            ctx = dash.callback_context
-            function_name = pdeps.get_function(context=ctx.outputs_list)
-            tables=[state for state in states if type(state)==list]
-            return pdeps.function_switcher(function_name,tables)
+            intables = [state for state in states if type(state)==list]
+            return pdeps.function_switcher(function['function'],intables)
 
+                
 @app.callback(
     Output('tabs-card', 'children'),
     [Input('tabs-data-initialize', 'children')]
 )
 def create_tabs_and_tables(x):
-    '''return the tabs belonging to the collapse button'''
+    # return the tabs belonging to the collapse button
 
     #create dict lookups for model and filenames
     app = helpers.json_load(cfg.app_json)
@@ -385,6 +402,12 @@ def create_tabs_and_tables(x):
     # find the weather file table and update
     if weather_file:
         wf_index = helpers.index_in_list_of_dicts(solar_model_vars,'Name','file_name')
+        #???
+        # NOT SURE IF THIS IS THE RIGHT INDEX
+        # wf_table = solar_model_vars[wf_index]
+        # wf_table[wf_index]['Value']=str(weather_file)
+        #SO INSTEAD OF UPDATING TABLE THAT NO LONGER EXIST WE 
+        #SHOULD PROBABLY JUST...
         solar_model_vars[wf_index]['Value']=str(weather_file)
 
     # find the TDS Feed Concentration table and update
@@ -540,6 +563,8 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     State({'type':'desal-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
     State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'selected_row_ids')],
     prevent_initial_call=True)
+    # For pulling the selected parametric variables???
+    #  Input('datatable-row-ids', 'selected_row_ids'),
 def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, finTableData,
                                          selectedSolarRows, selectedDesalRows, selectedFinRows  ): 
     '''
@@ -562,6 +587,8 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         finance_output_vars = dict()
         parametric_info = dict()
 
+
+
         #NOTE need to transform the selectedXRows data to simple lists or sets
         # so that we can do a simple inclusion case  i.e. if x in y:
         # Collect selected variables from all tables into a single list
@@ -579,6 +606,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                 selected_fin.extend(fR)
                 
         # pull out variable names and values and add to new dict
+
         for solTable in solTableData:
             for sRow in solTable:
                 if sRow['id'] in selected_solar:
@@ -595,6 +623,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                 if fRow['id'] in selected_fin:
                     parametric_info[fRow['id']] = [fRow['Min'], fRow['Max'], fRow['Interval'],'finance', fRow['Label'], fRow['Units']] 
                 finance_output_vars[fRow['Name']]=convert_strings_to_literal(fRow)
+
 
         #create the solar JSON file that will be the input to the model
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')

@@ -1,15 +1,15 @@
-#Created with SAM version 2018.11.11
+#Created with SAM version 2020.2.29
 import string, sys, struct, os
 from ctypes import *
-c_number = c_float # must be c_double or c_float depending on how defined in sscapi.h
+c_number = c_double # must be c_double or c_double depending on how defined in sscapi.h
 class PySSC:
 	def __init__(self):
 		if sys.platform == 'win32' or sys.platform == 'cygwin':
-			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dll") 
+			self.pdll = CDLL("G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.dll") 
 		elif sys.platform == 'darwin':
-			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dylib") 
+			self.pdll = CDLL("G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.dylib") 
 		elif sys.platform == 'linux2':
-			self.pdll = CDLL('D:/Drive/Thesis/SAM_2018.11.11/Simulations/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
+			self.pdll = CDLL('G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
 		else:
 			print ('Platform not supported ', sys.platform)
 	INVALID=0
@@ -57,7 +57,7 @@ class PySSC:
 		f = open(fn, 'rb'); 
 		data = []; 
 		for line in f : 
-			data.extend([n for n in map(float, line.split(b','))])
+			data.extend([n for n in map(double, line.split(b','))])
 		f.close(); 
 		return self.data_set_array(p_data, name, data); 
 	def data_set_matrix(self,p_data,name,mat):
@@ -75,7 +75,7 @@ class PySSC:
 		f = open(fn, 'rb'); 
 		data = []; 
 		for line in f : 
-			lst = ([n for n in map(float, line.split(b','))])
+			lst = ([n for n in map(double, line.split(b','))])
 			data.append(lst);
 		f.close(); 
 		return self.data_set_matrix(p_data, name, data); 
@@ -104,7 +104,7 @@ class PySSC:
 		for r in range(nrows.value):
 			row = []
 			for c in range(ncols.value):
-				row.append( float(parr[idx]) )
+				row.append( double(parr[idx]) )
 				idx = idx + 1
 			mat.append(row)
 		return mat

@@ -2,11 +2,12 @@
     "tcsmolten_salt": [
         {
             "DataType": "SSC_STRING",
-            "Name": "solar_resource_file",
+            "Name": "file_name",
             "Label": "local weather file path",
             "Group": "Weather",
             "Require": "?",
-            "Costraint": "LOCAL_FILE"
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Location and Resource"
         },
         {
             "DataType": "SSC_TABLE",
@@ -44,7 +45,10 @@
             "Name": "gross_net_conversion_factor",
             "Label": "Estimated gross to net conversion factor",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -52,7 +56,9 @@
             "Label": "Heliostat width",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -60,7 +66,9 @@
             "Label": "Heliostat height",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -68,7 +76,9 @@
             "Label": "Heliostat optical error",
             "Units": "mrad",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -76,7 +86,9 @@
             "Label": "Heliostat active frac.",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -84,7 +96,9 @@
             "Label": "Ratio of Reflective Area to Profile",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -92,7 +106,9 @@
             "Label": "Heliostat reflectance",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -100,7 +116,9 @@
             "Label": "Receiver absorptance",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Heat Transfer Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -108,21 +126,27 @@
             "Label": "Receiver design heatloss",
             "Units": "kW/m2",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Flux Modeling Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "land_max",
             "Label": "Land max boundary",
             "Group": "heliostat",
-            "Require": "?=7.5"
+            "Require": "?=7.5",
+            "Tab": "Heliostat Field",
+            "Section": "Solar Field Layout Constraints"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "land_min",
             "Label": "Land min boundary",
             "Group": "heliostat",
-            "Require": "?=0.75"
+            "Require": "?=0.75",
+            "Tab": "Heliostat Field",
+            "Section": "Solar Field Layout Constraints"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -146,7 +170,9 @@
             "Label": "Design-point DNI",
             "Units": "W/m2",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Heliostat Field"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -154,7 +180,9 @@
             "Label": "Heliostat startup energy",
             "Units": "kWe-hr",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -162,7 +190,9 @@
             "Label": "Heliostat tracking energy",
             "Units": "kWe",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -170,7 +200,9 @@
             "Label": "Stow/deploy elevation",
             "Units": "deg",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -178,7 +210,9 @@
             "Label": "Max. wind velocity",
             "Units": "m/s",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -232,70 +266,90 @@
             "Name": "c_atm_0",
             "Label": "Attenuation coefficient 0",
             "Group": "heliostat",
-            "Require": "?=0.006789"
+            "Require": "?=0.006789",
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_1",
             "Label": "Attenuation coefficient 1",
             "Group": "heliostat",
-            "Require": "?=0.1046"
+            "Require": "?=0.1046",
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_2",
             "Label": "Attenuation coefficient 2",
             "Group": "heliostat",
-            "Require": "?=-0.0107"
+            "Require": "?=-0.0107",
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_3",
             "Label": "Attenuation coefficient 3",
             "Group": "heliostat",
-            "Require": "?=0.002845"
+            "Require": "?=0.002845",
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_facet_x",
             "Label": "Number of heliostat facets - X",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_facet_y",
             "Label": "Number of heliostat facets - Y",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "focus_type",
             "Label": "Heliostat focus method",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "cant_type",
             "Label": "Heliostat cant method",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_flux_days",
             "Label": "No. days in flux map lookup",
             "Group": "heliostat",
-            "Require": "?=8"
+            "Require": "?=8",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Flux Modeling Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "delta_flux_hrs",
             "Label": "Hourly frequency in flux map lookup",
             "Group": "heliostat",
-            "Require": "?=1"
+            "Require": "?=1",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Flux Modeling Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -303,7 +357,9 @@
             "Label": "Water usage per wash",
             "Units": "L/m2_aper",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -311,7 +367,9 @@
             "Label": "Mirror washing frequency",
             "Units": "none",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -332,7 +390,8 @@
             "Name": "calc_fluxmaps",
             "Label": "Include fluxmap calculations",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -340,14 +399,16 @@
             "Label": "Tower fixed cost",
             "Units": "$",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "tower_exp",
             "Label": "Tower cost scaling exponent",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -355,21 +416,24 @@
             "Label": "Receiver reference cost",
             "Units": "$",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_ref_area",
             "Label": "Receiver reference area for cost scale",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_cost_exp",
             "Label": "Receiver cost scaling exponent",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -377,7 +441,8 @@
             "Label": "Site improvement cost",
             "Units": "$/m2",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -385,7 +450,8 @@
             "Label": "Heliostat field cost",
             "Units": "$/m2",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -393,7 +459,8 @@
             "Label": "Power cycle specific cost",
             "Units": "$/kWe",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -401,7 +468,8 @@
             "Label": "BOS specific cost",
             "Units": "$/kWe",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -409,7 +477,8 @@
             "Label": "Thermal energy storage cost",
             "Units": "$/kWht",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -417,7 +486,8 @@
             "Label": "Total land area cost",
             "Units": "$/acre",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -425,7 +495,8 @@
             "Label": "Contingency for cost overrun",
             "Units": "%",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -433,7 +504,8 @@
             "Label": "Sales tax rate",
             "Units": "%",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -441,7 +513,8 @@
             "Label": "Percent of cost to which sales tax applies",
             "Units": "%",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -449,7 +522,8 @@
             "Label": "Solar field fixed cost",
             "Units": "$",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -457,49 +531,60 @@
             "Label": "Fossil system specific cost",
             "Units": "$/kWe",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "flux_max",
             "Label": "Maximum allowable flux",
             "Group": "heliostat",
-            "Require": "?=1000"
+            "Require": "?=1000",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Flux Modeling Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "opt_init_step",
             "Label": "Optimization initial step size",
             "Group": "heliostat",
-            "Require": "?=0.05"
+            "Require": "?=0.05",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "opt_max_iter",
             "Label": "Max. number iteration steps",
             "Group": "heliostat",
-            "Require": "?=200"
+            "Require": "?=200",
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "opt_conv_tol",
             "Label": "Optimization convergence tol",
             "Group": "heliostat",
-            "Require": "?=0.001"
+            "Require": "?=0.001",
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "opt_flux_penalty",
             "Label": "Optimization flux overage penalty",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "opt_algorithm",
             "Label": "Optimization algorithm",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -507,7 +592,8 @@
             "Label": "EPC cost per acre",
             "Units": "$/acre",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -515,7 +601,8 @@
             "Label": "EPC cost percent of direct",
             "Units": "%",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -523,7 +610,8 @@
             "Label": "EPC cost per watt",
             "Units": "$/W",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -531,7 +619,8 @@
             "Label": "EPC fixed",
             "Units": "$",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -539,7 +628,8 @@
             "Label": "PLM cost percent of direct",
             "Units": "%",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -547,7 +637,8 @@
             "Label": "PLM cost per watt",
             "Units": "$/W",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -555,7 +646,8 @@
             "Label": "PLM fixed",
             "Units": "$",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -563,14 +655,18 @@
             "Label": "Fixed land area",
             "Units": "acre",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Land Area"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "csp.pt.sf.land_overhead_factor",
             "Label": "Land overhead factor",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Heliostat Field",
+            "Section": "Land Area"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -578,7 +674,9 @@
             "Label": "Cold HTF inlet temperature at design conditions",
             "Units": "C",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Tower and Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -586,7 +684,9 @@
             "Label": "Hot HTF outlet temperature at design conditions",
             "Units": "C",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Tower and Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -594,7 +694,9 @@
             "Label": "Reference output electric power at design condition",
             "Units": "MW",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -602,7 +704,9 @@
             "Label": "Power cycle efficiency at design",
             "Units": "none",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -610,7 +714,9 @@
             "Label": "Equivalent full-load thermal storage hours",
             "Units": "hr",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Thermal Storage"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -618,7 +724,9 @@
             "Label": "Solar Multiple",
             "Units": "-",
             "Group": "system_design",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Heliostat Field"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -626,7 +734,9 @@
             "Label": "Number of individual panels on the receiver",
             "Group": "receiver",
             "Require": "*",
-            "Costraint": "INTEGER"
+            "Costraint": "INTEGER",
+            "Tab": "Tower and Receiver",
+            "Section": "Tower and Receiver Dimensions"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -634,7 +744,9 @@
             "Label": "The outer diameter of an individual receiver tube",
             "Units": "mm",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Heat Transfer Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -642,21 +754,27 @@
             "Label": "The wall thickness of a single receiver tube",
             "Units": "mm",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Heat Transfer Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "mat_tube",
             "Label": "2: Stainless AISI316",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Materials and Flow"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_htf",
             "Label": "17: Salt (60% NaNO3, 40% KNO3) 10: Salt (46.5% LiF 11.5% NaF 42% KF) 50: Lookup tables",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Materials and Flow"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -664,14 +782,18 @@
             "Label": "User defined field fluid property data",
             "Units": "-",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Materials and Flow"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "Flow_type",
             "Label": "Flow pattern: see figure on SAM Receiver page",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Materials and Flow"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -685,21 +807,27 @@
             "Name": "epsilon",
             "Label": "The emissivity of the receiver surface coating",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Heat Transfer Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "hl_ffact",
             "Label": "The heat loss factor (thermal loss fudge factor)",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Heat Transfer Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "f_rec_min",
             "Label": "Minimum receiver mass flow rate turn down fraction",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Design and Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -707,28 +835,36 @@
             "Label": "Fixed startup delay time for the receiver",
             "Units": "hr",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Design and Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_qf_delay",
             "Label": "Energy-based rcvr startup delay (fraction of rated thermal power)",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Design and Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "csp.pt.rec.max_oper_frac",
             "Label": "Maximum receiver mass flow rate fraction",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Design and Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "eta_pump",
             "Label": "Receiver HTF pump efficiency",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Design and Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -736,14 +872,18 @@
             "Label": "Thermal loss per meter of piping",
             "Units": "Wt/m",
             "Group": "tower",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Piping Losses"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "piping_length_mult",
             "Label": "Piping length multiplier",
             "Group": "tower",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Piping Losses"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -751,7 +891,9 @@
             "Label": "Piping constant length",
             "Units": "m",
             "Group": "tower",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Tower and Receiver",
+            "Section": "Piping Losses"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -759,7 +901,9 @@
             "Label": "Initial fraction of avail. vol that is hot",
             "Units": "%",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -767,7 +911,9 @@
             "Label": "Total height of tank (height of HTF when tank is full",
             "Units": "m",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -775,7 +921,9 @@
             "Label": "Rated heater capacity for cold tank heating",
             "Units": "MW",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -783,7 +931,9 @@
             "Label": "Loss coefficient from the tank",
             "Units": "W/m2-K",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -792,7 +942,9 @@
             "Units": "-",
             "Group": "TES",
             "Require": "*",
-            "Costraint": "INTEGER"
+            "Costraint": "INTEGER",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -800,7 +952,9 @@
             "Label": "Minimum allowable cold tank HTF temp",
             "Units": "C",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -808,7 +962,9 @@
             "Label": "Minimum allowable HTF height in storage tank",
             "Units": "m",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -816,7 +972,9 @@
             "Label": "Minimum allowable hot tank HTF temp",
             "Units": "C",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -824,7 +982,9 @@
             "Label": "Rated heater capacity for hot tank heating",
             "Units": "MW",
             "Group": "TES",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -833,7 +993,8 @@
             "Units": "-",
             "Group": "powerblock",
             "Require": "?=0",
-            "Costraint": "INTEGER"
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -841,7 +1002,9 @@
             "Label": "Pumping power to move 1kg of HTF through PB loop",
             "Units": "kW/kg",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -849,7 +1012,9 @@
             "Label": "Time needed for power block startup",
             "Units": "hr",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -857,7 +1022,9 @@
             "Label": "Fraction of design thermal power needed for startup",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -865,7 +1032,9 @@
             "Label": "Maximum turbine over design operation fraction",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -873,7 +1042,9 @@
             "Label": "Minimum turbine operation fraction before shutdown",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -881,7 +1052,9 @@
             "Label": "Fraction of thermal power required for standby",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "General Design Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -889,7 +1062,9 @@
             "Label": "Reference condenser cooling water inlet/outlet T diff",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -897,7 +1072,9 @@
             "Label": "Reference ambient temperature at design point",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -905,7 +1082,9 @@
             "Label": "Boiler operating pressure",
             "Units": "bar",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -913,7 +1092,9 @@
             "Label": "cooling tech type: 1=evaporative, 2=air, 3=hybrid",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -921,7 +1102,9 @@
             "Label": "Cooling tower approach temperature",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -929,7 +1112,9 @@
             "Label": "ITD at design for dry system",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -937,7 +1122,9 @@
             "Label": "Condenser pressure ratio",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -945,7 +1132,9 @@
             "Label": "Power block blowdown steam fraction ",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -953,7 +1142,9 @@
             "Label": "Minimum condenser pressure",
             "Units": "inHg",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -962,7 +1153,9 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "pc_config=0",
-            "Costraint": "INTEGER"
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -970,7 +1163,9 @@
             "Label": "TOU array of fractions indicating wet cooling share for hybrid cooling",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -978,7 +1173,9 @@
             "Label": "Turbine inlet pressure control 1: Fixed, 3: Sliding",
             "Units": "-",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": " Rankine Cycle Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -986,7 +1183,9 @@
             "Label": "Ambient temperature at user-defined power cycle design point",
             "Units": "C",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -994,7 +1193,9 @@
             "Label": "Percent of user-defined power cycle design gross output consumed by cooling",
             "Units": "%",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1002,7 +1203,9 @@
             "Label": "Mass flow rate of water required at user-defined power cycle design point",
             "Units": "kg/s",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1010,7 +1213,9 @@
             "Label": "Low level HTF inlet temperature for T_amb parametric",
             "Units": "C",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1018,7 +1223,9 @@
             "Label": "High level HTF inlet temperature for T_amb parametric",
             "Units": "C",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1026,7 +1233,9 @@
             "Label": "Low level ambient temperature for HTF mass flow rate parametric",
             "Units": "C",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1034,7 +1243,9 @@
             "Label": "High level ambient temperature for HTF mass flow rate parametric",
             "Units": "C",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1042,7 +1253,9 @@
             "Label": "Low level normalized HTF mass flow rate for T_HTF parametric",
             "Units": "-",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1050,42 +1263,54 @@
             "Label": "High level normalized HTF mass flow rate for T_HTF parametric",
             "Units": "-",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ud_T_htf_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on T_htf_hot [C]",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ud_T_amb_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on T_amb [C]",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ud_m_dot_htf_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on m_dot_htf [ND]",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ud_ind_od",
             "Label": "Off design user-defined power cycle performance as function of T_htf, m_dot_htf [ND], and T_amb",
             "Group": "user_defined_PC",
-            "Require": "pc_config=1"
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "sco2_cycle_config",
             "Label": "1 = recompression, 2 = partial cooling",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1093,7 +1318,9 @@
             "Label": "Isentropic efficiency of compressor(s)",
             "Units": "none",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1101,7 +1328,9 @@
             "Label": "Isentropic efficiency of turbine",
             "Units": "none",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1109,7 +1338,9 @@
             "Label": "Maximum recuperator effectiveness",
             "Units": "none",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1117,7 +1348,9 @@
             "Label": "Upper pressure limit in cycle",
             "Units": "MPa",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1125,7 +1358,9 @@
             "Label": "Design temperature difference in PHX",
             "Units": "C",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1133,7 +1368,9 @@
             "Label": "% of net cycle output used for fan power at design",
             "Units": "%",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1141,7 +1378,9 @@
             "Label": "Ambient temperature at design point",
             "Units": "C",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1149,7 +1388,9 @@
             "Label": "Temperature difference between main compressor CO2 inlet and ambient air",
             "Units": "C",
             "Group": "sco2_pc",
-            "Require": "pc_config=2"
+            "Require": "pc_config=2",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1157,7 +1398,9 @@
             "Label": "Is sco2 off-design performance preprocessed? 1= yes",
             "Units": "-",
             "Group": "sco2_pc_pre",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1165,7 +1408,9 @@
             "Label": "HTF cold temperature from sCO2 cycle des, may be different than T_htf_cold_des",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1173,7 +1418,9 @@
             "Label": "Low level HTF inlet temperature for T_amb parametric",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1181,7 +1428,9 @@
             "Label": "High level HTF inlet temperature for T_amb parametric",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1189,7 +1438,9 @@
             "Label": "Low level ambient temperature for HTF mass flow rate parametric",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1197,7 +1448,9 @@
             "Label": "High level ambient temperature for HTF mass flow rate parametric",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1205,7 +1458,9 @@
             "Label": "Low level normalized HTF mass flow rate for T_HTF parametric",
             "Units": "-",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1213,28 +1468,36 @@
             "Label": "High level normalized HTF mass flow rate for T_HTF parametric",
             "Units": "-",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sco2ud_T_htf_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on T_htf_hot [C]",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sco2ud_T_amb_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on T_amb [C]",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "sco2ud_m_dot_htf_ind_od",
             "Label": "Off design table of user-defined power cycle performance formed from parametric on m_dot_htf [ND]",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1242,7 +1505,9 @@
             "Label": "Preprocess input: upper pressure limit",
             "Units": "MPa",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1250,7 +1515,9 @@
             "Label": "Preprocess input: gross power output",
             "Units": "MWe",
             "Meta": "sco2_pc_pre",
-            "Group": "is_sco2_preprocess=1"
+            "Group": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1258,7 +1525,9 @@
             "Label": "Preprocess input: design ambient temperature",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1266,7 +1535,9 @@
             "Label": "Preprocess input: compressor approach temperature",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1274,7 +1545,9 @@
             "Label": "Preprocess input: HTF hot temperature",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1282,35 +1555,45 @@
             "Label": "Preprocess input: PHX approach temperature",
             "Units": "C",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "_sco2_design_eff",
             "Label": "Preprocess input: cycle thermal efficiency",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "_sco2_eta_c",
             "Label": "Preprocess input: compressor isentropic efficiency",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "_sco2_eta_t",
             "Label": "Preprocess input: turbine isentropic efficiency",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "_sco2_recup_eff_max",
             "Label": "Preprocess input: max recuperator effectiveness",
             "Group": "sco2_pc_pre",
-            "Require": "is_sco2_preprocess=1"
+            "Require": "is_sco2_preprocess=1",
+            "Tab": "Power Cycle",
+            "Section": "Supercritical Carbon Dioxide Power Cycle"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1350,7 +1633,9 @@
             "Label": "Fixed parasitic load - runs at all times",
             "Units": "MWe/MWcap",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1358,7 +1643,9 @@
             "Label": "Aux heater, boiler parasitic",
             "Units": "MWe/MWcap",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1366,7 +1653,9 @@
             "Label": "Aux heater, boiler parasitic - multiplying fraction",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1374,7 +1663,9 @@
             "Label": "Aux heater, boiler parasitic - constant coefficient",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1382,7 +1673,9 @@
             "Label": "Aux heater, boiler parasitic - linear coefficient",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1390,7 +1683,9 @@
             "Label": "Aux heater, boiler parasitic - quadratic coefficient",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1398,7 +1693,9 @@
             "Label": "Balance of plant parasitic power fraction",
             "Units": "MWe/MWcap",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1406,7 +1703,9 @@
             "Label": "Balance of plant parasitic power fraction - mult frac",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1414,7 +1713,9 @@
             "Label": "Balance of plant parasitic power fraction - const coeff",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1422,7 +1723,9 @@
             "Label": "Balance of plant parasitic power fraction - linear coeff",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1430,7 +1733,9 @@
             "Label": "Balance of plant parasitic power fraction - quadratic coeff",
             "Units": "none",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1438,7 +1743,9 @@
             "Label": "Dispatch logic for turbine load fraction",
             "Units": "-",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1446,7 +1753,9 @@
             "Label": "12x24 CSP operation Time-of-Use Weekday schedule",
             "Units": "-",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1454,7 +1763,9 @@
             "Label": "12x24 CSP operation Time-of-Use Weekend schedule",
             "Units": "-",
             "Group": "sys_ctrl",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Control",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1462,7 +1773,9 @@
             "Label": "Allow dispatch optimization?",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1470,7 +1783,9 @@
             "Label": "Time horizon for dispatch optimization",
             "Units": "hour",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1478,7 +1793,9 @@
             "Label": "Frequency for dispatch optimization calculations",
             "Units": "hour",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1486,7 +1803,9 @@
             "Label": "Time steps per hour for dispatch optimization calculations",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=1"
+            "Require": "?=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1494,7 +1813,9 @@
             "Label": "Max. no. dispatch optimization iterations",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1502,7 +1823,9 @@
             "Label": "Max. dispatch optimization solve duration",
             "Units": "s",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1510,7 +1833,9 @@
             "Label": "Dispatch optimization solution tolerance",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1518,7 +1843,9 @@
             "Label": "Dispatch optimization B&B heuristic",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=-1"
+            "Require": "?=-1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1526,7 +1853,9 @@
             "Label": "Dispatch optimization reporting level",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=-1"
+            "Require": "?=-1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1534,7 +1863,9 @@
             "Label": "Dispatch optimization presolve heuristic",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=-1"
+            "Require": "?=-1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1542,7 +1873,9 @@
             "Label": "Dispatch optimization scaling heuristic",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=-1"
+            "Require": "?=-1",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1550,7 +1883,9 @@
             "Label": "Dispatch optimization future time discounting factor",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0.99"
+            "Require": "?=0.99",
+            "Tab": "System Control",
+            "Section": "Dispatch Optimization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1558,7 +1893,8 @@
             "Label": "Write AMPL data files for dispatch run",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_STRING",
@@ -1566,7 +1902,8 @@
             "Label": "AMPL data file directory",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=''"
+            "Require": "?=''",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1574,7 +1911,8 @@
             "Label": "Run dispatch optimization with external AMPL engine",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_STRING",
@@ -1582,7 +1920,8 @@
             "Label": "System command to run AMPL code",
             "Units": "-",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?='ampl sdk_solution.run'"
+            "Require": "?='ampl sdk_solution.run'",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1590,7 +1929,8 @@
             "Label": "Receiver startup cost",
             "Units": "$",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1598,7 +1938,8 @@
             "Label": "Cycle startup cost",
             "Units": "$",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1606,7 +1947,8 @@
             "Label": "Dispatch cycle production change penalty",
             "Units": "$/kWe-change",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_dispatch=1"
+            "Require": "is_dispatch=1",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1614,7 +1956,8 @@
             "Label": "Receiver standby energy consumption",
             "Units": "kWt",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=9e99"
+            "Require": "?=9e99",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1622,14 +1965,16 @@
             "Label": "Receiver heat trace energy consumption during startup",
             "Units": "kWe-hr",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "is_wlim_series",
             "Label": "Use time-series net electricity generation limits",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1637,104 +1982,119 @@
             "Label": "Time series net electicity generation limits",
             "Units": "kWe",
             "Group": "sys_ctrl_disp_opt",
-            "Require": "is_wlim_series=1"
+            "Require": "is_wlim_series=1",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_sched_weekday",
             "Label": "12x24 PPA pricing Weekday schedule",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_sched_weekend",
             "Label": "12x24 PPA pricing Weekend schedule",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor1",
             "Label": "Dispatch payment factor 1",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor2",
             "Label": "Dispatch payment factor 2",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor3",
             "Label": "Dispatch payment factor 3",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor4",
             "Label": "Dispatch payment factor 4",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor5",
             "Label": "Dispatch payment factor 5",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor6",
             "Label": "Dispatch payment factor 6",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor7",
             "Label": "Dispatch payment factor 7",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor8",
             "Label": "Dispatch payment factor 8",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dispatch_factor9",
             "Label": "Dispatch payment factor 9",
             "Group": "tou",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "is_dispatch_series",
             "Label": "Use time-series dispatch factors",
             "Group": "tou",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_series",
             "Label": "Time series dispatch factors",
-            "Group": "tou"
+            "Group": "tou",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "A_sf_in",
             "Label": "Solar Field Area",
             "Units": "m^2",
-            "Group": "receiver"
+            "Group": "receiver",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1742,7 +2102,8 @@
             "Label": "Receiver height",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1750,7 +2111,8 @@
             "Label": "The overall outer diameter of the receiver",
             "Units": "m",
             "Group": "receiver",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1758,21 +2120,24 @@
             "Label": "Tower height",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "N_hel",
             "Label": "Number of heliostats",
             "Units": "-",
-            "Group": "heliostat"
+            "Group": "heliostat",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "helio_positions",
             "Label": "Heliostat position table",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1780,7 +2145,8 @@
             "Label": "Base land area occupied by heliostats",
             "Units": "acre",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1788,7 +2154,8 @@
             "Label": "Interest rate, loan 1",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1796,7 +2163,8 @@
             "Label": "Interest rate, loan 2",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1804,7 +2172,8 @@
             "Label": "Interest rate, loan 3",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1812,7 +2181,8 @@
             "Label": "Interest rate, loan 4",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1820,42 +2190,48 @@
             "Label": "Interest rate, loan 5",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "const_per_months1",
             "Label": "Months prior to operation, loan 1",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "const_per_months2",
             "Label": "Months prior to operation, loan 2",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "const_per_months3",
             "Label": "Months prior to operation, loan 3",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "const_per_months4",
             "Label": "Months prior to operation, loan 4",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "const_per_months5",
             "Label": "Months prior to operation, loan 5",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1863,7 +2239,8 @@
             "Label": "Percent of tot. installed cost, loan 1",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1871,7 +2248,8 @@
             "Label": "Percent of tot. installed cost, loan 2",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1879,7 +2257,8 @@
             "Label": "Percent of tot. installed cost, loan 3",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1887,7 +2266,8 @@
             "Label": "Percent of tot. installed cost, loan 4",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1895,7 +2275,8 @@
             "Label": "Percent of tot. installed cost, loan 5",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1903,7 +2284,8 @@
             "Label": "Upfront fee on principal, loan 1",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1911,7 +2293,8 @@
             "Label": "Upfront fee on principal, loan 2",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1919,7 +2302,8 @@
             "Label": "Upfront fee on principal, loan 3",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1927,7 +2311,8 @@
             "Label": "Upfront fee on principal, loan 4",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1935,7 +2320,8 @@
             "Label": "Upfront fee on principal, loan 5",
             "Units": "%",
             "Group": "financial parameters",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1944,7 +2330,9 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100"
+            "Costraint": "MAX=100",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1953,7 +2341,9 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760"
+            "Costraint": "LENGTH=8760",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1963,7 +2353,9 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3"
+            "Costraint": "COLS=3",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",

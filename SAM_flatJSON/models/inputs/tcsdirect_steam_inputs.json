@@ -6,8 +6,8 @@
             "Label": "local weather file path",
             "Group": "Weather",
             "Require": "*",
-            "Constraints": "LOCAL_FILE",
-            "Tab": "Weather"
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Location and Resource"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -15,8 +15,7 @@
             "Label": "Nameplate capacity",
             "Units": "kW",
             "Group": "direct steam tower",
-            "Require": "*",
-            "Tab": "direct steam tower"
+            "Require": "*"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -24,7 +23,8 @@
             "Label": "12x24 Time of Use Values for week days",
             "Group": "tou_translator",
             "Require": "*",
-            "Tab": "tou_translator"
+            "Tab": "System Control",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -32,7 +32,8 @@
             "Label": "12x24 Time of Use Values for week end days",
             "Group": "tou_translator",
             "Require": "*",
-            "Tab": "tou_translator"
+            "Tab": "System Control",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -40,8 +41,7 @@
             "Label": "Run type",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*",
-            "Tab": "heliostat"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -50,7 +50,8 @@
             "Units": "m",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -59,7 +60,8 @@
             "Units": "m",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -68,23 +70,26 @@
             "Units": "rad",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "helio_active_fraction",
-            "Label": "Heliostat active frac.",
+            "Label": "Heliostat availability",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "helio_reflectance",
-            "Label": "Heliostat reflectance",
+            "Label": "Heliostat reflectance and soiling",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -92,15 +97,15 @@
             "Label": "Receiver absorptance",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_aspect",
             "Label": "Receiver aspect ratio",
             "Group": "heliostat",
-            "Require": "*",
-            "Tab": "heliostat"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -109,7 +114,7 @@
             "Units": "m",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -117,16 +122,14 @@
             "Label": "Receiver design heatloss",
             "Units": "kW/m2",
             "Group": "heliostat",
-            "Require": "*",
-            "Tab": "heliostat"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "land_bound_type",
             "Label": "Land boundary type",
             "Group": "heliostat",
-            "Require": "?=0",
-            "Tab": "heliostat"
+            "Require": "?=0"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -134,7 +137,8 @@
             "Label": "Land max boundary",
             "Group": "heliostat",
             "Require": "?=7.5",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Solar Field Layout Constraints"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -142,7 +146,8 @@
             "Label": "Land min boundary",
             "Group": "heliostat",
             "Require": "?=0.75",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Solar Field Layout Constraints"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -150,16 +155,14 @@
             "Label": "Land boundary table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "land_bound_list",
             "Label": "Boundary table listing",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -168,7 +171,8 @@
             "Units": "W/m2",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Design",
+            "Section": "Heliostat Field"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -177,7 +181,8 @@
             "Units": "kWe-hr",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -186,7 +191,8 @@
             "Units": "kWe",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -195,7 +201,8 @@
             "Units": "deg",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -204,47 +211,43 @@
             "Units": "m/s",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "interp_nug",
             "Label": "Interpolation nugget",
             "Group": "heliostat",
-            "Require": "?=0",
-            "Tab": "heliostat"
+            "Require": "?=0"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "interp_beta",
             "Label": "Interpolation beta coef.",
             "Group": "heliostat",
-            "Require": "?=1.99",
-            "Tab": "heliostat"
+            "Require": "?=1.99"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_flux_x",
             "Label": "Flux map X resolution",
             "Group": "heliostat",
-            "Require": "?=12",
-            "Tab": "heliostat"
+            "Require": "?=12"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_flux_y",
             "Label": "Flux map Y resolution",
             "Group": "heliostat",
-            "Require": "?=1",
-            "Tab": "heliostat"
+            "Require": "?=1"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dens_mirror",
             "Label": "Ratio of reflective area to profile",
             "Group": "heliostat",
-            "Require": "*",
-            "Tab": "heliostat"
+            "Require": "*"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -252,8 +255,7 @@
             "Label": "Heliostat position table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "run_type=1",
-            "Tab": "heliostat"
+            "Require": "run_type=1"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -261,24 +263,22 @@
             "Label": "Heliostat aim point table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "N_hel",
             "Label": "Number of heliostats",
             "Group": "heliostat",
-            "Require": "?=1",
-            "Tab": "heliostat"
+            "Require": "?",
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "eta_map",
             "Label": "Field efficiency array",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -286,16 +286,14 @@
             "Label": "Flux map sun positions",
             "Units": "deg",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "flux_maps",
             "Label": "Flux map intensities",
             "Group": "heliostat",
-            "Require": "?",
-            "Tab": "heliostat"
+            "Require": "?"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -303,7 +301,8 @@
             "Label": "Attenuation coefficient 0",
             "Group": "heliostat",
             "Require": "?=0.006789",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -311,7 +310,8 @@
             "Label": "Attenuation coefficient 1",
             "Group": "heliostat",
             "Require": "?=0.1046",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -319,7 +319,8 @@
             "Label": "Attenuation coefficient 2",
             "Group": "heliostat",
             "Require": "?=-0.0107",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -327,7 +328,8 @@
             "Label": "Attenuation coefficient 3",
             "Group": "heliostat",
             "Require": "?=0.002845",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Atmospheric Attenuation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -335,7 +337,8 @@
             "Label": "Number of heliostat facets - X",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -343,7 +346,8 @@
             "Label": "Number of heliostat facets - Y",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -351,7 +355,8 @@
             "Label": "Heliostat focus method",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -359,7 +364,8 @@
             "Label": "Heliostat cant method",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Properties"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -367,7 +373,8 @@
             "Label": "No. days in flux map lookup",
             "Group": "heliostat",
             "Require": "?=8",
-            "Tab": "heliostat"
+            "Tab": "Tower and Receiver",
+            "Section": "Flux Calculation Settings"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -375,7 +382,8 @@
             "Label": "Hourly frequency in flux map lookup",
             "Group": "heliostat",
             "Require": "?=1",
-            "Tab": "heliostat"
+            "Tab": "Tower and Receiver",
+            "Section": "Flux Calculation Settings"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -384,7 +392,8 @@
             "Units": "L/m2_aper",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -392,7 +401,8 @@
             "Label": "Mirror washing frequency",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Mirror Washing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -401,7 +411,8 @@
             "Units": "m",
             "Group": "receiver",
             "Require": "*",
-            "Tab": "receiver"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -410,7 +421,8 @@
             "Units": "m",
             "Group": "receiver",
             "Require": "*",
-            "Tab": "receiver"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -419,15 +431,15 @@
             "Units": "MW",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "calc_fluxmaps",
             "Label": "Include fluxmap calculations",
             "Group": "heliostat",
-            "Require": "?=0",
-            "Tab": "heliostat"
+            "Require": "?=0"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -436,7 +448,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -444,7 +456,7 @@
             "Label": "Tower cost scaling exponent",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -453,7 +465,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -461,7 +473,7 @@
             "Label": "Receiver reference area for cost scale",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -469,7 +481,7 @@
             "Label": "Receiver cost scaling exponent",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -478,7 +490,7 @@
             "Units": "$/m2",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -487,7 +499,7 @@
             "Units": "$/m2",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -496,7 +508,7 @@
             "Units": "$/kWe",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -505,7 +517,7 @@
             "Units": "$/kWe",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -514,7 +526,7 @@
             "Units": "$/kWht",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -523,7 +535,7 @@
             "Units": "$/acre",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -532,7 +544,7 @@
             "Units": "%",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -541,7 +553,7 @@
             "Units": "%",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -550,7 +562,7 @@
             "Units": "%",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -559,7 +571,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -568,23 +580,23 @@
             "Units": "$/kWe",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "is_optimize",
             "Label": "Do SolarPILOT optimization",
             "Group": "heliostat",
-            "Require": "?=0",
-            "Tab": "heliostat"
+            "Require": "?=0"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "flux_max",
-            "Label": "Maximum allowable flux",
+            "Label": "Maximum equivalent flux",
             "Group": "heliostat",
             "Require": "?=1000",
-            "Tab": "heliostat"
+            "Tab": "Tower and Receiver",
+            "Section": "Receiver Flux Modeling Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -592,7 +604,7 @@
             "Label": "Optimization initial step size",
             "Group": "heliostat",
             "Require": "?=0.05",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -600,7 +612,8 @@
             "Label": "Max. number iteration steps",
             "Group": "heliostat",
             "Require": "?=200",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -608,7 +621,8 @@
             "Label": "Optimization convergence tol",
             "Group": "heliostat",
             "Require": "?=0.001",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -616,7 +630,8 @@
             "Label": "Optimization flux overage penalty",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Optimization Settings"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -624,15 +639,14 @@
             "Label": "Optimization algorithm",
             "Group": "heliostat",
             "Require": "?=0",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "check_max_flux",
             "Label": "Check max flux at design point",
             "Group": "heliostat",
-            "Require": "?=0",
-            "Tab": "heliostat"
+            "Require": "?=0"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -641,7 +655,7 @@
             "Units": "$/acre",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -649,7 +663,7 @@
             "Label": "EPC cost percent of direct",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -658,7 +672,7 @@
             "Units": "$/W",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -667,7 +681,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -676,7 +690,7 @@
             "Units": "$/acre",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -684,7 +698,7 @@
             "Label": "PLM cost percent of direct",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -693,7 +707,7 @@
             "Units": "$/W",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -702,7 +716,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -711,7 +725,8 @@
             "Units": "acre",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Land Area"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -719,7 +734,8 @@
             "Label": "Land overhead factor",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "Heliostat Field",
+            "Section": "Land Area"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -728,7 +744,7 @@
             "Units": "$",
             "Group": "heliostat",
             "Require": "*",
-            "Tab": "heliostat"
+            "Tab": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -737,8 +753,9 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -747,7 +764,8 @@
             "Units": "MW",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -755,17 +773,17 @@
             "Label": "Maximum heat rate of auxiliary heater",
             "Units": "MW",
             "Group": "dsg_controller",
-            "Require": "*",
-            "Tab": "dsg_controller"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "lhv_eff",
-            "Label": "Aux Heater lower heating value efficiency",
+            "Label": "Fossil backup boiler LHV efficiency",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -774,7 +792,8 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Tower"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -783,7 +802,8 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -792,8 +812,9 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Tower and Receiver",
+            "Section": "Flow"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -802,7 +823,8 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -811,7 +833,8 @@
             "Units": "MW",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -820,7 +843,8 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -829,7 +853,8 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -838,16 +863,18 @@
             "Units": "hr",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "f_pb_cutoff",
-            "Label": "Cycle cut-off fraction",
+            "Label": "Minimum operation fraction",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -856,16 +883,18 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "t_standby_ini",
-            "Label": "Power block standby time",
+            "Label": "Low resrouce standy period",
             "Units": "hr",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -874,7 +903,9 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Boiler"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -883,7 +914,8 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Parasitics",
+            "Section": "Parasitic Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -892,7 +924,8 @@
             "Units": "bar",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -901,7 +934,8 @@
             "Units": "bar",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -910,16 +944,18 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "p_cycle_design",
-            "Label": "Design Cycle Power",
+            "Label": "Design turbine gross output",
             "Units": "MW",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -928,17 +964,21 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_amb_des",
-            "Label": "Design ambient temperature (power cycle)",
+            "Label": "Design ambient temperature",
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -947,7 +987,9 @@
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -956,7 +998,9 @@
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -965,16 +1009,19 @@
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "hl_ffact",
-            "Label": "Heat Loss Fudge FACTor",
+            "Label": "Heat Loss factor",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Thermal Design & Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -983,16 +1030,20 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Boiler"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "d_t_boiler",
-            "Label": "O.D. of boiler tubes",
+            "Label": "Outside diameter of boiler tubes",
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Boiler"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1001,25 +1052,29 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Boiler"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_emis",
-            "Label": "Emissivity of receiver tubes",
+            "Label": "Coating Emittance",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rec_absorptance",
-            "Label": "Absorptance of receiver tubes",
+            "Label": "Coating Absorptance",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1028,8 +1083,10 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Boiler"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1038,16 +1095,19 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Superheater"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "d_sh",
-            "Label": "O.D. of superheater tubes",
+            "Label": "Outside diameter of superheater tubes",
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1056,7 +1116,8 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1065,17 +1126,20 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_sh_out_des",
-            "Label": "Target superheater outlet temperature",
+            "Label": "Superheater outlet temperature set point",
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Superheater"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1084,7 +1148,9 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver",
+            "Subsection": "Reheater"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1093,7 +1159,8 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1102,7 +1169,8 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1111,8 +1179,9 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "dsg_controller"
+            "Costraint": "INTEGER",
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1121,7 +1190,8 @@
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Tower and Receiver",
+            "Section": "Direct Steam Receiver"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1130,7 +1200,8 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1138,8 +1209,7 @@
             "Label": "Solar field area",
             "Units": "m^2",
             "Group": "dsg_controller",
-            "Require": "*",
-            "Tab": "dsg_controller"
+            "Require": "*"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1148,34 +1218,38 @@
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_b_in_init",
-            "Label": "Initial Boiler inlet pressure",
+            "Label": "High pressure turbine inlet pressure",
             "Units": "bar",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "f_mdot_rh_init",
-            "Label": "Reheat mass flow rate fraction",
+            "Label": "Design reheat mass flow rate fraction",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_hp_out",
-            "Label": "HP turbine outlet pressure",
+            "Label": "High pressure turbine outlet pressure",
             "Units": "bar",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1183,8 +1257,7 @@
             "Label": "HP turbine outlet temperature",
             "Units": "C",
             "Group": "dsg_controller",
-            "Require": "*",
-            "Tab": "dsg_controller"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1192,8 +1265,7 @@
             "Label": "Target reheater outlet temp.",
             "Units": "C",
             "Group": "dsg_controller",
-            "Require": "*",
-            "Tab": "dsg_controller"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1202,16 +1274,18 @@
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_cond_init",
-            "Label": "Condenser pressure",
+            "Label": "High pressure turbine outlet pressure",
             "Units": "Pa",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "dsg_controller"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1220,7 +1294,8 @@
             "Units": "MW",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1229,7 +1304,8 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1237,8 +1313,7 @@
             "Label": "Reference HTF inlet temperature at design",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1246,26 +1321,7 @@
             "Label": "Reference HTF outlet temperature at design",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "dT_cw_ref",
-            "Label": "Reference condenser cooling water inlet/outlet T diff",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_amb_des",
-            "Label": "Reference ambient temperature at design point",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1273,8 +1329,7 @@
             "Label": "Fraction of thermal power required for standby mode",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1282,8 +1337,7 @@
             "Label": "Boiler operating pressure @ design",
             "Units": "bar",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1291,17 +1345,15 @@
             "Label": "Reheater operating pressure at design",
             "Units": "bar",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "rh_frac_ref",
-            "Label": "Reheater flow fraction at design",
+            "Label": "Design reheat mass flow rate fraction",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1310,7 +1362,8 @@
             "Units": "hr",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1319,7 +1372,8 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Operation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1328,7 +1382,9 @@
             "Units": "C",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1337,7 +1393,9 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1346,7 +1404,8 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1355,17 +1414,21 @@
             "Units": "inHg",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_pl_inc",
-            "Label": "Number of part-load increments for the heat rejection system",
+            "Label": "Cooling system part load levels",
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Constraints": "INTEGER",
-            "Tab": "powerblock"
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design",
+            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1374,7 +1437,8 @@
             "Units": "none",
             "Group": "powerblock",
             "Require": "*",
-            "Tab": "powerblock"
+            "Tab": "Power Cycle",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1382,8 +1446,7 @@
             "Label": "Hot HTF inlet temperature, from storage tank",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*",
-            "Tab": "powerblock"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1392,7 +1455,8 @@
             "Units": "Wt/m",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "Parasitics",
+            "Section": "Parasitic Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1401,7 +1465,8 @@
             "Units": "m",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "Parasitics",
+            "Section": "Parasitic Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1409,7 +1474,8 @@
             "Label": "Piping length multiplier",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "Parasitics",
+            "Section": "Parasitic Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1418,7 +1484,8 @@
             "Units": "m",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "Parasitics",
+            "Section": "Parasitic Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1426,8 +1493,7 @@
             "Label": "Power production at design conditions",
             "Units": "MWe",
             "Group": "parasitics",
-            "Require": "*",
-            "Tab": "parasitics"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1435,8 +1501,7 @@
             "Label": "Power cycle efficiency at design",
             "Units": "none",
             "Group": "parasitics",
-            "Require": "*",
-            "Tab": "parasitics"
+            "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1445,7 +1510,8 @@
             "Units": "MWe/MWcap",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1454,7 +1520,8 @@
             "Units": "MWe/MWcap",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1463,7 +1530,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1472,7 +1540,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1481,7 +1550,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1490,7 +1560,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1499,7 +1570,8 @@
             "Units": "MWe/MWcap",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1508,7 +1580,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1517,7 +1590,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1526,7 +1600,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1535,7 +1610,8 @@
             "Units": "none",
             "Group": "parasitics",
             "Require": "*",
-            "Tab": "parasitics"
+            "Tab": "System Control",
+            "Section": "Plant Energy Consumption"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1544,8 +1620,9 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Constraints": "MAX=100",
-            "Tab": "Loss Adjustments"
+            "Costraint": "MAX=100",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1554,8 +1631,9 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Constraints": "LENGTH=8760",
-            "Tab": "Loss Adjustments"
+            "Costraint": "LENGTH=8760",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1565,8 +1643,9 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Constraints": "COLS=3",
-            "Tab": "Loss Adjustments"
+            "Costraint": "COLS=3",
+            "Tab": "Heliostat Field",
+            "Section": "Heliostat Field Availability"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1575,8 +1654,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Constraints": "MAX=100",
-            "Tab": "Loss Adjustments"
+            "Costraint": "MAX=100"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1585,8 +1663,7 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Constraints": "LENGTH=8760",
-            "Tab": "Loss Adjustments"
+            "Costraint": "LENGTH=8760"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1596,8 +1673,7 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Constraints": "COLS=3",
-            "Tab": "Loss Adjustments"
+            "Costraint": "COLS=3"
         }
     ]
 }
