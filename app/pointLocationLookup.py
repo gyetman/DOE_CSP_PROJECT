@@ -288,10 +288,10 @@ def _generateMarkdown(theme, atts, pnt):
     print(water)
     mdown += f"**Water Prices**\n\n"
     try:
-        mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
+        mdown += f"Residential price: ${water.get('CalcTot6M3CurrUSD'):,.2f}/m3\n\n"
     except:
         mdown += f"Residential price: -\n\n"
-    mdown += f"Residential provider: {water.get('Utility_na')}\n\n"
+    mdown += f"Residential provider: {water.get('UtilityShortName')}\n\n"
 
 
     # add legal info
@@ -302,7 +302,7 @@ def _generateMarkdown(theme, atts, pnt):
         
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         if state in regulatory_links.keys():
-            mdown += f"**Regulatory Framework\**n\n"
+            mdown += f"**Regulatory Framework**\n\n"
             link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
             mdown += link + '\n\n'
 
