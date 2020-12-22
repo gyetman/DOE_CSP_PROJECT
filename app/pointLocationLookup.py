@@ -33,7 +33,8 @@ defaultLayers = {
     'dni':{'point':cfg.gis_query_path / 'dni_ghi.shp'},
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
-    'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
+    #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
+    'waterPrice':{'point':cfg.gis_data_path / 'global_water_tarrifs.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
     'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
@@ -284,6 +285,7 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Condenser Heat: -\n\n"
 
     water = atts['waterPrice']['properties']
+    print(water)
     mdown += f"**Water Prices**\n\n"
     try:
         mdown += f"Residential price: ${water.get('Water_bill'):,.2f}/m3\n\n"
@@ -294,7 +296,7 @@ def _generateMarkdown(theme, atts, pnt):
 
     # add legal info
 
-    print(atts['county'])
+    #print(atts['county'])
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')
         
@@ -313,7 +315,7 @@ def _updateMapJson(atts, pnt):
     # update dictionary
     wx = atts['weatherFile']['properties']
     mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
-    mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot6M3CurrUSD')
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = pnt[0]
     mParams['longitude'] = pnt[1]
