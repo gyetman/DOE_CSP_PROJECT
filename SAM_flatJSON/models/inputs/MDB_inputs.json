@@ -1,0 +1,80 @@
+{
+    "MDB": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Costraint": "<106,>34"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "module",
+            "Label": "0' for AS7C1.5L module and '1' for AS26C5L module",
+            "Units": "none",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TEI_r",
+            "Label": "Evaporator channel inlet temperature",
+            "Units": "C",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TCI_r",
+            "Label": "Condenser channel inlet temperature",
+            "Units": "C",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FFR_r",
+            "Label": "Feed flow rate",
+            "Units": "l/h",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V0",
+            "Label": "Initial batch volume",
+            "Units": "m3",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "RR",
+            "Label": "Recovery rate",
+            "Units": "%",
+            "Require": "*",
+            "Costraint": "<1111,>399"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hours",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction threshold (0 to 1)",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        }
+    ]
+}

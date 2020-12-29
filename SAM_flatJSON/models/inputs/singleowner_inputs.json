@@ -2,14 +2,24 @@
     "singleowner": [
         {
             "DataType": "SSC_NUMBER",
+            "Name": "cp_capacity_payment_esc",
+            "Label": "cp_capacity_payment_esc",
+            "Units": "years",
+            "Group": "Financials",
+            "Require": "?=30",
+            "Constraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "analysis_period",
             "Label": "Analyis period",
             "Units": "years",
             "Group": "Financials",
             "Require": "?=30",
-            "Costraint": "INTEGER,MIN=0,MAX=50",
-            "Tab": "Financial Parameters",
-            "Section": "Analysis Parameters"
+            "Constraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -18,8 +28,8 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "*",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -28,8 +38,8 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "*",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -38,9 +48,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "?=0.0",
-            "Costraint": "MIN=0,MAX=100",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -49,9 +59,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "?=95",
-            "Costraint": "MIN=0,MAX=100",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -60,9 +70,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "?=5",
-            "Costraint": "MIN=0,MAX=100",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -71,9 +81,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "*",
-            "Costraint": "MIN=-99",
-            "Tab": "Financial Parameters",
-            "Section": "Analysis Parameters"
+            "Constraint": "MIN=-99",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -82,9 +92,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "*",
-            "Costraint": "MIN=-99",
-            "Tab": "Financial Parameters",
-            "Section": "Analysis Parameters"
+            "Constraint": "MIN=-99",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -93,9 +103,9 @@
             "Units": "%",
             "Group": "Financials",
             "Require": "?=0.0",
-            "Costraint": "MIN=0,MAX=100",
-            "Tab": "Financial Parameters",
-            "Section": "Project Tax and Insurance Rates"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Financials"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -104,7 +114,9 @@
             "Units": "kW",
             "Group": "System",
             "Require": "*",
-            "Costraint": "POSITIVE"
+            "Constraint": "POSITIVE",
+            "Tab": "Solar System",
+            "Section": "System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -113,7 +125,9 @@
             "Units": "MMBTus/MWh",
             "Group": "System",
             "Require": "?=0.0",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "System"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -121,7 +135,9 @@
             "Label": "Fixed O&M annual amount",
             "Units": "$/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -129,7 +145,9 @@
             "Label": "Fixed O&M escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -137,7 +155,9 @@
             "Label": "Production-based O&M amount",
             "Units": "$/MWh",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -145,7 +165,9 @@
             "Label": "Production-based O&M escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -153,7 +175,9 @@
             "Label": "Capacity-based O&M amount",
             "Units": "$/kWcap",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -161,7 +185,9 @@
             "Label": "Capacity-based O&M escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -169,7 +195,9 @@
             "Label": "Fuel cost",
             "Units": "$/MMBtu",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -177,7 +205,9 @@
             "Label": "Fuel cost escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -186,7 +216,9 @@
             "Units": "kWht",
             "Group": "O&M",
             "Require": "?=0",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -194,7 +226,9 @@
             "Label": "Biomass feedstock usage",
             "Units": "unit",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -202,7 +236,9 @@
             "Label": "Biomass feedstock cost",
             "Units": "$/unit",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -210,7 +246,9 @@
             "Label": "Biomass feedstock cost escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -218,7 +256,9 @@
             "Label": "Coal feedstock usage",
             "Units": "unit",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -226,7 +266,9 @@
             "Label": "Coal feedstock cost",
             "Units": "$/unit",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -234,7 +276,9 @@
             "Label": "Coal feedstock cost escalation",
             "Units": "%/year",
             "Group": "O&M",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "O&M"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -242,7 +286,9 @@
             "Label": "Federal amount-based ITC amount",
             "Units": "$",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -251,7 +297,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -260,7 +308,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -268,7 +318,9 @@
             "Label": "State amount-based ITC amount",
             "Units": "$",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -277,7 +329,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -286,7 +340,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -294,7 +350,9 @@
             "Label": "Federal percentage-based ITC percent",
             "Units": "%",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -302,7 +360,9 @@
             "Label": "Federal percentage-based ITC maximum value",
             "Units": "$",
             "Group": "Tax Credit Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -311,7 +371,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -320,7 +382,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -328,7 +392,9 @@
             "Label": "State percentage-based ITC percent",
             "Units": "%",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -336,7 +402,9 @@
             "Label": "State percentage-based ITC maximum Value",
             "Units": "$",
             "Group": "Tax Credit Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -345,7 +413,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -354,7 +424,9 @@
             "Units": "0/1",
             "Group": "Tax Credit Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -362,7 +434,9 @@
             "Label": "Federal PTC amount",
             "Units": "$/kWh",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -370,7 +444,9 @@
             "Label": "Federal PTC term",
             "Units": "years",
             "Group": "Tax Credit Incentives",
-            "Require": "?=10"
+            "Require": "?=10",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -378,7 +454,9 @@
             "Label": "Federal PTC escalation",
             "Units": "%/year",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -386,7 +464,9 @@
             "Label": "State PTC amount",
             "Units": "$/kWh",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -394,7 +474,9 @@
             "Label": "State PTC term",
             "Units": "years",
             "Group": "Tax Credit Incentives",
-            "Require": "?=10"
+            "Require": "?=10",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -402,7 +484,9 @@
             "Label": "State PTC escalation",
             "Units": "%/year",
             "Group": "Tax Credit Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Tax Credit Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -410,7 +494,9 @@
             "Label": "Federal amount-based IBI amount",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -419,7 +505,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -428,7 +516,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -437,7 +527,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -446,7 +538,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -454,7 +548,9 @@
             "Label": "State amount-based IBI amount",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -463,7 +559,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -472,7 +570,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -481,7 +581,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -490,7 +592,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -498,7 +602,9 @@
             "Label": "Utility amount-based IBI amount",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -507,7 +613,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -516,7 +624,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -525,7 +635,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -534,7 +646,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -542,7 +656,9 @@
             "Label": "Other amount-based IBI amount",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -551,7 +667,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -560,7 +678,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -569,7 +689,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -578,7 +700,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -586,7 +710,9 @@
             "Label": "Federal percentage-based IBI percent",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -594,7 +720,9 @@
             "Label": "Federal percentage-based IBI maximum value",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -603,7 +731,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -612,7 +742,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -621,7 +753,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -630,7 +764,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -638,7 +774,9 @@
             "Label": "State percentage-based IBI percent",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -646,7 +784,9 @@
             "Label": "State percentage-based IBI maximum value",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -655,7 +795,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -664,7 +806,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -673,7 +817,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -682,7 +828,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -690,7 +838,9 @@
             "Label": "Utility percentage-based IBI percent",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -698,7 +848,9 @@
             "Label": "Utility percentage-based IBI maximum value",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -707,7 +859,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -716,7 +870,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -725,7 +881,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -734,7 +892,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -742,7 +902,9 @@
             "Label": "Other percentage-based IBI percent",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -750,7 +912,9 @@
             "Label": "Other percentage-based IBI maximum value",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -759,7 +923,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -768,7 +934,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -777,7 +945,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -786,7 +956,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -794,7 +966,9 @@
             "Label": "Federal CBI amount",
             "Units": "$/Watt",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -802,7 +976,9 @@
             "Label": "Federal CBI maximum",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -811,7 +987,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -820,7 +998,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -829,7 +1009,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -838,7 +1020,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -846,7 +1030,9 @@
             "Label": "State CBI amount",
             "Units": "$/Watt",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -854,7 +1040,9 @@
             "Label": "State CBI maximum",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -863,7 +1051,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -872,7 +1062,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -881,7 +1073,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -890,7 +1084,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -898,7 +1094,9 @@
             "Label": "Utility CBI amount",
             "Units": "$/Watt",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -906,7 +1104,9 @@
             "Label": "Utility CBI maximum",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -915,7 +1115,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -924,7 +1126,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -933,7 +1137,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -942,7 +1148,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -950,7 +1158,9 @@
             "Label": "Other CBI amount",
             "Units": "$/Watt",
             "Group": "Payment Incentives",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -958,7 +1168,9 @@
             "Label": "Other CBI maximum",
             "Units": "$",
             "Group": "Payment Incentives",
-            "Require": "?=1e99"
+            "Require": "?=1e99",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -967,7 +1179,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -976,7 +1190,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -985,7 +1201,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -994,7 +1212,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1002,7 +1222,9 @@
             "Label": "Federal PBI amount",
             "Units": "$/kWh",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1010,7 +1232,9 @@
             "Label": "Federal PBI term",
             "Units": "years",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1018,7 +1242,9 @@
             "Label": "Federal PBI escalation",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1027,7 +1253,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1036,7 +1264,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1044,7 +1274,9 @@
             "Label": "State PBI amount",
             "Units": "$/kWh",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1052,7 +1284,9 @@
             "Label": "State PBI term",
             "Units": "years",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1060,7 +1294,9 @@
             "Label": "State PBI escalation",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1069,7 +1305,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1078,7 +1316,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1086,7 +1326,9 @@
             "Label": "Utility PBI amount",
             "Units": "$/kWh",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1094,7 +1336,9 @@
             "Label": "Utility PBI term",
             "Units": "years",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1102,7 +1346,9 @@
             "Label": "Utility PBI escalation",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1111,7 +1357,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1120,7 +1368,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1128,7 +1378,9 @@
             "Label": "Other PBI amount",
             "Units": "$/kWh",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1136,7 +1388,9 @@
             "Label": "Other PBI term",
             "Units": "years",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1144,7 +1398,9 @@
             "Label": "Other PBI escalation",
             "Units": "%",
             "Group": "Payment Incentives",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1153,7 +1409,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1162,7 +1420,9 @@
             "Units": "0/1",
             "Group": "Payment Incentives",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Payment Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1170,27 +1430,34 @@
             "Label": "Enable battery storage model",
             "Units": "0/1",
             "Group": "Battery",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_meter_position",
             "Label": "Position of battery relative to electric meter",
-            "Group": "Battery"
+            "Group": "Battery",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "grid_to_batt",
             "Label": "Electricity to battery from grid",
             "Units": "kW",
-            "Group": "Battery"
+            "Group": "Battery",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "gen",
             "Label": "Power generated by renewable resource",
             "Units": "kW",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar System"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1198,8 +1465,8 @@
             "Label": "Annual energy degradation",
             "Group": "System Output",
             "Require": "*",
-            "Tab": "Lifetime",
-            "Section": "System Performance Degradation"
+            "Tab": "Solar System",
+            "Section": "System Output"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1208,20 +1475,25 @@
             "Units": "kW",
             "Group": "System Output",
             "Require": "*",
-            "Costraint": "MIN=1e-3"
+            "Constraint": "MIN=1e-3",
+            "Tab": "Solar System",
+            "Section": "System Output"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "utility_bill_w_sys",
             "Label": "Electricity bill with system",
-            "Units": "$"
+            "Units": "$",
+            "Tab": "Solar System"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "roe_input",
             "Label": "Return on equity",
             "Group": "Return on Equity",
-            "Require": "?=20"
+            "Require": "?=20",
+            "Tab": "Solar System",
+            "Section": "Return on Equity"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1230,7 +1502,9 @@
             "Units": "years",
             "Group": "Moratorium",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Moratorium"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1240,7 +1514,9 @@
             "Meta": "0=None,1=Recapitalize",
             "Group": "Recapitalization",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Recapitalization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1248,7 +1524,9 @@
             "Label": "Recapitalization cost",
             "Units": "$",
             "Group": "Recapitalization",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Recapitalization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1257,14 +1535,18 @@
             "Units": "%",
             "Group": "Recapitalization",
             "Require": "?=0",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Recapitalization"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "system_lifetime_recapitalize",
             "Label": "Recapitalization boolean",
             "Group": "Recapitalization",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Recapitalization"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1274,7 +1556,9 @@
             "Meta": "0=hourly first year,1=hourly lifetime",
             "Group": "Time of Delivery",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1284,14 +1568,18 @@
             "Meta": "0=diurnal,1=timestep",
             "Group": "Time of Delivery",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_factors_ts",
             "Label": "Dispatch payment factor array",
             "Group": "Time of Delivery",
-            "Require": "ppa_multiplier_model=1"
+            "Require": "ppa_multiplier_model=1",
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1299,8 +1587,8 @@
             "Label": "TOD factor for period 1",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1308,8 +1596,8 @@
             "Label": "TOD factor for period 2",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1317,8 +1605,8 @@
             "Label": "TOD factor for period 3",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1326,8 +1614,8 @@
             "Label": "TOD factor for period 4",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1335,8 +1623,8 @@
             "Label": "TOD factor for period 5",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1344,8 +1632,8 @@
             "Label": "TOD factor for period 6",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1353,8 +1641,8 @@
             "Label": "TOD factor for period 7",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1362,8 +1650,8 @@
             "Label": "TOD factor for period 8",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1371,8 +1659,8 @@
             "Label": "TOD factor for period 9",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Time-of-delivery (TOD) Factors"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1382,8 +1670,8 @@
             "Meta": "12 x 24 matrix",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Weekday"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1393,8 +1681,8 @@
             "Meta": "12 x 24 matrix",
             "Group": "Time of Delivery",
             "Require": "ppa_multiplier_model=0",
-            "Tab": "Time of Delivery Factors",
-            "Section": "Weekend"
+            "Tab": "Solar System",
+            "Section": "Time of Delivery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1402,7 +1690,9 @@
             "Label": "Installed cost",
             "Units": "$",
             "Group": "System Costs",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar System",
+            "Section": "System Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1411,7 +1701,9 @@
             "Units": "%",
             "Group": "Reserve Accounts",
             "Require": "?=1.75",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1420,7 +1712,9 @@
             "Units": "$/W",
             "Group": "Reserve Accounts",
             "Require": "?=0.25",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1429,7 +1723,9 @@
             "Units": "years",
             "Group": "Reserve Accounts",
             "Require": "?=12",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1438,7 +1734,9 @@
             "Units": "$/W",
             "Group": "Reserve Accounts",
             "Require": "?=0",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1447,7 +1745,9 @@
             "Units": "years",
             "Group": "Reserve Accounts",
             "Require": "?=15",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1456,7 +1756,9 @@
             "Units": "$/W",
             "Group": "Reserve Accounts",
             "Require": "?=0",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1465,7 +1767,9 @@
             "Units": "years",
             "Group": "Reserve Accounts",
             "Require": "?=20",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Reserve Accounts"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1474,7 +1778,9 @@
             "Meta": "0=5yr MACRS,1=15yr MACRS,2=5yr SL,3=15yr SL, 4=20yr SL,5=39yr SL,6=Custom",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraint": "INTEGER,MIN=0,MAX=6",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1483,7 +1789,9 @@
             "Meta": "0=5yr MACRS,1=15yr MACRS,2=5yr SL,3=15yr SL, 4=20yr SL,5=39yr SL,6=Custom",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=6"
+            "Constraint": "INTEGER,MIN=0,MAX=6",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1492,7 +1800,9 @@
             "Units": "%",
             "Group": "Salvage Value",
             "Require": "?=10",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Salvage Value"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1502,14 +1812,18 @@
             "Meta": "0=solve ppa,1=specify ppa",
             "Group": "Solution Mode",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar System",
+            "Section": "Solution Mode"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ppa_soln_tolerance",
             "Label": "PPA solution tolerance",
             "Group": "Solution Mode",
-            "Require": "?=1e-5"
+            "Require": "?=1e-5",
+            "Tab": "Solar System",
+            "Section": "Solution Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1517,7 +1831,9 @@
             "Label": "PPA solution minimum ppa",
             "Units": "cents/kWh",
             "Group": "Solution Mode",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Solution Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1525,7 +1841,9 @@
             "Label": "PPA solution maximum ppa",
             "Units": "cents/kWh",
             "Group": "Solution Mode",
-            "Require": "?=100"
+            "Require": "?=100",
+            "Tab": "Solar System",
+            "Section": "Solution Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1533,7 +1851,9 @@
             "Label": "PPA solution maximum number of iterations",
             "Group": "Solution Mode",
             "Require": "?=100",
-            "Costraint": "INTEGER,MIN=1"
+            "Constraint": "INTEGER,MIN=1",
+            "Tab": "Solar System",
+            "Section": "Solution Mode"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1541,7 +1861,9 @@
             "Label": "PPA price in first year",
             "Units": "$/kWh",
             "Group": "PPA Price",
-            "Require": "?=10"
+            "Require": "?=10",
+            "Tab": "Solar System",
+            "Section": "PPA Price"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1549,7 +1871,9 @@
             "Label": "PPA escalation rate",
             "Units": "%/year",
             "Group": "PPA Price",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "PPA Price"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1557,7 +1881,9 @@
             "Label": "Construction financing total",
             "Units": "$",
             "Group": "Construction Financing",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar System",
+            "Section": "Construction Financing"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1566,7 +1892,9 @@
             "Units": "years",
             "Group": "Project Term Debt",
             "Require": "?=10",
-            "Costraint": "INTEGER,MIN=0"
+            "Constraint": "INTEGER,MIN=0",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1575,7 +1903,9 @@
             "Units": "%",
             "Group": "Project Term Debt",
             "Require": "?=8.5",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1583,7 +1913,9 @@
             "Label": "Debt service coverage ratio",
             "Group": "Project Term Debt",
             "Require": "?=1.5",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1592,7 +1924,9 @@
             "Units": "months P&I",
             "Group": "Project Term Debt",
             "Require": "?=6",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1601,7 +1935,9 @@
             "Units": "%",
             "Group": "Project Term Debt",
             "Require": "?=50",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1611,7 +1947,9 @@
             "Meta": "0=debt percent,1=dscr",
             "Group": "Project Term Debt",
             "Require": "?=1",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1621,7 +1959,9 @@
             "Meta": "0=Equal payments (standard amortization),1=Fixed principal declining interest",
             "Group": "Project Term Debt",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar System",
+            "Section": "Project Term Debt"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1630,7 +1970,9 @@
             "Units": "$",
             "Group": "Other Capital Costs",
             "Require": "?=250000",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Other Capital Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1639,7 +1981,9 @@
             "Units": "%",
             "Group": "Other Capital Costs",
             "Require": "?=1.5",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Other Capital Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1648,7 +1992,9 @@
             "Units": "months",
             "Group": "Other Capital Costs",
             "Require": "?=6",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Other Capital Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1657,7 +2003,9 @@
             "Units": "months",
             "Group": "Other Capital Costs",
             "Require": "?=0",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Other Capital Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1666,7 +2014,9 @@
             "Units": "$",
             "Group": "Other Capital Costs",
             "Require": "?=150000",
-            "Costraint": "MIN=0"
+            "Constraint": "MIN=0",
+            "Tab": "Solar System",
+            "Section": "Other Capital Costs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1675,7 +2025,9 @@
             "Units": "%",
             "Group": "IRR Targets",
             "Require": "?=11",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "IRR Targets"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1683,7 +2035,9 @@
             "Label": "IRR target year",
             "Group": "IRR Targets",
             "Require": "?=11",
-            "Costraint": "MIN=1"
+            "Constraint": "MIN=1",
+            "Tab": "Solar System",
+            "Section": "IRR Targets"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1692,7 +2046,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=89",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1701,7 +2057,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=1.5",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1710,7 +2068,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1719,7 +2079,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=3",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1728,7 +2090,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=3",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1737,7 +2101,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=0.5",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1746,7 +2112,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1754,7 +2122,9 @@
             "Label": "Custom depreciation schedule",
             "Units": "%",
             "Group": "Depreciation",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1763,7 +2133,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1772,7 +2144,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1781,7 +2155,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1790,7 +2166,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1799,7 +2177,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1808,7 +2188,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1817,7 +2199,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1826,7 +2210,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1835,7 +2221,9 @@
             "Units": "%",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "MIN=0,MAX=100"
+            "Constraint": "MIN=0,MAX=100",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1844,7 +2232,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1853,7 +2243,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1862,7 +2254,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1871,7 +2265,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1880,7 +2276,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1889,7 +2287,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1898,7 +2298,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1907,7 +2309,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1916,7 +2320,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1925,7 +2331,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1934,7 +2342,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1943,7 +2353,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1952,7 +2364,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1961,7 +2375,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1970,7 +2386,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=1",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1979,7 +2397,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1988,7 +2408,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1997,7 +2419,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2006,7 +2430,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2015,7 +2441,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2024,7 +2452,9 @@
             "Units": "0/1",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2033,7 +2463,9 @@
             "Units": "0/1",
             "Group": "Cash Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Cash Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2042,7 +2474,9 @@
             "Units": "0/1",
             "Group": "Cash Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Cash Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2051,7 +2485,9 @@
             "Units": "0/1",
             "Group": "Cash Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Cash Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2060,7 +2496,9 @@
             "Units": "0/1",
             "Group": "Cash Incentives",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraint": "BOOLEAN",
+            "Tab": "Solar System",
+            "Section": "Cash Incentives"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2069,7 +2507,9 @@
             "Meta": "0=5yr MACRS,1=Proportional",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2078,21 +2518,27 @@
             "Meta": "0=5yr MACRS,1=Proportional",
             "Group": "Depreciation",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraint": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar System",
+            "Section": "Depreciation"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_bank_replacement",
             "Label": "Battery bank replacements per year",
             "Units": "number/year",
-            "Group": "Battery"
+            "Group": "Battery",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_replacement_schedule",
             "Label": "Battery bank replacements per year (user specified)",
             "Units": "number/year",
-            "Group": "Battery"
+            "Group": "Battery",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2100,7 +2546,9 @@
             "Label": "Enable battery storage model",
             "Units": "0/1",
             "Group": "Battery",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2109,7 +2557,9 @@
             "Units": "0=none,1=capacity based,2=user schedule",
             "Group": "Battery",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=2"
+            "Constraint": "INTEGER,MIN=0,MAX=2",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2117,7 +2567,9 @@
             "Label": "Battery cost",
             "Units": "$/kWh",
             "Group": "Battery",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2125,7 +2577,9 @@
             "Label": "Battery bank capacity",
             "Units": "kWh",
             "Group": "Battery",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2133,7 +2587,9 @@
             "Label": "Battery bank replacement cost",
             "Units": "$/kWh",
             "Group": "Battery",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2141,7 +2597,9 @@
             "Label": "Battery bank replacement cost escalation",
             "Units": "%/year",
             "Group": "Battery",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar System",
+            "Section": "Battery"
         }
     ]
 }

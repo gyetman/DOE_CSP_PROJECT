@@ -3,6 +3,7 @@ import logging, json, os
 from pathlib import Path
 import numpy as np
 from datetime import datetime
+import app_config as cfg
 
 class SamBaseClass(object):
     """description of class"""
@@ -175,15 +176,16 @@ class SamBaseClass(object):
                     self.module_create_execute('cashloan')
             self.P_cond = self.ssc.data_get_array(self.data, b'P_cond') # Pa
             self.T_cond = self.P_T_conversion(self.P_cond) # oC
+
             
             # self.mass_fr = self.ssc.data_get_array(self.data, b'm_dot') # kg/s
             # self.mass_fr_hr = np.dot(self.mass_fr, 3600) # kg/hr
-            if  self.cspModel== 'tcslinear_fresnel':
-                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_field') # kg/hr
-            elif self.cspModel== 'tcsdirect_steam':
-                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
-                for i in range(len(self.mass_fr_hr)):
-                    self.mass_fr_hr[i] *= 50
+            # if  self.cspModel== 'tcslinear_fresnel':
+            #     self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_field') # kg/hr
+            # elif self.cspModel== 'tcsdirect_steam':
+            self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            for i in range(len(self.mass_fr_hr)):
+                self.mass_fr_hr[i] *= 50
             P_cond = np.dot(self.P_cond, 1e-6)
             
             # if  self.cspModel== 'tcslinear_fresnel':
@@ -195,7 +197,7 @@ class SamBaseClass(object):
             # self.mass_fr_hr = np.dot(mass_fr_hr, 50)
             
             
-            self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, P_cond=P_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
+            self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
             self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')
 
             if self.desalination:
@@ -206,7 +208,7 @@ class SamBaseClass(object):
             self.print_impParams()
             self.data_free()
         
-        elif self.cspModel== 'tcstrough_physical':
+        elif self.cspModel== 'tcstrough_physical' or self.cspModel== 'tcsMSLF'  or self.cspModel== 'tcsmolten_salt':
             
             self.ssc = PySSC()
             self.create_ssc_module()
@@ -221,13 +223,38 @@ class SamBaseClass(object):
             if self.financialModel:
                 annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
                 self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
+                gen = self.ssc.data_get_array(self.data, b'gen')
+                self.ssc.data_set_array( self.data, b'gen', gen )
                 self.module_create_execute(self.financialModel)
 
                 if self.financialModel == 'utilityrate5':
-                    self.module_create_execute('cashloan')          
+                    self.module_create_execute('cashloan')       
+
+
+            self.T_dry = self.ssc.data_get_array(self.data, b'tdry') # Pa
+            with open(self.json_values, "r") as read_file:
+                sam_input = json.load(read_file)
+            T_ITD = sam_input['T_ITD_des']
+            self.T_cond = [i + T_ITD for i in self.T_dry ]
+            
+            if self.cspModel== 'tcsmolten_salt':
+                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_water_pc') # kg/s
+                for i in range(len(self.mass_fr_hr)):
+                    self.mass_fr_hr[i] *= 3600 * 50                   
+            else:
+                self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+                for i in range(len(self.mass_fr_hr)):
+                    self.mass_fr_hr[i] *= 50            
+
+            self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
+            self.lcoh = self.ssc.data_get_number(self.data, b'lcoe_fcr')          
+            
+            if self.desalination:
+                self.desal_simulation(self.desalination)
+                self.cost(self.desalination)            
             
             self.sam_calculation()
-            # self.print_impParams()
+            self.print_impParams()
             self.data_free()
                         
         
@@ -251,20 +278,16 @@ class SamBaseClass(object):
             self.design_output = self.RO.RODesign()
 
 
-        if desal == 'VAGMD':
+        elif desal == 'VAGMD':
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'])
             self.VAGMD.design()
             self.design_output = self.VAGMD.opt()
 
-#            from DesalinationModels.VAGMD_PSA import VAGMD_PSA
-#            with open(self.desal_json_values, "r") as read_file:
-#                self.desal_values_json = json.load(read_file)
-#            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'])
-#            self.design_output = self.VAGMD.design()
-#            design_json_outfile =  self.samPath / 'results' /'VAGMD_design_output.json'
-#            with open(design_json_outfile, 'w') as outfile:
-#                json.dump(self.design_output, outfile)
+        elif desal == 'MDB':
+            from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
+            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
+            self.design_output =  self.MDB.design()         
         
         elif desal == 'LTMED':
             from DesalinationModels.LT_MED_General import lt_med_general
@@ -300,14 +323,25 @@ class SamBaseClass(object):
             self.simu_output = self.RO.simulation(gen = self.elec_gen, storage = self.desal_values_json['storage_hour'])
 
             
-        if desal == 'VAGMD':
+        elif desal == 'VAGMD':
             from DesalinationModels.VAGMD_PSA import VAGMD_PSA
             with open(self.desal_json_values, "r") as read_file:
                 self.desal_values_json = json.load(read_file)
-            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f = self.desal_values_json['Fossil_f'])
+            self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'])
             self.VAGMD.design()
+            self.design_output = self.VAGMD.opt()
 
             self.simu_output = self.VAGMD.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
+
+        elif desal == 'MDB':
+            from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
+            with open(self.desal_json_values, "r") as read_file:
+                self.desal_values_json = json.load(read_file)
+            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
+            self.MDB.design()  
+
+            self.simu_output = self.MDB.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
+
             
         
         elif desal == 'LTMED':
@@ -367,7 +401,7 @@ class SamBaseClass(object):
             self.cost_output = self.LCOW.lcow()
 
    
-        if desal == 'VAGMD':
+        elif desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
 
             self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
@@ -376,6 +410,8 @@ class SamBaseClass(object):
 
             self.cost_output = self.LCOW.lcow()
 
+        elif desal == 'MDB':
+            self.cost_output = 0
         
         elif desal == 'LTMED':
             from DesalinationModels.LTMED_cost import LTMED_cost
@@ -455,7 +491,7 @@ class SamBaseClass(object):
      
             for variable in all_variables:
                 # Set default value for non-specified variables
-                if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1': 
+                if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1' or self.cspModel== 'tcsmolten_salt': 
                     if variable['Name'] == 'file_name':
                         varValue = values_json['file_name']
                         variableValues.append({'name': 'solar_resource_file',
@@ -527,14 +563,72 @@ class SamBaseClass(object):
             with open(inputfile, 'w') as outfile:
                 json.dump(variableValues, outfile)
         return variableValues 
-
+    
+    map_json = cfg.map_json
+    with open(map_json, "r") as read_file:
+        map_data = json.load(read_file)       
+        latitude = map_data['latitude']
+    other_input_variables = {
+        "tcstrough_physical":{},
+        "tcsMSLF":{},
+        "tcsmolten_salt":{},
+        "tcsdirect_steam":{},
+        "trough_physical_process_heat":{'track_mode': 1,
+                                        'tilt': 0,
+                                        'azimuth': 0,
+                                        'accept_mode': 0,
+                                        'accept_init': 0,
+                                        'accept_loc': 1,
+                                        'mc_bal_hot': 20000000298023224,
+                                        'mc_bal_cold': 20000000298023224,
+                                        'mc_bal_sca': 4.5},
+        "linear_fresnel_dsg_iph":{},  
+        "pvsamv1":{},   
+        "SC_FPC":{},
+        "tcslinear_fresnel":{'track_mode': 1,
+                             'tilt': 0,
+                             'azimuth': 0,
+                             'PB_pump_coef': 0,
+                             'pc_mode': 1,
+                             'm_dot_st':0,
+                             'T_wb': 12.800000190734863,
+                             'T_db_pwb': 12.800000190734863,
+                             'P_amb_pwb': 960,
+                             'relhum': 0.25,
+                             'dp_b': 0,
+                             'dp_sh': 5,
+                             'dp_rh': 0,
+                             'tes_hours': 0,
+                             'dnifc': 0,
+                             'I_bn': 0,
+                             "T_db" : 15,
+	                         "T_dp" : 10,
+	                         "P_amb" : 930.5,
+                             "V_wind" : 0,
+                             "m_dot_htf_ref" : 0,
+                             "m_pb_demand" : 0,
+                             "shift" : 0,
+                             "SolarAz_init" : 0,
+                             "SolarZen" : 0,
+                             "T_pb_out_init" : 290,
+                             'standby_control': 0,
+                             'latitude': latitude
+                             }
+        }
 
     def set_data(self, variables):
 
         # Map all the strings present in the json file.
         stringsInJson = {}
         added_variables = {}
+        
+        for name, value in self.other_input_variables[self.cspModel].items():
 
+            self.ssc.data_set_number( self.data, b''+ name.encode("ascii", "backslashreplace"), value )
+
+            # self.ssc.data_set_number( self.data, b''+ name.encode("ascii", "backslashreplace"), b'' + varValue)
+            
+        
         # Increment complete TODOs count for each user.
 
         for ssc_var in variables:
@@ -545,6 +639,7 @@ class SamBaseClass(object):
                     
                     
                     varName = ssc_var["name"]
+
                     added_variables[varName] = False
                     
                     if (ssc_var["datatype"] == "SSC_STRING"):
@@ -645,7 +740,7 @@ class SamBaseClass(object):
         #print(Cond_temp_root2)        
         return Cond_temp_root2
     
-    def temp_to_heat(self, T_cond, P_cond, mass_fr, T_feedin):
+    def temp_to_heat(self, T_cond, mass_fr, T_feedin):
         Q_capacity = []
         
         for i in range(len(T_cond)):
@@ -725,6 +820,13 @@ class SamBaseClass(object):
             outputs.append({'Name': 'Waste heat generation',
                             'Value': self.heat_gen,
                             'Unit': 'kWh'})  
+        if self.cspModel == 'tcstrough_physical'  or self.cspModel== 'tcsMSLF' or self.cspModel== 'tcsmolten_salt':
+            outputs.append({'Name': 'Steam mass flow rate',
+                            'Value': self.mass_fr_hr,
+                            'Unit': 'kg/hr'})   
+            outputs.append({'Name': 'Waste heat generation',
+                            'Value': self.heat_gen,
+                            'Unit': 'kWh'})              
         
         
 

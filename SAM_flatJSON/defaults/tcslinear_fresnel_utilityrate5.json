@@ -322,5 +322,9 @@
 	"metric_13" : "loan_amount",
 	"metric_13_label" : "Debt",
 	"number_compute_modules" : 3,
-	"number_metrics" : 14
+	"number_metrics" : 14,
+	"specified_total_aperture": 862848,
+	"sm_or_area": 0,
+	"sh_geom_unique": 0,
+	"gross_net_conv_factor" : 0.94
 }

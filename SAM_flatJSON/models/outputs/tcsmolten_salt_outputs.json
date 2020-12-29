@@ -1,455 +1,933 @@
 {
-    "TcslinearFresnel_LFDS": [
+    "Output": [
         {
-            "Data": "SSC_ARRAY",
-            "Name": "month",
-            "Label": "Resource Month",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Data": "SSC_NUMBER",
+            "Name": "A_sf",
+            "Label": "Solar Field Area",
+            "Unit": "m^2",
+            "Group": "receiver"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.total_land_area",
+            "Label": "Total land area",
+            "Unit": "acre",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.site_improvements",
+            "Label": "Site improvement cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.heliostats",
+            "Label": "Heliostat cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.tower",
+            "Label": "Tower cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.receiver",
+            "Label": "Receiver cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.storage",
+            "Label": "TES cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.power_block",
+            "Label": "Power cycle cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.bop",
+            "Label": "BOP cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.fossil",
+            "Label": "Fossil backup cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "ui_direct_subtotal",
+            "Label": "Direct capital precontingency cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.contingency",
+            "Label": "Contingency cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "total_direct_cost",
+            "Label": "Total direct cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.epc.total",
+            "Label": "EPC and owner cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.plm.total",
+            "Label": "Total land cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.sales_tax.total",
+            "Label": "Sales tax cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "total_indirect_cost",
+            "Label": "Total indirect cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "total_installed_cost",
+            "Label": "Total installed cost",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "csp.pt.cost.installed_per_capacity",
+            "Label": "Estimated installed cost per cap",
+            "Unit": "$",
+            "Group": "system_costs"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal1",
+            "Label": "Principal, loan 1",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal2",
+            "Label": "Principal, loan 2",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal3",
+            "Label": "Principal, loan 3",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal4",
+            "Label": "Principal, loan 4",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal5",
+            "Label": "Principal, loan 5",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest1",
+            "Label": "Interest cost, loan 1",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest2",
+            "Label": "Interest cost, loan 2",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest3",
+            "Label": "Interest cost, loan 3",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest4",
+            "Label": "Interest cost, loan 4",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest5",
+            "Label": "Interest cost, loan 5",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_total1",
+            "Label": "Total financing cost, loan 1",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_total2",
+            "Label": "Total financing cost, loan 2",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_total3",
+            "Label": "Total financing cost, loan 3",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_total4",
+            "Label": "Total financing cost, loan 4",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_total5",
+            "Label": "Total financing cost, loan 5",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_percent_total",
+            "Label": "Total percent of installed costs, all loans",
+            "Unit": "%",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_principal_total",
+            "Label": "Total principal, all loans",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "const_per_interest_total",
+            "Label": "Total interest costs, all loans",
+            "Unit": "$",
+            "Group": "financial parameters"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "construction_financing_cost",
+            "Label": "Total construction financing cost",
+            "Unit": "$",
+            "Group": "financial parameters"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "hour",
-            "Label": "Resource Hour of Day",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "solazi",
-            "Label": "Resource Solar Azimuth",
-            "Units": "deg",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Name": "time_hr",
+            "Label": "Time at end of timestep",
+            "Unit": "hr",
+            "Group": "Solver"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "solzen",
             "Label": "Resource Solar Zenith",
-            "Units": "deg",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "deg",
+            "Group": "weather"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "solaz",
+            "Label": "Resource Solar Azimuth",
+            "Unit": "deg",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "beam",
             "Label": "Resource Beam normal irradiance",
-            "Units": "W/m2",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Unit": "W/m2",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "tdry",
-            "Label": "Resource Dry bulb temperature",
-            "Units": "C",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Label": "Resource Dry Bulb Temperature",
+            "Unit": "C",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "twet",
-            "Label": "Resource Wet bulb temperature",
-            "Units": "C",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Label": "Resource Wet Bulb Temperature",
+            "Unit": "C",
+            "Group": "weather"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "rh",
+            "Label": "Resource Relative Humidity",
+            "Unit": "%",
+            "Group": "weather"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "wspd",
-            "Label": "Resource Wind Speed",
-            "Units": "m/s",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Label": "Resource Wind Velocity",
+            "Unit": "m/s",
+            "Group": "weather"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "eta_map_out",
+            "Label": "Solar field optical efficiencies",
+            "Group": "heliostat"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "flux_maps_out",
+            "Label": "Flux map intensities",
+            "Group": "heliostat"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "pres",
-            "Label": "Resource Pressure",
-            "Units": "mbar",
-            "Group": "weather",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_sf_inc",
+            "Label": "Field incident thermal power",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "tou_value",
-            "Label": "Resource Time-of-use value",
-            "Group": "tou",
-            "Constraint": "LENGTH=8760"
+            "Name": "eta_field",
+            "Label": "Field optical efficiency",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "defocus",
-            "Label": "Field collector focus fraction",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Label": "Field optical focus fraction",
+            "Group": "Controller"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "eta_opt_ave",
-            "Label": "Field collector optical efficiency",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "sf_adjust_out",
+            "Label": "Field availability adjustment factor",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "eta_thermal",
-            "Label": "Field thermal efficiency",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_rec_inc",
+            "Label": "Rec. incident thermal power",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "eta_sf",
-            "Label": "Field efficiency total",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "eta_therm",
+            "Label": "Rec. thermal efficiency",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_inc_tot",
-            "Label": "Field thermal power incident",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "Q_thermal",
+            "Label": "Rec. thermal power to HTF less piping loss",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_rec",
-            "Label": "Field thermal power receiver loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "m_dot_rec",
+            "Label": "Rec. mass flow rate",
+            "Unit": "kg/s",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_piping",
-            "Label": "Field thermal power header pipe loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_startup",
+            "Label": "Rec. startup thermal energy consumed",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_loss_sf",
-            "Label": "Field thermal power loss",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_rec_in",
+            "Label": "Rec. HTF inlet temperature",
+            "Unit": "C",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_field_delivered",
-            "Label": "Field thermal power produced",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_rec_out",
+            "Label": "Rec. HTF outlet temperature",
+            "Unit": "C",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_field",
-            "Label": "Field steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_piping_losses",
+            "Label": "Rec. header/tower piping losses",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_b_tot",
-            "Label": "Field steam mass flow rate - boiler",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "m_dot",
-            "Label": "Field steam mass flow rate - loop",
-            "Units": "kg/s",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "P_sf_in",
-            "Label": "Field steam pressure at inlet",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "dP_tot",
-            "Label": "Field steam pressure loss",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "T_field_in",
-            "Label": "Field steam temperature at header inlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "T_loop_out",
-            "Label": "Field steam temperature at collector outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
-        },
-        {
-            "Data": "SSC_ARRAY",
-            "Name": "T_field_out",
-            "Label": "Field steam temperature at header outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_thermal_loss",
+            "Label": "Rec. convection and emission losses",
+            "Unit": "MWt",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
             "Name": "eta",
-            "Label": "Cycle efficiency (gross)",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Label": "PC efficiency: gross",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_net",
-            "Label": "Cycle electrical power output (net)",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_pb",
+            "Label": "PC input energy",
+            "Unit": "MWt",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_cycle_gross",
-            "Label": "Cycle electrical power output (gross)",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "m_dot_pc",
+            "Label": "PC HTF mass flow rate",
+            "Unit": "kg/s",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_to_pb",
-            "Label": "Cycle steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_pc_startup",
+            "Label": "PC startup thermal energy",
+            "Unit": "MWht",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "P_turb_in",
-            "Label": "Cycle steam pressure at inlet",
-            "Units": "bar",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dot_pc_startup",
+            "Label": "PC startup thermal power",
+            "Unit": "MWt",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_pb_in",
-            "Label": "Cycle steam temperature at inlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "P_cycle",
+            "Label": "PC electrical power output: gross",
+            "Unit": "MWe",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "T_pb_out",
-            "Label": "Cycle steam temperature at outlet",
-            "Units": "C",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_pc_in",
+            "Label": "PC HTF inlet temperature",
+            "Unit": "C",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "E_bal_startup",
-            "Label": "Cycle thermal energy startup",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_pc_out",
+            "Label": "PC HTF outlet temperature",
+            "Unit": "C",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_dump",
-            "Label": "Cycle thermal energy dumped",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "m_dot_water_pc",
+            "Label": "PC water consumption: makeup + cooling",
+            "Unit": "kg/s",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_to_pb",
-            "Label": "Cycle thermal power input",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "tank_losses",
+            "Label": "TES thermal losses",
+            "Unit": "MWt",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_makeup",
-            "Label": "Cycle cooling water mass flow rate - makeup",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_heater",
+            "Label": "TES freeze protection power",
+            "Unit": "MWe",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "P_cond",
-            "Label": "Condenser pressure",
-            "Units": "Pa",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_tes_hot",
+            "Label": "TES hot temperature",
+            "Unit": "C",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "f_bays",
-            "Label": "Condenser fraction of operating bays",
-            "Units": "none",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "T_tes_cold",
+            "Label": "TES cold temperature",
+            "Unit": "C",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_aux_fluid",
-            "Label": "Fossil thermal power produced",
-            "Units": "MWt",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_dc_tes",
+            "Label": "TES discharge thermal power",
+            "Unit": "MWt",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "m_dot_aux",
-            "Label": "Fossil steam mass flow rate",
-            "Units": "kg/hr",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "q_ch_tes",
+            "Label": "TES charge thermal power",
+            "Unit": "MWt",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "q_aux_fuel",
-            "Label": "Fossil fuel usage",
-            "Units": "MMBTU",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "e_ch_tes",
+            "Label": "TES charge state",
+            "Unit": "MWht",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_dot_pump",
-            "Label": "Parasitic power solar field pump",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "m_dot_tes_dc",
+            "Label": "TES discharge mass flow rate",
+            "Unit": "kg/s",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_dot_col",
-            "Label": "Parasitic power field collector drives",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "m_dot_tes_ch",
+            "Label": "TES charge mass flow rate",
+            "Unit": "kg/s",
+            "Group": "TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_dot_bop",
-            "Label": "Parasitic power generation-dependent load",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "pparasi",
+            "Label": "Parasitic power heliostat drives",
+            "Unit": "MWe",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_dot_fixed",
-            "Label": "Parasitic power fixed load",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "P_tower_pump",
+            "Label": "Parasitic power receiver/tower HTF pump",
+            "Unit": "MWe",
+            "Group": "CR"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_dot_aux",
-            "Label": "Parasitic power auxiliary heater operation",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Name": "htf_pump_power",
+            "Label": "Parasitic power TES and Cycle HTF pump",
+            "Unit": "MWe",
+            "Group": "PC-TES"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "W_cool_par",
+            "Name": "P_cooling_tower_tot",
             "Label": "Parasitic power condenser operation",
-            "Units": "MWe",
-            "Group": "Outputs",
-            "Constraint": "LENGTH=8760"
+            "Unit": "MWe",
+            "Group": "PC"
         },
         {
             "Data": "SSC_ARRAY",
-            "Name": "monthly_energy",
-            "Label": "Monthly Energy",
-            "Units": "kWh",
-            "Group": "Linear Fresnel",
-            "Constraint": "LENGTH=12"
+            "Name": "P_fixed",
+            "Label": "Parasitic power fixed load",
+            "Unit": "MWe",
+            "Group": "System"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "P_plant_balance_tot",
+            "Label": "Parasitic power generation-dependent load",
+            "Unit": "MWe",
+            "Group": "System"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "P_out_net",
+            "Label": "Total electric power to grid",
+            "Unit": "MWe",
+            "Group": "System"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "tou_value",
+            "Label": "CSP operating Time-of-use value",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "pricing_mult",
+            "Label": "PPA price multiplier",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "n_op_modes",
+            "Label": "Operating modes in reporting timestep",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "op_mode_1",
+            "Label": "1st operating mode",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "op_mode_2",
+            "Label": "2nd op. mode, if applicable",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "op_mode_3",
+            "Label": "3rd op. mode, if applicable",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "m_dot_balance",
+            "Label": "Relative mass flow balance error",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_balance",
+            "Label": "Relative energy balance error",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_solve_state",
+            "Label": "Dispatch solver state",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_solve_iter",
+            "Label": "Dispatch iterations count",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_objective",
+            "Label": "Dispatch objective function value",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_obj_relax",
+            "Label": "Dispatch objective function - relaxed max",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_qsf_expected",
+            "Label": "Dispatch expected solar field available energy",
+            "Unit": "MWt",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_qsfprod_expected",
+            "Label": "Dispatch expected solar field generation",
+            "Unit": "MWt",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_qsfsu_expected",
+            "Label": "Dispatch expected solar field startup enegy",
+            "Unit": "MWt",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_tes_expected",
+            "Label": "Dispatch expected TES charge level",
+            "Unit": "MWht",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_pceff_expected",
+            "Label": "Dispatch expected power cycle efficiency adj.",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_thermeff_expected",
+            "Label": "Dispatch expected SF thermal efficiency adj.",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_qpbsu_expected",
+            "Label": "Dispatch expected power cycle startup energy",
+            "Unit": "MWht",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_wpb_expected",
+            "Label": "Dispatch expected power generation",
+            "Unit": "MWe",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_rev_expected",
+            "Label": "Dispatch expected revenue factor",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_presolve_nconstr",
+            "Label": "Dispatch number of constraints in problem",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_presolve_nvar",
+            "Label": "Dispatch number of variables in problem",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "disp_solve_time",
+            "Label": "Dispatch solver time",
+            "Unit": "sec",
+            "Group": "tou"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_pc_sb",
+            "Label": "Thermal power for PC standby",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_pc_min",
+            "Label": "Thermal power for PC min operation",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_pc_max",
+            "Label": "Max thermal power to PC",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_pc_target",
+            "Label": "Target thermal power to PC",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "is_rec_su_allowed",
+            "Label": "is receiver startup allowed",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "is_pc_su_allowed",
+            "Label": "is power cycle startup allowed",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "is_pc_sb_allowed",
+            "Label": "is power cycle standby allowed",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_est_cr_su",
+            "Label": "Estimate rec. startup thermal power",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_est_cr_on",
+            "Label": "Estimate rec. thermal power TO HTF",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_est_tes_dc",
+            "Label": "Estimate max TES discharge thermal power",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "q_dot_est_tes_ch",
+            "Label": "Estimate max TES charge thermal power",
+            "Unit": "MWt",
+            "Group": "Controller"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "operating_modes_a",
+            "Label": "First 3 operating modes tried",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "operating_modes_b",
+            "Label": "Next 3 operating modes tried",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "operating_modes_c",
+            "Label": "Final 3 operating modes tried",
+            "Group": "Solver"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "Total electric power to grid w/ avail. derate",
+            "Unit": "kWe",
+            "Group": "System"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "ud_T_htf_ind_od_out",
+            "Label": "T_htf_hot cycle off design",
+            "Group": "PC"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "ud_T_amb_ind_od_out",
+            "Label": "T_amb cycle off design",
+            "Group": "PC"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "ud_m_dot_htf_ind_od_out",
+            "Label": "m_dot_htf cycle off design",
+            "Group": "PC"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "annual_energy",
-            "Label": "Annual Energy",
-            "Units": "kWh",
-            "Group": "Linear Fresnel"
+            "Label": "Annual total electric power to grid",
+            "Unit": "kWhe",
+            "Group": "System"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "annual_W_cycle_gross",
             "Label": "Electrical source - Power cycle gross output",
-            "Units": "kWh",
-            "Group": "Linear Fresnel"
+            "Unit": "kWhe",
+            "Group": "PC"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "conversion_factor",
             "Label": "Gross to Net Conversion Factor",
-            "Units": "%",
-            "Group": "Calculated"
+            "Unit": "%",
+            "Group": "PostProcess"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "capacity_factor",
             "Label": "Capacity factor",
-            "Units": "%"
-        },
-        {
-            "Data": "SSC_NUMBER",
-            "Name": "annual_total_water_use",
-            "Label": "Total Annual Water Usage: cycle + mirror washing",
-            "Units": "m3",
+            "Unit": "%",
             "Group": "PostProcess"
         },
         {
             "Data": "SSC_NUMBER",
             "Name": "kwh_per_kw",
             "Label": "First year kWh/kW",
-            "Units": "kWh/kW"
+            "Unit": "kWh/kW"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "system_heat_rate",
-            "Label": "System heat rate",
-            "Units": "MMBtu/MWh"
+            "Name": "annual_total_water_use",
+            "Label": "Total Annual Water Usage: cycle + mirror washing",
+            "Unit": "m3",
+            "Group": "PostProcess"
         },
         {
             "Data": "SSC_NUMBER",
-            "Name": "annual_fuel_usage",
-            "Label": "Annual fuel usage",
-            "Units": "kWh"
+            "Name": "disp_objective_ann",
+            "Label": "Annual sum of dispatch objective func. value"
         },
         {
-            "Data": "SSC_ARRAY",
-            "Name": "gen",
-            "Label": "System power generated",
-            "Units": "kW",
-            "Group": "Time Series"
+            "Data": "SSC_NUMBER",
+            "Name": "disp_iter_ann",
+            "Label": "Annual sum of dispatch solver iterations"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "disp_presolve_nconstr_ann",
+            "Label": "Annual sum of dispatch problem constraint count"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "disp_presolve_nvar_ann",
+            "Label": "Annual sum of dispatch problem variable count"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "disp_solve_time_ann",
+            "Label": "Annual sum of dispatch solver time"
         }
     ]
 }

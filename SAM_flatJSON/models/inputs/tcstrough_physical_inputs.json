@@ -1,73 +1,5 @@
 {
     "tcstrough_physical": [
-		{
-            "DataType": "SSC_STRING",
-            "Name": "file_name",
-            "Label": "Local weather file with path",
-            "Units": "none",
-            "Group": "Weather",
-            "Require": "*",
-            "Costraint": "LOCAL_FILE",
-            "Tab": "Location and Resource",
-            "Section": "Weather Data Information"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "track_mode",
-            "Label": "Tracking mode",
-            "Units": "none",
-            "Group": "Weather",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "tilt",
-            "Label": "Tilt angle of surface/axis",
-            "Units": "none",
-            "Group": "Weather",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Collector Orientation"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "azimuth",
-            "Label": "Azimuth angle of surface/axis",
-            "Units": "none",
-            "Group": "Weather",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Collector Orientation"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "system_capacity",
-            "Label": "Nameplate capacity",
-            "Units": "kW",
-            "Group": "trough",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Capacity"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "nSCA",
-            "Label": "Number of SCAs in a loop",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Single Loop Configuration"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "nHCEt",
-            "Label": "Number of HCE types",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Receivers (HCEs)"
-        },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nColt",
@@ -77,417 +9,6 @@
             "Group": "solar_field",
             "Require": "*",
             "Tab": "Collectors (SCAs)"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "nHCEVar",
-            "Label": "Number of HCE variants per type",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Receivers (HCEs)",
-            "Section": "Parameters and Variations"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "nLoops",
-            "Label": "Number of loops in the field",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "eta_pump",
-            "Label": "HTF pump efficiency",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "HDR_rough",
-            "Label": "Header pipe roughness",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "theta_stow",
-            "Label": "Stow angle",
-            "Units": "deg",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "theta_dep",
-            "Label": "Deploy angle",
-            "Units": "deg",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Row_Distance",
-            "Label": "Spacing between rows (centerline to centerline)",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "FieldConfig",
-            "Label": "Number of subfield headers",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_startup",
-            "Label": "Required temperature of the system before the power block can be switched on",
-            "Units": "C",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Control"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "P_ref",
-            "Label": "Rated plant capacity",
-            "Units": "MWe",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Capacity"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "m_dot_htfmin",
-            "Label": "Minimum loop HTF flow rate",
-            "Units": "kg/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "m_dot_htfmax",
-            "Label": "Maximum loop HTF flow rate",
-            "Units": "kg/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_loop_in_des",
-            "Label": "Design loop inlet temperature",
-            "Units": "C",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_loop_out",
-            "Label": "Target loop outlet temperature",
-            "Units": "C",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Fluid",
-            "Label": "Field HTF fluid ID number",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_fp",
-            "Label": "Freeze protection temperature (heat trace activation temperature)",
-            "Units": "C",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "I_bn_des",
-            "Label": "Solar irradiation at design",
-            "Units": "W/m2",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "calc_design_pipe_vals",
-            "Label": "Calculate temps and pressures at design conditions for runners and headers",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "V_hdr_cold_max",
-            "Label": "Maximum HTF velocity in the cold headers at design",
-            "Units": "m/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "V_hdr_cold_min",
-            "Label": "Minimum HTF velocity in the cold headers at design",
-            "Units": "m/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "V_hdr_hot_max",
-            "Label": "Maximum HTF velocity in the hot headers at design",
-            "Units": "m/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "V_hdr_hot_min",
-            "Label": "Minimum HTF velocity in the hot headers at design",
-            "Units": "m/s",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Heat Transfer Fluid"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "N_max_hdr_diams",
-            "Label": "Maximum number of diameters in each of the hot and cold headers",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "L_rnr_pb",
-            "Label": "Length of runner pipe in power block",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "L_rnr_per_xpan",
-            "Label": "Threshold length of straight runner pipe without an expansion loop",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "L_xpan_hdr",
-            "Label": "Compined perpendicular lengths of each header expansion loop",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "L_xpan_rnr",
-            "Label": "Compined perpendicular lengths of each runner expansion loop",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Min_rnr_xpans",
-            "Label": "Minimum number of expansion loops per single-diameter runner section",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "northsouth_field_sep",
-            "Label": "North/south separation between subfields. 0 = SCAs are touching",
-            "Units": "m",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "N_hdr_per_xpan",
-            "Label": "Number of collector loops per expansion loop",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "offset_xpan_hdr",
-            "Label": "Location of first header expansion loop. 1 = after first collector loop",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Pipe_hl_coef",
-            "Label": "Loss coefficient from the header, runner pipe, and non-HCE piping",
-            "Units": "W/m2-K",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "SCA_drives_elec",
-            "Label": "Tracking power, in Watts per SCA drive",
-            "Units": "W/SCA",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "fthrok",
-            "Label": "Flag to allow partial defocusing of the collectors",
-            "Group": "solar_field",
-            "Require": "*",
-            "Costraint": "INTEGER",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "fthrctrl",
-            "Label": "Defocusing strategy",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramaters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "water_usage_per_wash",
-            "Label": "Water usage per wash",
-            "Units": "L/m2_aper",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Mirror Washing"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "washing_frequency",
-            "Label": "Mirror washing frequency",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Mirror Washing"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "accept_mode",
-            "Label": "Acceptance testing mode?",
-            "Units": "0/1",
-            "Meta": "no/yes",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "accept_init",
-            "Label": "In acceptance testing mode - require steady-state startup",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "accept_loc",
-            "Label": "In acceptance testing mode - temperature sensor location",
-            "Units": "2-Jan",
-            "Meta": "hx/loop",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "solar_mult",
-            "Label": "Solar multiple",
-            "Units": "none",
-            "Group": "solar_field",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "mc_bal_hot",
-            "Label": "Heat capacity of the balance of plant on the hot side",
-            "Units": "kWht/K-MWt",
-            "Meta": "none",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "mc_bal_cold",
-            "Label": "Heat capacity of the balance of plant on the cold side",
-            "Units": "kWht/K-MWt",
-            "Group": "solar_field",
-            "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "mc_bal_sca",
-            "Label": "Non-HTF heat capacity associated with each SCA - per meter basis",
-            "Units": "Wht/K-m",
-            "Group": "solar_field",
-            "Require": "*"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -618,6 +139,510 @@
             "Require": "*",
             "Tab": "Collectors (SCAs)",
             "Section": "Optical Parameters"
+        },
+        {
+            "DataType": "SSC_STRING",
+            "Name": "file_name",
+            "Label": "Local weather file with path",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*",
+            "Costraint": "LOCAL_FILE",
+            "Tab": "Location and Resource",
+            "Section": "Weather Data Information"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pipe_hl_coef",
+            "Label": "Loss coefficient from the header, runner pipe, and non-HCE piping",
+            "Units": "W/m2-K",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "SCA_drives_elec",
+            "Label": "Tracking power, in Watts per SCA drive",
+            "Units": "W/SCA",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_pump_coef",
+            "Label": "Pumping power to move 1kg of HTF through PB loop",
+            "Units": "kW/(kg/s)",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tes_pump_coef",
+            "Label": "Pumping power to move 1kg of HTF through tes loop",
+            "Units": "kW/(kg/s)",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_fixed_par",
+            "Label": "Fraction of rated gross power constantly consumed",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "bop_array",
+            "Label": "Coefficients for balance of plant parasitics calcs",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "aux_array",
+            "Label": "Coefficients for auxiliary heater parasitics calcs",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Parasitics",
+            "Section": "Parasitics"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "Nameplate capacity",
+            "Units": "kW",
+            "Group": "trough",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Capacity"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_startup",
+            "Label": "Required temperature of the system before the power block can be switched on",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Control"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_ref",
+            "Label": "Rated plant capacity",
+            "Units": "MWe",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Capacity"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "W_pb_design",
+            "Label": "Rated plant capacity",
+            "Units": "MWe",
+            "Group": "controller",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "gross_net_conversion_factor",
+            "Label": "Estimated gross to net conversion factor",
+            "Units": "none",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Capacity"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fossil_mode",
+            "Label": "Fossil backup mode 1=Normal 2=Topping",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "t_standby_reset",
+            "Label": "Maximum allowable time for PB standby operation",
+            "Units": "hr",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Control"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pc_config",
+            "Label": "0: Steam Rankine (224), 1: user defined",
+            "Units": "-",
+            "Group": "powerblock",
+            "Require": "?=0",
+            "Costraint": "INTEGER",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_ref",
+            "Label": "Reference conversion efficiency at design condition",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "startup_time",
+            "Label": "Time needed for power block startup",
+            "Units": "hr",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "startup_frac",
+            "Label": "Fraction of design thermal power needed for startup",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "q_sby_frac",
+            "Label": "Fraction of thermal power required for standby mode",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Power Block Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dT_cw_ref",
+            "Label": "Reference condenser cooling water inlet/outlet T diff",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_amb_des",
+            "Label": "Reference ambient temperature at design point",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_boil",
+            "Label": "Boiler operating pressure",
+            "Units": "bar",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "CT",
+            "Label": "Flag for using dry cooling or wet cooling system",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_approach",
+            "Label": "Cooling tower approach temperature",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_ITD_des",
+            "Label": "ITD at design for dry system",
+            "Units": "C",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_cond_ratio",
+            "Label": "Condenser pressure ratio",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pb_bd_frac",
+            "Label": "Power block blowdown steam fraction ",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "P_cond_min",
+            "Label": "Minimum condenser pressure",
+            "Units": "inHg",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "n_pl_inc",
+            "Label": "Number of part-load increments for the heat rejection system",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "F_wc",
+            "Label": "Fraction indicating wet cooling use for hybrid system",
+            "Units": "none",
+            "Meta": "constant=[0,0,0,0,0,0,0,0,0]",
+            "Group": "powerblock",
+            "Require": "pc_config=0",
+            "Tab": "Power Cycle",
+            "Section": "Rankine Cycle Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_des",
+            "Label": "Ambient temperature at user-defined power cycle design point",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "User Defined Power Cycle Design Paramters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_f_W_dot_cool_des",
+            "Label": "Percent of user-defined power cycle design gross output consumed by cooling",
+            "Units": "%",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "User Defined Power Cycle Design Paramters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_water_cool_des",
+            "Label": "Mass flow rate of water required at user-defined power cycle design point",
+            "Units": "kg/s",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "User Defined Power Cycle Design Paramters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_htf_low",
+            "Label": "Low level HTF inlet temperature for T_amb parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_htf_high",
+            "Label": "High level HTF inlet temperature for T_amb parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_low",
+            "Label": "Low level ambient temperature for HTF mass flow rate parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_T_amb_high",
+            "Label": "High level ambient temperature for HTF mass flow rate parametric",
+            "Units": "C",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_htf_low",
+            "Label": "Low level normalized HTF mass flow rate for T_HTF parametric",
+            "Units": "-",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ud_m_dot_htf_high",
+            "Label": "High level normalized HTF mass flow rate for T_HTF parametric",
+            "Units": "-",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "adjust:constant",
+            "Label": "Constant loss adjustment",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "*",
+            "Costraint": "MAX=100",
+            "Tab": "Power Cycle",
+            "Section": "Avaialability and Curtailment"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "adjust:hourly",
+            "Label": "Hourly loss adjustments",
+            "Units": "%",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "LENGTH=8760",
+            "Tab": "Power Cycle",
+            "Section": "Avaialability and Curtailment"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based loss adjustments",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Loss Adjustments",
+            "Require": "?",
+            "Costraint": "COLS=3",
+            "Tab": "Power Cycle",
+            "Section": "Avaialability and Curtailment"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_T_htf_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_htf_hot [C]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle ",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_T_amb_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_amb [C]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle ",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_m_dot_htf_ind_od",
+            "Label": "Off design table of user-defined power cycle performance formed from parametric on m_dot_htf [ND]",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle ",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "ud_ind_od",
+            "Label": "Off design user-defined power cycle performance as function of T_htf, m_dot_htf [ND], and T_amb",
+            "Group": "user_defined_PC",
+            "Require": "pc_config=1",
+            "Tab": "Power Cycle ",
+            "Section": "User Defined Power Cycle",
+            "Subsection": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHCEt",
+            "Label": "Number of HCE types",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Receivers (HCEs)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHCEVar",
+            "Label": "Number of HCE variants per type",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Receivers (HCEs)",
+            "Section": "Parameters and Variations"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1007,6 +1032,296 @@
             "Subsection": "Heat Loss at Design"
         },
         {
+            "DataType": "SSC_NUMBER",
+            "Name": "nSCA",
+            "Label": "Number of SCAs in a loop",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Single Loop Configuration"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "trough_loop_control",
+            "Label": "Trough loop configuration",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Single Loop Configuration"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nLoops",
+            "Label": "Number of loops in the field",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_pump",
+            "Label": "HTF pump efficiency",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "HDR_rough",
+            "Label": "Header pipe roughness",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_stow",
+            "Label": "Stow angle",
+            "Units": "deg",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "theta_dep",
+            "Label": "Deploy angle",
+            "Units": "deg",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Row_Distance",
+            "Label": "Spacing between rows (centerline to centerline)",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FieldConfig",
+            "Label": "Number of subfield headers",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmin",
+            "Label": "Minimum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "m_dot_htfmax",
+            "Label": "Maximum loop HTF flow rate",
+            "Units": "kg/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_in_des",
+            "Label": "Design loop inlet temperature",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_loop_out",
+            "Label": "Target loop outlet temperature",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Fluid",
+            "Label": "Field HTF fluid ID number",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_fp",
+            "Label": "Freeze protection temperature (heat trace activation temperature)",
+            "Units": "C",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "I_bn_des",
+            "Label": "Solar irradiation at design",
+            "Units": "W/m2",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_cold_max",
+            "Label": "Maximum HTF velocity in the cold headers at design",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_cold_min",
+            "Label": "Minimum HTF velocity in the cold headers at design",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_hot_max",
+            "Label": "Maximum HTF velocity in the hot headers at design",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V_hdr_hot_min",
+            "Label": "Minimum HTF velocity in the hot headers at design",
+            "Units": "m/s",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Heat Transfer Fluid"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fthrok",
+            "Label": "Flag to allow partial defocusing of the collectors",
+            "Group": "solar_field",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "fthrctrl",
+            "Label": "Defocusing strategy",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "water_usage_per_wash",
+            "Label": "Water usage per wash",
+            "Units": "L/m2_aper",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Mirror Washing"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "washing_frequency",
+            "Label": "Mirror washing frequency",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Mirror Washing"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sm_or_area",
+            "Label": "Input '0' to specify solar multiple, input '1' to specify aperture area",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "specified_solar_multiple",
+            "Label": "Specified solar multiple",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_mult",
+            "Label": "Actual solar multiple",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "specified_total_aperture",
+            "Label": "Specified total aperture",
+            "Units": "m2",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "total_aperture",
+            "Label": "Actual total aperture",
+            "Units": "m2",
+            "Group": "solar_field",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
             "DataType": "SSC_MATRIX",
             "Name": "SCAInfoArray",
             "Label": "Receiver (,1) and collector (,2) type for each assembly in loop",
@@ -1025,6 +1340,360 @@
             "Require": "*",
             "Tab": "Solar Field",
             "Section": "Single Loop Configuration"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_pump",
+            "Label": "HTF pump efficiency",
+            "Units": "none",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "HDR_rough",
+            "Label": "Header pipe roughness - used as general pipe roughness",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "store_fluid",
+            "Label": "Material number for storage fluid",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tshours",
+            "Label": "Equivalent full-load thermal storage hours",
+            "Units": "hr",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt_hot",
+            "Label": "Hot side HX approach temp",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt_cold",
+            "Label": "Cold side HX approach temp",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank",
+            "Label": "Total height of tank (height of HTF when tank is full",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "h_tank_min",
+            "Label": "Minimum allowable HTF height in storage tank",
+            "Units": "m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "u_tank",
+            "Label": "Loss coefficient from the tank",
+            "Units": "W/m2-K",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_pairs",
+            "Label": "Number of equivalent tank pairs",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Costraint": "INTEGER",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cold_tank_Thtr",
+            "Label": "Minimum allowable cold tank HTF temp",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hot_tank_Thtr",
+            "Label": "Minimum allowable hot tank HTF temp",
+            "Units": "C",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_max_heat",
+            "Label": "Rated heater capacity for tank heating",
+            "Units": "MW",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_a",
+            "Label": "Dispatch logic without solar",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_b",
+            "Label": "Dispatch logic with solar",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "tslogic_c",
+            "Label": "Dispatch logic for turbine load fraction",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ffrac",
+            "Label": "Fossil dispatch logic",
+            "Units": "-",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "weekday_schedule",
+            "Label": "Dispatch 12mx24h schedule for week days",
+            "Group": "tou_translator",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Weekday Schedule"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "weekend_schedule",
+            "Label": "Dispatch 12mx24h schedule for weekends",
+            "Group": "tou_translator",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Weekend Schedule"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "eta_tes_htr",
+            "Label": "Thermal storage tank heater efficiency (fp_mode=1 only)",
+            "Units": "none",
+            "Group": "enet",
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Storage System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "track_mode",
+            "Label": "Tracking mode",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tilt",
+            "Label": "Tilt angle of surface/axis",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "azimuth",
+            "Label": "Azimuth angle of surface/axis",
+            "Units": "none",
+            "Group": "Weather",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "calc_design_pipe_vals",
+            "Label": "Calculate temps and pressures at design conditions for runners and headers",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "N_max_hdr_diams",
+            "Label": "Maximum number of diameters in each of the hot and cold headers",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_rnr_pb",
+            "Label": "Length of runner pipe in power block",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_rnr_per_xpan",
+            "Label": "Threshold length of straight runner pipe without an expansion loop",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_xpan_hdr",
+            "Label": "Compined perpendicular lengths of each header expansion loop",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "L_xpan_rnr",
+            "Label": "Compined perpendicular lengths of each runner expansion loop",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Min_rnr_xpans",
+            "Label": "Minimum number of expansion loops per single-diameter runner section",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "northsouth_field_sep",
+            "Label": "North/south separation between subfields. 0 = SCAs are touching",
+            "Units": "m",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "N_hdr_per_xpan",
+            "Label": "Number of collector loops per expansion loop",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "offset_xpan_hdr",
+            "Label": "Location of first header expansion loop. 1 = after first collector loop",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_mode",
+            "Label": "Acceptance testing mode?",
+            "Units": "0/1",
+            "Meta": "no/yes",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_init",
+            "Label": "In acceptance testing mode - require steady-state startup",
+            "Units": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "accept_loc",
+            "Label": "In acceptance testing mode - temperature sensor location",
+            "Units": "2-Jan",
+            "Meta": "hx/loop",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_hot",
+            "Label": "Heat capacity of the balance of plant on the hot side",
+            "Units": "kWht/K-MWt",
+            "Meta": "none",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_cold",
+            "Label": "Heat capacity of the balance of plant on the cold side",
+            "Units": "kWht/K-MWt",
+            "Group": "solar_field",
+            "Require": "*"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mc_bal_sca",
+            "Label": "Non-HTF heat capacity associated with each SCA - per meter basis",
+            "Units": "Wht/K-m",
+            "Group": "solar_field",
+            "Require": "*"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1132,71 +1801,11 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "store_fluid",
-            "Label": "Material number for storage fluid",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "tshours",
-            "Label": "Equivalent full-load thermal storage hours",
-            "Units": "hr",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "eta_pump",
-            "Label": "HTF pump efficiency",
-            "Units": "none",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "HDR_rough",
-            "Label": "Header pipe roughness - used as general pipe roughness",
-            "Units": "m",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Solar Field",
-            "Section": "Solar Field Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "is_hx",
             "Label": "Heat exchanger (HX) exists (1=yes, 0=no)",
             "Units": "-",
             "Group": "controller",
             "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "dt_hot",
-            "Label": "Hot side HX approach temp",
-            "Units": "C",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "dt_cold",
-            "Label": "Cold side HX approach temp",
-            "Units": "C",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1248,77 +1857,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "h_tank",
-            "Label": "Total height of tank (height of HTF when tank is full",
-            "Units": "m",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "h_tank_min",
-            "Label": "Minimum allowable HTF height in storage tank",
-            "Units": "m",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "u_tank",
-            "Label": "Loss coefficient from the tank",
-            "Units": "W/m2-K",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "tank_pairs",
-            "Label": "Number of equivalent tank pairs",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Costraint": "INTEGER",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "cold_tank_Thtr",
-            "Label": "Minimum allowable cold tank HTF temp",
-            "Units": "C",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "hot_tank_Thtr",
-            "Label": "Minimum allowable hot tank HTF temp",
-            "Units": "C",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "tank_max_heat",
-            "Label": "Rated heater capacity for tank heating",
-            "Units": "MW",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "tanks_in_parallel",
             "Label": "Tanks are in parallel, not in series, with solar field",
             "Units": "-",
@@ -1351,16 +1889,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "W_pb_design",
-            "Label": "Rated plant capacity",
-            "Units": "MWe",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Capacity"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "cycle_max_frac",
             "Label": "Maximum turbine over design operation fraction",
             "Units": "-",
@@ -1374,26 +1902,6 @@
             "Units": "-",
             "Group": "controller",
             "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "pb_pump_coef",
-            "Label": "Pumping power to move 1kg of HTF through PB loop",
-            "Units": "kW/(kg/s)",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "tes_pump_coef",
-            "Label": "Pumping power to move 1kg of HTF through tes loop",
-            "Units": "kW/(kg/s)",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1461,57 +1969,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "pb_fixed_par",
-            "Label": "Fraction of rated gross power constantly consumed",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "bop_array",
-            "Label": "Coefficients for balance of plant parasitics calcs",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "aux_array",
-            "Label": "Coefficients for auxiliary heater parasitics calcs",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Parasitics",
-            "Section": "Parasitics"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "fossil_mode",
-            "Label": "Fossil backup mode 1=Normal 2=Topping",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Costraint": "INTEGER",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "t_standby_reset",
-            "Label": "Maximum allowable time for PB standby operation",
-            "Units": "hr",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Control"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "sf_type",
             "Label": "Solar field type, 1 = trough, 2 = tower",
             "Units": "-",
@@ -1525,46 +1982,6 @@
             "Units": "-",
             "Group": "controller",
             "Require": "*"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "tslogic_a",
-            "Label": "Dispatch logic without solar",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Dispatch Control"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "tslogic_b",
-            "Label": "Dispatch logic with solar",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Dispatch Control"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "tslogic_c",
-            "Label": "Dispatch logic for turbine load fraction",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Dispatch Control"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "ffrac",
-            "Label": "Fossil dispatch logic",
-            "Units": "-",
-            "Group": "controller",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1615,186 +2032,6 @@
             "Require": "*"
         },
         {
-            "DataType": "SSC_MATRIX",
-            "Name": "weekday_schedule",
-            "Label": "Dispatch 12mx24h schedule for week days",
-            "Group": "tou_translator",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Weekday Schedule"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "weekend_schedule",
-            "Label": "Dispatch 12mx24h schedule for weekends",
-            "Group": "tou_translator",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Weekend Schedule"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "pc_config",
-            "Label": "0: Steam Rankine (224), 1: user defined",
-            "Units": "-",
-            "Group": "powerblock",
-            "Require": "?=0",
-            "Costraint": "INTEGER",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "eta_ref",
-            "Label": "Reference conversion efficiency at design condition",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "startup_time",
-            "Label": "Time needed for power block startup",
-            "Units": "hr",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "startup_frac",
-            "Label": "Fraction of design thermal power needed for startup",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "q_sby_frac",
-            "Label": "Fraction of thermal power required for standby mode",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Power Block Design Point"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "dT_cw_ref",
-            "Label": "Reference condenser cooling water inlet/outlet T diff",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_amb_des",
-            "Label": "Reference ambient temperature at design point",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "P_boil",
-            "Label": "Boiler operating pressure",
-            "Units": "bar",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "CT",
-            "Label": "Flag for using dry cooling or wet cooling system",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_approach",
-            "Label": "Cooling tower approach temperature",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_ITD_des",
-            "Label": "ITD at design for dry system",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "P_cond_ratio",
-            "Label": "Condenser pressure ratio",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "pb_bd_frac",
-            "Label": "Power block blowdown steam fraction ",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "P_cond_min",
-            "Label": "Minimum condenser pressure",
-            "Units": "inHg",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "n_pl_inc",
-            "Label": "Number of part-load increments for the heat rejection system",
-            "Units": "none",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "F_wc",
-            "Label": "Fraction indicating wet cooling use for hybrid system",
-            "Units": "none",
-            "Meta": "constant=[0,0,0,0,0,0,0,0,0]",
-            "Group": "powerblock",
-            "Require": "pc_config=0",
-            "Tab": "Power Cycle",
-            "Section": "Rankine Cycle Parameters"
-        },
-        {
             "DataType": "SSC_NUMBER",
             "Name": "tech_type",
             "Label": "Turbine inlet pressure control flag (sliding=user, fixed=trough)",
@@ -1805,181 +2042,11 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "ud_T_amb_des",
-            "Label": "Ambient temperature at user-defined power cycle design point",
-            "Units": "C",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "User Defined Power Cycle Design Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_f_W_dot_cool_des",
-            "Label": "Percent of user-defined power cycle design gross output consumed by cooling",
-            "Units": "%",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "User Defined Power Cycle Design Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_m_dot_water_cool_des",
-            "Label": "Mass flow rate of water required at user-defined power cycle design point",
-            "Units": "kg/s",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "User Defined Power Cycle Design Paramters"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_T_htf_low",
-            "Label": "Low level HTF inlet temperature for T_amb parametric",
-            "Units": "C",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_T_htf_high",
-            "Label": "High level HTF inlet temperature for T_amb parametric",
-            "Units": "C",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_T_amb_low",
-            "Label": "Low level ambient temperature for HTF mass flow rate parametric",
-            "Units": "C",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_T_amb_high",
-            "Label": "High level ambient temperature for HTF mass flow rate parametric",
-            "Units": "C",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_m_dot_htf_low",
-            "Label": "Low level normalized HTF mass flow rate for T_HTF parametric",
-            "Units": "-",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "ud_m_dot_htf_high",
-            "Label": "High level normalized HTF mass flow rate for T_HTF parametric",
-            "Units": "-",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle",
-            "Section": "Performance as Function of HTF Temperature, HTF Mass Flow Rate and Ambient Temperature"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "ud_T_htf_ind_od",
-            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_htf_hot [C]",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle ",
-            "Section": "User Defined Power Cycle"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "ud_T_amb_ind_od",
-            "Label": "Off design table of user-defined power cycle performance formed from parametric on T_amb [C]",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle ",
-            "Section": "User Defined Power Cycle"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "ud_m_dot_htf_ind_od",
-            "Label": "Off design table of user-defined power cycle performance formed from parametric on m_dot_htf [ND]",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle ",
-            "Section": "User Defined Power Cycle"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "ud_ind_od",
-            "Label": "Off design user-defined power cycle performance as function of T_htf, m_dot_htf [ND], and T_amb",
-            "Group": "user_defined_PC",
-            "Require": "pc_config=1",
-            "Tab": "Power Cycle ",
-            "Section": "User Defined Power Cycle"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "eta_lhv",
             "Label": "Fossil fuel lower heating value - Thermal power generated per unit fuel",
             "Units": "MW/MMBTU",
             "Group": "enet",
             "Require": "*"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "eta_tes_htr",
-            "Label": "Thermal storage tank heater efficiency (fp_mode=1 only)",
-            "Units": "none",
-            "Group": "enet",
-            "Require": "*",
-            "Tab": "Thermal Storage",
-            "Section": "Storage System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "adjust:constant",
-            "Label": "Constant loss adjustment",
-            "Units": "%",
-            "Group": "Loss Adjustments",
-            "Require": "*",
-            "Costraint": "MAX=100",
-            "Tab": "Power Cycle",
-            "Section": "Avaialability and Curtailment"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "adjust:hourly",
-            "Label": "Hourly loss adjustments",
-            "Units": "%",
-            "Group": "Loss Adjustments",
-            "Require": "?",
-            "Costraint": "LENGTH=8760",
-            "Tab": "Power Cycle",
-            "Section": "Avaialability and Curtailment"
-        },
-        {
-            "DataType": "SSC_MATRIX",
-            "Name": "adjust:periods",
-            "Label": "Period-based loss adjustments",
-            "Units": "%",
-            "Meta": "n x 3 matrix [ start, end, loss ]",
-            "Group": "Loss Adjustments",
-            "Require": "?",
-            "Costraint": "COLS=3",
-            "Tab": "Power Cycle",
-            "Section": "Avaialability and Curtailment"
         }
     ]
 }

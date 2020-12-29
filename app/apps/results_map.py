@@ -60,10 +60,10 @@ site_long=map_data['longitude']
 # Read in the model price from the right file via cfg and helpers
 # TODO: this needs to be part of a callback so that it dynamically updates 
 # after the model update! 
-app_json = helpers.json_load(app_config.app_json)
-model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
-finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
-model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
+# app_json = helpers.json_load(app_config.app_json)
+# model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
+# finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
+# model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
 
 # load power plants JSON
 power_plants = dl.GeoJSON(
@@ -106,13 +106,13 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 
 
 # County price data
-with open('./assets/us_counties2.geojson','r') as f:
+with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
     counties= json.load(f)
-new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
-new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price]
+# new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
+# new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price]
 #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
 
-counties['features'] = new_features
+# counties['features'] = new_features
 
 us_counties = dl.GeoJSON(
     #url='/assets/us_counties2.geojson',
@@ -125,11 +125,11 @@ us_counties = dl.GeoJSON(
 
 
 # city price data
-with open('./assets/city_water_prices.geojson','r') as f:
+with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
     city_prices = json.load(f)
 
-new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price]
-city_prices['features'] = new_features
+# new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price]
+# city_prices['features'] = new_features
 
 city_price_lyr = dl.GeoJSON(
     data=city_prices,
@@ -289,7 +289,7 @@ def update_price_layers(price_factor):
     model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
     finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
     model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
-    with open('./assets/us_counties2.geojson','r') as f:
+    with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
         counties= json.load(f)
     new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
     new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
@@ -307,7 +307,7 @@ def update_price_layers(price_factor):
                 hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
     )
 
-    with open('./assets/city_water_prices.geojson','r') as f:
+    with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
         city_prices = json.load(f)
 
     new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price * price_factor]
