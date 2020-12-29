@@ -28,6 +28,12 @@ from haversine import haversine, Unit
 # TODO: need to move to JSON files
 # TODO: calculate distances to water plants, desal & power plant
 
+# generalized country layer
+countryLayer = {
+    'country':{'poly':cfg.gis_query_path / 'countries_generalized.shp'}
+}
+
+# default theme layers
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
     'dni':{'point':cfg.gis_query_path / 'dni_ghi.shp'},
@@ -92,6 +98,10 @@ def lookupLocation(pt, mapTheme='default'):
     themeLyrs = _getThemeLayers(mapTheme)
     logging.debug(f'finding locations of {len(themeLyrs)} layers.')
 
+    # find out the country (and state, if in the U.S.)
+    country = _findIntersectFeatures(pt,countryLayer['country']['poly'])
+    print(country['properties']['iso_merged'])
+
     # parse the dictionary, getting intersecting / closest features for each
     closestFeatures = dict()
     logging.debug('Performing intersections')
@@ -142,14 +152,21 @@ def _getThemeLayers(mapTheme):
 def _findMatchFromCandidates(pt,intersectLyr,candidates):
     '''open the layer and search through the candidate matches
     to find the true intersection with the point. '''
-    ptGeom = Point(pt)
+    ptGeom = Point([pt[1],pt[0]])
     # open the polygon and subset to the candidates
     with fiona.open(intersectLyr) as source:
         features = list(source)
-    featureSubset = map(features.__getitem__,candidates)
-    for poly in featureSubset:
-        if ptGeom.within(Polygon(shape(poly['geometry']))):
-            return(poly)
+    #featureSubset = map(features.__getitem__,candidates)
+    for candidate in candidates:
+        feature = features[candidate]
+
+        if ptGeom.within(Polygon(shape(feature['geometry']))):
+            print('matched {}'.format(feature))
+            return(feature)
+        else:
+            print('feature not matched')
+    # if no match found, return the last checked. 
+    return(feature)
 
 def _findIntersectFeatures(pt,intersectLyr):
     ''' find features in the supplied layers that intersect the provided point 
@@ -174,18 +191,17 @@ def _findIntersectFeatures(pt,intersectLyr):
     
     if len(possibleMatches) == 0:
         return None
-    elif len(possibleMatches) > 1:
+    elif len(possibleMatches) == 1:
         # single match 
         with fiona.open(intersectLyr) as source:
             features = list(source)
+            ## TODO: do the intersect! 
             return features[possibleMatches[0]]
     else:
         # call the method to do polygon intersection to 
         # get the exact match from the list of possibles
         # currently not being used...
-        #return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
-        return None
-
+        return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
         
 def _findClosestPoint(pt,lyr):
     ''' find the closest point or line to the supplied point
