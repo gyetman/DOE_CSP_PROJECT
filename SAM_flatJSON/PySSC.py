@@ -5,9 +5,9 @@ c_number = c_double # must be c_double or c_double depending on how defined in s
 class PySSC:
 	def __init__(self):
 		if sys.platform == 'win32' or sys.platform == 'cygwin':
-			self.pdll = CDLL("G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.dll") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dll")  
 		elif sys.platform == 'darwin':
-			self.pdll = CDLL("G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.dylib") 
+			self.pdll = CDLL(os.path.dirname(os.path.realpath(__file__)) + "/" + "ssc.dylib") 
 		elif sys.platform == 'linux2':
 			self.pdll = CDLL('G:/My Drive/DOEproject/SAM_all/Flat_JSON/2020/ssc.so')   # instead of relative path, require user to have on LD_LIBRARY_PATH
 		else:
