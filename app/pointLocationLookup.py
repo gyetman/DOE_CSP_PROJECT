@@ -171,7 +171,7 @@ def lookupLocation(pt, mapTheme='default'):
                     if tmp:
                         closestFeatures[key] = float(tmp)
                     else:
-                        closestFeatures[key] = ''  
+                        closestFeatures[key] = ''
 
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
@@ -185,7 +185,7 @@ def getClosestInfrastructure(pnt):
     country = _findIntersectFeatures(pnt,countryLayer['country']['poly'])
     if not country: 
         return None
-        
+
     if country['properties']['iso_merged'] == 'US':
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
         plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
