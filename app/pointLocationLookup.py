@@ -120,22 +120,7 @@ def lookupLocation(pt, mapTheme='default'):
     closestFeatures = dict()
     logging.debug('Performing intersections')
 
-    # U.S. case
-    if country['properties']['iso_merged'] == 'US':
-        for key, value in themeLyrs.items():
-            if 'point' in value.keys():
-                closestFeatures[key] = _findClosestPoint(pt,value['point'])
-            elif 'poly' in value.keys():
-                closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
-            elif 'raster' in value.keys():
-                tmp = _getRasterValue(pt, value['raster'])
-                # convert to float so it can be serialized as json
-                if tmp:
-                    closestFeatures[key] = float(tmp)
-                else:
-                    closestFeatures[key] = ''
-
-    else: # international case
+    if not country: # outside land areas
         logging.info('international, only getting subset of features')
         # TODO: refactor to use method or better logic, not hard-coded keys! 
         exclude = set(['county','desalPlants','powerPlants','canals','waterProxy'])
@@ -153,7 +138,40 @@ def lookupLocation(pt, mapTheme='default'):
                     if tmp:
                         closestFeatures[key] = float(tmp)
                     else:
-                        closestFeatures[key] = ''               
+                        closestFeatures[key] = ''      
+    # U.S. case
+    elif country['properties']['iso_merged'] == 'US':
+        for key, value in themeLyrs.items():
+            if 'point' in value.keys():
+                closestFeatures[key] = _findClosestPoint(pt,value['point'])
+            elif 'poly' in value.keys():
+                closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
+            elif 'raster' in value.keys():
+                tmp = _getRasterValue(pt, value['raster'])
+                # convert to float so it can be serialized as json
+                if tmp:
+                    closestFeatures[key] = float(tmp)
+                else:
+                    closestFeatures[key] = ''
+    else:
+        logging.info('international, only getting subset of features')
+        # TODO: refactor to use method or better logic, not hard-coded keys! 
+        exclude = set(['county','desalPlants','powerPlants','canals','waterProxy'])
+        for key, value in themeLyrs.items():
+            if key in exclude:
+                closestFeatures[key] = ''
+            else:
+                if 'point' in value.keys():
+                    closestFeatures[key] = _findClosestPoint(pt,value['point'])
+                elif 'poly' in value.keys():
+                    closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
+                elif 'raster' in value.keys():
+                    tmp = _getRasterValue(pt, value['raster'])
+                    # convert to float so it can be serialized as json
+                    if tmp:
+                        closestFeatures[key] = float(tmp)
+                    else:
+                        closestFeatures[key] = ''  
 
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
@@ -165,6 +183,9 @@ def getClosestInfrastructure(pnt):
     logging.info('Getting plant info...')
     # first, check if we are outside the U.S. 
     country = _findIntersectFeatures(pnt,countryLayer['country']['poly'])
+    if not country: 
+        return None
+        
     if country['properties']['iso_merged'] == 'US':
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
         plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
