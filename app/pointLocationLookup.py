@@ -163,16 +163,21 @@ def lookupLocation(pt, mapTheme='default'):
 def getClosestInfrastructure(pnt):
     ''' Get the closest desal and power plant locations '''
     logging.info('Getting plant info...')
-    desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
-    plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
-    canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
-    water = _findClosestPoint(pnt,defaultLayers['waterProxy']['point'])
-    return {
-        'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
-        'plant':[plant['geometry']['coordinates'][1],plant['geometry']['coordinates'][0]],
-        'canal':[canal['geometry']['coordinates'][1],canal['geometry']['coordinates'][0]],
-        'water':[water['properties']['latitude'],water['properties']['longitude']],
-    }
+    # first, check if we are outside the U.S. 
+    country = _findIntersectFeatures(pnt,countryLayer['country']['poly'])
+    if country['properties']['iso_merged'] == 'US':
+        desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
+        plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
+        canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
+        water = _findClosestPoint(pnt,defaultLayers['waterProxy']['point'])
+        return {
+            'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
+            'plant':[plant['geometry']['coordinates'][1],plant['geometry']['coordinates'][0]],
+            'canal':[canal['geometry']['coordinates'][1],canal['geometry']['coordinates'][0]],
+            'water':[water['properties']['latitude'],water['properties']['longitude']],
+        }
+    else:
+        return None
 
 def _getRasterValue(pt,raster):
     ''' lookup a raster value at a given point. Currently, only works for single-band
