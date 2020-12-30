@@ -6,6 +6,7 @@ import sys
 import fiona
 import numpy as np
 import helpers
+import xarray as xr
 
 from pathlib import Path
 from scipy.spatial import KDTree
@@ -33,10 +34,15 @@ countryLayer = {
     'country':{'poly':cfg.gis_query_path / 'countries_generalized.shp'}
 }
 
+countyLayer = {
+    'county':{'poly':cfg.gis_query_path / 'us_county.shp'}
+}
+
 # default theme layers
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
-    'dni':{'point':cfg.gis_query_path / 'dni_ghi.shp'},
+    'dni':{'raster':cfg.gis_query_path / 'DNI.tif'},
+    'ghi':{'raster':cfg.gis_query_path / 'GHI.tif'},
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
@@ -96,12 +102,18 @@ def lookupLocation(pt, mapTheme='default'):
 
     # get layer dictionary based on theme name
     themeLyrs = _getThemeLayers(mapTheme)
-    logging.debug(f'finding locations of {len(themeLyrs)} layers.')
+    logging.info(f'finding locations of {len(themeLyrs)} layers.')
 
     # find out the country (and state, if in the U.S.)
     country = _findIntersectFeatures(pt,countryLayer['country']['poly'])
-    print(country['properties']['iso_merged'])
-
+    # if in the U.S., get the state
+    state = ''
+    if country['properties']['iso_merged'] == 'US':
+        logging.info('getting county')
+        state = _findIntersectFeatures(pt,countyLayer['county']['poly'])
+    else:
+        logging.info('international query')
+    print('state / county: {}'.format(state))
     # parse the dictionary, getting intersecting / closest features for each
     closestFeatures = dict()
     logging.debug('Performing intersections')
@@ -110,12 +122,18 @@ def lookupLocation(pt, mapTheme='default'):
             closestFeatures[key] = _findClosestPoint(pt,value['point'])
         elif 'poly' in value.keys():
             closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
+        elif 'raster' in value.keys():
+            tmp = _getRasterValue(pt, value['raster'])
+            # convert to float so it can be serialized as json
+            if tmp:
+                closestFeatures['key'] = float(tmp)
+            else:
+                closestFeatures['key'] = ''
 
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
     # return the markdown
     return(_generateMarkdown(mapTheme,closestFeatures,pt))
-    #return(str(closestFeatures))
 
 def getClosestInfrastructure(pnt):
     ''' Get the closest desal and power plant locations '''
@@ -131,11 +149,19 @@ def getClosestInfrastructure(pnt):
         'water':[water['properties']['latitude'],water['properties']['longitude']],
     }
 
+def _getRasterValue(pt,raster):
+    ''' lookup a raster value at a given point. Currently, only works for single-band
+    rasters, behaviour for multi-band or time-enabled uncertain. '''
+    with xr.open_rasterio(raster) as xarr:
+        val = xarr.sel(x=pt[1],y=pt[0], method='nearest')
+        print(val.data.item(0))
+        return val.data.item(0)
+
 def _calcDistance(start_pnt, end_pnt):
     ''' get the great circle distance from two lat/long coordinate pairs
     using the Haversine method (approximation)'''
     return(haversine(start_pnt,end_pnt,unit=Unit.KILOMETERS))
-    _updateMapJson(closestFeatures)
+    #_updateMapJson(closestFeatures)
     # return the markdown
     #return(_generateMarkdown(mapTheme,closestFeatures))
     return(str(closestFeatures))
@@ -161,10 +187,8 @@ def _findMatchFromCandidates(pt,intersectLyr,candidates):
         feature = features[candidate]
 
         if ptGeom.within(Polygon(shape(feature['geometry']))):
-            print('matched {}'.format(feature))
             return(feature)
-        else:
-            print('feature not matched')
+
     # if no match found, return the last checked. 
     return(feature)
 
@@ -244,31 +268,34 @@ def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}\n"
-    dni = atts['dni']['properties'].get('DNI')
-    ghi = atts['dni']['properties'].get('GHI')
-    mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day\n\n" 
+    mdown = f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}  \n"
+    dni = atts.get('dni')
+    ghi = atts.get('ghi')
+    if all((dni,ghi)):
+        mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day  \n" 
+    else:
+        mdown += "DNI: -   GHI:-  kWh/m2/day  \n"
     desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
     desal_dist = _calcDistance(pnt,desal_pt)
     mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
     
     desal = atts['desalPlants']['properties']
     try:
-        mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day\n\n"
+        mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day  \n"
     except:
-        mdown += f"Capacity: -\n\n"    
-    mdown += f"Technology: {desal.get('Technology')}\n\n"
-    mdown += f"Feedwater:  {desal.get('Feedwater')}\n\n"
-    mdown += f"Customer type: {desal.get('Customer_t')}\n\n"
+        mdown += f"Capacity: -  \n"    
+    mdown += f"Technology: {desal.get('Technology')}  \n"
+    mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
+    mdown += f"Customer type: {desal.get('Customer_t')}  \n"
 
     canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
     canal_dist = _calcDistance(pnt,canal_pt)
     mdown +=f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) "
     canal_name = atts['canals']['properties'].get('Name')
     if canal_name is None:
-        mdown += '\n\n'
+        mdown += '  \n'
     else:
-        mdown += f"{canal_name}\n\n"
+        mdown += f"{canal_name}  \n"
 
     # water proxy
     water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
@@ -276,51 +303,47 @@ def _generateMarkdown(theme, atts, pnt):
     mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
     water_name = atts['waterProxy']['properties'].get('FULLNAME')
     if water_name is None:
-        mdown+= '\n\n'
+        mdown+= '  \n'
     else:
-        mdown+= f"{water_name}\n\n"
+        mdown+= f"{water_name}  \n"
 
     power = atts['powerPlants']['properties']
     power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
     power_dist = _calcDistance(pnt,power_pt)
-    mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}\n\n"
+    mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}  \n"
 
-    mdown += f"Primary generation: {power.get('Plant_prim')}\n\n"
+    mdown += f"Primary generation: {power.get('Plant_prim')}  \n"
     try:
-        mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh\n\n"
+        mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh  \n"
     except:
-        mdown += f"Production: -\n\n"
-    mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ\n\n"
+        mdown += f"Production: -  \n"
+    mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ  \n"
     try:
-        mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)\n\n"
+        mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)  \n"
     except:
-        mdown += f"Exhaust Residual Heat: -\n\n"
+        mdown += f"Exhaust Residual Heat: -  \n"
     try:
-        mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)\n\n"
+        mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
     except:
-        mdown += f"Condenser Heat: -\n\n"
+        mdown += f"Condenser Heat: -  \n"
 
     water = atts['waterPrice']['properties']
-    print(water)
-    mdown += f"**Water Prices**\n\n"
+    mdown += f"**Water Prices**  \n"
     try:
-        mdown += f"Residential price: ${water.get('CalcTot6M3CurrUSD'):,.2f}/m3\n\n"
+        mdown += f"Residential price: ${water.get('CalcTot6M3CurrUSD'):,.2f}/m3  \n"
     except:
-        mdown += f"Residential price: -\n\n"
-    mdown += f"Residential provider: {water.get('UtilityShortName')}\n\n"
+        mdown += f"Residential price: -  \n"
+    mdown += f"Residential provider: {water.get('UtilityShortName')}  \n"
 
 
-    # add legal info
-
-    #print(atts['county'])
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')
         
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         if state in regulatory_links.keys():
-            mdown += f"**Regulatory Framework**\n\n"
+            mdown += f"**Regulatory Framework**  \n"
             link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
-            mdown += link + '\n\n'
+            mdown += link + '  \n'
 
     return mdown
     return(str(atts))
@@ -343,8 +366,8 @@ def _updateMapJson(atts, pnt):
     mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
 
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
-    mParams['ghi'] = atts['dni']['properties'].get('GHI')
-    mParams['dni'] = atts['dni']['properties'].get('GHI')
+    mParams['ghi'] = atts.get('gni')
+    mParams['dni'] = atts.get('dni')
     water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
     mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
 
@@ -362,7 +385,7 @@ def _updateMapJson(atts, pnt):
 
     # dump to config file
         # update json file
-    print('Writing out JSON...')
+    logging.info('Writing out JSON...')
     try:
         helpers.json_update(data=mParams, filename=cfg.map_json)
     except FileNotFoundError:
