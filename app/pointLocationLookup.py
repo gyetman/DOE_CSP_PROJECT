@@ -116,23 +116,44 @@ def lookupLocation(pt, mapTheme='default'):
         print(state)
     else:
         logging.info('international query')
-        print('international')
-    print('state / county: {}'.format(state))
     # parse the dictionary, getting intersecting / closest features for each
     closestFeatures = dict()
     logging.debug('Performing intersections')
-    for key, value in themeLyrs.items():
-        if 'point' in value.keys():
-            closestFeatures[key] = _findClosestPoint(pt,value['point'])
-        elif 'poly' in value.keys():
-            closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
-        elif 'raster' in value.keys():
-            tmp = _getRasterValue(pt, value['raster'])
-            # convert to float so it can be serialized as json
-            if tmp:
-                closestFeatures[key] = float(tmp)
-            else:
+
+    # U.S. case
+    if country['properties']['iso_merged'] == 'US':
+        for key, value in themeLyrs.items():
+            if 'point' in value.keys():
+                closestFeatures[key] = _findClosestPoint(pt,value['point'])
+            elif 'poly' in value.keys():
+                closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
+            elif 'raster' in value.keys():
+                tmp = _getRasterValue(pt, value['raster'])
+                # convert to float so it can be serialized as json
+                if tmp:
+                    closestFeatures[key] = float(tmp)
+                else:
+                    closestFeatures[key] = ''
+
+    else: # international case
+        logging.info('international, only getting subset of features')
+        # TODO: refactor to use method or better logic, not hard-coded keys! 
+        exclude = set(['county','desalPlants','powerPlants','canals','waterProxy'])
+        for key, value in themeLyrs.items():
+            if key in exclude:
                 closestFeatures[key] = ''
+            else:
+                if 'point' in value.keys():
+                    closestFeatures[key] = _findClosestPoint(pt,value['point'])
+                elif 'poly' in value.keys():
+                    closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
+                elif 'raster' in value.keys():
+                    tmp = _getRasterValue(pt, value['raster'])
+                    # convert to float so it can be serialized as json
+                    if tmp:
+                        closestFeatures[key] = float(tmp)
+                    else:
+                        closestFeatures[key] = ''               
 
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
@@ -278,57 +299,59 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day  \n" 
     else:
         mdown += "DNI: -   GHI:-  kWh/m2/day  \n"
-    desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
-    desal_dist = _calcDistance(pnt,desal_pt)
-    mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
-    
-    desal = atts['desalPlants']['properties']
-    try:
-        mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day  \n"
-    except:
-        mdown += f"Capacity: -  \n"    
-    mdown += f"Technology: {desal.get('Technology')}  \n"
-    mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
-    mdown += f"Customer type: {desal.get('Customer_t')}  \n"
+    if atts['desalPlants']:
+        desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
+        desal_dist = _calcDistance(pnt,desal_pt)
+        mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
+        desal = atts['desalPlants']['properties']
+        try:
+            mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day  \n"
+        except:
+            mdown += f"Capacity: -  \n"    
+        mdown += f"Technology: {desal.get('Technology')}  \n"
+        mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
+        mdown += f"Customer type: {desal.get('Customer_t')}  \n"
 
-    canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
-    canal_dist = _calcDistance(pnt,canal_pt)
-    mdown +=f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) "
-    canal_name = atts['canals']['properties'].get('Name')
-    if canal_name is None:
-        mdown += '  \n'
-    else:
-        mdown += f"{canal_name}  \n"
+    if atts['canals']:
+        canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
+        canal_dist = _calcDistance(pnt,canal_pt)
+        mdown +=f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) "
+        canal_name = atts['canals']['properties'].get('Name')
+        if canal_name is None:
+            mdown += '  \n'
+        else:
+            mdown += f"{canal_name}  \n"
 
     # water proxy
-    water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
-    water_dist = _calcDistance(pnt,water_pt)
-    mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
-    water_name = atts['waterProxy']['properties'].get('FULLNAME')
-    if water_name is None:
-        mdown+= '  \n'
-    else:
-        mdown+= f"{water_name}  \n"
+    if atts['waterProxy']:
+        water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+        water_dist = _calcDistance(pnt,water_pt)
+        mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
+        water_name = atts['waterProxy']['properties'].get('FULLNAME')
+        if water_name is None:
+            mdown+= '  \n'
+        else:
+            mdown+= f"{water_name}  \n"
+    if atts['powerPlants']:
+        power = atts['powerPlants']['properties']
+        power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
+        power_dist = _calcDistance(pnt,power_pt)
+        mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}  \n"
 
-    power = atts['powerPlants']['properties']
-    power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
-    power_dist = _calcDistance(pnt,power_pt)
-    mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}  \n"
-
-    mdown += f"Primary generation: {power.get('Plant_prim')}  \n"
-    try:
-        mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh  \n"
-    except:
-        mdown += f"Production: -  \n"
-    mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ  \n"
-    try:
-        mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)  \n"
-    except:
-        mdown += f"Exhaust Residual Heat: -  \n"
-    try:
-        mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
-    except:
-        mdown += f"Condenser Heat: -  \n"
+        mdown += f"Primary generation: {power.get('Plant_prim')}  \n"
+        try:
+            mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh  \n"
+        except:
+            mdown += f"Production: -  \n"
+        mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ  \n"
+        try:
+            mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)  \n"
+        except:
+            mdown += f"Exhaust Residual Heat: -  \n"
+        try:
+            mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
+        except:
+            mdown += f"Condenser Heat: -  \n"
 
     water = atts['waterPrice']['properties']
     mdown += f"**Water Prices**  \n"
@@ -361,18 +384,25 @@ def _updateMapJson(atts, pnt):
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = pnt[0]
     mParams['longitude'] = pnt[1]
-    # mParams['dni'] = dfAtts.ANN_DNI.values[0]
-    # mParams['ghi'] = dfAtts.GHI.values[0]
-    desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
-    mParams['dist_desal_plant'] = _calcDistance(pnt,desal_pt)
-    power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
-    mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
+    if atts['desalPlants']:
+        desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
+        mParams['dist_desal_plant'] = _calcDistance(pnt,desal_pt)
+    else:
+        mParams['dist_desal_plant'] = None
+    if atts['powerPlants']:
+        power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
+        mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
+    else:
+        mParams['dist_power_plant'] = None
 
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
     mParams['ghi'] = atts.get('gni')
     mParams['dni'] = atts.get('dni')
-    water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
-    mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
+    if atts['waterProxy']:
+        water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+        mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
+    else:
+        mParams['dist_water_network'] = None
 
     mParams['state'] = wx.get('State')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
