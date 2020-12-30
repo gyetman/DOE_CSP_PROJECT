@@ -26,6 +26,8 @@ gis_data = app_config.gis_data_path
 # 4. transfer & adapt code to write out parameters as json
 # 5. finish styling to be consistent with menu interface
 
+# LINKS TO PROVIDER
+
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
 # public mapbox token
@@ -361,12 +363,14 @@ def get_point_info(lat_lng,site_details_state):
     else:
         markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
         closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-        desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
-        plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
-        canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
-        water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-        return markdown, [desal,plant,canal,water]
-
+        if closest: 
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+            return markdown, [desal,plant,canal,water]
+        else:
+            return markdown, [None, None, None, None]
 
 @app.callback(Output('info', 'children'),
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
