@@ -107,12 +107,16 @@ def lookupLocation(pt, mapTheme='default'):
     # find out the country (and state, if in the U.S.)
     country = _findIntersectFeatures(pt,countryLayer['country']['poly'])
     # if in the U.S., get the state
-    state = ''
-    if country['properties']['iso_merged'] == 'US':
+    if country is None:
+        logging.info('site location outside country land areas')
+    elif country['properties']['iso_merged'] == 'US':
         logging.info('getting county')
+        print('getting county')
         state = _findIntersectFeatures(pt,countyLayer['county']['poly'])
+        print(state)
     else:
         logging.info('international query')
+        print('international')
     print('state / county: {}'.format(state))
     # parse the dictionary, getting intersecting / closest features for each
     closestFeatures = dict()
@@ -126,9 +130,9 @@ def lookupLocation(pt, mapTheme='default'):
             tmp = _getRasterValue(pt, value['raster'])
             # convert to float so it can be serialized as json
             if tmp:
-                closestFeatures['key'] = float(tmp)
+                closestFeatures[key] = float(tmp)
             else:
-                closestFeatures['key'] = ''
+                closestFeatures[key] = ''
 
     # update the map data JSON file
     _updateMapJson(closestFeatures, pt)
@@ -154,7 +158,6 @@ def _getRasterValue(pt,raster):
     rasters, behaviour for multi-band or time-enabled uncertain. '''
     with xr.open_rasterio(raster) as xarr:
         val = xarr.sel(x=pt[1],y=pt[0], method='nearest')
-        print(val.data.item(0))
         return val.data.item(0)
 
 def _calcDistance(start_pnt, end_pnt):
