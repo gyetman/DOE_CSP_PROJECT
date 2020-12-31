@@ -386,7 +386,7 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Residential price: ${float(water.get('CalcTot6M3CurrUSD')):,.2f}/m3  \n"
         address = water.get('WebAddress')
         if address: 
-            mdown += f"[Utility Site]({address})  \n"
+            mdown += f"[Utility Prices Web Site]({address})  \n"
     except Exception as e:
         logging.error(e)
         mdown += f"Residential price: -  \n"
