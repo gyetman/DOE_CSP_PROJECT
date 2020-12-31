@@ -46,7 +46,7 @@ defaultLayers = {
     'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
-    'waterPrice':{'point':cfg.gis_data_path / 'global_water_tarrifs.geojson'},
+    'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
     'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
@@ -358,6 +358,7 @@ def _generateMarkdown(theme, atts, pnt):
             mdown+= '  \n'
         else:
             mdown+= f"{water_name}  \n"
+    # power plants
     if atts['powerPlants']:
         power = atts['powerPlants']['properties']
         power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
@@ -382,8 +383,12 @@ def _generateMarkdown(theme, atts, pnt):
     water = atts['waterPrice']['properties']
     mdown += f"**Water Prices**  \n"
     try:
-        mdown += f"Residential price: ${water.get('CalcTot6M3CurrUSD'):,.2f}/m3  \n"
-    except:
+        mdown += f"Residential price: ${float(water.get('CalcTot6M3CurrUSD')):,.2f}/m3  \n"
+        address = water.get('WebAddress')
+        if address: 
+            mdown += f"[Utility Site]({address})  \n"
+    except Exception as e:
+        logging.error(e)
         mdown += f"Residential price: -  \n"
     mdown += f"Residential provider: {water.get('UtilityShortName')}  \n"
 
