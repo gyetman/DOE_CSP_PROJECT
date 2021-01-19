@@ -13,11 +13,15 @@ from scipy.spatial import KDTree
 from shapely.geometry import Point, Polygon, shape
 from rtree import index
 from haversine import haversine, Unit
+from urllib.parse import urlparse
+
 
 # patch module-level attribute to enable pickle to work
 #kdtree.node = kdtree.KDTree.node
 #kdtree.leafnode = kdtree.KDTree.leafnode
 #kdtree.innernode = kdtree.KDTree.innernode
+
+# TODO: fix lat/longitude written to JSON file
 
 ''' Module to lookup features based on a point location. Uses rtrees if they exist. '''
 
@@ -43,13 +47,15 @@ defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
     'dni':{'raster':cfg.gis_query_path / 'DNI.tif'},
     'ghi':{'raster':cfg.gis_query_path / 'GHI.tif'},
-    'desalPlants':{'point':cfg.gis_query_path / 'Desalplants.shp'},
+    'desalPlants':{'point':cfg.gis_query_path / 'global_desal.shp'},
+    #'desalPlants':{'point':cfg.gis_query_path / 'global_desal_plants.geojson'},
     'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
-    'weatherFile':{'point':cfg.gis_query_path / 'USAWeatherStations.shp'},
+    'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
     'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
+    'tx_county':{'poly':cfg.gis_query_path / 'tx_county_water_prices.shp'},
 
 }
 
@@ -110,10 +116,8 @@ def lookupLocation(pt, mapTheme='default'):
     if country is None:
         logging.info('site location outside country land areas')
     elif country['properties']['iso_merged'] == 'US':
-        logging.info('getting county')
-        print('getting county')
+        logging.info('getting state / county')
         state = _findIntersectFeatures(pt,countyLayer['county']['poly'])
-        print(state)
     else:
         logging.info('international query')
     # parse the dictionary, getting intersecting / closest features for each
@@ -123,7 +127,7 @@ def lookupLocation(pt, mapTheme='default'):
     if not country: # outside land areas
         logging.info('international, only getting subset of features')
         # TODO: refactor to use method or better logic, not hard-coded keys! 
-        exclude = set(['county','desalPlants','powerPlants','canals','waterProxy'])
+        exclude = set(['county','desalPlants','powerPlants','canals','waterProxy','tx_county'])
         for key, value in themeLyrs.items():
             if key in exclude:
                 closestFeatures[key] = ''
@@ -148,7 +152,7 @@ def lookupLocation(pt, mapTheme='default'):
                 closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
             elif 'raster' in value.keys():
                 tmp = _getRasterValue(pt, value['raster'])
-                # convert to float so it can be serialized as json
+                # convert raster value returned to float so it can be serialized as json
                 if tmp:
                     closestFeatures[key] = float(tmp)
                 else:
@@ -172,8 +176,8 @@ def lookupLocation(pt, mapTheme='default'):
                         closestFeatures[key] = float(tmp)
                     else:
                         closestFeatures[key] = ''
-
     # update the map data JSON file
+    logging.info('Updating map json')
     _updateMapJson(closestFeatures, pt)
     # return the markdown
     return(_generateMarkdown(mapTheme,closestFeatures,pt))
@@ -198,7 +202,10 @@ def getClosestInfrastructure(pnt):
             'water':[water['properties']['latitude'],water['properties']['longitude']],
         }
     else:
-        return None
+        desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
+        return {
+            'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']]
+        }
 
 def _getRasterValue(pt,raster):
     ''' lookup a raster value at a given point. Currently, only works for single-band
@@ -211,9 +218,6 @@ def _calcDistance(start_pnt, end_pnt):
     ''' get the great circle distance from two lat/long coordinate pairs
     using the Haversine method (approximation)'''
     return(haversine(start_pnt,end_pnt,unit=Unit.KILOMETERS))
-    #_updateMapJson(closestFeatures)
-    # return the markdown
-    #return(_generateMarkdown(mapTheme,closestFeatures))
     return(str(closestFeatures))
 
 def _getThemeLayers(mapTheme):
@@ -250,10 +254,12 @@ def _findIntersectFeatures(pt,intersectLyr):
     # make the point a poly geometry
     queryPoly = Point(pt).buffer(0.1)
     bounds = list(queryPoly.bounds)
+    print(bounds)
     # rtree uses a different order: left, bottom, right, top
     bounds = (bounds[1],bounds[0],bounds[3],bounds[2])
+    print(bounds)
     # open the layer and find the matches
-    logging.info(f'Finding intersections with {intersectLyr}...')
+    logging.info(f'Finding intersections with {intersectLyr.stem}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
     if rtreeFile.exists:
         logging.info('Using pre-built rtree index')
@@ -264,6 +270,7 @@ def _findIntersectFeatures(pt,intersectLyr):
         # TODO: open & find with slow method
     
     if len(possibleMatches) == 0:
+        print(f'No matching feature foound for {intersectLyr.stem}')
         return None
     elif len(possibleMatches) == 1:
         # single match 
@@ -283,13 +290,13 @@ def _findClosestPoint(pt,lyr):
     @param [closestLayers]: list of point or line layers
     ''' 
     # TODO: update max dist, I believe it's in DD, not meters or km
-    queryPoint = np.asarray([pt[1],pt[0]]) # is this backwards? 
+    queryPoint = np.asarray([pt[1],pt[0]]) 
     # open each layer and find the matches
-    logging.info(f'Finding closes point for {lyr}...')
+    logging.info(f'Finding closes point for {lyr.stem}...')
     # check for kdtree
     kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
     if kdFile.exists:
-        logging.debug('using pre-built index')
+        logging.info('using pre-built index')
         with open(kdFile,'rb') as f:
             idx = pickle.load(f)
             closestPt = idx.query(queryPoint)
@@ -381,21 +388,44 @@ def _generateMarkdown(theme, atts, pnt):
             mdown += f"Condenser Heat: -  \n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"**Water Prices**  \n"
+    mdown += f"**Residential Water Prices**  \n"
     try:
-        mdown += f"Residential price: ${float(water.get('CalcTot6M3CurrUSD')):,.2f}/m3  \n"
+        mdown += f"Consumption to 6m3: ${float(water.get('CalcTot6M3CurrUSD'))/6:,.2f}/m3  \n"
+        mdown += f"Consumption to 15m3: ${float(water.get('CalcTot15M3CurrUSD'))/15:,.2f}/m3  \n"
+        mdown += f"Consumption to 50m3: ${float(water.get('CalcTot50M3CurrUSD'))/50:,.2f}/m3  \n"
+        mdown += f"Consumption to 100m3: ${float(water.get('CalcTot100M3CurrUSD'))/100:,.2f}/m3  \n"
         address = water.get('WebAddress')
         if address: 
-            mdown += f"[Utility Prices Web Site]({address})  \n"
+            url_parsed = urlparse(address)
+            mdown += f"[Utility Web Site]({url_parsed.scheme + '://' + url_parsed.netloc + '/'})  \n"
+            mdown += f"[Utility Price List]({address})  \n"
     except Exception as e:
         logging.error(e)
         mdown += f"Residential price: -  \n"
     mdown += f"Residential provider: {water.get('UtilityShortName')}  \n"
 
+    print(atts.keys())
+    print(atts['tx_county'])
+    if atts['tx_county']:
+        print('Getting Texas prices')
+        tx_prices = atts['tx_county']['properties']
+        mdown += f'**Texas County Water Prices**  \n'
+        comm_price = tx_prices.get('comm_avg')
+        res_price = tx_prices.get('res_avg')
+        print(comm_price,res_price)
+        if comm_price:
+            mdown += f'Average Commercial Price: ${comm_price:,.2f}/m3  \n'
+        else:
+            mdown += "Average Commercial Price: $-  \n"
+        if res_price:
+            mdown += f"Average Residential Price: ${res_price:,.2f}/m3  \n"
+        else:
+            mdown += "Average Residential Prices: $-  \n"
+    else:
+        print('No Texas County!!!')
 
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')
-        
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         if state in regulatory_links.keys():
             mdown += f"**Regulatory Framework**  \n"
@@ -427,7 +457,7 @@ def _updateMapJson(atts, pnt):
         mParams['dist_power_plant'] = None
 
     # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
-    mParams['ghi'] = atts.get('gni')
+    mParams['ghi'] = atts.get('ghi')
     mParams['dni'] = atts.get('dni')
     if atts['waterProxy']:
         water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]

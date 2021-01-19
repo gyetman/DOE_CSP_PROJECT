@@ -127,7 +127,10 @@ us_counties = dl.GeoJSON(
 
 
 # city price data
-with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
+# with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
+#     city_prices = json.load(f)
+
+with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
     city_prices = json.load(f)
 
 # new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price]
@@ -136,6 +139,10 @@ with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
 city_price_lyr = dl.GeoJSON(
     data=city_prices,
     id='city_water_prices',
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={"radius": 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
 )
 # placeholder for mouseover data
 info = html.Div(children='Hover over a Feature',
@@ -171,7 +178,7 @@ site_results_map = dl.Map(
         info,
         us_counties,
         city_price_lyr,
-        colorbar,
+        #colorbar,
         #dl.GeoJSON(url='/assets/tx_counties.geojson',id='counties'),
         #dl.GeoJSON(url='/assets/us_counties2.geojson',id='counties'),
         # placeholder for lines to nearby plants
@@ -295,7 +302,6 @@ def update_price_layers(price_factor):
         counties= json.load(f)
     new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
     new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
-    print(len(new_features))
     #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
 
     counties['features'] = new_features
@@ -309,24 +315,27 @@ def update_price_layers(price_factor):
                 hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
     )
 
-    with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
+    with open('./assets/global_water_tarrifs.geojson','r', encoding = 'UTF-8') as f:
         city_prices = json.load(f)
 
-    new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price * price_factor]
+    new_features = [feature for feature in city_prices['features'] if float(feature['properties']['CalcTot100M3CurrUSD']) > model_price * price_factor]
 
     city_prices['features'] = new_features
 
     city_price_lyr = dl.GeoJSON(
         data=city_prices,
         id='city_water_prices',
-
+        cluster=True,
+        zoomToBoundsOnClick=True,
+        superClusterOptions={"radius": 75},
+        hoverStyle=dict(weight=5, color='#666', dashArray=''),
     )
     markers = []
     for pt in new_features:
         markers.append(
-            dl.CircleMarker(center=(pt['properties']['Latitude'],pt['properties']['Longitude']), 
-            children=dl.Tooltip('Water Price: ${:0.2f}'.format(pt['properties']['Water_bill']))
-            
+            dl.CircleMarker(center=(float(pt['properties']['UtilityLatitude']),float(pt['properties']['UtilityLongitude'])), 
+            children=dl.Tooltip('Price (at 100m3): ${:0.2f}'.format(float(pt['properties']['CalcTot100M3CurrUSD'])))
+
         )
     )
     return([
@@ -334,7 +343,7 @@ def update_price_layers(price_factor):
             dl.ScaleControl(metric=True, imperial=True),
             us_counties,
             dl.LayerGroup(markers),
-            colorbar,
+            #ccolorbar,
             info,
             dl.GeoJSON(id="closest-facilities"),
             # Site selected by user from map-data. 
@@ -363,14 +372,18 @@ def get_point_info(lat_lng,site_details_state):
     else:
         markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
         closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-        if closest: 
+        # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
+        if not closest:
+            return markdown, [None, None, None, None]
+        elif 'plant' in closest.keys():
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
             plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
             canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
             water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
             return markdown, [desal,plant,canal,water]
         else:
-            return markdown, [None, None, None, None]
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
+            return markdown, [desal,None,None,None]
 
 @app.callback(Output('info', 'children'),
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
