@@ -16,7 +16,7 @@ from pathlib import Path
 from app import app
 
 app.title='Results Map'
-
+price_difference = 0
 gis_data = app_config.gis_data_path
 # Div for legend
 # Site Selection
@@ -24,9 +24,8 @@ gis_data = app_config.gis_data_path
 # TODO:
 # 2. use a map-config file to load data, file locations, etc. 
 # 4. transfer & adapt code to write out parameters as json
-# 5. finish styling to be consistent with menu interface
-
-# LINKS TO PROVIDER
+# Fix bug: line to closest desal plan is removed after factor
+# is adjusted. 
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -80,7 +79,8 @@ power_plants = dl.GeoJSON(
 
 # load Desal plants
 desal = dl.GeoJSON(
-    url='/assets/desal_plants_update.geojson',
+    #url='/assets/desal_plants_update.geojson',
+    url='/assets/global_desal_plants.geojson',
     id = {'type':'json_theme','index':'geojson_desal'},
     cluster=True,
     zoomToBoundsOnClick=True,
@@ -229,15 +229,17 @@ theme_ids = {
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
     if feature:
-        print(feature)
+        if 'cluster' in list(feature[0]["properties"].keys()):
+            return [html.H4("Click on a cluster to see details")]
         if 'Technology' in list(feature[0]["properties"].keys()):
             units = 'm3/day'
-        else:
+        elif 'Country' in list(feature[0]["properties"].keys()):
             units = 'MW'
         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
             f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity {units}"]
     else:
-        return header + ["Hover over a feature"]
+        #return header + ["Hover over a feature"]
+        return None
 
 
 def render_map():
@@ -255,7 +257,8 @@ def render_map():
             dbc.Col([
                 html.H4('Water Price:'),
                 html.P(id='water-price'),
-                html.P(f'Factor for changing LCOW: ', id='factor_tooltip'),
+                html.P(f'Price difference in closest demand location: ${price_difference:.2f}', id='price_difference'),
+                html.P(f'Factor for adapting LCOW for incremental costs or credits:', id='factor_tooltip'),
                 dcc.Input(
                     id='price_factor',
                     type="number",
@@ -318,7 +321,7 @@ def register_map(app):
         with open('./assets/global_water_tarrifs.geojson','r', encoding = 'UTF-8') as f:
             city_prices = json.load(f)
 
-        new_features = [feature for feature in city_prices['features'] if float(feature['properties']['CalcTot100M3CurrUSD']) > model_price * price_factor]
+        new_features = [feature for feature in city_prices['features'] if float(feature['properties']['CalcTot100M3CurrUSD'])/100 > model_price * price_factor]
 
         city_prices['features'] = new_features
 
@@ -334,7 +337,7 @@ def register_map(app):
         for pt in new_features:
             markers.append(
                 dl.CircleMarker(center=(float(pt['properties']['UtilityLatitude']),float(pt['properties']['UtilityLongitude'])), 
-                children=dl.Tooltip('Price (at 100m3): ${:0.2f}'.format(float(pt['properties']['CalcTot100M3CurrUSD'])))
+                children=dl.Tooltip('Price (at 100m3): ${:0.2f}'.format(float(pt['properties']['CalcTot100M3CurrUSD'])/100))
 
             )
         )

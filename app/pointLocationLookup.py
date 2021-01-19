@@ -338,8 +338,10 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
         desal = atts['desalPlants']['properties']
         try:
-            mdown += f"Capacity: {desal.get('Capacity__'):,.0f} m3/day  \n"
-        except:
+            mdown += f"Capacity: {float(desal.get('Capacity')):,.0f} m3/day  \n"
+            print(desal.get('Capacity'))
+        except Exception as e:
+            print(e)
             mdown += f"Capacity: -  \n"    
         mdown += f"Technology: {desal.get('Technology')}  \n"
         mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
@@ -390,10 +392,38 @@ def _generateMarkdown(theme, atts, pnt):
     water = atts['waterPrice']['properties']
     mdown += f"**Residential Water Prices**  \n"
     try:
-        mdown += f"Consumption to 6m3: ${float(water.get('CalcTot6M3CurrUSD'))/6:,.2f}/m3  \n"
-        mdown += f"Consumption to 15m3: ${float(water.get('CalcTot15M3CurrUSD'))/15:,.2f}/m3  \n"
-        mdown += f"Consumption to 50m3: ${float(water.get('CalcTot50M3CurrUSD'))/50:,.2f}/m3  \n"
-        mdown += f"Consumption to 100m3: ${float(water.get('CalcTot100M3CurrUSD'))/100:,.2f}/m3  \n"
+
+        mc6 = water.get('CalcTot6M3CurrUSD')
+        mc15 = water.get('CalcTot15M3CurrUSD')
+        mc50 = water.get('CalcTot50M3CurrUSD')
+        mc100 = water.get('CalcTot100M3CurrUSD')
+        if not mc6:
+            mdown += f"Consumption to 6m3: $ - /m3  \n"
+        elif float(mc6) < 0.005:
+            mdown += f"Consumption to 6m3: $ - /m3  \n"
+        else:
+            mdown += f"Consumption to 6m3: ${float(mc6)/6:,.2f}/m3  \n"
+        if not mc15:
+            mdown += f"Consumption to 15m3: $ - /m3  \n"
+        elif float(mc15) < 0.005:
+            mdown += f"Consumption to 15m3: $ - /m3  \n"
+        else:
+            mdown += f"Consumption to 15m3: ${float(mc15)/15:,.2f}/m3  \n"
+               
+        if not mc50:
+            mdown += f"Consumption to 50m3: $ - /m3  \n"
+        elif float(mc50) < 0.005:
+            mdown += f"Consumption to 50m3: $ - /m3  \n"
+        else:
+            mdown += f"Consumption to 50m3: ${float(mc50)/50:,.2f}/m3  \n"
+
+        if not mc100:
+            mdown += f"Consumption to 100m3: $ - /m3  \n"
+        elif float(mc100) < 0.005:
+            mdown += f"Consumption to 100m3: $ - /m3  \n"
+        else:
+            mdown += f"Consumption to 100m3: ${float(mc100)/100:,.2f}/m3  \n"
+
         address = water.get('WebAddress')
         if address: 
             url_parsed = urlparse(address)
