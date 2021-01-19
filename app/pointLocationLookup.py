@@ -160,7 +160,7 @@ def lookupLocation(pt, mapTheme='default'):
     else:
         logging.info('international, only getting subset of features')
         # TODO: refactor to use method or better logic, not hard-coded keys! 
-        exclude = set(['county','desalPlants','powerPlants','canals','waterProxy'])
+        exclude = set(['county','powerPlants','canals','waterProxy'])
         for key, value in themeLyrs.items():
             if key in exclude:
                 closestFeatures[key] = ''
