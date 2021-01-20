@@ -16,7 +16,7 @@ from pathlib import Path
 from app import app
 
 app.title='Results Map'
-
+price_difference = 0
 gis_data = app_config.gis_data_path
 # Div for legend
 # Site Selection
@@ -24,9 +24,8 @@ gis_data = app_config.gis_data_path
 # TODO:
 # 2. use a map-config file to load data, file locations, etc. 
 # 4. transfer & adapt code to write out parameters as json
-# 5. finish styling to be consistent with menu interface
-
-# LINKS TO PROVIDER
+# Fix bug: line to closest desal plan is removed after factor
+# is adjusted. 
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -80,7 +79,8 @@ power_plants = dl.GeoJSON(
 
 # load Desal plants
 desal = dl.GeoJSON(
-    url='/assets/desal_plants_update.geojson',
+    #url='/assets/desal_plants_update.geojson',
+    url='/assets/global_desal_plants.geojson',
     id = {'type':'json_theme','index':'geojson_desal'},
     cluster=True,
     zoomToBoundsOnClick=True,
@@ -127,7 +127,10 @@ us_counties = dl.GeoJSON(
 
 
 # city price data
-with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
+# with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
+#     city_prices = json.load(f)
+
+with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
     city_prices = json.load(f)
 
 # new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price]
@@ -136,6 +139,10 @@ with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
 city_price_lyr = dl.GeoJSON(
     data=city_prices,
     id='city_water_prices',
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={"radius": 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
 )
 # placeholder for mouseover data
 info = html.Div(children='Hover over a Feature',
@@ -171,7 +178,7 @@ site_results_map = dl.Map(
         info,
         us_counties,
         city_price_lyr,
-        colorbar,
+        #colorbar,
         #dl.GeoJSON(url='/assets/tx_counties.geojson',id='counties'),
         #dl.GeoJSON(url='/assets/us_counties2.geojson',id='counties'),
         # placeholder for lines to nearby plants
@@ -222,19 +229,20 @@ theme_ids = {
 def get_info(feature=None):
     header = [html.H4("Feature Details")]
     if feature:
+        if 'cluster' in list(feature[0]["properties"].keys()):
+            return [html.H4("Click on a cluster to see details")]
         if 'Technology' in list(feature[0]["properties"].keys()):
             units = 'm3/day'
-        else:
+        elif 'Country' in list(feature[0]["properties"].keys()):
             units = 'MW'
         return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
             f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity {units}"]
     else:
-        return header + ["Hover over a feature"]
+        #return header + ["Hover over a feature"]
+        return None
 
 
 def render_map():
-
-
     # create and return the div
     return html.Div([
         map_navbar,
@@ -249,7 +257,8 @@ def render_map():
             dbc.Col([
                 html.H4('Water Price:'),
                 html.P(id='water-price'),
-                html.P(f'Factor for changing LCOW: ', id='factor_tooltip'),
+                html.P(f'Price difference in closest demand location: ${price_difference:.2f}', id='price_difference'),
+                html.P(f'Factor for adapting LCOW for incremental costs or credits:', id='factor_tooltip'),
                 dcc.Input(
                     id='price_factor',
                     type="number",
@@ -268,116 +277,125 @@ def render_map():
         ],style={'padding':20})
     ])
 
-#def register_map(app):
-@app.callback(Output(BASE_LAYER_ID, "url"),
-            [Input(BASE_LAYER_DROPDOWN_ID, "value")])
-def set_baselayer(url):
-    return url
+def register_map(app):
+    @app.callback(Output(BASE_LAYER_ID, "url"),
+                [Input(BASE_LAYER_DROPDOWN_ID, "value")])
+    def set_baselayer(url):
+        return url
 
-@app.callback(Output('theme-layer','children'),
-                [Input('theme-dropdown', 'value')])
-def set_theme_layer(theme):
-    return theme_ids[theme]
+    @app.callback(Output('theme-layer','children'),
+                 [Input('theme-dropdown', 'value')])
+    def set_theme_layer(theme):
+        print(theme)
+        return theme_ids[theme]
 
-@app.callback([Output(MAP_ID, 'children'),
-               Output('water-price', 'children')],
-            [Input("price_factor",'value')],
-)
-def update_price_layers(price_factor):
-    ''' filter the Texas water data and City price data based on model or factor price '''
-    if not price_factor:
-        price_factor = 1.0 # handle null input
-    app_json = helpers.json_load(app_config.app_json)
-    model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
-    finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
-    model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
-    with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
-        counties= json.load(f)
-    new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
-    new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
-    print(len(new_features))
-    #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
-
-    counties['features'] = new_features
-
-    us_counties = dl.GeoJSON(
-        #url='/assets/us_counties2.geojson',
-        data=counties,
-        id='water_prices',
-        options=dict(style=dlx.choropleth.style),
-                #hoverStyle=dict(weight=5, color='#666', dashArray=''),
-                hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
+    @app.callback([Output(MAP_ID, 'children'),
+                Output('water-price', 'children')],
+                [Input("price_factor",'value')],
     )
+    def update_price_layers(price_factor):
+        ''' filter the Texas water data and City price data based on model or factor price '''
+        if not price_factor:
+            price_factor = 1.0 # handle null input
+        app_json = helpers.json_load(app_config.app_json)
+        model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
+        finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
+        model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
+        with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
+            counties= json.load(f)
+        new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
+        new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
+        #new_feautres = [feature for feature in new_features if new_features['properties']['comm_price'] > model_price]
 
-    with open('./assets/city_water_prices.geojson','r', encoding = 'UTF-8') as f:
-        city_prices = json.load(f)
+        counties['features'] = new_features
 
-    new_features = [feature for feature in city_prices['features'] if feature['properties']['Water_bill'] > model_price * price_factor]
-
-    city_prices['features'] = new_features
-
-    city_price_lyr = dl.GeoJSON(
-        data=city_prices,
-        id='city_water_prices',
-
-    )
-    markers = []
-    for pt in new_features:
-        markers.append(
-            dl.CircleMarker(center=(pt['properties']['Latitude'],pt['properties']['Longitude']), 
-            children=dl.Tooltip('Water Price: ${:0.2f}'.format(pt['properties']['Water_bill']))
-            
+        us_counties = dl.GeoJSON(
+            #url='/assets/us_counties2.geojson',
+            data=counties,
+            id='water_prices',
+            options=dict(style=dlx.choropleth.style),
+                    #hoverStyle=dict(weight=5, color='#666', dashArray=''),
+                    hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
         )
-    )
-    return([
-            dl.TileLayer(id=BASE_LAYER_ID),
-            dl.ScaleControl(metric=True, imperial=True),
-            us_counties,
-            dl.LayerGroup(markers),
-            colorbar,
-            info,
-            dl.GeoJSON(id="closest-facilities"),
-            # Site selected by user from map-data. 
-            dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
-                "iconUrl": "/assets/149059.svg",
-                "iconSize": [20, 20]
-                },
-                children=[
-                    dl.Tooltip("Selected site")
-            ],)],
-        f'Projected LCOW from desalination: ${model_price:,.2f}',
 
-    )
+        with open('./assets/global_water_tarrifs.geojson','r', encoding = 'UTF-8') as f:
+            city_prices = json.load(f)
 
-@app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
-                [Input(USER_POINT, 'position'),
-                State(SITE_DETAILS, 'children')],prevent_initial_call=False)
+        new_features = [feature for feature in city_prices['features'] if float(feature['properties']['CalcTot100M3CurrUSD'])/100 > model_price * price_factor]
 
-def get_point_info(lat_lng,site_details_state):
-    ''' callback to update the site information based on the user selected point'''
-    # prevent the callback from triggering after initial load
-    if site_details_state:
-        raise PreventUpdate
-    if lat_lng is None:
-        return('Click on the Map to see site details.'), [0,0]
-    else:
-        markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
-        closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-        if closest: 
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
-            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
-            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
-            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-            return markdown, [desal,plant,canal,water]
+        city_prices['features'] = new_features
+
+        city_price_lyr = dl.GeoJSON(
+            data=city_prices,
+            id='city_water_prices',
+            cluster=True,
+            zoomToBoundsOnClick=True,
+            superClusterOptions={"radius": 75},
+            hoverStyle=dict(weight=5, color='#666', dashArray=''),
+        )
+        markers = []
+        for pt in new_features:
+            markers.append(
+                dl.CircleMarker(center=(float(pt['properties']['UtilityLatitude']),float(pt['properties']['UtilityLongitude'])), 
+                children=dl.Tooltip('Price (at 100m3): ${:0.2f}'.format(float(pt['properties']['CalcTot100M3CurrUSD'])/100))
+
+            )
+        )
+        return([
+                dl.TileLayer(id=BASE_LAYER_ID),
+                dl.ScaleControl(metric=True, imperial=True),
+                us_counties,
+                dl.LayerGroup(markers),
+                #ccolorbar,
+                info,
+                dl.GeoJSON(id="closest-facilities"),
+                # Site selected by user from map-data. 
+                dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
+                    "iconUrl": "/assets/149059.svg",
+                    "iconSize": [20, 20]
+                    },
+                    children=[
+                        dl.Tooltip("Selected site")
+                ],),
+                html.Div(id='theme-layer'),
+                ],
+            f'Projected LCOW from desalination: ${model_price:,.2f}',
+
+        )
+
+    @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
+                    [Input(USER_POINT, 'position'),
+                    State(SITE_DETAILS, 'children')],prevent_initial_call=False)
+
+    def get_point_info(lat_lng,site_details_state):
+        ''' callback to update the site information based on the user selected point'''
+        # prevent the callback from triggering after initial load
+        if site_details_state:
+            raise PreventUpdate
+        if lat_lng is None:
+            return('Click on the Map to see site details.'), [0,0]
         else:
-            return markdown, [None, None, None, None]
+            markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+            closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
+            # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
+            if not closest:
+                return markdown, [None, None, None, None]
+            elif 'plant' in closest.keys():
+                desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+                plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+                canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+                water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+                return markdown, [desal,plant,canal,water]
+            else:
+                desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
+                return markdown, [desal,None,None,None]
 
-@app.callback(Output('info', 'children'),
-        [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
-    )
-def info_hover(feature):
-    ''' callback for feature hover '''
-    return(get_info(feature))
+    @app.callback(Output('info', 'children'),
+            [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
+        )
+    def info_hover(feature):
+        ''' callback for feature hover '''
+        return(get_info(feature))
 
 
 external_stylesheets = [dbc.themes.FLATLY]
@@ -387,7 +405,7 @@ external_stylesheets = [dbc.themes.FLATLY]
 #     render_map()
 # )
 # app.layout = render_map()
-# register_map(app)
+register_map(app)
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8155)

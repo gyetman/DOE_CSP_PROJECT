@@ -75,7 +75,7 @@ power_plants = dl.GeoJSON(
 
 # load Desal plants
 desal = dl.GeoJSON(
-    url='/assets/desal_plants_update.geojson',
+    url='/assets/global_desal_plants.geojson',
     id = {'type':'json_theme','index':'geojson_desal'},
     cluster=True,
     zoomToBoundsOnClick=True,
@@ -219,12 +219,17 @@ def register_map(app):
         else:
             markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
             closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-            if closest:
+            if not closest:
+                return markdown, [None,None,None,None]
+            elif 'plant' in closest.keys():
                 desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
                 plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
                 canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
                 water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
                 return markdown, [desal,plant,canal,water]
+            elif 'desal' in closest.keys():
+                desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])
+                return markdown, [desal,None,None,None]
             else:
                 return markdown, [None,None,None,None]
 
