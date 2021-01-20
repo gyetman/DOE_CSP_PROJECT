@@ -42,7 +42,8 @@ desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),
                'RO': ('Water production','Storage status','Fossil fuel usage'),
                'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),
                'LTMED':('Water production','Fossil fuel usage', 'Storage status'),
-               'MEDTVC':('Water production','Fossil fuel usage', 'Storage status')}    
+               'MEDTVC':('Water production','Fossil fuel usage', 'Storage status'),
+               'MDB':('Water production','Fossil fuel usage', 'Storage status')}    
 sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation'}
 
 
