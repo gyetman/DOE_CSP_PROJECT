@@ -496,6 +496,8 @@ def _updateMapJson(atts, pnt):
         mParams['dist_water_network'] = None
 
     mParams['state'] = wx.get('State')
+    mParams['city'] = wx.get('City')
+    mParams['Country'] = wx.get('Country')
     mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
 
     mParams['latitude'] = pnt[0]
