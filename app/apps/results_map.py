@@ -291,9 +291,17 @@ def register_map(app):
     @app.callback([Output(MAP_ID, 'children'),
                 Output('water-price', 'children')],
                 [Input("price_factor",'value')],
+                [Input("closest-facilities",'children')], 
+                prevent_initial_call = True,
 
     )
-    def update_price_layers(price_factor):
+
+    def update_price_layers(price_factor,closest_from_map):
+        if closest_from_map:
+            print(closest_from_map)
+        else:
+            print('No closest layers')
+
         ''' filter the Texas water data and City price data based on model or factor price '''
         if not price_factor:
             price_factor = 1.0 # handle null input
@@ -348,7 +356,8 @@ def register_map(app):
                 dl.LayerGroup(markers),
                 #ccolorbar,
                 info,
-                dl.GeoJSON(id="closest-facilities"),
+                dl.GeoJSON(id="closest-facilities",data=closest_from_map),
+                #closest_from_map,
                 # Site selected by user from map-data. 
                 dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
                     "iconUrl": "/assets/149059.svg",
@@ -359,36 +368,39 @@ def register_map(app):
                 ],),
                 html.Div(id='theme-layer'),
                 ],
-            f'Projected LCOW from desalination: ${model_price:,.2f}',
+            f'Projected LCOW from desalination: ${model_price:,.2f}'
 
         )
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
                     [Input(USER_POINT, 'position'),
-                    State(SITE_DETAILS, 'children')],prevent_initial_call=False)
-
+                    State(SITE_DETAILS, 'children')],
+                    prevent_initial_call=False
+                )
+                
+        
     def get_point_info(lat_lng,site_details_state):
         ''' callback to update the site information based on the user selected point'''
         # prevent the callback from triggering after initial load
-        if site_details_state:
-            raise PreventUpdate
-        if lat_lng is None:
-            return('Click on the Map to see site details.'), [0,0]
+        # if site_details_state:
+        #     raise PreventUpdate
+        # if lat_lng is None:
+        #     return('Click on the Map to see site details.'), [0,0]
+        #else:
+        markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+        closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
+        # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
+        if not closest:
+            return markdown, [None, None, None, None]
+        elif 'plant' in closest.keys():
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+            return markdown, [desal,plant,canal,water]
         else:
-            markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
-            closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-            # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
-            if not closest:
-                return markdown, [None, None, None, None]
-            elif 'plant' in closest.keys():
-                desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
-                plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
-                canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
-                water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-                return markdown, [desal,plant,canal,water]
-            else:
-                desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
-                return markdown, [desal,None,None,None]
+            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
+            return markdown, desal
 
     @app.callback(Output('info', 'children'),
             [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
