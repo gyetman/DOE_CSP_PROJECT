@@ -24,6 +24,8 @@ SAM_flatJSON/results/VAGMD_cost_output.json
 SAM_flatJSON/results/VAGMD_simulation_output.json
 SAM_flatJSON/results/*
 SAM_flatJSON/parametric_results/*
+SAM_flatJSON/CSV parametric_results/*
+SAM_flatJSON/CSV results/*
 .ipynb_checkpoints/Untitled-checkpoint.ipynb
 *.xml
 *.ini

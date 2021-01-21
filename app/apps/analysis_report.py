@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-
+import dash_table
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
@@ -12,6 +12,7 @@ sys.path.insert(0,str(cfg.base_path))
 import helpers
 from app import app
 
+import pandas as pd 
 app.title = "Analysis Report"
 
 chart_navbar = dbc.NavbarSimple(
@@ -110,7 +111,61 @@ def gather_data(x):
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
+    elif updates['desal'] == 'MDB':
+    # add specific data from desalination GUI output
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        fossil_fuel = "Yes" if d['Fossil_f'] else "No"
+        m_type = "AS7C1.5L" if d['module']==0 else "AS26C2.7L"
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['Capacity'],
+                        'storage_hour':d['storage_hour'],
+                        'fossil_fuel': fossil_fuel,
+                        'm_type': m_type}
+                       )
+        # add specific data from desal simulation output
+        ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
+        updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
+        updates.update({'fossil_usage':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
+        updates.update({'water_prod':ds[index]['Value']})
+
+        # add specific data from desal design output
+        dd = helpers.json_load(flkup['desal_design_infile'])
+        # index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        # updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
+        updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
+        updates.update({'gained_output_ratio':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
+        updates.update({'n_modules':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Actual recovery rate')
+        updates.update({'RR':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
+        updates.update({'n_modules':dd[index]['Value']})  
         
+        # add specific data from desal cost output
+        # dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        # updates.update({'lcow':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from fossile fuel)')
+        # updates.update({'lcoh':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
+        # updates.update({'sam_lcoh':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        # updates.update({'capital_cost':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        # updates.update({'ops_cost':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        # updates.update({'energy_cost':dc[index]['Value']})
+        
+
+
+        # f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        # updates.update({'electric_energy_consumption':f['SEEC']})
+        # updates.update({'lcoe':f['coe']})        
     ## Temporal 'if' condition for another desal technology
     elif updates['desal'] == 'LTMED':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -340,6 +395,12 @@ def gather_data(x):
         updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['system_capacity'] * 6 /1000})
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
+    elif updates['solar'] == 'tcstrough_physical':
+    # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['system_capacity']})
+        updates.update({'footprint1':s['system_capacity'] * 6 /1000})
+        updates.update({'footprint2':s['system_capacity'] * 8 /1000})
 
     
         
@@ -352,6 +413,7 @@ def gather_data(x):
     Output('local-condition', 'children'),
     [Input('data-initialize', 'children')])
 def set_local_condition(x):
+    # For area lacking data of GHI/DNI/others, it reports error
     try:
         r = helpers.json_load(cfg.report_json)
     except FileNotFoundError:
@@ -423,6 +485,17 @@ def set_desal_config(x):
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
         ])
+    elif app['desal'] == "MDB":
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+        html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
+        html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+        # html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
+        ])
 @app.callback(
     Output('solar-config', 'children'),
     [Input('data-initialize', 'children')])
@@ -473,6 +546,13 @@ def set_solar_config(x):
         html.Div(f"Design electricity production: {r['q_pb_des']:.2f} kW"),
         html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
         ])
+    elif app['solar'] == "tcstrough_physical":
+        return ([
+        html.H5('Solar Field Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Design electricity production: {r['q_pb_des']:.2f} kW"),
+        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
+        ])
 
 
 @app.callback(
@@ -495,6 +575,32 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        ])
+    elif app['desal'] == 'MDB':       
+        df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
+        for i in range(1,len(df.columns.values)):
+            df.columns.values[i] = str(i)
+        return ([
+        html.H5('System Performance', className='card-title'),
+        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Number of modules required: {r['n_modules']:.0f} "),
+        html.Div(f"Module type: {r['m_type']} "),
+        html.Div("   Single module performance",
+                 style = {'textAlign':'center','font-size': '18px', 'fontWeight':'bold','color':'rgb(230, 247, 240)'}),
+        dash_table.DataTable(id='table',
+                              columns= [{"name": i, "id": i} for i in df.columns], 
+                              data=df.to_dict('records'),
+                              style_cell={'backgroundColor': 'rgb(230, 247, 240)','color':'black'},
+                              style_header = {'fontWeight':'bold','color':'rgb(9, 131, 143)','font-size':'16px'},
+                              style_cell_conditional=[
+                                  {
+                                      'if': {'column_id': 'Step'},
+                                      'color': 'rgb(9, 131, 143)', 'font-size':'12px'
+                                  }],
+                              export_format = 'xlsx'
+                              ),
         ])
 
 @app.callback(
