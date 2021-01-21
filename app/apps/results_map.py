@@ -292,7 +292,7 @@ def register_map(app):
                 Output('water-price', 'children')],
                 [Input("price_factor",'value')],
                 [Input("closest-facilities",'children')], 
-                prevent_initial_call = True,
+                #prevent_initial_call = True,
 
     )
 
@@ -375,10 +375,8 @@ def register_map(app):
     @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
                     [Input(USER_POINT, 'position'),
                     State(SITE_DETAILS, 'children')],
-                    prevent_initial_call=False
+                    prevent_initial_call=True
                 )
-                
-        
     def get_point_info(lat_lng,site_details_state):
         ''' callback to update the site information based on the user selected point'''
         # prevent the callback from triggering after initial load
@@ -391,7 +389,7 @@ def register_map(app):
         closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
         # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
         if not closest:
-            return markdown, [None, None, None, None]
+            return markdown, None
         elif 'plant' in closest.keys():
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
             plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
@@ -403,7 +401,8 @@ def register_map(app):
             return markdown, desal
 
     @app.callback(Output('info', 'children'),
-            [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')]
+            [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
+            prevent_initial_call = True
         )
     def info_hover(feature):
         ''' callback for feature hover '''
