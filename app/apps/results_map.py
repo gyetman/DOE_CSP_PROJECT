@@ -379,12 +379,7 @@ def register_map(app):
                 )
     def get_point_info(lat_lng,site_details_state):
         ''' callback to update the site information based on the user selected point'''
-        # prevent the callback from triggering after initial load
-        # if site_details_state:
-        #     raise PreventUpdate
-        # if lat_lng is None:
-        #     return('Click on the Map to see site details.'), [0,0]
-        #else:
+
         markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
         closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
         # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
