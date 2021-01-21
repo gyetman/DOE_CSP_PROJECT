@@ -286,12 +286,12 @@ def register_map(app):
     @app.callback(Output('theme-layer','children'),
                  [Input('theme-dropdown', 'value')])
     def set_theme_layer(theme):
-        print(theme)
         return theme_ids[theme]
 
     @app.callback([Output(MAP_ID, 'children'),
                 Output('water-price', 'children')],
                 [Input("price_factor",'value')],
+
     )
     def update_price_layers(price_factor):
         ''' filter the Texas water data and City price data based on model or factor price '''
