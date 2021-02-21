@@ -18,19 +18,19 @@ print(ROOT_DIR)
 
 #LSRRO Cases: 70 g/l Feed, 75% recovery; 35 g/l Feed, 85% recovery; 20 g/l Feed, 92% recovery
 
-LSRRO_70g_L_75rec=ROOT_DIR+'/MLD_RO_APM_LSRRO_multistage_4andup_finalized_NEW_BASLINE_AB_CLEANUP_postdefense.apm'
-LSRRO_35g_L_85rec=ROOT_DIR+'/MLD_RO_APM_LSRRO_multistage_4andup_finalized_NEW_BASELINE_AB_cin_35_rt_85sens.apm'
-LSRRO_20g_L_92rec=ROOT_DIR+'/MLD_RO_APM_LSRRO_multistage_4andup_finalized_NEW_BASELINE_AB_cin_20_rt_92sens_postdefense.apm'
+LSRRO_70g_L_75rec=ROOT_DIR+'/LSRRO_8stage_cin_70_r_75.apm'
+LSRRO_35g_L_85rec=ROOT_DIR+'/LSRRO_6stage_cin_35_r_85.apm'
+LSRRO_20g_L_92rec=ROOT_DIR+'/LSRRO_6stage_cin_20_r_92.apm'
 
 #COMRO 
-COMRO_70g_L_75rec=ROOT_DIR+'/MLD_RO_APM_N_COMROunits_finalized_v5_PRESSURELOSSCORRECTION_newAB_newbaseline_DOF_Zero.apm' # relatively long to find solution
-COMRO_35g_L_85rec=ROOT_DIR+'/MLD_RO_APM_N_COMROunits_finalized_v5_PRESSURELOSSCORRECTION_newAB_newbaseline_DOF_Zero_sens_cin_rt._35gL_85_pct.apm'
-COMRO_20g_L_92rec=ROOT_DIR+'/MLD_RO_APM_N_COMROunits_finalized_v5_PRESSURELOSSCORRECTION_newAB_newbaseline_DOF_Zero_sens_cin_rt_20gL_92pct.apm'
+COMRO_70g_L_75rec=ROOT_DIR+'/COMRO_4stage_cin_70_r_75.apm' # relatively long to find solution
+COMRO_35g_L_85rec=ROOT_DIR+'/COMRO_3stage_cin_35_r_85.apm'
+COMRO_20g_L_92rec=ROOT_DIR+'/COMRO_4stage_cin_20_r_92.apm'
 
 #OARO 
-OARO_70g_L_75rec=ROOT_DIR+'/OARO_finalized_v3_newAB_add_salt_balance_recycle_conc_change_sens_cin_rt.apm'
-OARO_35g_L_85rec=ROOT_DIR+'/MLD_RO_APM_2stage_OARO_finalized_v1_newAB_add_salt_balance_cin_35_rt_85_final_postdefense.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
-OARO_20g_L_92rec=ROOT_DIR+'/MLD_RO_APM_2stage_OARO_finalized_v1_newAB_add_salt_balance_cin_20_rt_92_final_postdefense.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
+OARO_70g_L_75rec=ROOT_DIR+'/OARO_4stage_cin_70_r_75.apm'
+OARO_35g_L_85rec=ROOT_DIR+'/OARO_2stage_cin_35_r_85.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
+OARO_20g_L_92rec=ROOT_DIR+'/OARO_2stage_cin_20_r_92.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
 
 
 # Load model file
@@ -45,16 +45,16 @@ elif feedsal=='70':
 
 model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec")
 
-
+# csv_load(s,a,csvfilename) 
 
 apm_load(s,a,model_file)
 
 
 #apm_option(s,a,'nlc.diaglevel',10)
-apm_option(s,a,'apm.imode',3);
-apm_option(s,a,'apm.max_iter',1000) 
-apm_option(s,a,'apm.scaling',1)
-apm_option(s,a,'apm.reduce',5)
+apm_option(s,a,'apm.imode',3) # chooses operation mode; 3= steady-state optimization
+apm_option(s,a,'apm.max_iter',1000)  # max number of iterations
+apm_option(s,a,'apm.scaling',1) # activate scaling
+apm_option(s,a,'apm.reduce',5) # activates reduction
 if (tech=='OARO'): 
     if feedsal=='70': 
         apm_option(s,a,'apm.otol',1e-4) # default tolerance is 1e-6
@@ -112,7 +112,9 @@ if (apm_tag(s,a,'apm.appstatus')==1):
             
             
         print("Brine concentration=",Cb,"g/L")       
- 
+    print("Cost of electricity=",sol['ecost'],"kWh/m3")
+    print("Number of stages=",sol['nstage'])
+    
 else:
     # % not successful, retrieve infeasiblilities report
     apm_get(s,a,'infeasibilities.txt')
