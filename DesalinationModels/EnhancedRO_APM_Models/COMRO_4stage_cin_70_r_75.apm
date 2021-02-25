@@ -50,7 +50,7 @@
 	 Qin= 468/24!*2.929992753623188 !500000/24
 	
 	
-	 Cpin=  70		
+	 Cin=  70		
 	 !Rtq= 	0.25
 	 
 	 
@@ -91,7 +91,7 @@
    Variables
 
 	 !!!! Adding on multi-stage variables
-	 Mfj[0][1:Nstage] > 0 , < Qin/3600*(750.6*(xpoly[1]*Cpin^2 + xpoly[2]*Cpin +xpoly[3]) + 995.1) !>= Qr/3600*995.1 , < Qin/3600*1300
+	 Mfj[0][1:Nstage] > 0 , < Qin/3600*(750.6*(xpoly[1]*Cin^2 + xpoly[2]*Cin +xpoly[3]) + 995.1) !>= Qr/3600*995.1 , < Qin/3600*1300
 	 
 	 !Qr > 0 , < Qin
 	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -130,7 +130,7 @@
 
 
 	 
-	 Cfoutj[1:Nstage]= Cpin/(1-Rt), > Cpin , <= 350
+	 Cfoutj[1:Nstage]= Cin/(1-Rt), > Cin , <= 350
      Cpfinal= 0.5 , > 0 , <= .5
 	 
 	 !Cpkout[1:Nstage] > 0 , <= 0.5	
@@ -168,7 +168,7 @@
 	 
 	 !Xrop=xpoly[1]*Crop^2 + xpoly[2]*Crop +xpoly[3]
 
-	 Cpj[0][1]= Cpin
+	 Cpj[0][1]= Cin
 	 Cfj[0][1:Nstage]= Cfoutj[1:Nstage]
 	 Cpj[0][2:Nstage]=Cfj[0][1:Nstage-1]
 
