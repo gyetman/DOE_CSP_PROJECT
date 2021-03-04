@@ -25,11 +25,15 @@ LSRRO_35g_L_85rec=ROOT_DIR+'/LSRRO_6stage_cin_35_r_85.apm'
 LSRRO_20g_L_92rec=ROOT_DIR+'/LSRRO_6stage_cin_20_r_92.apm'
 
 #COMRO 
+COMRO_125g_L_50rec=ROOT_DIR+'/COMRO_3stage_cin_125_r_50.apm' # THIS DOES NOT MATCH MATLAB RESULTS YET
+COMRO_125g_L_25rec=ROOT_DIR+'/COMRO_1stage_cin_125_r_25.apm'
 COMRO_70g_L_75rec=ROOT_DIR+'/COMRO_4stage_cin_70_r_75.apm' # relatively long to find solution
 COMRO_35g_L_85rec=ROOT_DIR+'/COMRO_3stage_cin_35_r_85.apm'
 COMRO_20g_L_92rec=ROOT_DIR+'/COMRO_4stage_cin_20_r_92.apm'
 
 #OARO 
+OARO_125g_L_50rec=ROOT_DIR+'/OARO_5stage_cin_125_r_50.apm'
+OARO_125g_L_25rec=ROOT_DIR+'/OARO_3stage_cin_125_r_25.apm'
 OARO_70g_L_75rec=ROOT_DIR+'/OARO_4stage_cin_70_r_75.apm' # Doesn't converge to same solution as MATLAB (LCOW= ~6.5 vs matlab result of 5.14); issue resolved by increasing objective function tolerance, otol, from 1e-6 to 1e-4
 OARO_35g_L_85rec=ROOT_DIR+'/OARO_2stage_cin_35_r_85.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
 OARO_20g_L_92rec=ROOT_DIR+'/OARO_2stage_cin_20_r_92.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
@@ -37,7 +41,7 @@ OARO_20g_L_92rec=ROOT_DIR+'/OARO_2stage_cin_20_r_92.apm' # not converging to sam
 
 # Load model file
 tech=input("Choose 'OARO','COMRO', or 'LSRRO'\n")
-feedsal=input("Enter feed concentration of 20,35, or 70 g/L (enter number only, e.g., 20)\n")
+feedsal=input("Enter feed concentration of 20,35,70, or 125 g/L (enter number only, e.g., 20)\n")
 
 
 if feedsal=='20':
@@ -46,7 +50,8 @@ elif feedsal=='35':
     recrate='85'
 elif feedsal=='70':
     recrate='75'
-
+elif feedsal=='125':
+    recrate=input('Enter 25 or 50 for recovery rate\n') 
 
 
 
@@ -54,13 +59,15 @@ elif feedsal=='70':
 
 model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec") #testing_file#
 
-# # # # # # # # # # # # # # # # # # csvfilename=ROOT_DIR+'/inputdata.csv' # Naming the csv file with user inputs (works without csv filename matching model filename)
+csvfilename=ROOT_DIR+'/inputdata.csv' # Naming the csv file with user inputs (works without csv filename matching model filename)
 
 # print(csvfilename)
 # print(model_file)
 
 apm_load(s,a,model_file)
-# # # # # # # # # # # # # # # # # # csv_load(s,a,csvfilename)     # Loads the input data (Parameters in the APM file)
+enter_data=input("Press 1 to enter input data or any other key to keep defaults\n")
+if enter_data=='1':
+    csv_load(s,a,csvfilename)     # Loads the input data (Parameters in the APM file)
 #apm_option(s,a,'apm.csv_read',1)
 
 #apm_option(s,a,'nlc.diaglevel',10)
@@ -75,6 +82,12 @@ if (tech=='OARO'):
         apm_option(s,a,'apm.otol',1e-4) # default tolerance is 1e-6
     elif feedsal=='20':
         apm_option(s,a,'apm.otol',1e-3) # default tolerance is 1e-6
+    elif (feedsal=='125') & (recrate=='50'):
+        apm_option(s,a,'apm.otol',1e-7) # default tolerance is 1e-6
+
+elif (tech=='COMRO'):
+    if (feedsal=='125') & (recrate=='50'):
+        apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6   
 
 else:
     apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6
@@ -95,7 +108,7 @@ if (apm_tag(s,a,'apm.appstatus')==1):
     print("LCOW=",LCOW,"$/m3")
     
     #print(sol['mpj[0]'])
-   
+
    
     if sol['nstage']==2:
         if tech=='OARO':
@@ -108,14 +121,13 @@ if (apm_tag(s,a,'apm.appstatus')==1):
             SEC= sol['sec']
             Cb = sol['cfjout']
             
-            
-        print("SEC=",SEC,"kWh/m3")
+   
         print("Brine concentration=",Cb,"g/L")
 
   
     elif sol['nstage']>2:
         SEC= sol['sec']
-        print("SEC=",SEC,"kWh/m3")
+       #print("SEC=",SEC,"kWh/m3")
 
         if tech=='LSRRO':
             Cbstring=""""sol['cfjout[{}]']".format(int(sol['ncc']))"""
@@ -133,13 +145,24 @@ if (apm_tag(s,a,'apm.appstatus')==1):
             Cb=sol['cfout']
             Amj=eval(eval(""""sol['amjsum[{}]']".format(int(sol['ncc']))""")) 
             Amk=sol['amksum']
-            
-        print("Brine concentration=",Cb,"g/L")       
-    print("Cost of electricity=",sol['ecost'],"kWh/m3")
+    elif (tech=='COMRO') & (sol['nstage']==1):
+        Amj=sol['amj1']
+        Amk=sol['amk1']       
+        SEC=sol['sec']
+        Cb=sol['cfoutj']
+        
+    print("SEC=",SEC,"kWh/m3")
+    print("Brine concentration=",Cb,"g/L")       
+    print("Cost of electricity=",sol['ecost'],"$/kWh")     
+    
+   
+        
     print("Number of stages=",sol['nstage'])
+    
     print("Total specialized membrane area=",Amj)
     print("Total conventional RO membrane area=",Amk)
-    
+    print("pump efficiency=",sol['eff_pump'])
+    print("ERD efficiency=",sol['eff_erd'])
 else:
     # % not successful, retrieve infeasiblilities report
     apm_get(s,a,'infeasibilities.txt')

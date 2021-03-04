@@ -1,7 +1,10 @@
 ﻿null,0
 rt,0.71
-ecost,0.065
-cin,60
+ecost,0.03
+cin,35
 oaromemcost,50
 romemcost,30
 pumpcost,190800
+eff_pump,1
+eff_erd,1
+nstage,3
