@@ -25,7 +25,7 @@ LSRRO_35g_L_85rec=ROOT_DIR+'/LSRRO_6stage_cin_35_r_85.apm'
 LSRRO_20g_L_92rec=ROOT_DIR+'/LSRRO_6stage_cin_20_r_92.apm'
 
 #COMRO 
-COMRO_125g_L_50rec=ROOT_DIR+'/COMRO_3stage_cin_125_r_50.apm' # THIS DOES NOT MATCH MATLAB RESULTS YET
+COMRO_125g_L_50rec=ROOT_DIR+'/COMRO_3stage_cin_125_r_50.apm' 
 COMRO_125g_L_25rec=ROOT_DIR+'/COMRO_1stage_cin_125_r_25.apm'
 COMRO_70g_L_75rec=ROOT_DIR+'/COMRO_4stage_cin_70_r_75.apm' # relatively long to find solution
 COMRO_35g_L_85rec=ROOT_DIR+'/COMRO_3stage_cin_35_r_85.apm'
@@ -34,9 +34,13 @@ COMRO_20g_L_92rec=ROOT_DIR+'/COMRO_4stage_cin_20_r_92.apm'
 #OARO 
 OARO_125g_L_50rec=ROOT_DIR+'/OARO_5stage_cin_125_r_50.apm'
 OARO_125g_L_25rec=ROOT_DIR+'/OARO_3stage_cin_125_r_25.apm'
+
 OARO_70g_L_75rec=ROOT_DIR+'/OARO_4stage_cin_70_r_75.apm' # Doesn't converge to same solution as MATLAB (LCOW= ~6.5 vs matlab result of 5.14); issue resolved by increasing objective function tolerance, otol, from 1e-6 to 1e-4
+OARO_70g_L_50rec=ROOT_DIR+'/OARO_2stage_cin_70_r_50.apm' 
+
 OARO_35g_L_85rec=ROOT_DIR+'/OARO_2stage_cin_35_r_85.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
 OARO_20g_L_92rec=ROOT_DIR+'/OARO_2stage_cin_20_r_92.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
+
 
 
 # Load model file
@@ -49,7 +53,10 @@ if feedsal=='20':
 elif feedsal=='35':
     recrate='85'
 elif feedsal=='70':
-    recrate='75'
+    if tech=='OARO':
+        recrate=input('Enter 50 or 75 for recovery rate\n') 
+    else:
+        recrate='75'
 elif feedsal=='125':
     recrate=input('Enter 25 or 50 for recovery rate\n') 
 
