@@ -15,7 +15,7 @@ import numpy as np
 
 
 
-class StaticCollector(object):
+class StaticCollector_fp(object):
 
     def __init__(self,
                  # Design parameters
@@ -211,17 +211,17 @@ class StaticCollector(object):
 
 
 
-    def __repr__(self):
-        collectors=('Flat Plate Collector','Evacuated Tube Collector')
+    # def __repr__(self):
+    #     collectors=('Flat Plate Collector','Evacuated Tube Collector')
 
 
         
  
 #%%
 
-# case =StaticCollector()
-# case.design()
-# # # case.simulation()
+# case =StaticCollector_fp()
+# a,b = case.design()
+
 
             
         

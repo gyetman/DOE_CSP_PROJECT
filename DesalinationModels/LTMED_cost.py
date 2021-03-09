@@ -23,7 +23,7 @@ class LTMED_cost(object):
                  Miscellaneous = 0.1, # Other direct/indirect cost ($/m3)
                  Discharge = 0.02, # Water discharge/disposal cost ($/m3)
                  Maintenance = 2, # Percentage to the capital cost (%)
-                 
+                 Insurance = 0.5, # Percentage to the capital cost (%)
 #                 GOR = 10.475,  # Gained output ratio
                 # downtime = 0.1, # Yearly downtime of the plant (ratio)
                  yrs = 20, # Expected plant lifetime
@@ -51,6 +51,7 @@ class LTMED_cost(object):
         self.Chemicals = Chemicals
         self.Labor = Labor
         self.Maintenance = Maintenance
+        self.Insurance = Insurance
         self.Miscellaneous = Miscellaneous
         self.Discharge = Discharge
         self.yrs = yrs
@@ -65,7 +66,9 @@ class LTMED_cost(object):
         
         
 
-        self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX + self.Miscellaneous + self.Discharge
+        self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) \
+            + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX \
+            + self.Miscellaneous + self.Discharge + self.Insurance/100*self.CAPEX 
         
         self.LCOW = self.CAPEX + self.OPEX
         

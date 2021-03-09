@@ -68,7 +68,7 @@ class FO_cost(object):
                         + Cap_pipes + Cap_filtration + Cap_electrical +  Cap_pumps + Cap_instrumentation + Cap_valves \
                         + Cap_CIP  + Cap_tanks + Cap_pretreatment
         self.Maintenance = Maintenance
-
+        self.insurance = self.CAP_system *0.005 / (self.Prod+0.1) 
 
         self.yrs = yrs
         self.int_rate = int_rate
@@ -79,7 +79,7 @@ class FO_cost(object):
         
         self.CAPEX = ((self.total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         self.energy_cost = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC
-        self.OPEX = self.energy_cost + self.Maintenance
+        self.OPEX = self.energy_cost + self.Maintenance + self.insurance
         
         self.LCOW = self.CAPEX + self.OPEX
         

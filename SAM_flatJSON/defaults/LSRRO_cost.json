@@ -1,0 +1,14 @@
+{
+	"yrs" : 20,
+	"int_rate" : 0.04,
+	"coe" : 0.07,
+	"sam_coe" : 0.07,
+	"oaro_cost": 50,
+	"ro_cost" : 30,
+	"chem_cost": 0.01,
+	"labor_cost": 0.02,
+	"practical_inv_factor":1.6,
+	"rep_rate": 0.15,
+	"sec": 5,
+	"cost_storage": 26
+}

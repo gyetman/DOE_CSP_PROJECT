@@ -1,0 +1,28 @@
+{
+    "COMRO": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Constraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Constraint": "20,35 or 70"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "rr",
+            "Label": "Recovery rate (Please only input 25% or 50% for 125g/L feed salinity)",
+            "Units": "%",
+            "Require": "*",
+            "Constraint": ">0"
+        }
+    ]
+}

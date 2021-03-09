@@ -12,16 +12,19 @@ import numpy as np
 import math
 import pandas as pd
 from pathlib import Path
+import json
+
+# import app_config as cfg
 
 class VAGMD_batch(object):
     def __init__(self,
         # Design parameters
-        module = 0,  # '0' for AS7C1.5L module and '1' for AS24C5L module
+        module = 0,  # '0' for AS7C1.5L module and '1' for AS26C2.7L module
         TEI_r  = 80, # Evaporator channel inlet temperature (ºC)
         TCI_r  = 25, # Condenser channel inlet temperature (ºC)
         FFR_r  = 600, # Feed flow rate (l/h)
         FeedC_r= 35,  # Feed concentration (g/L)
-        V0     = 30,  # Initial batch volumn (m3)
+        V0     = 30,  # Initial batch volume (m3)
         RR     = 30,  # Recovery rate
         
         Capacity = 1000, # System Capcity (m3/day)
@@ -117,21 +120,47 @@ class VAGMD_batch(object):
             self.GOR.append(new_results[7])
             self.STEC.append(new_results[6])
         
-        self.output = np.array([self.t, self.tminute, self.V, self.Vd, self.S, self.PFR, self.PFlux, self.RR, self.TCO, self.TEO, self.Ttank, self.ATml, self.ThPower, self.ThEnergy, self.AccThEnergy, self.CPower, self.CEnergy, self.AccCEnergy, self.GOR, self.STEC])
+        self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.Vd, self.S, self.PFR, self.PFlux, self.RR, self.TCO, self.TEO, self.Ttank, self.ATml, self.ThPower, self.ThEnergy, self.AccThEnergy,  self.GOR, self.STEC])
 
-        self.df = pd.DataFrame(data=self.output,  index=["t", 'tminute', 'V', 'Vd', 'S', 'PFR', 'PFlux', 'RR', 'TCO', 'TEO', 'Ttank', 'ATml', 'ThPower', 'ThEnergy', 'AccThEnergy', 'CPower', 'CEnergy', 'AccCEnergy', 'GOR', 'STEC'])         
+        self.df = pd.DataFrame(data=self.output,  index=['Step',                                                
+                                                         'Operation time (min)',
+                                                         'Batch volume (m3)',
+                                                         'Discharged volume (m3)',
+                                                         'Brine salinity (g/L)',
+                                                         'Permeate flow rate (kg/hr)',
+                                                         'Permeate flux (kg/hr/m2)',
+                                                         'Recovery rate (%)',
+                                                         'Condenser outlet temperature (oC)',
+                                                         'Evaporator outlet temperature (oC)',
+                                                         'Tank temperature (oC)',
+                                                         'Log mean temp difference (oC)',
+                                                         'Thermal power (kW-th)',
+                                                         'Thermal energy (kWh-th)',
+                                                         'Accumulated Thermal energy (kWh-th)',
+                                                         # 'CPower',
+                                                         # 'CEnergy',
+                                                         # 'AccCEnergy',
+                                                         'GOR (%)',
+                                                         'STEC (kWh-th/m3)'])#,
+                               # columns = [ str(i) for i in range(len(self.STEC))])         
         
         self.num_modules = math.ceil(self.Capacity *1000 / (self.Vd[-1] / self.t[-1] * 24) )
+        self.ave_stec = sum(self.STEC)/len(self.STEC)
+        
+        self.df = self.df.round(decimals = 1)
+        # self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
+        self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
         
         self.design_output = []
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
         self.design_output.append({'Name':'Maximum recovery rate allowed','Value':RRf,'Unit':'%'})  
         self.design_output.append({'Name':'Actual recovery rate','Value':self.RR[-1],'Unit':'%'})          
-        self.design_output.append({'Name':'Processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
-        self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})  
-        self.design_output.append({'Name':'Specific thermal power consumption','Value':sum(self.STEC)/len(self.STEC),'Unit':'kWh(th)/m3'})
+        self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
+        self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
+        self.design_output.append({'Name':'Thermal power consumption','Value': self.ave_stec * self.Capacity / 24 / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
-
+        
         
         return self.design_output
                 
@@ -142,9 +171,10 @@ class VAGMD_batch(object):
         FullModels_CoderVars =[ [ 1, TEI_r, TEI_r**2],
                                 [ 1, FFR_r, FFR_r**2],
                                 [ 1, TCI_r, TCI_r**2],
-                                [ 1,   S_r,   S_r**2]]
+                                [ 1,   S_r,   S_r**2] ]
 
         matfile = loadmat(self.base_path /'DesalinationModels'/'VAGMD_batch'/'VAGMD_Models_NaCl.mat')
+        # matfile = loadmat('D:/PhD/DOE/DOE_CSP_PROJECT/DesalinationModels/VAGMD_batch/VAGMD_Models_NaCl.mat')
         
         FullModels_Coder  = matfile['FullModels_Coder'].transpose().tolist()
                 
@@ -259,6 +289,7 @@ class VAGMD_batch(object):
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        # simu_output.append({'Name':'Dataframe','Value':self.json_df,'Unit':''})        
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output

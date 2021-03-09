@@ -19,7 +19,7 @@ parametric_info = parametric_results_dir / 'Parametric_Info.json'
 parametric_solar_simulation_outfile = parametric_results_dir / 'Solar_output'
 weather_path = base_path / 'SAM_flatJSON' / 'solar_resource'
 
-def build_file_lookup(solar,desal,finance):
+def build_file_lookup(solar,desal,finance,timestamp):
     '''
     returns dict containing dynamic file names that are created 
     by interpolating solar, desal and finance model names
@@ -44,9 +44,9 @@ def build_file_lookup(solar,desal,finance):
     'parametric_desal_simulation_outfile': parametric_results_dir / f'{desal}_simulation_output',
     'parametric_desal_design_outfile': parametric_results_dir / f'{desal}_design_output',
     #desal-finance cost output file after SamBaseClass is run
-    'sam_desal_finance_outfile': sam_results_dir / f'{desal}_cost_output.json',
+    'sam_desal_finance_outfile': sam_results_dir / f'{desal}_cost_output{timestamp}.json',
     #desal design simulation output file after SamBaseClass.desal_design is run
-    'sam_desal_simulation_outfile': sam_results_dir / f'{desal}_simulation_output.json',
+    'sam_desal_simulation_outfile': sam_results_dir / f'{desal}_simulation_output{timestamp}.json',
     #solar model variables and corresponding default values
     'solar_values_file' : json_defaults_dir / f'{solar}_{finance}.json',
     'solar_variables_file': json_infiles_dir/ f'{solar}_inputs.json',
@@ -70,6 +70,9 @@ Desal = {'FO':'Forward Osmosis                          ',
          'MEDTVC':'MED with Thermal Vapor Compression (Preliminary)       ',
          'NUN':'No Desalination Model                    ',
          'RO':'Reverse Osmosis                          ', 
+         'COMRO':'Cascading Osmotically Mediated Reverse Osmosis',
+         'OARO': 'Osmotically Assisted Reverse Osmosis',
+         'LSRRO': 'Low-salt-rejection Reverse Osmosis',
          }
 
 #dict for financial model 'values' and 'labels' 
@@ -99,17 +102,17 @@ Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'pvsamv1' : [('FO',True),('VAGMD',True),('LTMED',True),('ABS',True),('MEDTVC',True),('MDB',True),('NUN',True),('RO',False)],
-    'SC_FPC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'SC_ETC' : [('FO',True),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',True),('NUN',True),('RO',True)],
-    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcsiscc': [('FO',True),('VAGMD',True),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcsMSLF': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcsdirect_steam': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcsmolten_salt': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
-    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True)],
+    'pvsamv1' : [('FO',True),('VAGMD',True),('LTMED',True),('ABS',True),('MEDTVC',True),('MDB',True),('NUN',True),('RO',False),('COMRO',False),('OARO',False),('LSRRO',False)],
+    'SC_FPC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'SC_ETC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcsiscc': [('FO',True),('VAGMD',True),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcsMSLF': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcsdirect_steam': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcsmolten_salt': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
+    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('NUN',True),('RO',True),('COMRO',True),('OARO',True),('LSRRO',True)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen

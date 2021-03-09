@@ -61,7 +61,7 @@ def gather_data(x):
     # add all data from app_json
     updates.update(helpers.json_load(cfg.app_json))
     # create the file lookup dict for dynamic file names
-    flkup = cfg.build_file_lookup(updates['solar'], updates['desal'], updates['finance'])
+    flkup = cfg.build_file_lookup(updates['solar'], updates['desal'], updates['finance'],updates['timestamp'])
     
     if updates['desal'] == 'VAGMD':
     # add specific data from desalination GUI output
@@ -304,6 +304,52 @@ def gather_data(x):
         updates.update({'lcoe':f['coe']})
         updates.update({'sam_lcoe':f['sam_coe']})        
         
+    elif updates['desal'] == 'OARO' or updates['desal'] == 'LSRRO' or updates['desal'] == 'COMRO':
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        #fossil_fuel = "Yes" if d['Fossil_f'] else "No"
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['Capacity']
+                       # 'storage_hour':d['storage_hour'],
+                       # 'fossil_fuel': fossil_fuel
+                       })
+                      #  'RR': d['R1'] * 100})
+        # add specific data from desal simulation output
+        ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
+        updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
+        updates.update({'fossil_usage':ds[index]['Value']})
+        indexp = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
+        updates.update({'water_prod':ds[indexp]['Value']})
+        
+        
+        # add specific data from desal design output
+        dd = helpers.json_load(flkup['desal_design_infile'])
+   
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electricity consumption')
+        updates.update({'electric_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific electricity consumption') 
+        updates.update({'specific_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
+        updates.update({'rr':dd[index]['Value']})
+
+        # add specific data from desal cost output
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal Annualized CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        updates.update({'energy_cost':dc[index]['Value']})
+        
+        
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'lcoe':f['coe']})
+        updates.update({'sam_lcoe':f['sam_coe']}) 
+        updates.update({'downtime': f['downtime']})
+        updates.update({'actual_prod':(1-f['downtime']/100) * ds[indexp]['Value']})
         
     elif updates['desal'] == 'FO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -474,6 +520,17 @@ def set_desal_config(x):
         html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
         ])
+    elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        #html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
+        #html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        #html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
+        html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
+        html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
+        ])
     elif app['desal'] == "FO":
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
@@ -576,6 +633,14 @@ def set_system_performance(x):
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
         ])
+    elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
+        return ([
+        html.H5('System Performance', className='card-title'),
+        html.Div(f"Annual water production: {r['actual_prod']:.0f} m3"),
+        html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
+        html.Div(f"Recovery ratio: {r['rr']:.1f} %"),    
+        #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        ])
     elif app['desal'] == 'MDB':       
         df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
         for i in range(1,len(df.columns.values)):
@@ -621,12 +686,12 @@ def set_cost_analysis(x):
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
           
         ])
-    elif app['desal'] == 'RO':
+    elif app['desal'] == 'RO' or app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
     #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
-        html.Div(f"Levelized cost of electricity (LCOE, from fossil fuel): {r['lcoe']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of electricity (LCOE, from grid): {r['lcoe']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electricity (LCOE, from solar field): {r['sam_lcoe']:.3f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
@@ -634,3 +699,4 @@ def set_cost_analysis(x):
           
         ])
 
+    

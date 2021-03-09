@@ -10,7 +10,7 @@ def get_table_id(varname, model_type, model):
     dependent variable, create the table ID and write the information
     to the dependencies json
     '''
-    flkup = cfg.build_file_lookup(model,model,model)
+    flkup = cfg.build_file_lookup(model,model,model,timestamp='')
     jfile = flkup[f'{model_type}_variables_file']
     with open(jfile, "r") as read_file:
         json_vars_load = helpers.json.load(read_file)

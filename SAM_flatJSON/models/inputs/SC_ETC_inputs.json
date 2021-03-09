@@ -1,5 +1,5 @@
 {
-    "SC_FPC": [
+    "SC_ETC": [
 	    {
             "DataType": "SSC_STRING",
             "Name": "file_name",
@@ -146,7 +146,7 @@
             "Tab": "Collector Specification"
         },
         {
-            "DataType": "SSC_NUMBER",
+            "DataType": "SSC_ARRAY",
             "Name": "v1",
             "Label": "Incidence angles from datasheet",
             "Units": "degree",
@@ -155,10 +155,20 @@
             "Tab": "Collector Specification",
 			"Section": "Coefficients"
         },
-	{
-            "DataType": "SSC_NUMBER",
+		{
+            "DataType": "SSC_ARRAY",
             "Name": "v2",
             "Label": "Longitudinal incidence angle modifiers from datasheet",
+            "Units": "",
+            "Group": "Collector Specification",
+            "Require": "?=0.0",
+            "Tab": "Collector Specification",
+			"Section": "Coefficients"
+        },
+		{
+            "DataType": "SSC_ARRAY",
+            "Name": "v3",
+            "Label": "Transversal incidence angle modifiers from datasheet",
             "Units": "",
             "Group": "Collector Specification",
             "Require": "?=0.0",
