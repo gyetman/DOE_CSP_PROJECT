@@ -141,3 +141,4 @@ app/logs/applog.log
 utils/rtree.dat
 utils/rtree.dat
 app/assets/*
+!app/assets/images/*
