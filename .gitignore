@@ -34,7 +34,6 @@ SAM_flatJSON/CSV results/*
 
 
 app/GISdata/Readme.md
-app/GISdata/Readme.md
 app/gen.csv
 utils/test_read_rtree.py
 app/rtree.dat
@@ -128,17 +127,13 @@ utils/county.idx
 utils/rtree.dat
 utils/rtree.idx
 GISQueryData/county.shp.dat
-GISQueryData/county.shp.dat
 utils/rtree.dat
 utils/rtree.idx
 GISQueryData/CityWaterCosts.shp.DESKTOP-K9N4NJB.2932.2736.sr.lock
-GISQueryData/CityWaterCosts.shp.DESKTOP-K9N4NJB.2960.2736.sr.lock
 app/logs/applog.log
 app/.DS_Store
 .DS_Store
 app/logs/applog.log
-app/logs/applog.log
-utils/rtree.dat
 utils/rtree.dat
 app/assets/*
-!app/assets/images/*
+!app/assets/images
