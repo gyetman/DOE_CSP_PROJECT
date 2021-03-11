@@ -14,7 +14,7 @@ import pandas as pd
 from pathlib import Path
 import json
 
-# import app_config as cfg
+import app_config as cfg
 
 class VAGMD_batch(object):
     def __init__(self,
