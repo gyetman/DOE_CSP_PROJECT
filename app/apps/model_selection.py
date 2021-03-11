@@ -1,22 +1,16 @@
 import sys
-from collections import defaultdict
-from datetime import datetime
-from operator import itemgetter
 from pathlib import Path
 
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_table
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 
 import app_config as cfg
 sys.path.insert(0,str(cfg.base_path))
 
 import helpers
 from app import app
-
-from SAM_flatJSON.SamBaseClass import SamBaseClass
 
 #define columns used in data tables
 cols = [{'name':'Variable', 'id':'Label','editable':False},
