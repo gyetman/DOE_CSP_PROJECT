@@ -17,8 +17,6 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
         {'name':'Value',    'id':'Value','editable':True},
         {'name':'Units',    'id':'Units','editable':False}]
 
-app.title = 'Model Selection'
-
 chart_navbar = dbc.NavbarSimple(
     brand="Model Selection",
     color="primary",
