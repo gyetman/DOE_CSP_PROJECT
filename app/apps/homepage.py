@@ -51,7 +51,7 @@ card_select_site = html.A(dtc.Card(
     badges=['Badge 1', 'Badge 2', 'Badge 3'],
     git='https://github.com/adam-a-a/DOE_CSP_PROJECT',
     style={'padding':16}
-),href='/dynamic-map',style={'text-decoration': 'none'})
+),href='/site-selection',style={'text-decoration': 'none'})
 
 card_quick_analysis = dtc.Card(
     link='https://columbia.maps.arcgis.com/home/item.html?id=719c769587604bb9a2e098fa052ef1b9#overview',
