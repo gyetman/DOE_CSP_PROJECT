@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output, State
 # import app_config as cfg
 # sys.path.insert(0,str(cfg.base_path))
 
-import helpers
+# import helpers
 from app import app
 
 #TODO LIST
@@ -40,7 +40,7 @@ card_select_model = html.A(dtc.Card(
     title='Select Model',
     description="Some quick example text to build on the card title and make up the bulk of the card's content.",
     badges=['Badge 1', 'Badge 2', 'Badge 3'],
-    git='https://githublinkhere.com',
+    git='https://github.com/adam-a-a/DOE_CSP_PROJECT',
     style={'padding':16}
 ),href='/model-selection',style={'text-decoration': 'none'})
 
@@ -49,7 +49,7 @@ card_select_site = html.A(dtc.Card(
     title='Select Site',
     description="Some quick example text to build on the card title and make up the bulk of the card's content.",
     badges=['Badge 1', 'Badge 2', 'Badge 3'],
-    git='https://githublinkhere.com',
+    git='https://github.com/adam-a-a/DOE_CSP_PROJECT',
     style={'padding':16}
 ),href='/dynamic-map',style={'text-decoration': 'none'})
 
