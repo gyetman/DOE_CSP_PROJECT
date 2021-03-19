@@ -31,6 +31,7 @@ HOURS_IN_YEAR = 8760
 
 solar_names = {'linear_fresnel_dsg_iph':('System power generated','Receiver mass flow rate','Receiver thermal losses','Resource Beam normal irradiance'),
                'SC_FPC':('Thermal power generation','Field outlet temperature'),
+               'SC_ETC':('Thermal power generation','Field outlet temperature'),
                'tcslinear_fresnel':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
                'tcsdirect_steam':('Condenser steam temperature','Steam mass flow rate', 'Waste heat generation'),
                'trough_physical_process_heat':('Heat sink thermal power','Field total mass flow delivered', 'Receiver thermal losses','Resource Beam normal irradiance'),
@@ -43,7 +44,10 @@ desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),
                'VAGMD':('Water production','Fossil fuel usage', 'Storage status'),
                'LTMED':('Water production','Fossil fuel usage', 'Storage status'),
                'MEDTVC':('Water production','Fossil fuel usage', 'Storage status'),
-               'MDB':('Water production','Fossil fuel usage', 'Storage status')}    
+               'MDB':('Water production','Fossil fuel usage', 'Storage status'),
+               'OARO':('Water production','Fossil fuel usage', 'Storage status'),
+               'LSRRO':('Water production','Fossil fuel usage', 'Storage status'),
+               'COMRO':('Water production','Fossil fuel usage', 'Storage status')}    
 sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation'}
 
 
@@ -154,9 +158,10 @@ def real_time_layout():
     Output('solar-storage', 'data'),
     [Input('initialize', 'children')])
 def store_solar_data(x):
-
     # load simulation results from JSONs
-    sol = helpers.json_load(cfg.sam_solar_simulation_outfile)
+    sol_outfile = 'Solar_output' + helpers.json_load(cfg.app_json)['timestamp'] + '.json'
+    print(sol_outfile)
+    sol = helpers.json_load(cfg.sam_results_dir / sol_outfile)
 
     solar_indexes = [helpers.index_in_list_of_dicts(sol,'Name', x)
                     for x in solar_names[helpers.json_load(cfg.app_json)['solar']]]
@@ -190,7 +195,7 @@ def store_solar_data(x):
 def store_desal_data(x):
     alkup = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
-                                  alkup['finance'])
+                                  alkup['finance'],alkup['timestamp'])
     des = helpers.json_load(flkup['sam_desal_simulation_outfile'])
 
     desal_indexes = [helpers.index_in_list_of_dicts(des,'Name', x)

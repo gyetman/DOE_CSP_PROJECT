@@ -212,7 +212,7 @@ class VAGMD_PSA(object):
             return temp_cost.LCOW
         
         x0 =  np.asarray([80, 25, 528.7])
-        xopt = fmin(target, x0)
+        xopt = fmin(target, x0, disp=False)
         yopt = target(xopt)
 
         self.design_output.append({'Name':'(Suggested) Evaporator channel inlet temperature','Value':max(60,min(80,xopt[0])),'Unit':'oC'})

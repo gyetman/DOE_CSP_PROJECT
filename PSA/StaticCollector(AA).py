@@ -22,7 +22,7 @@ class StaticCollector(object):
 
     def __init__(self,
                  # Design parameters
-                 collector_type = '1',  # '1' for flat-plate collector and '2' for evacuated tube collector
+                 collector_type = '2',  # '1' for flat-plate collector and '2' for evacuated tube collector
                  design_point_date=[2010, 3 ,18 ,12, 0, 0], # design day/time
                  initial_date   = [2010, 3 ,18, 9, 0, 0], # initial design day/time
                  final_date     = [2010, 3, 18, 17, 0 ,0], # final design day/time
@@ -50,11 +50,11 @@ class StaticCollector(object):
                  Interv=60,      # temporal resolution of simulation/data in # of minutes
                  tiempo_oper=10, # daily operational availability of desal plant in hours
                  pressure=1,      # water pressure in the solar field, bar
-                 v1 = 50,
-                 v2 = 0.92,
-                 # v1=[10 ,20 ,30, 40 ,50, 60, 70], # incidencee angles from datasheet
-                 # v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68],       # Longitudinal incidence angle modifiers from datasheet
-                 # v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08] # Transversal incidence angle modifiers from datasheet
+                 # v1 = 50,
+                 # v2 = 0.92,
+                 v1=[10 ,20 ,30, 40 ,50, 60, 70], # incidencee angles from datasheet
+                 v2=[1, 1, 0.99, 0.97, 0.92, 0.84 ,0.68],       # Longitudinal incidence angle modifiers from datasheet
+                 v3=[1.04 ,1.09 ,1.23 ,1.38 ,1.78, 1.82, 2.08] # Transversal incidence angle modifiers from datasheet
                  ):
         
         self.collector_type  = collector_type
@@ -81,7 +81,7 @@ class StaticCollector(object):
         self.pressure=pressure
         self.v1=v1
         self.v2=v2
-        # self.v3=v3
+        self.v3=v3
         self.weatherfile= file_name
         
  #% 

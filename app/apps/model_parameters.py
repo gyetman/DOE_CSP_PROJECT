@@ -375,7 +375,7 @@ def create_tabs_and_tables(x):
 
     #create dict lookups for model and filenames
     app = helpers.json_load(cfg.app_json)
-    flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'])
+    flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'],app['timestamp'])
 
     solar_model_vars = create_variable_lists(
         model_name=app['solar'], 
@@ -432,6 +432,8 @@ def create_tabs_and_tables(x):
                   models[1]:solar_model_vars}
 
     def _make_tabs_in_collapse(i):
+       # help_link = "file://" + str(cfg.base_path) + '/SAM_flatJSON/' + 'sam-help-2020-2-29-r1.pdf'
+
         return dbc.Card(
             [
                 dbc.Button(
@@ -439,6 +441,7 @@ def create_tabs_and_tables(x):
                     color="primary",
                     id=f"{i}-toggle".replace(' ','_'),
                 ),
+                #dbc.NavItem(dbc.NavLink('Help', href=help_link)),
                 dbc.Collapse(
                     dbc.CardBody(
                         [dcc.Tabs(value=Model_tabs[i][0], children=[
@@ -466,7 +469,7 @@ def create_tabs_and_tables(x):
 def run_desal_design(desalDesign, desalData):
     #create dict lookups for model and filenames
     app = helpers.json_load(cfg.app_json)
-    flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'])
+    flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'],app['timestamp'])
 
     desal_design_vars = dict()
     # pull out variable names and values and add to new dict
@@ -645,7 +648,8 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         # write the outfiles to the app_json for reference by other apps
         gui_out_files = {'solar_outfile': solar_model_outfile,
                         'desal_outfile': desal_model_outfile,
-                        'finance_outfile': finance_model_outfile}
+                        'finance_outfile': finance_model_outfile,
+                        'timestamp': timestamp}
         helpers.json_update(gui_out_files, cfg.app_json) 
             
         # Update input json files according to the selected rows
@@ -687,7 +691,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                       json_file=solar_model_outfile_path,
                       desal_file=desal_model_outfile_path,
                       finance_file=finance_model_outfile_path,
-                      timestamps = '')
+                      timestamps = timestamp)
         # return a new button with a link to charts
         link = '/parametric-charts' if len(parametric_info)>0 else '/chart-results'
         return (   (html.Div([

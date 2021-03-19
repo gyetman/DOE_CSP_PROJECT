@@ -35,6 +35,12 @@ chart_navbar = dbc.NavbarSimple(
 
 model_selection_layout = html.Div([
     chart_navbar,
+    dbc.Label("Project Name", width=2, size='lg',style={'text-align':'center'}),
+    dcc.Input(  id='project_name',
+                value = 'Project_1',
+                type="text",
+            ),    
+   
     dbc.FormGroup([
         dbc.Label("Solar Thermal System", width=2, size='lg',color='warning',style={'text-align':'center'}),
         dbc.Col(
@@ -46,7 +52,7 @@ model_selection_layout = html.Div([
                     {'label': 'Static Collector (Flat Plate)   ',
                     'value': 'SC_FPC', 'disabled': False},
                     {'label': 'Static Collector (Evacuated Tube)',
-                    'value': 'SC_ETC', 'disabled': True},
+                    'value': 'SC_ETC', 'disabled': False},
                     {'label': 'Integrated Solar Combined Cycle ',
                     'value': 'tcsiscc', 'disabled': True},
                     {'label': 'Linear Fresnel Direct Steam     ',
@@ -100,13 +106,18 @@ model_selection_layout = html.Div([
     style={'horizontal-align':'center'})
 ],style={'margin-bottom':150})
 
+
+
+
+
 @app.callback(
     Output('model-parameters', 'children'),
     [Input('select-solar', 'value'),
      Input('select-desal', 'value'),
      Input('select-finance', 'value'),
-     Input('parametric-toggle', 'value')])
-def display_model_parameters(solar, desal, finance, parametric):
+     Input('parametric-toggle', 'value'),
+     Input('project_name', 'value')])
+def display_model_parameters(solar, desal, finance, parametric, project_name):
     '''
     After all 3 models are selected updates app JSON file and 
     creates button to navigate to model variables page
@@ -114,7 +125,7 @@ def display_model_parameters(solar, desal, finance, parametric):
     if solar and desal and finance:
         toggle=True if parametric else False
         try:
-            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle}, filename=cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle, 'project_name': project_name}, filename=cfg.app_json)
         except FileNotFoundError:
             helpers.initialize_json(cfg.app_json_init,cfg.app_json)
             helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance}, filename=cfg.app_json)

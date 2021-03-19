@@ -20,7 +20,7 @@ class VAGMD_cost(object):
                  FFR  = 1100, # Feed flow rate per module (l/h/module)
                  th_module  = 4.560, # Thermal power supplied per module (kW(th)/module)
                  STEC  = 62.180, # Specific thermal energy consumption (kWh(th)/m3) 
-                 SEEC = 1.25, # Specific electric energy consumption (kWh(e)/m3) 
+                 SEEC = 1.8, # Specific electric energy consumption (kWh(e)/m3) 
 #                 GOR = 10.475,  # Gained output ratio
                 # downtime = 0.1, # Yearly downtime of the plant (ratio)
                  yrs = 20, # Expected plant lifetime
@@ -33,24 +33,24 @@ class VAGMD_cost(object):
                  HX_eff = 0.85, # Heat exchanger efficiency
                  cost_module_re = 0.220 , # Cost of module replacement ($/m3)
 
-                 MD_membrane = 0.075*1.11, # Base price of AGMD membrane (k$/m2)
-                 HX = 0.35 * 1.11, # Base price of heat exchanger (k$/m2)
+                 MD_membrane = 0.075*1.2, # Base price of AGMD membrane (k$/m2)
+                 HX = 0.35 * 1.2, # Base price of heat exchanger (k$/m2)
                  
-                 MD_module = 1.95* 1.11,# Base price of AGMD module assembly (k$/base capacity)
+                 MD_module = 1.95* 1.2,# Base price of AGMD module assembly (k$/base capacity)
                  MD_module_capacity = 3, # Base capacity of module assembly (modules)   
                                   
-                 endplates = 0.85* 1.11,# Base price of HX endplates (k$/base capacity)
+                 endplates = 0.85* 1.2,# Base price of HX endplates (k$/base capacity)
                  endplates_capacity =10, # Base capacity of housing rack (m2)
-                 heat_cool = 5* 1.11, # Base price of heating/cooling installation (k$/base capacity)
+                 heat_cool = 5* 1.2, # Base price of heating/cooling installation (k$/base capacity)
                  heat_cool_capacity =10, # Base capacity of housing rack (m3/h)
                  
-                 h_r = 5* 1.11,  # Base price of housing rack (k$/base capacity)
+                 h_r = 5* 1.2,  # Base price of housing rack (k$/base capacity)
                  h_r_capacity = 3, # Base capacity of housing rack (modules)
-                 tank = 5* 1.11,  # Base price of tank (with plumbing) (k$/base capacity)
+                 tank = 5* 1.2,  # Base price of tank (with plumbing) (k$/base capacity)
                  tank_capacity = 3, # Base capacity of tank (modules)
-                 pump = 3* 1.11,  # Base price of pump (k$/base capacity)
+                 pump = 3* 1.2,  # Base price of pump (k$/base capacity)
                  pump_capacity = 5, # Base capacity of pump (m3/h)
-                 other = 15* 1.11,  # Base price of controller, cabling and programming (k$/base capacity)
+                 other = 15* 1.2,  # Base price of controller, cabling and programming (k$/base capacity)
                  other_capacity = 3, # Base capacity of controller, cabling and programming (modules)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 13422 # Capacity of thermal storage (kWh)     
@@ -112,14 +112,15 @@ class VAGMD_cost(object):
         self.HX_cost = 2 * ( self.endplates * (self.HX_area/self.endplates_capacity)**0.6 + self.HX * self.HX_area) 
         self.Feed = self.FFR * self.num_modules / 1000
         self.other_cap = (self.h_r * (self.num_modules/self.h_r_capacity)**0.6 + self.tank * (self.num_modules/self.tank_capacity)**0.5 + self.pump*(self.Feed/self.pump_capacity)**0.6 + self.other *(self.num_modules/self.other_capacity)**0.3 + 0.25*5 + 2*self.heat_cool*(self.Feed/self.heat_cool_capacity)**0.6) 
-        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap)
-        
+        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap / 1000)
+
         self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
         
         self.cost_elec = self.SEEC * self.coe
-        self.other_OM = self.cost_sys *1000 *0.018 / (self.Prod+0.1) +0.1
+        self.other_OM = self.CAPEX  *0.018
+        self.insurance = self.CAPEX *0.005 
         self.cost_th = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh)
-        self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM
+        self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM + self.insurance
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -127,12 +128,12 @@ class VAGMD_cost(object):
         cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of heat_Calculated','Value':self.sam_coh,'Unit':'$/m3'})   
+        cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/kWh'})
+        cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/kWh'})
+        cost_output.append({'Name':'Cost of heat per unit','Value':self.cost_th,'Unit':'$/m3'})   
         cost_output.append({'Name':'Energy cost','Value':self.cost_th + self.cost_elec,'Unit':'$/m3'})   
         
         return cost_output
 #%%
-# case2 = VAGMD_cost(coh = 100)
-# print(case2.lcow())
+case2 = VAGMD_cost(coh = 100)
+print(case2.lcow())

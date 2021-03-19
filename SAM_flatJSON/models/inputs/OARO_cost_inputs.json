@@ -1,5 +1,5 @@
 {
-    "RO": [
+    "OARO": [
         {
             "DataType": "SSC_NUMBER",
             "Name": "yrs",
@@ -13,6 +13,14 @@
             "Name": "int_rate",
             "Label": "Average interest rate",
             "Units": "",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "Annual downtime percentage",
+            "Units": "%",
             "Require": "*",
 			"Tab": "Desalination"
         },
@@ -34,17 +42,17 @@
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "Nel",
-            "Label": "Number of elements per vessel",
-            "Units": "",
+            "Name": "oaro_cost",
+            "Label": "Specialized membrane cost",
+            "Units": "$/m2",
             "Require": "",
 			"Tab": "Desalination"
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "Area",
-            "Label": "Membrane area",
-            "Units": "m2",
+            "Name": "ro_cost",
+            "Label": "Conventional membrane cost",
+            "Units": "$/m2",
             "Require": "",
 			"Tab": "Desalination"
         },
@@ -71,36 +79,20 @@
             "Units": "",
             "Require": "",
 			"Tab": "Desalination"
-        },	
-        {
+        },
+		{
             "DataType": "SSC_NUMBER",
-            "Name": "unit_capex",
-            "Label": "Total EPC cost",
-            "Units": "$/(m3/day)",
-            "Require": "*",
+            "Name": "practical_inv_factor",
+            "Label": "Practical investment factor ",
+            "Units": "",
+            "Require": "",
 			"Tab": "Desalination"
-        },	
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "cost_storage",
-            "Label": "Battery cost",
-            "Units": "$/kWh",
-            "Require": "*",
-			"Tab": "Desalination"
-        },		
+        },				
 		{
             "DataType": "SSC_NUMBER",
             "Name": "sec",
             "Label": "Specific energy consumption",
             "Units": "kwh/m3",
-            "Require": "",
-			"Tab": "Desalination"
-        },	
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "disposal_cost",
-            "Label": "Specific waste disposal cost",
-            "Units": "$/m3",
             "Require": "",
 			"Tab": "Desalination"
         }
