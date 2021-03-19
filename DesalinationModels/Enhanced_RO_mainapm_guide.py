@@ -20,6 +20,8 @@ print(ROOT_DIR)
 
 #LSRRO Cases: 70 g/l Feed, 75% recovery; 35 g/l Feed, 85% recovery; 20 g/l Feed, 92% recovery
 
+LSRRO_125g_L_50rec=ROOT_DIR+'/LSRRO_8stage_cin_125_r_50.apm'
+LSRRO_125g_L_25rec=ROOT_DIR+'/LSRRO_5stage_cin_125_r_25.apm'
 LSRRO_70g_L_75rec=ROOT_DIR+'/LSRRO_8stage_cin_70_r_75.apm'
 LSRRO_35g_L_85rec=ROOT_DIR+'/LSRRO_6stage_cin_35_r_85.apm'
 LSRRO_20g_L_92rec=ROOT_DIR+'/LSRRO_6stage_cin_20_r_92.apm'
@@ -92,9 +94,11 @@ if (tech=='OARO'):
     elif (feedsal=='125') & (recrate=='50'):
         apm_option(s,a,'apm.otol',1e-7) # default tolerance is 1e-6
 
-elif (tech=='COMRO'):
-    if (feedsal=='125') & (recrate=='50'):
-        apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6   
+elif (tech=='LSRRO'):
+    if (feedsal=='125') & (recrate=='25'):
+        apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6  
+    elif (feedsal=='125') & (recrate=='50'):        
+        apm_option(s,a,'apm.otol',1e-7) # default tolerance is 1e-6  
 
 else:
     apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6

@@ -1,0 +1,503 @@
+ ! 
+ Model 
+   Constants
+	
+	Awj1 = 1.5/3.6e6 !4.2e-6	! convert to m/bar/s
+	Bsj1 = 3.0699e-06
+
+	! next Bsj1 = 4.6182e-07
+	!Bsj1 = 3.78e-06!1.2500e-06    	        	!  m/s, OARO baseline salt permeability coefficient (Bartholomew & Mauter, 2018) 
+
+	hf = 0.002 ! 0.00075      		! feed channel height   
+	!hp = 0.002 !1.62e-3  		    ! permeate channel height, taken from Jeon et al. A simple modeling approach for a forward osmosis system with a spiral wound module. Desalination. 2018 May 1;433:120–31. 
+
+	i = 2					! vant Hoff factor (dissociation factor for NaCl)
+	R = 8.314e-2 			! ideal gas constant
+	T = 20 +273.15			! temperature, Kelvin
+	MW = 58.44				! molecular weight of NaCl
+
+	void = 0.75				! spacer porosity
+
+
+	densityw = 995.1			! density of water, kg/m3, 997 kg/m3 is more accurate but staying consistent with the density-mass fraction fitted equation
+	D = 1e-9				! diffusivity of NaCl, m2/s
+	w=  1.34	!, > 0    	! width of membrane, m
+	L=1
+	
+	nl=0.5
+
+	eps= 1e-10
+	
+	Awk1= 4.2e-7
+	Bsk1= 3.5e-8
+	
+	 xpoly[1]= -0.000420719536247e-3
+	 xpoly[2]=  0.966292293659073e-3
+	 xpoly[3]=  0.982129425760762e-3
+	 
+	 Patm= 1
+	 
+	 
+	 
+	 N = 3
+	 
+	 Nstage = 8
+	 Ncc = Nstage - 1
+
+
+	 !Xa = 0.26
+
+   End Constants
+
+   Parameters
+	 Qin= 468/24 !500000/24
+	
+	
+	 Cin=  125		
+	 !Rtq=  0.41
+	 Rt= 0.50 !+ eps  
+	  
+	 Pmaxj1_= 65
+	 Pmaxk1_= 85
+
+	 Ppk=1
+	 Ppj=1
+	 
+	 !Qr= (1-Rtq)*Qin , > 0 , < Qin
+	 
+
+	 
+	 eff_pump = 0.75
+	 eff_erd  = 0.90
+	
+	 Perdoutk = Patm
+	 Perdoutj = Patm
+	 
+	 irate = 0.078
+	 years = 20 
+	 
+	 ecost = 0.07
+	 
+	 oaromemcost = 50
+	 romemcost = 30
+	 memrepfactor= 0.15    			! Annual membrane replacement factor
+	 practical_inv_factor = 1.6 	! Practical investment factor to convert total equipment costs to total capital investment
+	 maint_labor_factor= 	0.02
+	 chemical_factor = 		0.01
+	 
+	 pumpcost = 53 * 3600 ! 53 $/bar/m3*h converted to $/bar/m3*s
+	 
+	 loadfactor= .9
+   End Parameters
+
+   Variables
+	
+	 Mpj[N][1:Ncc]= 3 ,> 0  !, < Qin/3600*1300 !< Qin/3600*1300 !>= Qr/3600*995 , < Qin/3600*1300
+	 Xpj[N][1:Ncc] > 0 , <= (xpoly[1]*(Cin/(1-Rt))^2 + xpoly[2]*(Cin/(1-Rt)) +xpoly[3])
+	 Mfj[0][2:Ncc] > 0
+	 Xfj[0][2:Ncc] > 0 !, <= (xpoly[1]*(Cin/(1-Rt))^2 + xpoly[2]*(Cin/(1-Rt)) +xpoly[3])
+	 
+	 
+	 !Qr > 0 , < Qin
+	 
+	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 
+	 Wj[1:Ncc]= 50 , >= w ,  <= 5e2	   ! 5e3 for low Aw
+	 Wk= 20 , >= w ,  <= 5e3
+	 
+	 Lj[1:Ncc]= 50 , >= L , <= 1e3 !10e3 for low Aw
+	 Lk= 30 , >= L , <= 5e3 !L*24
+
+	 ! Jwj[1:N] >= 5.6e-09 , <= 1.1111e-05 ! m3/m2/s  --> rescale to LMH
+
+	 Jwj[1:N][1::Ncc]= 7e-7 , >= 2.2222e-08 , <= 3*2*1.6667e-05 !>= 1.5556e-08 ,  <= 1.1111e-03 ! m3/m2/s   ! >= 5.5556e-09 ,
+	 Jsj[1:N][1::Ncc]= 7e-5 , >= 1e-7 		  , <= 1e-2 !1.3889e-03 ! kg/m2/s  
+	 Jwk[1:N]= 5.69e-6 , >= 2.2222e-08 , <= 1.6667e-05 ! m3/m2/s  ! >= 2.2222e-08 
+	 Jsk[1:N]= 2.85e-06 , > 0 		  , <= 1.3889e-05 ! kg/m2/s  
+	
+ 	 
+	 Pfj[0:N][1::Ncc]= Pmaxj1_* 0.5 , > 0.5*Pmaxj1_ , <= Pmaxj1_ 
+	 !Pfjout[1:Ncc] < Pfj[N][1:Ncc]
+	 
+	 Pfk[0:N]= Pmaxk1_* 0.5 , > 0.5*Pmaxk1_ , <= Pmaxk1_ 
+	 !Pfkout < Pfk[N]
+
+	 !Ppj[0:N] >= 1 !, <= Pfk[0]
+	 
+	
+
+	 
+	 
+	 !Cpoutj= Cin, > 10 , <= Cin !Cfoutj[1:Nstage]= Cpin/(1-Rtq), > Cpin , <= 350
+     CpNk= 0.5 , > 0 , <= 0.5
+	 
+	 
+	 !!!!! Adding SEC and LCOW sections
+	 !Perdoutk1 >= 1 , < Pfk1_[N]
+	 LCOW > 0 !, < 50
+	 SEC= 5 , > 0 !, < 100
+	 ! PQBpumpk= .5 ,  >= 0
+	 ! Qpk= Rtq*Qin/3600 , > eps
+	 !!! Adding purge, recycle, makeup flows
+	 !Ma >= 0
+	 !Mr >= 0 
+	 !Awj1= 1e-7 , >= 1e-7 , <= 1e-3 
+	 !Bsj1 = .0133/3.6e6*(Awj1*3.6e6)^3 , >= .0133/3.6e6*(Awj1*3.6e6)^3 , <= 9e-5
+	 !SR1 = 0.9 , > 0 , <= 0.5
+   End Variables
+
+   Intermediates
+   
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! RO MODULE
+
+	 Amj[1:Ncc]=Lj[1:Ncc]*Wj[1:Ncc]
+	 Amk=Lk*Wk
+	
+	 dhfj[1:Ncc]= 2*(hf*Wj[1:Ncc])/(hf+Wj[1:Ncc])
+	 !dhpj= 2*(hp*Wj)/(hp+Wj)
+	
+	 dhfk= 2*(hf*Wk)/(hf+Wk)
+	
+	 Acfj[1:Ncc]=hf*Wj[1:Ncc]*void
+	 !Acpj=hp*Wj*void
+	
+	 Acfk=hf*Wk*void
+	 
+	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   STARTING POINT FOR CONVERTING COMRO TO OARO MODEL
+	 !Cfj[0]= Cin	   ! Cpj[0][1]= Cpin for COMRO
+
+	 !!!!!!Cpj[0]= Cpoutj	   ! Cfj[0][1:Nstage]= Cfoutj[1:Nstage]
+	 
+	 !Cfj[0][2:Ncc]=Cpj[0][1:Ncc-1]  ! sweep exiting module n is equal to feed entering module n+1 in OARO
+	 
+	 Xfkin= xpoly[1]*Cin^2 + xpoly[2]*Cin +xpoly[3]
+	 densityfkin= 750.6*Xfkin + 995.1  
+	 Mfkin=Qin*densityfkin/3600
+	 
+	 
+	 Xpk[0]=0
+	 Mpk[0]=0
+		 
+	 !densityfj[0]= 750.6*Xfj[0] + 995.1    
+	 !densitypj[0]= 750.6*Xpj[0] + 995.1
+	 
+	 
+	 Mfk[0] =  Mfkin + Mpj[N][1]						![1]! In OARO: Qin*densityfj[0]/3600    ! In COMRO: Mpj[0][1]=	Qin*densitypj[0][1]/3600
+	 Xfk[0]= (Xfkin*Mfkin + Xpj[N][1]*Mpj[N][1])/Mfk[0]
+	 !Mfk[1:N]=  Mfk[0:N-1] - Lk*Wk/N*(Jwk[1:N]*densityw + Jsk[1:N]) !! OARO TO LSRRO: Changed j stage to k stage (bilateral to conventional module)
+	 !Xfk[1:N]= (Mfk[0:N-1]*Xfk[0:N-1] - Lk*Wk/N*Jsk[1:N])/Mfk[1:N]  !! OARO TO LSRRO: Changed addition to subtraction 
+	 
+	 Mfk[1:N]= Mfk[0:N-1] - Lk*Wk/N*(Jwk[1:N]*densityw + Jsk[1:N])
+	 Mpk[1:N]= Mpk[0:N-1] + Lk*Wk/N*(Jwk[1:N]*densityw + Jsk[1:N])
+	 
+	 Xfk[1:N]= (Mfk[0:N-1]*Xfk[0:N-1] - Lk*Wk/N*Jsk[1:N])/Mfk[1:N]
+	 Xpk[1:N]= (Mpk[0:N-1]*Xpk[0:N-1] + Lk*Wk/N*Jsk[1:N])/Mpk[1:N]
+	 
+	 !Xpavgk1_[1:N]=(Xpk1_[0:N-1]*Mpk1_[0:N-1] + Xpk1_[1:N]*Mpk1_[1:N])/(Mpk1_[0:N-1]+Mpk1_[1:N])
+
+	 !Xpsumk1[1:N]=Xpk1_[0:N-1] + Xpk1_[1:N]
+	 
+	 
+	 densityfk[0:N]=750.6*Xfk[0:N] + 995.1    
+	 viscfk[0:N]= 2.15e-3 *Xfk[0:N] + 9.80e-4
+	 Refk[0:N]=Mfk[0:N]/Acfk*dhfk/viscfk[0:N]
+	 FFfk[0:N]=0.42 + 189.3/Refk[0:N]
+	 Plfk[0:N]=FFfk[0:N]*(Mfk[0:N]^2)/(4*densityfk[0:N]*hf*Acfk^2)*10^(-5)
+	 Scfk[0:N]=viscfk[0:N]/densityfk[0:N]/D
+	 Shfk[0:N]=0.46*(Refk[0:N]*Scfk[0:N])^0.36
+	 kfk[0:N]=D/dhfk*Shfk[0:N]
+	 kfavgk[1:N]=(kfk[0:N-1]+ kfk[1:N])*0.5
+	 
+	 Cpk[0]= 750.6*Xpk[0]^2 + 995.1*Xpk[0]
+	 Cfk[0]= 750.6*Xfk[0]^2 + 995.1*Xfk[0]
+	 
+	 Cpk[1:N]=(Cpk[0:N-1] + 750.6*Xpk[1:N]^2 + 995.1*Xpk[1:N])*0.5
+	 Cfk[1:N]=(Cfk[0:N-1] + 750.6*Xfk[1:N]^2 + 995.1*Xfk[1:N])*0.5
+	 
+	 Cfmk[1:N]=Cfk[1:N]*exp(Jwk[1:N]/kfavgk[1:N]) - Jsk[1:N]/Jwk[1:N]*(exp(Jwk[1:N]/kfavgk[1:N]) - 1)
+	 phiosmfmk[1:N]= 3.33e-6 *Cfmk[1:N]^2 +1.78e-4 *Cfmk[1:N] + 0.918	 
+	 phiosmpk[1:N]= 3.33e-6 *Cpk[1:N]^2 +1.78e-4 *Cpk[1:N] + 0.918	 
+
+	 Posmfk[1:N]= i*R*T/MW*phiosmfmk[1:N]*Cfmk[1:N]
+	 Posmpk[1:N]= i*R*T/MW*phiosmpk[1:N]*Cpk[1:N]	 
+	 
+	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! LOW-REJECTION MODULE
+	 
+	 Mfj[0][1]= Mfk[N] + Mpj[N][2]
+	 Xfj[0][1]=(Xfk[N]*Mfk[N] + Xpj[N][2]*Mpj[N][2])/Mfj[0][1] 
+	 
+	 Mpj[0][1:Ncc]=0
+	 Xpj[0][1:Ncc]=0
+	 Cpj[0][1:Ncc]=0
+	 
+	 Mfj[1:N][1]= Mfj[0:N-1][1] - Lj[1]*Wj[1]/N*(Jwj[1:N][1]*densityw + Jsj[1:N][1])
+     Xfj[1:N][1]= (Mfj[0:N-1][1]*Xfj[0:N-1][1] - Lj[1]*Wj[1]/N*Jsj[1:N][1])/Mfj[1:N][1]
+	 
+	 
+	
+	 Mfj[1:N][2::Ncc-1]= Mfj[0:N-1][2::Ncc-1] - Lj[2::Ncc-1]*Wj[2::Ncc-1]/N*(Jwj[1:N][2::Ncc-1]*densityw + Jsj[1:N][2::Ncc-1])
+     Xfj[1:N][2::Ncc-1]= (Mfj[0:N-1][2::Ncc-1]*Xfj[0:N-1][2::Ncc-1] - Lj[2::Ncc-1]*Wj[2::Ncc-1]/N*Jsj[1:N][2::Ncc-1])/Mfj[1:N][2::Ncc-1]
+	 
+	 
+	 Mfj[1:N][Ncc]= Mfj[0:N-1][Ncc] - Lj[Ncc]*Wj[Ncc]/N*(Jwj[1:N][Ncc]*densityw + Jsj[1:N][Ncc])
+     Xfj[1:N][Ncc]= (Mfj[0:N-1][Ncc]*Xfj[0:N-1][Ncc] - Lj[Ncc]*Wj[Ncc]/N*Jsj[1:N][Ncc])/Mfj[1:N][Ncc]
+	 
+	 
+	 Cfj[0][1:Ncc]=750.6*Xfj[0][1:Ncc]^2 + 995.1*Xfj[0][1:Ncc]
+
+	 
+	 
+	 Mpj[1:N-1][1::Ncc]= Mpj[0:N-2][1::Ncc] + Lj[1::Ncc]*Wj[1::Ncc]/N*(Jwj[1:N-1][1::Ncc]*densityw + Jsj[1:N-1][1::Ncc])
+     Xpj[1:N-1][1::Ncc]= (Mpj[0:N-2][1::Ncc]*Xpj[0:N-2][1::Ncc] + Lj[1::Ncc]*Wj[1::Ncc]/N*Jsj[1:N-1][1::Ncc])/Mpj[1:N-1][1::Ncc]
+	 
+	
+	 
+	 Cpj[1:N][1::Ncc]=(Cpj[0:N-1][1::Ncc] + 750.6*Xpj[1:N][1::Ncc]^2 + 995.1*Xpj[1:N][1::Ncc])*0.5
+	 Cfj[1:N][1::Ncc]=(Cfj[0:N-1][1::Ncc] + 750.6*Xfj[1:N][1::Ncc]^2 + 995.1*Xfj[1:N][1::Ncc])*0.5
+	 
+	 densityfj[0:N][1::Ncc]=750.6*Xfj[0:N][1::Ncc] + 995.1    
+	 densitypj[0:N][1::Ncc]=750.6*Xpj[0:N][1::Ncc] + 995.1
+	 
+	 
+	 viscfj[0:N][1::Ncc]= 2.15e-3 *Xfj[0:N][1::Ncc] + 9.80e-4
+	 Refj[0:N][1::Ncc]=Mfj[0:N][1::Ncc]/Acfj[1::Ncc]*dhfj[1::Ncc]/viscfj[0:N][1::Ncc]
+	 FFfj[0:N][1::Ncc]=0.42 + 189.3/Refj[0:N][1::Ncc]
+	 Plfj[0:N][1::Ncc]=FFfj[0:N][1::Ncc]*(Mfj[0:N][1::Ncc]^2)/(4*densityfj[0:N][1::Ncc]*hf*Acfj[1::Ncc]^2)*10^(-5)
+	 	 
+	 
+	 ! viscpj[0:N]= 2.15e-3 *Xpj[0:N] + 9.80e-4
+	 ! Repj[0:N]=Mpj[0:N]/Acpj*dhpj/viscpj[0:N]
+	 ! FFpj[0:N]=0.42 + 189.3/Repj[0:N]
+	 ! Plpj[0:N]=FFpj[0:N]*(Mpj[0:N]^2)/(4*densitypj[0:N]*hp*Acpj^2)*10^(-5)
+	 	
+
+	 Scfj[0:N][1::Ncc]=viscfj[0:N][1::Ncc]/densityfj[0:N][1::Ncc]/D
+	 Shfj[0:N][1::Ncc]=0.46*(Refj[0:N][1::Ncc]*Scfj[0:N][1::Ncc])^0.36
+	 kfj[0:N][1::Ncc]=D/dhfj[1::Ncc]*Shfj[0:N][1::Ncc]
+	 
+	 kfavgj[1:N][1::Ncc]=(kfj[0:N-1][1::Ncc]+ kfj[1:N][1::Ncc])*0.5
+	 
+!!!!!!!!!!!!!!!!!!!!! FOR OARO, eliminate dimensionless numbers and mass transfer coefficient calcs for last stage (terminal RO)	 
+	 ! Scpj[0:N]=viscpj[0:N]/densitypj[0:N]/D
+	 ! Shpj[0:N]=0.46*(Repj[0:N]*Scpj[0:N])^0.36
+	 ! kpj[0:N]=D/dhpj*Shpj[0:N]
+	 
+	 ! kpavgj[1:N]=(kpj[0:N-1] + kpj[1:N])*0.5
+	 
+	 Cfmj[1:N][1::Ncc]=Cfj[1:N][1::Ncc]*exp(Jwj[1:N][1::Ncc]/kfavgj[1:N][1::Ncc]) - Jsj[1:N][1::Ncc]/Jwj[1:N][1::Ncc]*(exp(Jwj[1:N][1::Ncc]/kfavgj[1:N][1::Ncc]) - 1)
+	 !Cpmj[1:N]=Cpj[1:N]*exp(-Jwj[1:N]*(S/D + 1/kpavgj[1:N]))+ Jsj[1:N]/Jwj[1:N]*(1 - exp(-Jwj[1:N]*(S/D + 1/kpavgj[1:N])))
+	 
+	 phiosmfmj[1:N][1::Ncc]= 3.33e-6 *Cfmj[1:N][1::Ncc]^2 +1.78e-4 *Cfmj[1:N][1::Ncc] + 0.918
+	 phiosmpj[1:N][1::Ncc]= 3.33e-6 *Cpj[1:N][1::Ncc]^2 +1.78e-4 *Cpj[1:N][1::Ncc] + 0.918
+	 
+	 Posmfj[1:N][1::Ncc]= i*R*T/MW*phiosmfmj[1:N][1::Ncc]*Cfmj[1:N][1::Ncc]
+	 Posmpj[1:N][1::Ncc]= i*R*T/MW*phiosmpj[1:N][1::Ncc]*Cpj[1:N][1::Ncc]
+	 
+	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! RO Module 
+	 ! Mfk[0]=Mpj[0]
+	 ! Xfk[0]=Xpj[0]
+	 
+	 ! Mpk[0]=0
+	 ! Xpk[0]=0
+	 
+	 
+
+
+	 
+     !z[2:n] = z[1:n-1] + p[2:n]
+	 !!! Experimental Additions
+	 r1[1::Ncc]=(Mfj[0][1::Ncc]-Mfj[N][1::Ncc])/Mfj[0][1::Ncc]
+	 r2=Mpk[N]/Mfk[0]
+	 ! r2[1:Nstage] = Mpk[N][1:Nstage]/Mfk[0][1:Nstage]
+	 !Rtq = 1-Qr/Qin
+	 densitypk=750.6*Xpk[N] + 995.1    
+	 ! Qpksum[1]=Qpk[1]
+	 ! Qpksum[2:Nstage]= Qpksum[1:Nstage-1] +Qpk[2:Nstage]
+	 
+	 ! Mpksum[1]=Mpk[N][1]
+	 ! Mpksum[2:Nstage]=Mpksum[1:Nstage-1] + Mpk[N][2:Nstage]
+	 
+	 Qpk=Mpk[N]/densitypk
+	 
+
+	 
+
+	
+	 !Pfk1_[0]<=Pmaxk1_
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			 
+ ! ######  ########  ######  
+! ##    ## ##       ##    ## 
+! ##       ##       ##       
+ ! ######  ######   ##       
+      ! ## ##       ##       
+! ##    ## ##       ##    ## 
+ ! ######  ########  ###### 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 Pfkout=Pfk[N] - Plfk[N]*Lk/(2*N)
+	 Pfjout[1:Ncc]=Pfj[N][1:Ncc] - Plfj[N][1:Ncc]*Lj[1:Ncc]/(2*N)
+
+	 
+	 Pbkin= eff_erd*(Pfkout-Perdoutk)+ Patm
+	 PQHpumpk=Mpk[N]/densityfk[0] * (Pfk[0]-Patm)
+	 PQBpumpk=Mfk[N]/densityfk[0] * (Pfk[0]-Pbkin)
+
+	 SEC_Hpumpk = PQHpumpk/eff_pump/Qpk/36   !!! High-pressure pump for terminal RO, k stage
+	 SEC_Bpumpk = PQBpumpk/eff_pump/Qpk/36
+	 
+	 
+	 Pbjin[1:Ncc]= eff_erd*(Pfjout[1:Ncc] - Perdoutj) + Patm
+	 
+	 
+	 PQHpumpj[1:Ncc]=(Mfj[0][1:Ncc]-Mfj[N][1:Ncc])/densityfj[0][1:Ncc] *(Pfj[0][1:Ncc] - Patm)
+	 !PQBpumpj[1]= Mfj[N][1]/densityfj[0][1] * (Pfj[0][1] - Pbjin[1])
+	 
+	 PQBpumpj[1:Ncc]= Mfj[N][1:Ncc]/densityfj[0][1:Ncc] * (Pfj[0][1:Ncc] - Pbjin[1:Ncc])
+	 !PQLpumpj[2:Ncc]= Mpj[0][2:Ncc]/densitypj[0][1:Ncc] * (Ppj[0][2:Ncc] - Patm)
+	 !PQLpumpj= Mpj[N]/densitypj[N] * (Ppj[N] - Perdoutk)
+
+	 
+	 SEC_Hpumpj[1:Ncc] = PQHpumpj[1:Ncc]/eff_pump/Qpk/36   !!! High-pressure pump for CC module, j1 stage
+	 SEC_Bpumpj[1:Ncc] = PQBpumpj[1:Ncc]/eff_pump/Qpk/36
+	 
+	 !SEC_Lpumpj = PQLpumpj/eff_pump/Qpk/36
+	 
+	 SECsumk= SEC_Hpumpk + SEC_Bpumpk
+	 SECsumj[1]=SEC_Hpumpj[1] + SEC_Bpumpj[1] !+ SEC_Lpumpj
+	 SECsumj[2:Ncc]= SECsumj[1:Ncc-1] + SEC_Hpumpj[2:Ncc] + SEC_Bpumpj[2:Ncc]
+	 SECsum= SECsumj[Ncc] + SECsumk
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! ##        ######   #######  ##      ## 
+! ##       ##    ## ##     ## ##  ##  ## 
+! ##       ##       ##     ## ##  ##  ## 
+! ##       ##       ##     ## ##  ##  ## 
+! ##       ##       ##     ## ##  ##  ## 
+! ##       ##    ## ##     ## ##  ##  ## 
+! ########  ######   #######   ###  ### 
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 	
+	 
+	 CR_factor = 1/((1 - (1 /(1 + irate) ^ years)) / irate)
+	 	 
+	 !erdcost[1]= 3134.7 *(Qr)^(0.58) 
+
+	 erdcost[1:Ncc]= 3134.7 * (Mfj[N][1:Ncc]/densityfj[N][1:Ncc]*3600)^(0.58) 
+	 erdcost[Nstage] =  3134.7 *(Mfk[N]/densityfk[N]*3600)^(0.58) 
+	
+	 erdcostsum[1]=erdcost[1]
+	 erdcostsum[2:Nstage]= erdcostsum[1:Ncc] + erdcost[2:Nstage]
+	 
+	 pumptotalcost[1:Ncc] = pumpcost*(PQHpumpj[1:Ncc] + PQBpumpj[1:Ncc]) ! + PQLpumpj)
+	 pumptotalcost[Nstage] = pumpcost*(PQHpumpk+ PQBpumpk)
+	 pumptotalcostsum[1]=pumptotalcost[1]
+	 pumptotalcostsum[2:Nstage]=pumptotalcostsum[1:Ncc] + pumptotalcost[2:Nstage]	
+	 
+	 Amjsum[1]=Amj[1]
+	 Amjsum[2:Ncc]=Amjsum[1:Ncc-1] + Amj[2:Ncc]
+	 Amksum=Amk
+	
+	 !salmakeupcost= 0.025 *Ma*3600*8760*loadfactor
+
+	 capex = (Amjsum[Ncc] * oaromemcost + Amksum * romemcost + pumptotalcostsum[Nstage] + erdcostsum[Nstage]) * practical_inv_factor
+	 memrepcost = (Amjsum[Ncc] * oaromemcost + Amksum * romemcost)*memrepfactor
+	 maintlaborcost = maint_labor_factor*capex
+	 chemcost = chemical_factor*capex
+	 energycost= SEC * ecost 
+	 opex = memrepcost + chemcost + maintlaborcost !+ salmakeupcost
+	 
+	 
+	 Rtq= Qpk*3600/(Qin) !+ Ma*3600/1191.56)
+	 Cpjout[1:Ncc]=750.6*Xpj[N][1:Ncc]^2 + 995.1*Xpj[N][1:Ncc]
+	 Cpkout=750.6*Xpk[N]^2 + 995.1*Xpk[N]
+	 SR[1]= 1 - Cpkout/Cfk[0]
+	 SR[2:Nstage] = 1 - Cpjout[1:Ncc]/Cfj[0][1:Ncc] !SP=Cpjout/Cfj[0]	
+	 
+	 Cfjout[1:Ncc]=750.6*Xfj[N][1:Ncc]^2 + 995.1*Xfj[N][1:Ncc]
+	 Cfkout=750.6*Xfk[N]^2 + 995.1*Xfk[N]
+
+
+   End Intermediates
+
+   Equations
+!!!  CONSTRAINTS ON SWEEP FLOW IN TO LEAD SOLVER TO CONVERGENCE
+	!Mfk[0]<=2*Mfkin	
+	 Mfj[0][2:Ncc-1]= Mfj[N][1:Ncc-2] + Mpj[N][3:Ncc]
+	 Mfj[0][Ncc]= Mfj[N][Ncc-1] 
+	 Xfj[0][2:Ncc-1]= (Xfj[N][1:Ncc-2]*Mfj[N][1:Ncc-2] + Xpj[N][3:Ncc]*Mpj[N][3:Ncc])/Mfj[0][2:Ncc-1]
+	 Xfj[0][Ncc]= Xfj[N][Ncc-1]*Mfj[N][Ncc-1]/Mfj[0][Ncc]
+     
+	!Constraints for 20 g/L, R=85%
+	! Mpj[N][1]<= 1*Mfkin !!! new constraint for LSRRO: limit the permeate mass flow rate of each low-rejection module to be less than or equal to some factor multiplied by mass in.
+	! Mpj[N][2:Ncc]<= 1*Mfkin 
+	
+	! Default constraints:
+	! Mpj[N][1]<= 7*Mfkin 
+	!Mpj[N][1]>= 0.5*Mfkin
+	Mpj[N][1]<= 10*Mfkin
+	Mpj[N][2:Ncc]< 7*Mfkin!3*Mfkin!Mpj[N][1:Ncc-1]
+	!for high Aw, Bs close to tradeoff line Mpj[N][2:Ncc]<= 4*Mfkin
+	!Mfj[0][1]<=15*Mfkin
+	!for highest Aw, 15 LMH/bar: 	
+	! Mpj[N][1]<= 17*Mfkin 
+	! Mpj[N][2:Ncc]<= 8*Mfkin
+	 
+	 Rt= Mpk[N]*(1-Xpk[N])/(Mfkin*(1-Xfkin))
+	 
+	 
+	Mpj[N][1:Ncc]= Mpj[N-1][1:Ncc] + Lj[1:Ncc]*Wj[1:Ncc]/N*(Jwj[N][1:Ncc]*densityw + Jsj[N][1:Ncc])
+    Xpj[N][1:Ncc]= (Mpj[N-1][1:Ncc]*Xpj[N-1][1:Ncc] + Lj[1:Ncc]*Wj[1:Ncc]/N*Jsj[N][1:Ncc])/Mpj[N][1:Ncc]
+
+
+	 
+	 
+	 
+	 SEC = SECsum
+
+	 LCOW = (CR_factor*capex +  opex)/(Qpk*3600*8760*loadfactor)  + energycost
+
+
+
+	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 Pfj[1][1:Ncc]=Pfj[0][1:Ncc] - Plfj[0][1:Ncc]*Lj[1:Ncc]/(2*N)
+	 Pfj[2:N][1::Ncc]=Pfj[1:N-1][1::Ncc] - Plfj[1:N-1][1::Ncc]*Lj[1::Ncc]/N 
+	 
+	 
+	 Pfk[1]=Pfk[0] - Plfk[0]*Lk/(2*N)
+	 Pfk[2:N]=Pfk[1:N-1] - Plfk[1:N-1]*Lk/N 
+	 
+	 
+	 
+	 
+	 
+	 
+	 Jwj[1:N][1::Ncc]= Awj1*(Pfj[1:N][1::Ncc] - Ppj -(Posmfj[1:N][1::Ncc]-Posmpj[1:N][1::Ncc]))
+	 Jsj[1:N][1::Ncc]= Bsj1*(Cfmj[1:N][1::Ncc] - Cpj[1:N][1::Ncc])
+	 
+	
+	 
+
+	 
+	 Jwk[1:N]= Awk1*(Pfk[1:N] - Ppk -(Posmfk[1:N]-Posmpk[1:N]))
+	 Jsk[1:N]= Bsk1*(Cfmk[1:N] - Cpk[1:N])
+
+
+	 
+	 CpNk=750.6*Xpk[N]^2 + 995.1*Xpk[N]
+	 
+
+	 
+	 
+	 PQHpumpk >= 0
+	 PQBpumpk >= 0
+	 PQHpumpj[1:Ncc] >= 0
+	 PQBpumpj[1:Ncc] >= 0
+	 
+
+	 
+	
+
+	minimize LCOW
+	
+   End Equations
+ End Model
