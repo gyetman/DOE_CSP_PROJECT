@@ -43,7 +43,8 @@ OARO_70g_L_50rec=ROOT_DIR+'/OARO_2stage_cin_70_r_50.apm'
 OARO_35g_L_85rec=ROOT_DIR+'/OARO_2stage_cin_35_r_85.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
 OARO_20g_L_92rec=ROOT_DIR+'/OARO_2stage_cin_20_r_92.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
 
-
+OARO_35g_L_75rec=ROOT_DIR+'/OARO_2stage_cin_35_r_75.apm'
+OARO_20g_L_85rec=ROOT_DIR+'/OARO_2stage_cin_20_r_85.apm'
 
 # Load model file
 tech=input("Choose 'OARO','COMRO', or 'LSRRO'\n")
@@ -51,9 +52,15 @@ feedsal=input("Enter feed concentration of 20,35,70, or 125 g/L (enter number on
 
 
 if feedsal=='20':
-    recrate='92'
+    if tech == 'OARO':
+        recrate = input('Enter 85 or 92 for recovery rate\n')
+    else:
+        recrate='92'
 elif feedsal=='35':
-    recrate='85'
+    if tech == 'OARO':
+        recrate = input('Enter 75 or 85 for recovery rate\n')
+    else:
+        recrate='85'
 elif feedsal=='70':
     if tech=='OARO':
         recrate=input('Enter 50 or 75 for recovery rate\n') 
@@ -68,13 +75,15 @@ elif feedsal=='125':
 
 model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec") #testing_file#
 
+# OPEN the file "inputdata.csv" and change values there if you want to try the option of entering your own input data
 csvfilename=ROOT_DIR+'/inputdata.csv' # Naming the csv file with user inputs (works without csv filename matching model filename)
 
 # print(csvfilename)
 # print(model_file)
 
 apm_load(s,a,model_file)
-enter_data=input("Press 1 to enter input data or any other key to keep defaults\n")
+enter_data=input("OPEN the file `'inputdata.csv'` and change input values there if desired. Then, save the csv file "
+                 "and press 1 to continue with those input data. Otherwise, press any other key to keep defaults and continue.\n")
 if enter_data=='1':
     csv_load(s,a,csvfilename)     # Loads the input data (Parameters in the APM file)
 #apm_option(s,a,'apm.csv_read',1)
