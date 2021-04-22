@@ -14,7 +14,7 @@ import pandas as pd
 from pathlib import Path
 import json
 
-# import app_config as cfg
+import app_config as cfg
 
 class VAGMD_batch(object):
     def __init__(self,
@@ -148,8 +148,8 @@ class VAGMD_batch(object):
         self.ave_stec = sum(self.STEC)/len(self.STEC)
         
         self.df = self.df.round(decimals = 1)
-        # self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
-        self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
+        self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
+        # self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
         
         self.design_output = []
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
