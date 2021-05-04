@@ -42,7 +42,7 @@ mapbox_ids = {
 MAP_ID = "map-id"
 BASE_LAYER_ID = "base-layer-id"
 BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
-SITE_DETAILS = "site-details"
+SITE_DETAILS2 = "site-details-selection"
 USER_POINT = 'user_point'
 
 def get_style(feature):
@@ -161,6 +161,7 @@ radios = dbc.FormGroup([
 def render_map():
     return [
         map_navbar,
+        #dbc.Input(id='price_factor',value='1.0',type='hidden'),
         dbc.Row([
             dbc.Col([
                 site_selection_map,
@@ -172,7 +173,7 @@ def render_map():
             ],width=8),
             dbc.Col([
                 html.H3('Site details:', className='text-success'),
-                html.Div(id=SITE_DETAILS)
+                html.Div(id=SITE_DETAILS2)
             ],width=3)
         ],style={'padding':20})
     ]
@@ -209,11 +210,11 @@ def register_map(app):
         else:
             return coords
 
-    @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
-                  [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
-
+    @app.callback([Output(SITE_DETAILS2, 'children'),Output("closest-facilities", 'children')],
+                    [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
     def get_point_info(lat_lng):
         ''' callback to update the site information based on the user selected point'''
+        print('in callback for clicking')
         if lat_lng is None:
             return('Click on the Map to see site details.'), [0,0]
         else:
@@ -236,7 +237,7 @@ def register_map(app):
             
     @app.callback(
         Output(component_id='next-button',component_property='children'),
-        [Input(component_id=SITE_DETAILS,component_property='children')],
+        [Input(component_id=SITE_DETAILS2,component_property='children')],
         [State(MAP_ID,'children')],
         prevent_initial_call=True
     )
