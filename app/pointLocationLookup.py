@@ -75,7 +75,7 @@ restrictionsLayers = {
 
 def _setup_logging(verbose=False):
     if verbose:
-        level = logging.DEBUG
+        level = logging.INFO
     else:
         level = logging.INFO
 

@@ -18,6 +18,8 @@ from app import app
 app.title='Results Map'
 price_difference = 0
 gis_data = app_config.gis_data_path
+
+
 # Div for legend
 # Site Selection
 
@@ -45,7 +47,7 @@ mapbox_ids = {
 MAP_ID = "map-id"
 BASE_LAYER_ID = "base-layer-id"
 BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
-SITE_DETAILS = "site-details"
+SITE_DETAILS = "site-details-results"
 USER_POINT = 'user_point'
 
 classes = [0.0,1.0,2.0,3.0,4.0,5.0]
@@ -292,7 +294,7 @@ def register_map(app):
                 Output('water-price', 'children')],
                 [Input("price_factor",'value')],
                 [Input("closest-facilities",'children')], 
-                #prevent_initial_call = True,
+                prevent_initial_call = True,
 
     )
 
@@ -306,7 +308,7 @@ def register_map(app):
         if not price_factor:
             price_factor = 1.0 # handle null input
         app_json = helpers.json_load(app_config.app_json)
-        model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'])
+        model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'],app_json['timestamp'])
         finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
         model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
         with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:

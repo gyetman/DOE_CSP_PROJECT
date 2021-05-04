@@ -16,6 +16,9 @@ from scipy.spatial import KDTree
 #kdtree.leafnode = kdtree.KDTree.leafnode
 #kdtree.innernode = kdtree.KDTree.innernode
 
+# handle large set of points
+sys.setrecursionlimit(20000)
+
 def _setup_logging(verbose=False):
     if verbose:
         level = logging.DEBUG
