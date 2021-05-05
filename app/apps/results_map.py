@@ -45,7 +45,7 @@ mapbox_ids = {
 }
 
 MAP_ID = "map-id"
-BASE_LAYER_ID = "base-layer-id"
+BASE_LAYER_ID = "results-base-layer-id"
 BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS = "site-details-results"
 USER_POINT = 'user_point'
@@ -150,7 +150,7 @@ city_price_lyr = dl.GeoJSON(
 info = html.Div(children='Hover over a Feature',
                 className="mapinfo",
                 style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
-                id="info")
+                id="results-info")
 
 
 map_navbar = dbc.NavbarSimple(
@@ -184,7 +184,7 @@ site_results_map = dl.Map(
         #dl.GeoJSON(url='/assets/tx_counties.geojson',id='counties'),
         #dl.GeoJSON(url='/assets/us_counties2.geojson',id='counties'),
         # placeholder for lines to nearby plants
-        dl.GeoJSON(id="closest-facilities"),
+        dl.GeoJSON(id="results-closest-facilities"),
         # Site selected by user from map-data. 
         dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
             "iconUrl": "/assets/149059.svg",
@@ -193,7 +193,7 @@ site_results_map = dl.Map(
             children=[
                 dl.Tooltip("Selected site")
         ]),
-        html.Div(id='theme-layer')
+        html.Div(id='results-theme-layer')
     ])
 
 radios = dbc.FormGroup([
@@ -228,23 +228,7 @@ theme_ids = {
 'regulatory': regulatory
 }
 
-def get_info(feature=None):
-    header = [html.H4("Feature Details")]
-    if feature:
-        if 'cluster' in list(feature[0]["properties"].keys()):
-            return [html.H4("Click on a cluster to see details")]
-        if 'Technology' in list(feature[0]["properties"].keys()):
-            units = 'm3/day'
-        elif 'Country' in list(feature[0]["properties"].keys()):
-            units = 'MW'
-        return header + [html.B(feature[0]["properties"]["name"]), html.Br(),
-            f"{float(feature[0]['properties']['capacity_mw']):,.1f} Capacity {units}"]
-    else:
-        #return header + ["Hover over a feature"]
-        return None
-
-
-def render_map():
+def render_results_map():
     # create and return the div
     return html.Div([
         map_navbar,
@@ -262,7 +246,7 @@ def render_map():
                 html.P(f'Price difference in closest demand location: ${price_difference:.2f}', id='price_difference'),
                 html.P(f'Factor for adapting LCOW for incremental costs or credits:', id='factor_tooltip'),
                 dcc.Input(
-                    id='price_factor',
+                    id='price-factor',
                     type="number",
                     value=1.0,
                     step = 0.1,
@@ -279,25 +263,21 @@ def render_map():
         ],style={'padding':20})
     ])
 
-def register_map(app):
+def register_results_map(app):
     @app.callback(Output(BASE_LAYER_ID, "url"),
                 [Input(BASE_LAYER_DROPDOWN_ID, "value")])
     def set_baselayer(url):
         return url
 
-    @app.callback(Output('theme-layer','children'),
+    @app.callback(Output('results-theme-layer','children'),
                  [Input('theme-dropdown', 'value')])
     def set_theme_layer(theme):
         return theme_ids[theme]
 
     @app.callback([Output(MAP_ID, 'children'),
                 Output('water-price', 'children')],
-                [Input("price_factor",'value')],
-                [Input("closest-facilities",'children')], 
-                prevent_initial_call = True,
-
-    )
-
+                [Input("price-factor",'value')],
+                [Input("results-closest-facilities",'children')])
     def update_price_layers(price_factor,closest_from_map):
         if closest_from_map:
             print(closest_from_map)
@@ -358,7 +338,7 @@ def register_map(app):
                 dl.LayerGroup(markers),
                 #ccolorbar,
                 info,
-                dl.GeoJSON(id="closest-facilities",data=closest_from_map),
+                dl.GeoJSON(id="results-closest-facilities",data=closest_from_map),
                 #closest_from_map,
                 # Site selected by user from map-data. 
                 dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
@@ -368,13 +348,13 @@ def register_map(app):
                     children=[
                         dl.Tooltip("Selected site")
                 ],),
-                html.Div(id='theme-layer'),
+                html.Div(id='results-theme-layer'),
                 ],
             f'Projected LCOW from desalination: ${model_price:,.2f}'
 
         )
 
-    @app.callback([Output(SITE_DETAILS, 'children'),Output("closest-facilities", 'children')],
+    @app.callback([Output(SITE_DETAILS, 'children'),Output("results-closest-facilities", 'children')],
                     [Input(USER_POINT, 'position'),
                     State(SITE_DETAILS, 'children')],
                     prevent_initial_call=True
@@ -397,23 +377,39 @@ def register_map(app):
             desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
             return markdown, desal
 
-    @app.callback(Output('info', 'children'),
+    @app.callback(Output('results-info', 'children'),
             [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
             prevent_initial_call = True
         )
-    def info_hover(feature):
+    def get_info(features=None):
         ''' callback for feature hover '''
-        return(get_info(feature))
-
+        header = [html.H4("Feature Details")]
+        #feature is a list of dicts, grab first feature
+        feature = features[0]
+        if feature:
+            #check if feature is a cluster
+            if feature['properties']['cluster']:
+                return header + ["Click cluster to expand"]
+            #if feature is Desalination Plant
+            elif 'Technology' in feature['properties'].keys():
+                name = feature['properties']['Project name']
+                capacity_field = feature['properties']['Capacity (m3/d)']
+                units = 'm3/day'
+                return header+[html.B(name), html.Br(),
+                    f"{capacity_field} Capacity {units}"]
+            #feature is Power Plant
+            else:
+                name = feature['properties']['name']
+                capacity_field = feature['properties']['capacity_mw']
+                units = 'MW'
+                return header + [html.B(name), html.Br(),
+                    f"{float(capacity_field):,.1f} Capacity {units}"]
+        else:
+            return header + ["Hover over a feature"]
 
 external_stylesheets = [dbc.themes.FLATLY]
-#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-#app.title = 'Site Details'
-# app.layout = html.Div(
-#     render_map()
-# )
-# app.layout = render_map()
-register_map(app)
+app.layout = render_results_map()
+register_results_map(app)
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8155)
