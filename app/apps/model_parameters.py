@@ -238,7 +238,8 @@ loading = html.Div([
 parameters_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Models", href='/model-selection')),
               dbc.NavItem(dbc.NavLink("Parameters"), active=True),
-              dbc.NavItem(dbc.NavLink('Help', href='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf', target='_blank'))
+            #   dbc.NavItem(dbc.NavLink('Help', href='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf', target='_blank'))
+            dbc.NavItem(dbc.NavLink('Help', href='http://127.0.0.1:8077/assets/documentation.pdf#page=19', target='_blank'))
               ],
     brand="System Configuration",
     color="primary",
@@ -437,11 +438,19 @@ def create_tabs_and_tables(x):
         return dbc.Card(
             [
                 dbc.Button(
-                    html.Div("Title Here",id=f'collapse-title-{i}'),
+                    html.Div([html.Div("Title Here",id=f'collapse-title-{i}', style={'display':'inline-block', 'padding-top':'6px'}),
+                    dbc.NavLink('', href='test',
+                            style={'float':'right','display':'inline-block', 'padding': '4px' 
+                            },
+                            className='fas fa-info-circle fa-2x text-info'
+                            # className='fas fa-info-circle fa-2x'
+                            )
+                    ]),
                     color="primary",
                     id=f"{i}-toggle".replace(' ','_'),
+                    style={'padding': '0px', 'padding-right': '6px'}
                 ),
-                #dbc.NavItem(dbc.NavLink('Help', href=help_link)),
+                # dbc.NavItem(dbc.NavLink('Help', href='test')),
                 dbc.Collapse(
                     dbc.CardBody(
                         [dcc.Tabs(value=Model_tabs[i][0], children=[
