@@ -30,7 +30,7 @@ def display_page(pathname):
     elif pathname == '/analysis-report':
         return analysis_report.analysis_report_layout
     elif pathname == '/results-map':
-        return results_map.render_map()
+        return results_map.render_results_map()
     else:
         return html.Div([
             html.H5("404 URL Not Found"), 
