@@ -195,7 +195,6 @@ def click_coord(coords):
                 [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
 def get_point_info(lat_lng):
     ''' callback to update the site information based on the user selected point'''
-    print('in callback for clicking')
     if lat_lng is None:
         return('Click on the Map to see site details.'), [0,0]
     else:
@@ -248,7 +247,6 @@ def info_hover(features):
     if feature:
         #check if feature is a cluster
         if feature['properties']['cluster']:
-            print(f'CLUSTER')
             return header + ["Click cluster to expand"]
         #if feature is Desalination Plant
         elif 'Technology' in feature['properties'].keys():
