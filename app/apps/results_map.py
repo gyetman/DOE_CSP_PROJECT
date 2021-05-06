@@ -57,9 +57,11 @@ ctg = ["${:,.2f}".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-
 colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, width=300, height=30, position="bottomright")
 
 ''' load data layers and objects used in layout '''
+
 map_data = helpers.json_load(app_config.map_json)
 site_lat=map_data['latitude']
 site_long=map_data['longitude']
+
 # Read in the model price from the right file via cfg and helpers
 # TODO: this needs to be part of a callback so that it dynamically updates 
 # after the model update! 
@@ -186,14 +188,17 @@ site_results_map = dl.Map(
         # placeholder for lines to nearby plants
         dl.GeoJSON(id="results-closest-facilities"),
         # Site selected by user from map-data. 
-        dl.Marker(id=USER_POINT,position=[site_lat, site_long], icon={
+        dl.Marker(id=USER_POINT,position=[site_lat, site_long], 
+        draggable=False,
+        icon={
             "iconUrl": "/assets/149059.svg",
             "iconSize": [20, 20]
             },
             children=[
                 dl.Tooltip("Selected site")
         ]),
-        html.Div(id='results-theme-layer')
+        html.Div(id='results-theme-layer'),
+        html.Div(id='init')
     ])
 
 radios = dbc.FormGroup([
@@ -355,13 +360,17 @@ def register_results_map(app):
         )
 
     @app.callback([Output(SITE_DETAILS, 'children'),Output("results-closest-facilities", 'children')],
-                    [Input(USER_POINT, 'position'),
+                    [Input('init', 'children'),
                     State(SITE_DETAILS, 'children')],
-                    prevent_initial_call=True
+                    prevent_initial_call=False
                 )
-    def get_point_info(lat_lng,site_details_state):
+    def get_point_info(_,site_details_state):
         ''' callback to update the site information based on the user selected point'''
-
+        print(_)
+        map_data = helpers.json_load(app_config.map_json)
+        site_lat=map_data['latitude']
+        site_long=map_data['longitude']
+        lat_lng = (site_lat, site_long)
         markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
         closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
         # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup. 
