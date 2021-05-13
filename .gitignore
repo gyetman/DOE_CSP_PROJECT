@@ -137,3 +137,24 @@ app/logs/applog.log
 utils/rtree.dat
 app/assets/*
 !app/assets/images
+app/global_water_tarrifs.geojson
+app/global_water_tarrifs.kdtree
+app/logs/applog.log
+SAM_flatJSON/solar_resource/global_weather_files.csv
+SAM_flatJSON/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv
+SAM_flatJSON/solar_resource/USA_AZ_tucson_32.116521_-110.933042_psmv3_60_tmy.csv
+SAM_flatJSON/XLS results/Project_1_output_2021-03-11_13-34-54.xls
+SAM_flatJSON/XLS results/Project_1_output_2021-05-04_13-09-34.xls
+tmp/desal_plants.geojson
+tmp/Desalplants.CPG
+tmp/Desalplants.dbf
+tmp/Desalplants.kdtree
+tmp/Desalplants.prj
+tmp/Desalplants.shp
+tmp/Desalplants.shx
+utils/generate_weather_station_points.py
+utils/rtree.dat
+utils/rtree.idx
+utils/xarray_test.py
+utils/rtree.dat
+utils/rtree.idx
