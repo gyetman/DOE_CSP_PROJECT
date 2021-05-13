@@ -158,3 +158,6 @@ utils/rtree.idx
 utils/xarray_test.py
 utils/rtree.dat
 utils/rtree.idx
+app/logs/applog.log
+SAM_flatJSON/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv
+app/logs/applog.log
