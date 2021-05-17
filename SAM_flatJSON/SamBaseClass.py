@@ -668,7 +668,25 @@ class SamBaseClass(object):
 
         elif desal == 'MDB':
             
-            self.cost_output = {'2':'2'}
+            from DesalinationModels.MDB_cost import MDB_cost
+
+            self.LCOW = MDB_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.MDB.Area, Pflux = self.MDB.PFlux_avg, 
+                                 TCO = sum(self.MDB.TCO) / len(self.MDB.TCO), TEI = self.MDB.TEI_r, FFR = self.MDB.FFR_r, th_module = sum(self.MDB.ThPower)/len(self.MDB.ThPower),
+                                 STEC = self.MDB.ave_stec, SEEC = self.cost_values_json['SEEC'],  MD_membrane = self.cost_values_json['MD_membrane'],
+                                 MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], 
+                                 HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], 
+                                 other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], 
+                                 heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], 
+                                 h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], 
+                                 tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], 
+                                 pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
+                                 yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
+                                 coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], 
+                                 solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], 
+                                 cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MDB.storage_cap )
+
+            self.cost_output = self.LCOW.lcow()
+
             # from DesalinationModels.VAGMD_cost import VAGMD_cost
 
             # self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],

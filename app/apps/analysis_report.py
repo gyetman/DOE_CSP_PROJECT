@@ -147,25 +147,25 @@ def gather_data(x):
         updates.update({'n_modules':dd[index]['Value']})  
         
         # add specific data from desal cost output
-        # dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
-        # updates.update({'lcow':dc[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from fossile fuel)')
-        # updates.update({'lcoh':dc[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
-        # updates.update({'sam_lcoh':dc[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
-        # updates.update({'capital_cost':dc[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
-        # updates.update({'ops_cost':dc[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
-        # updates.update({'energy_cost':dc[index]['Value']})
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from fossile fuel)')
+        updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
+        updates.update({'sam_lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        updates.update({'energy_cost':dc[index]['Value']})
         
 
 
-        # f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
-        # updates.update({'electric_energy_consumption':f['SEEC']})
-        # updates.update({'lcoe':f['coe']})        
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'electric_energy_consumption':f['SEEC']})
+        updates.update({'lcoe':f['coe']})        
     ## Temporal 'if' condition for another desal technology
     elif updates['desal'] == 'LTMED':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -567,7 +567,7 @@ def set_desal_config(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
     
-    if app['desal'] == "VAGMD":
+    if app['desal'] == "VAGMD" :
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
@@ -766,7 +766,7 @@ def set_system_performance(x):
 def set_cost_analysis(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
-    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC':
+    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == "MDB":
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
