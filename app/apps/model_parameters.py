@@ -377,19 +377,30 @@ def create_tabs_and_tables(x):
     #create dict lookups for model and filenames
     app = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(app['solar'],app['desal'],app['finance'],app['timestamp'])
+      
 
     solar_model_vars = create_variable_lists(
         model_name=app['solar'], 
         json_vars=flkup['solar_variables_file'],
-        json_vals=flkup['solar_values_file'])
+        json_vals=flkup['solar_values_file']) 
     desal_model_vars = create_variable_lists(
         model_name=app['desal'], 
         json_vars=flkup['desal_variables_file'],
         json_vals=flkup['desal_values_file'])
-    finance_model_vars = create_variable_lists(
-        model_name=app['finance'], 
-        json_vars=flkup['finance_variables_file'],
-        json_vals=flkup['finance_values_file'])
+    
+    if app['solar'] == "SC_ETC" or app['solar'] == "SC_FPC" :
+        
+        flkup2 = cfg.build_file_lookup(app['solar'],app['desal'],"lcoh_calculator",app['timestamp'])
+        finance_model_vars = create_variable_lists(
+            model_name="lcoh_calculator", 
+            json_vars=flkup2['finance_variables_file'],
+            json_vals=flkup2['finance_values_file'])
+    else:
+        finance_model_vars = create_variable_lists(
+            model_name=app['finance'], 
+            json_vars=flkup['finance_variables_file'],
+            json_vals=flkup['finance_values_file'])
+        
     desal_finance_model_vars = create_variable_lists(
         model_name=app['desal'],
         json_vars=flkup['desal_finance_variables_file'],
@@ -649,7 +660,11 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         with desal_model_outfile_path.open('w') as write_file:
             json.dump(desal_output_vars, write_file)
         #create the finance JSON file that will be the input to the model
-        finance_model_outfile = f"{app['finance']}{timestamp}_inputs.json"
+        if app['solar'] == 'SC_FPC' or app['solar'] == 'SC_ETC':
+            finance_model_outfile = f"lcoh_calculator{timestamp}_inputs.json"
+        else:
+            finance_model_outfile = f"{app['finance']}{timestamp}_inputs.json"
+            
         finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
         with finance_model_outfile_path.open('w') as write_file:
             json.dump(finance_output_vars, write_file)

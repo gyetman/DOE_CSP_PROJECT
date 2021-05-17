@@ -195,7 +195,8 @@ class VAGMD_PSA(object):
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         self.design_output.append({'Name':'Recovery ratio','Value':self.F / self.FFR_r *100 ,'Unit':'%'})
-        return 
+        
+        return
         
 # Added optimization on parameter selection of TEI_r, TCI_r and FFR_r
     def opt(self):    
@@ -219,8 +220,8 @@ class VAGMD_PSA(object):
         self.design_output.append({'Name':'(Suggested) Condenser channel inlet temperature','Value':max(20,min(30,xopt[1])),'Unit':'oC'})
         self.design_output.append({'Name':'(Suggested) Feed flow rate ','Value':max(400, min(1100,xopt[2])),'Unit':'l/h'})
         # self.design_output.append({'Name':'Estimated LCOW ','Value':yopt,'Unit':'$/m3'})
-
-        return self.design_output
+        self.P_req = self.design_output[4]['Value']
+        return self.P_req, self.design_output
         
 
     
@@ -362,8 +363,8 @@ class VAGMD_PSA(object):
 ##    print('STEC: ', case.STEC_AS26_allM)
 ##    print('GOR: ', case.GOR_AS26_allM)
     
-# case = VAGMD_PSA()
-# case.design()
+case = VAGMD_PSA()
+case.design()
 # case.opt()
 
             

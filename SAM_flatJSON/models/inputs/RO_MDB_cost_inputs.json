@@ -1,0 +1,358 @@
+{
+    "RO_MDB": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "yrs",
+            "Label": "Plant lifetime",
+            "Units": "yrs",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "Annual downtime percentage",
+            "Units": "%",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "int_rate",
+            "Label": "Average interest rate",
+            "Units": "",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coe",
+            "Label": "Unit cost of electricity from the grid (LCOE)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sam_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "unit_capex",
+            "Label": "Unit capital cost",
+            "Units": "$ per m3/day",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "chem_cost",
+            "Label": "Specific chemical cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "labor_cost",
+            "Label": "Specific labor cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "rep_rate",
+            "Label": "Membrane replacement rate",
+            "Units": "years",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_storage",
+            "Label": "Thermal storage cost",
+            "Units": "$/kWh",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "disposal_cost",
+            "Label": "Specific waste disposal cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance",
+            "Label": "Insurance",
+            "Units": "% of the unit capex",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coh",
+            "Label": "Unit cost of heat from fossil fuel (LCOH)",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "sam_coh",
+            "Label": "Unit cost of heat from solar field (LCOH)",
+            "Units": "$/kWh(th)",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MDB_SEC",
+            "Label": "Specific electric energy consumption",
+            "Units": "kWh/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_inlet",
+            "Label": "Heat source inlet temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_outlet",
+            "Label": "Heat source outlet temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "HX_eff",
+            "Label": "Heat exchanger efficiency",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_module_re",
+            "Label": "Cost of module replacement",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_membrane",
+            "Label": "Base price of AGMD membrane",
+            "Units": "k$/m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_module",
+            "Label": "Base price of AGMD module assembly",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "MD_module_capacity",
+            "Label": "Base capacity of module assembly",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "HX",
+            "Label": "Base price of heat exchanger",
+            "Units": "k$/m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "endplates",
+            "Label": "Base price of HX endplates",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "endplates_capacity",
+            "Label": "Base capacity of HX endplates",
+            "Units": "m2",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "heat_cool",
+            "Label": "Base price of heating/cooling installation",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "heat_cool_capacity",
+            "Label": "Base capacity of heating/cooling installation",
+            "Units": "m3/h",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "h_r",
+            "Label": "Base price of housing rack",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "h_r_capacity",
+            "Label": "Base capacity of housing rack",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "tank",
+            "Label": "Base price of tank (with plumbing)",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "tank_capacity",
+            "Label": "Base capacity of tank ",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pump",
+            "Label": "Base price of pump",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pump_capacity",
+            "Label": "Base capacity of pump",
+            "Units": "m3/h",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "other",
+            "Label": "Base price of controller, cabling and programming",
+            "Units": "k$/base capacity",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "other_capacity",
+            "Label": "Base capacity of controller, cabling and programming",
+            "Units": "modules",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of MD-batch",
+			"Subsection": "Capital cost breakdown"
+        }
+
+    ]
+}

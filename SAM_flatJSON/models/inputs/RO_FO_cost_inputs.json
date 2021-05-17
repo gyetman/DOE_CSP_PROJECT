@@ -1,0 +1,159 @@
+{
+    "RO_FO": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "yrs",
+            "Label": "Plant lifetime",
+            "Units": "yrs",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "Annual downtime percentage",
+            "Units": "%",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "int_rate",
+            "Label": "Average interest rate",
+            "Units": "",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance",
+            "Label": "Insurance",
+            "Units": "% of the capital cost",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "unit_capex",
+            "Label": "Unit capital cost",
+            "Units": "$ per m3/day",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "chem_cost",
+            "Label": "Specific chemical cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "labor_cost",
+            "Label": "Specific labor cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "rep_rate",
+            "Label": "Membrane replacement frequency",
+            "Units": "Years",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "Cost of RO"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_storage",
+            "Label": "Thermal storage cost",
+            "Units": "$/kWh",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "General"
+        },		
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "disposal_cost",
+            "Label": "Specific waste disposal cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coe",
+            "Label": "Unit cost of electricity from the grid (LCOE)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coh",
+            "Label": "Unit cost of heat from fossil fuel (LCOH)",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_unit_capex",
+            "Label": "Unit capital cost (Default value specific to 2000 m3/day capacity; adjusted internally for capacity unless the user introduces a different cost)",
+            "Units": "$ per m3/day",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "Cost of FO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_labor",
+            "Label": "Labor cost (Default value specific to 2000 m3/day capacity; adjusted internally for capacity unless the user introduces a different cost)",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "Cost of FO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_chem_cost",
+            "Label": "Chemicals cost",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "Cost of FO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_goods_cost",
+            "Label": "Durable goods cost",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": "Cost of FO"
+        },	
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_SEC",
+            "Label": "Specific electric energy consumption",
+            "Units": "kWh/m3",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "Cost of FO"
+        }
+    ]
+}

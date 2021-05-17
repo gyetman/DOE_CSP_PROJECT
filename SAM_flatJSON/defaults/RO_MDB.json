@@ -1,0 +1,18 @@
+{
+	"FeedC_r" : 35,
+	"capacity" : 1000,
+	"T_sw" : 15,
+	"RO_rr" : 40,
+	"Nel1" : 8,
+	"nERD": 0.95,
+	"nBP": 0.8,
+	"nHP": 0.8,
+	"nFP": 0.8,
+	"module": 1,
+	"TEI_r" : 80,
+	"TCI_r" : 25,
+	"FFR_r" : 582.7,
+	"FeedC_r" : 35,
+	"V0": 30,
+	"RR": 30
+}

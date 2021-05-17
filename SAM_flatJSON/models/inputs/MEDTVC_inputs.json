@@ -3,45 +3,53 @@
 	    {
             "DataType": "SSC_NUMBER",
             "Name": "Capacity",
-            "Label": "System Capacity",
+            "Label": "System Capacity (2,000 to 100,000)",
             "Units": "m3/day",
             "Require": "*"
         },
 	    {
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed water salinity",
+            "Label": "Feed water salinity (30 to 60)",
             "Units": "g/L",
             "Require": "*"
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "T_VN",
-            "Label": "Vapor temperature in the last cell",
+            "Name": "rr",
+            "Label": "Recovery ratio (30 to 40)",
+            "Units": "%",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "nef",
+            "Label": "Number of effects (8, 10, 12, 14 or 16)",
+            "Units": "",
+            "Require": "*",
+            "Costraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "tin",
+            "Label": "Inlet feedwater temperature (25 to 35)",
             "Units": "C",
             "Require": "*",
             "Costraint": ""
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "T_s",
-            "Label": "Saturated external steam temperature",
-            "Units": "C",
-            "Require": "*",
-            "Costraint": ""
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "T_f",
-            "Label": "Feed seawater temperature",
-            "Units": "C",
+            "Name": "pm",
+            "Label": "Motive steam pressure entering the thermocompressor (4 to 45)",
+            "Units": "bar",
             "Require": "*",
             "Costraint": ""
         },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Fossil_f",
-            "Label": "Fossil fuel fraction",
+            "Label": "Fossil fuel fraction threshold (0 to 1)",
             "Units": "",
             "Require": "*",
             "Costraint": "<1, >0"
@@ -49,10 +57,10 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",
-            "Label": "Thermal storage hours",
-            "Units": "hour",
+            "Label": "Storage hour",
+            "Units": "hr",
             "Require": "*",
-            "Costraint": ">0"
+            "Costraint": "<1, >0"
         }
     ]
 }

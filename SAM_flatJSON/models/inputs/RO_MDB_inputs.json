@@ -1,0 +1,121 @@
+{
+    "RO_MDB": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "capacity",
+            "Label": "Capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed salinity",
+            "Units": "g/L",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_sw",
+            "Label": "Feed water temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "RO_rr",
+            "Label": "Recovery rate of RO",
+            "Units": "%",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Nel1",
+            "Label": "Number of elements per vessel",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nERD",
+            "Label": "Energy recovery device efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nBP",
+            "Label": "Boost pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHP",
+            "Label": "High presssure pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nFP",
+            "Label": "Feed pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },		
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "module",
+            "Label": "'0' for AS7C1.5L module and '1' for AS26C5L module",
+            "Units": "",
+            "Require": "*",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TEI_r",
+            "Label": "Evaporator channel inlet temperature",
+            "Units": "C",
+            "Require": "*",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TCI_r",
+            "Label": "Condenser channel inlet temperature",
+            "Units": "C",
+            "Require": "*",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FFR_r",
+            "Label": "Feed flow rate",
+            "Units": "l/h",
+            "Require": "*",
+            "Constraint": "<1111,>399",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "V0",
+            "Label": "Initial batch volume",
+            "Units": "m3",
+            "Require": "*",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "RR",
+            "Label": "Recovery rate",
+            "Units": "%",
+            "Require": "*",
+            "Constraint": "<1101,>399",
+            "Tab": "VAGMD-batch"
+        }
+    ]
+}

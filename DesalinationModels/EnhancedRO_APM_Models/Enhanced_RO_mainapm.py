@@ -43,7 +43,7 @@ elif feedsal=='35':
 elif feedsal=='70':
     recrate='75'
 
-model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec")
+model_file= 'COMRO_4stage_cin_20_r_92.apm'
 
 # csv_load(s,a,csvfilename) 
 
@@ -81,7 +81,9 @@ if (apm_tag(s,a,'apm.appstatus')==1):
     print("Water Recovery Rate=",sol['rt'])
     print("Solution recovery rate=",rtq)
     print("LCOW=",LCOW,"$/m3")
-    
+
+    # print(sol)
+    print("sum_area=", sol['amjsum[4]'])
     #print(sol['mpj[0]'])
    
    

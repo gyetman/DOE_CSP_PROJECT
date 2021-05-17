@@ -15,12 +15,12 @@ import math
 from CostModels.desalinationcosts import CR_factor
 
 
-class RO_cost(object):
+class RO_FO_cost(object):
     def __init__(self,
-                 Capacity = 1000, # Desalination plant capacity (m3/day)
+                 Capacity = 712, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  Area = 40.8 , # Membrane area (m2)
-                 fuel_usage = 0, # Total fuel usage (%)
+                 grid_usage = 0, # Total fuel usage (%)
                  # Pflux = 1.1375,  # Permeate flow per module (m3/h/module)
                  NV=7,
                  Nel=8,  
@@ -36,7 +36,7 @@ class RO_cost(object):
                  sam_coe = 0.02,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
-                 rep_rate=0.2,    # membrane replacement rate
+                 rep_rate= 5 ,    # membrane replacement rate (year)
                  equip_cost_method='general', # Option 1:'general' capex breakdown by cost factor; Option 2: 'specify' equipment costs
                  sec= 2.5, # specific energy consumption (kwh/m3)
                  HP_pump_pressure=60, # high pressure pump discharge pressure (bar)
@@ -54,8 +54,22 @@ class RO_cost(object):
                  #cost_module_re = 0.220 , # Cost of module replacement ($/m3)
                  unit_capex=1100,  # total EPC cost, USD/(m3/day)
                  cost_storage = 26 , # Cost of battery ($/kWh)
-                 storage_cap = 0 # Capacity of battery (kWh)
-
+                 storage_cap = 0, # Capacity of battery (kWh)
+                 
+                 FO_capacity = 288,
+                 FO_SEC = 1, # kWh/m3
+                 FO_STEC = 30, # kWh/m3
+                 FO_labor = 0.13, # $/m3
+                 FO_chem_cost = 0.07 , # $/m3
+                 FO_goods_cost = 0.05, # $/m3
+                 FO_unit_capex= 1000, # $/m3/day
+                 sam_coh = 0.02, # $/kWh
+                 coh = 0.01, # $/kWh
+                 FO_fuel_usage = 0, # %
+                 
+                 insurance = 0.5, # %
+                 downtime = 10,  # % 
+                 
                  ):
         self.HP_pump_pressure=HP_pump_pressure
         self.HP_pump_flowrate=HP_pump_flowrate
@@ -63,7 +77,8 @@ class RO_cost(object):
         self.BP_pump_flowrate=BP_pump_flowrate
         self.ERD_flowrate=ERD_flowrate
         self.ERD_pressure=ERD_pressure
-        self.ann_prod=Prod
+        self.downtime = downtime
+        self.Prod=Prod * (1-self.downtime/100)
         self.chem_cost=chem_cost
         self.labor_cost=labor_cost
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
@@ -78,23 +93,44 @@ class RO_cost(object):
         self.SEC=sec
         self.capacity=Capacity
         self.equip_cost_method=equip_cost_method
-        self.replacement_rate=rep_rate
-        self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.ann_prod
+        self.replacement_rate= 1/ rep_rate
+        self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.Prod
         self.disposal_cost=disposal_cost
 #        self.HX_eff = HX_eff
         self.unit_capex = unit_capex
 #        self.th_module = th_module
 #        self.FFR = FFR
-
+        self.insurance = insurance / 100
         self.coe = coe
         self.sam_coe = sam_coe
-        self.fuel_usage = fuel_usage / 100
+        self.grid_usage = grid_usage / 100
+
 #        self.cost_module_re = cost_module_re
         self.yrs = yrs
         self.int_rate = int_rate
         self.cost_storage = cost_storage
         self.storage_cap = storage_cap
-                
+
+        self.FO_capacity = FO_capacity
+        self.FO_SEC = FO_SEC # kWh/m3
+        self.FO_STEC = FO_STEC # kWh/m3
+        if FO_labor != 0.13:
+            self.FO_labor = FO_labor
+        else:
+            self.FO_labor = 0.04757 * self.FO_capacity ** (-0.178)
+            
+        
+        if FO_unit_capex != 1000:
+            self.FO_unit_capex = FO_unit_capex
+        else:
+            self.FO_unit_capex = 26784 * self.FO_capacity ** (-0.428)
+        self.FO_goods_cost = FO_goods_cost # $/m3
+        self.FO_chem_cost = FO_chem_cost
+        self.sam_coh = sam_coh # $/kWh
+        self.coh = coh # $/kWh
+        self.FO_fuel_usage = FO_fuel_usage / 100   # %
+
+        
     def lcow(self):
         if self.equip_cost_method=='specify':
             self.total_module_cost = self.total_area*self.membrane_cost + self.NV*self.pressure_vessel_cost
@@ -110,22 +146,35 @@ class RO_cost(object):
 #        elif self.equip_cost_method=='general':
         else:    
 
-            self.CAPEX =(self.unit_capex*self.capacity +  self.cost_storage * self.storage_cap)*CR_factor(self.yrs,self.int_rate) / self.ann_prod
+            self.RO_CAPEX =(self.unit_capex*self.capacity )*CR_factor(self.yrs,self.int_rate) #/ self.ann_prod
+            
+        self.FO_total_CAPEX = self.capacity * self.unit_capex
+        self.FO_CAPEX = ((self.FO_total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) 
 #           self.equip_cost=
 #        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
 #        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
-        self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
-        self.OPEX = self.disposal_cost+self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
+        self.cost_elec = (self.SEC + self.FO_SEC) * (self.grid_usage * self.coe + (1-self.grid_usage) * self.sam_coe)
+
+        self.cost_heat = self.FO_STEC * (self.FO_fuel_usage * self.coh + (1-self.FO_fuel_usage) * self.sam_coh) 
+        
+        
+        self.RO_OPEX = self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
+        self.FO_OPEX = self.cost_heat + self.FO_labor + self.FO_chem_cost + self.FO_goods_cost 
+ 
+        self.insurance_cost = (self.RO_CAPEX + self.FO_CAPEX ) *self.insurance  / (self.Prod+0.1)
+        self.OPEX = self.RO_OPEX + self.FO_OPEX  + self.disposal_cost
         #### ADD disposal cost
-        self.LCOW = self.CAPEX + self.OPEX
+        self.CAPEX = (self.RO_CAPEX + self.FO_CAPEX ) / self.Prod
+        self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of water','Value':self.LCOW,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of electricity (from fossile fuel)','Value':self.coe,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/m3'})
-        cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
+        cost_output.append({'Name':'Annual water production','Value':self.Prod,'Unit':'$/m3'})
+        # cost_output.append({'Name':'Levelized cost of electricity (from fossile fuel)','Value':self.coe,'Unit':'$/m3'})
+        # cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/m3'})
+        # cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
         
         return cost_output
     

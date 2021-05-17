@@ -16,10 +16,12 @@ class FO_cost(object):
                  # OPEX parameters
                  STEC = 30 , # Specifc thermal energy consumption (kWh/m3)
                  SEEC = 1, # Specifc electric energy consumption (kWh/m3)
-                 Maintenance = 0.05, # Unit maintenance cost ($/m3)
-                 
+                 labor = 0.13, # Unit maintenance cost ($/m3)
+                 chem_cost = 0.07,# $/m3
+                 goods_cost = 0.05, # $/m3
+                 unit_capex = 1000, # $/m3/day
                  # Capital items
-                 total_CAPEX     = 1, # Total capital cost ($)
+                 total_CAPEX     = 1, # 0 for 500m3/day, 1 for 10000 m3/day
                  Cap_membrane    = 11.5, # FO membrane cost (per unit capacity) ($ per m3/day)
                  Cap_HXs         = 13.8,
                  Cap_construct   = 22.3,
@@ -46,7 +48,7 @@ class FO_cost(object):
                  coh = 0.01 , # Unit cost of fossil fuel ($/kWh(th))
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
-                 storage_cap = 13422 # Capacity of thermal storage (kWh)
+                 storage_cap = 0 # Capacity of thermal storage (kWh)
 
                  ):
         
@@ -58,17 +60,29 @@ class FO_cost(object):
         self.fuel_usage = fuel_usage/100
         self.coh = coh
         self.sam_coh = sam_coh
-        if total_CAPEX:
-            self.total_CAPEX = 4500000
-        else:
-            self.total_CAPEX = 1333000
+        # if total_CAPEX:
+        #     self.total_CAPEX = 4500000
+        # else:
+        #     self.total_CAPEX = 1333000
         self.Prod = Prod
         self.SEEC = SEEC
         self.CAP_system =Cap_membrane + Cap_HXs + Cap_construct + Cap_DS + Cap_coalescers + Cap_structural + Cap_polishing \
                         + Cap_pipes + Cap_filtration + Cap_electrical +  Cap_pumps + Cap_instrumentation + Cap_valves \
                         + Cap_CIP  + Cap_tanks + Cap_pretreatment
-        self.Maintenance = Maintenance
-        self.insurance = self.CAP_system *0.005 / (self.Prod+0.1) 
+        self.chem_cost = chem_cost
+        if labor != 0.13:
+            self.labor = labor
+        else:
+            self.labor = 0.4757 * self.Capacity ** (-0.178)
+            
+        
+        if unit_capex != 1000:
+            self.unit_capex = unit_capex
+        else:
+            self.unit_capex = 26784 * self.Capacity ** (-0.428)
+        
+        self.goods_cost = goods_cost
+ 
 
         self.yrs = yrs
         self.int_rate = int_rate
@@ -76,10 +90,13 @@ class FO_cost(object):
         self.storage_cap = storage_cap
         
     def lcow(self):
+        self.total_CAPEX = self.Capacity * self.unit_capex
+        self.insurance = self.total_CAPEX *0.005 / (self.Prod+0.1)
+        
         
         self.CAPEX = ((self.total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         self.energy_cost = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC
-        self.OPEX = self.energy_cost + self.Maintenance + self.insurance
+        self.OPEX = self.energy_cost + self.labor + self.chem_cost + self.goods_cost + self.insurance
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -90,10 +107,11 @@ class FO_cost(object):
         cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Energy cost','Value':self.energy_cost,'Unit':'$/m3'})
-         
+        cost_output.append({'Name':'Unit CAPEX','Value':self.unit_capex,'Unit':'$ per m3/day'})
+        cost_output.append({'Name':'Labor cost','Value':self.labor,'Unit':'$/m3'})
         
         return cost_output
 #%%
-if __name__ == '__main__':
-    case = FO_cost(Capacity = 10000,Prod = 3650000)
-    print(case.lcow())
+# if __name__ == '__main__':
+#     case = FO_cost(Capacity = 10000,Prod = 3650000)
+#     print(case.lcow())

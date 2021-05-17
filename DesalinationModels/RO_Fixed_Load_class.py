@@ -109,8 +109,8 @@ class RODesign:
                 
                 Qp1=nominal_daily_cap/24
                 NDP1=Qp1/(Nel1*NV1*Am1*A1)
-                Posm_f=vhfactor*Ru*T*self.CP/MW_nacl*Cf
-                Posm_b=vhfactor*Ru*T*self.CP/MW_nacl*Cf/(1-R1)
+                Posm_f=vhfactor*Ru*T*self.CP/MW_nacl*self.Cf
+                Posm_b=vhfactor*Ru*T*self.CP/MW_nacl*self.Cf/(1-R1)
                 Pf1=NDP1+(Posm_f+Posm_b)*0.5 + Pd*0.5
                 #R1=1-vhfactor*Ru*T*CP/MW_nacl*Cf/(Pf1tmp-Pd-NDP1)
                 Pb1=Pf1-Pd

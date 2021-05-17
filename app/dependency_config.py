@@ -335,4 +335,24 @@ def tcstrough_physical(invalues):
     print('cspdtr_loop_hce_heat_loss', cspdtr_loop_hce_heat_loss)
     print('single_loop_aperature', single_loop_aperature)
     return [nLoops, solar_mult, total_aperture, system_capacity, is_hx, W_pb_design]#, vol_tank]
-    
+
+#%% 
+"""
+Model name: FO generalized
+Model label: FO
+"""
+eqn04 = {
+        'model': 'FO',
+        'outputs': ['capex', 'labor'],
+        # , 'vol_tank'],
+        'inputs':['Mprod'
+                  ],
+        'function': 'FO'
+        }
+
+def FO(invalues):
+    Mprod = invalues[0]
+    capex = 26784 * Mprod ** (-0.428)
+    labor = 0.04757 * Mprod ** (-0.178)
+    print(capex, labor)
+    return [capex, labor]

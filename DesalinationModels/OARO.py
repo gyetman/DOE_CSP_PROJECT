@@ -8,7 +8,7 @@ class OARO(object):
     def __init__(self,
                  FeedC_r = 35, # Feed concentration (g/L)
                  Capacity = 1000, # System capacity  (m3/day)
-                 rr = 25, # Fossil fuel fraction
+                 rr = 25,
                  ):
         self.FeedC_r = FeedC_r
         self.Capacity = Capacity
@@ -25,7 +25,6 @@ class OARO(object):
 
         #APM Model Files
         ROOT_DIR = self.base_path / "EnhancedRO_APM_Models"
-        print(ROOT_DIR)
         
         
         #LSRRO Cases: 70 g/l Feed, 75% recovery; 35 g/l Feed, 85% recovery; 20 g/l Feed, 92% recovery
@@ -40,25 +39,40 @@ class OARO(object):
         # COMRO_20g_L_92rec=ROOT_DIR+'/COMRO_4stage_cin_20_r_92.apm'
         
         #OARO 
-        if self.FeedC_r == 70:
-            recrate = '75'
-        elif self.FeedC_r == 35:
-            recrate = '85'
-        elif self.FeedC_r == 20:
-            recrate = '92'
-        elif self.FeedC_r == 125:
-            recrate = str(self.rr)
+        # recrate = str(self.rr)
+        if self.rr == 1:
+            if self.FeedC_r == 70:
+                recrate = '75'
+            elif self.FeedC_r == 35:
+                recrate = '85'
+            elif self.FeedC_r == 20:
+                recrate = '92'
+            elif self.FeedC_r == 125:
+                recrate = '50'
+        
+        elif self.rr == 2:
+            if self.FeedC_r == 70:
+                recrate = '50'
+            elif self.FeedC_r == 35:
+                recrate = '75'
+            elif self.FeedC_r == 20:
+                recrate = '85'
+            elif self.FeedC_r == 125:
+                recrate = '25'        
             
+        OARO_70g_L_50rec=ROOT_DIR/'OARO_2stage_cin_70_r_50.apm'     
         OARO_70g_L_75rec=ROOT_DIR/'OARO_4stage_cin_70_r_75.apm'
         OARO_35g_L_85rec=ROOT_DIR/'OARO_2stage_cin_35_r_85.apm' # LCOW result is a little bit higher than result in MATLAB (1.5 vs 1.4). SEC is also a little bit higher (5.3 vs 5.2)
         OARO_20g_L_92rec=ROOT_DIR/'OARO_2stage_cin_20_r_92.apm' # not converging to same sol as MATLAB; closer when changing otol from default of 1e-6 to 1e-3
         OARO_125g_L_50rec=ROOT_DIR/'OARO_5stage_cin_125_r_50.apm'
         OARO_125g_L_25rec=ROOT_DIR/'OARO_3stage_cin_125_r_25.apm'        
+        OARO_20g_L_85rec=ROOT_DIR/'OARO_2stage_cin_20_r_85.apm'
+        OARO_35g_L_75rec=ROOT_DIR/'OARO_2stage_cin_35_r_75.apm'
         
         feedsal = str(self.FeedC_r)
         tech = 'OARO'
         model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec")
-
+        
         # csv_load(s,a,csvfilename) 
         
         apm_load(s,a,model_file)
@@ -118,7 +132,7 @@ class OARO(object):
                     Cb=sol['cb']      # OARO 2stage
                     Amj=sol['amjsum']
                     Amk=sol['amksum']
-                    
+                    SEC= sol['sec']
                 elif tech=='LSRRO':
                     SEC= sol['sec']
                     Cb = sol['cfjout']
@@ -234,7 +248,7 @@ class OARO(object):
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
-        simu_output.append({'Name':'Fossil fuel usage','Value':fuel,'Unit':'kWh'})
+        simu_output.append({'Name':'Grid electricity usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})

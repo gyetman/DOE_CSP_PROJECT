@@ -180,6 +180,7 @@ class VAGMD_batch(object):
                 
         if k == 7:
             A = 7.2
+            self.Area = 7.2
             FullModel_PFlux268 = matfile['FullModel_PFlux268'].transpose().tolist()[0]      
             FullModel_TCO268 = matfile['FullModel_TCO268'].transpose().tolist()[0]
             FullModel_TEO268 = matfile['FullModel_TEO268'].transpose().tolist()[0]
@@ -200,6 +201,7 @@ class VAGMD_batch(object):
         
         elif k == 26:
             A = 25.92
+            self.Area = 25.92
             FullModel_PFlux373 = matfile['FullModel_PFlux373'].transpose().tolist()[0]
             FullModel_TCO373   = matfile['FullModel_TCO373'].transpose().tolist()[0]
             FullModel_TEO373   = matfile['FullModel_TEO373'].transpose().tolist()[0]
@@ -293,3 +295,4 @@ class VAGMD_batch(object):
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output
+    

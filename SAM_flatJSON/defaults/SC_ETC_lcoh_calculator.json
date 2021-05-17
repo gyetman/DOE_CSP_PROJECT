@@ -1,0 +1,12 @@
+{
+	"yrs" : 20,
+	"int_rate" : 0.04,
+	"coe" : 0.05,
+	"non_solar_area_multiplier":1.5,
+	"land_cost": 10000,
+	"EC": 1,
+	"p_OM": 0.5,
+	"unit_cost": 372,
+	"P_req": 200,
+	"cost_boiler": 102.36	
+}

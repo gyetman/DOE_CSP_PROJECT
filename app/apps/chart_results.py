@@ -45,10 +45,12 @@ desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),
                'LTMED':('Water production','Fossil fuel usage', 'Storage status'),
                'MEDTVC':('Water production','Fossil fuel usage', 'Storage status'),
                'MDB':('Water production','Fossil fuel usage', 'Storage status'),
-               'OARO':('Water production','Fossil fuel usage', 'Storage status'),
-               'LSRRO':('Water production','Fossil fuel usage', 'Storage status'),
-               'COMRO':('Water production','Fossil fuel usage', 'Storage status')}    
-sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation'}
+               'OARO':('Water production','Grid electricity usage', 'Storage status'),
+               'LSRRO':('Water production','Grid electricity usage', 'Storage status'),
+               'COMRO':('Water production','Fossil fuel usage', 'Storage status'),
+               'RO_FO':('Water production','Grid electricity usage', 'External thermal energy usage'),
+               'RO_MDB':('Water production','Grid electricity usage', 'External thermal energy usage')}    
+sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation','Grid electricity usage', 'External thermal energy usage'}
 
 
 # #

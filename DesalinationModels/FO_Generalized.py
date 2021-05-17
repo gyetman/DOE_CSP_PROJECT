@@ -28,7 +28,7 @@ class FO_generalized(object):
     # Define input variables
     def __init__(self,
                  Salt_rej = 0.95   , # Salt rejection
-                 Mprod    = 1      , # Product water flow rate (m3/day)
+                 Mprod    = 2000   , # Product water flow rate (m3/day)
                  T_sw     = 13     , # Seawater temperature (oC)
                  NF_rr    = 0.8    , # Nanofilter recovery rate 
                  RO_rr    = 0.9    , # RO recovery rate
@@ -169,10 +169,7 @@ class FO_generalized(object):
         # Assign instance variables
         self.Salt_rej = Salt_rej
         self.T_sw = T_sw
-        if Mprod:
-            self.Mprod  = 10000
-        else:
-            self.Mprod  = 500
+        self.Mprod  = Mprod
         self.NF_rcr = 1 - NF_rr # Nanofilter retentate recirculation rate 
         self.RO_r   = 1 - RO_rr # RO retentate reject rate
         self.A      = A

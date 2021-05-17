@@ -19,8 +19,8 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "rr",
-            "Label": "Recovery rate (Please only input 25% or 50% for 125g/L feed salinity)",
-            "Units": "%",
+            "Label": "Recovery rate mode (Input '1' for high recovery rate, input '2' for low recovery rate)",
+            "Units": "",
             "Require": "*",
             "Constraint": ">0"
         }

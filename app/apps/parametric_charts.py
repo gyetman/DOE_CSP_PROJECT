@@ -51,11 +51,18 @@ desal_outputs = {
         'Levelized cost of water':'parametric_desal_finance_outfile',
         'Total fossil fuel usage':'parametric_desal_simulation_outfile',
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-        'Specific thermal power consumption': 'parametric_desal_design_outfile'}
+        'Specific thermal power consumption': 'parametric_desal_design_outfile'},
+        'RO_MDB':{
+        'Annual water production':'parametric_desal_simulation_outfile',
+        'Levelized cost of water':'parametric_desal_finance_outfile',}
+        # 'Total fossil fuel usage':'parametric_desal_simulation_outfile',
+        # 'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        # 'Specific thermal power consumption': 'parametric_desal_design_outfile'}
         }
     
 desal_units = {
     'Total water production':'m3',
+    'Annual water production':'m3',
     'Levelized cost of water':'$/m3',
     'Total fossil fuel usage':'kWh',
     'Percentage of fossil fuel consumption':'%',
@@ -114,7 +121,7 @@ def store_desal_data(x):
     # create a file lookup 
     alkup = helpers.json_load(cfg.app_json)
     flkup = cfg.build_file_lookup(alkup['solar'], alkup['desal'], 
-                                  alkup['finance'])
+                                  alkup['finance'],alkup['timestamp'])
 
     # load simulation result info
     info = helpers.json_load(cfg.parametric_info)

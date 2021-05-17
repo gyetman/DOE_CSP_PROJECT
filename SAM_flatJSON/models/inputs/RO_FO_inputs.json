@@ -1,0 +1,79 @@
+{
+    "RO_FO": [
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "capacity",
+            "Label": "Capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed salinity",
+            "Units": "g/L",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "T_sw",
+            "Label": "Feed water temperature",
+            "Units": "oC",
+            "Require": "*",
+            "Tab": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "RO_rr",
+            "Label": "Recovery rate of RO",
+            "Units": "%",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Nel1",
+            "Label": "Number of elements per vessel",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nERD",
+            "Label": "Energy recovery device efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nBP",
+            "Label": "Boost pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nHP",
+            "Label": "High presssure pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "nFP",
+            "Label": "Feed pump efficiency",
+            "Require": "*",
+            "Tab": "RO"
+        },		
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "FO_rr",
+            "Label": "Recovery rate of FO",
+            "Units": "%",
+            "Require": "*",
+            "Tab": "FO"
+        }
+    ]
+}

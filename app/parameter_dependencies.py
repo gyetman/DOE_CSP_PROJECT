@@ -10,21 +10,30 @@ def get_table_id(varname, model_type, model):
     dependent variable, create the table ID and write the information
     to the dependencies json
     '''
+    # if model_type == 'finance':
+    #     model += '_cost'
     flkup = cfg.build_file_lookup(model,model,model,timestamp='')
     jfile = flkup[f'{model_type}_variables_file']
+
     with open(jfile, "r") as read_file:
         json_vars_load = helpers.json.load(read_file)
+    # if model == 'FO_cost':
+    #     model = model.split("_cost")[0]
+
     index=helpers.index_in_list_of_dicts(json_vars_load[model],'Name',varname)
+
     try:
         jvar=json_vars_load[model][index]
     except:
         print("Cannot find variable: ", varname)
+
     tab=jvar.get('Tab','General')
     sec=jvar.get('Section','General')
     subsec=jvar.get('Subsection','General')
     # ids = f"{tab}{sec}{subsec}".replace(' ','_').replace('(','').replace(')','').replace('/','')
     # if ids == 'Solar_Field_Solar_Field_ParametersGeneral':
     #     print(varname)
+    # print ('dependency table ID:', f"{tab}{sec}{subsec}".replace(' ','_').replace('(','').replace(')','').replace('/',''))
     return f"{tab}{sec}{subsec}".replace(' ','_').replace('(','').replace(')','').replace('/','')
 
 # list parameter names that have input or output dependencies
@@ -76,8 +85,21 @@ functions_per_model = {
                 'inputs': dpcfg.eqn03['inputs'],
                 'input_ids': list(set([get_table_id(i, 'solar', 'tcstrough_physical') for i in dpcfg.eqn03['inputs']])),
                 'function': 'tcstrough_physical'
-            }
-        ]
+            },
+        ],
+    # 'FO': 
+    #     [
+    #         {
+    #             'outputs': dpcfg.eqn04['outputs'],
+    #             # 'output_ids': list(set([get_table_id(i, 'finance', 'FO') for i in dpcfg.eqn04['outputs']])),
+    #             'output_ids': list(set([get_table_id(i, 'desal', 'FO') for i in dpcfg.eqn04['outputs']])),
+    #             'inputs': dpcfg.eqn04['inputs'],
+    #             'input_ids': list(set([get_table_id(i, 'desal', 'FO') for i in dpcfg.eqn04['inputs']])),
+    #             'out_model': 'lcoefcr',
+    #             'function': 'FO'
+    #         },
+    #     ]
+
 }
 
 #NOTE: EXAMPLE CALLBACK FROM model_parameters
@@ -148,7 +170,8 @@ def function_switcher(func, intables):
         'linear_fresnel_dsg_iph':      ['eqn1', 'linear_fresnel_dsg_iph'],
         'tcslinear_fresnel':           ['eqn01','tcslinear_fresnel'],
         'trough_physical_process_heat':['eqn02','trough_physical_process_heat'],
-        'tcstrough_physical':          ['eqn03','tcstrough_physical']
+        'tcstrough_physical':          ['eqn03','tcstrough_physical'],
+        'FO':                          ['eqn04','FO']
     }    
     
     # dependent_var_switcher = {

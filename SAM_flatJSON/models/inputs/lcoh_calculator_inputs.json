@@ -1,0 +1,76 @@
+{
+    "lcoh_calculator":[
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "yrs",
+            "Label": "Expected plant lifetime",
+            "Units": "yrs",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "int_rate",
+            "Label": "Average interest rate",
+            "Units": "",
+            "Require": "*",
+			"Tab": "Static collector"
+        },		
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "non_solar_area_multiplier",
+            "Label": "Non-solar area multiplier",
+            "Units": "none",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "land_cost",
+            "Label": "Land cost",
+            "Units": "$/acre",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "EC",
+            "Label": "Specific power consumption from solar field",
+            "Units": "% of capacity (kW)",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "coe",
+            "Label": "Unit cost of electricity",
+            "Units": "$/kWh",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "p_OM",
+            "Label": "Operational cost from the solar field",
+            "Units": "% of the capital cost",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "unit_cost",
+            "Label": "Collector cost",
+            "Units": "$/m2",
+            "Require": "*",
+			"Tab": "Static collector"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cost_boiler",
+            "Label": "Cost of boiler",
+            "Units": "$/kW",
+            "Require": "*",
+			"Tab": "Static collector"
+        }
+    ]
+}

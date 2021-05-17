@@ -19,7 +19,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "module",
-            "Label": "0' for AS7C1.5L module and '1' for AS26C5L module",
+            "Label": "'0' for AS7C1.5L module and '1' for AS26C5L module",
             "Units": "none",
             "Require": "*"
         },
@@ -58,7 +58,7 @@
             "Label": "Recovery rate",
             "Units": "%",
             "Require": "*",
-            "Costraint": "<1111,>399"
+            "Costraint": "<1101,>399"
         },		
 		{
             "DataType": "SSC_NUMBER",

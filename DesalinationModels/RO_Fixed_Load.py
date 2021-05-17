@@ -51,7 +51,7 @@ class RO(object):
                 Tmax = 318.15,
                 minQb = 2.7,
                 maxQf = 17,
-                Fossil_f = 0
+                Fossil_f = 1
                 ):
     
         # self.CP=CP

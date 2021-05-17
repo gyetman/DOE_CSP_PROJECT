@@ -6,7 +6,8 @@
             "Label": "Plant lifetime",
             "Units": "none",
             "Require": "*",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -14,7 +15,44 @@
             "Label": "Average interest rate",
             "Units": "",
             "Require": "*",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "unit_capex",
+            "Label": "Unit capital cost (Default value specific to 2000 m3/day capacity; adjusted internally for capacity unless the user introduces a different cost)",
+            "Units": "$ per m3/day",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "labor",
+            "Label": "Labor cost (Default value specific to 2000 m3/day capacity; adjusted internally for capacity unless the user introduces a different cost)",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "chem_cost",
+            "Label": "Chemicals cost",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "goods_cost",
+            "Label": "Durable goods cost",
+            "Units": "$/m3",
+            "Require": "*",
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -22,7 +60,8 @@
             "Label": "Unit cost of electricity (LCOE)",
             "Units": "$/kWh",
             "Require": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -31,7 +70,8 @@
             "Units": "$/kWh",
             "Require": "*",
             "Constraint": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -40,7 +80,8 @@
             "Units": "$/kWh(th)",
             "Require": "*",
             "Constraint": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -49,7 +90,8 @@
             "Units": "$/kWh",
             "Require": "*",
             "Constraint": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -58,7 +100,8 @@
             "Units": "kWh/m3",
             "Require": "*",
             "Constraint": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -67,16 +110,8 @@
             "Units": "kWh/m3",
             "Require": "*",
             "Constraint": "",
-			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "Maintenance",
-            "Label": "Unit maintenance cost",
-            "Units": "$/m3",
-            "Require": "*",
-            "Constraint": "",
-			"Tab": "Desalination"
+			"Tab": "Desalination",
+			"Section": " LCOW calculation inputs"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -86,7 +121,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -96,7 +131,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -106,7 +141,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -116,7 +151,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -126,7 +161,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -136,7 +171,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -146,7 +181,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -156,7 +191,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -166,7 +201,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -176,7 +211,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -186,7 +221,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -196,7 +231,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -206,7 +241,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -216,7 +251,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -226,7 +261,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -236,7 +271,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -246,7 +281,7 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination",
-			"Section": "CAPEX breakdown"
+			"Section": "The breakdown of CAPEX (for information only)"
         }
     ]
 }
