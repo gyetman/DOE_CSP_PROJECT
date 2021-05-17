@@ -45,8 +45,6 @@ model_selection_layout = html.Div([
                     'value': 'SC_FPC', 'disabled': False},
                     {'label': 'Static Collector (Evacuated Tube)',
                     'value': 'SC_ETC', 'disabled': False},
-                    {'label': 'Integrated Solar Combined Cycle ',
-                    'value': 'tcsiscc', 'disabled': True},
                     {'label': 'Linear Fresnel Direct Steam     ',
                     'value': 'tcslinear_fresnel', 'disabled': False},
                     {'label': 'Linear Fresnel Molten Salt      ',
