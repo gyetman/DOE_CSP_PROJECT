@@ -238,9 +238,8 @@ loading = html.Div([
 parameters_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Models", href='/model-selection')),
               dbc.NavItem(dbc.NavLink("Parameters"), active=True),
-            #   dbc.NavItem(dbc.NavLink('Help', href='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf', target='_blank'))
-            dbc.NavItem(dbc.NavLink('Help', href='http://127.0.0.1:8077/assets/documentation.pdf#page=19', target='_blank'))
-              ],
+              dbc.NavItem(dbc.NavLink('Help', href='/assets/docs/documentation.pdf', target='_blank', external_link=True))
+    ],
     brand="System Configuration",
     color="primary",
     dark=True,
@@ -444,24 +443,26 @@ def create_tabs_and_tables(x):
                   models[1]:solar_model_vars}
 
     def _make_tabs_in_collapse(i):
-       # help_link = "file://" + str(cfg.base_path) + '/SAM_flatJSON/' + 'sam-help-2020-2-29-r1.pdf'
-
         return dbc.Card(
             [
                 dbc.Button(
                     html.Div([html.Div("Title Here",id=f'collapse-title-{i}', style={'display':'inline-block', 'padding-top':'6px'}),
-                    dbc.NavLink('', href='test',
-                            style={'float':'right','display':'inline-block', 'padding': '4px' 
-                            },
-                            className='fas fa-info-circle fa-2x text-info'
-                            # className='fas fa-info-circle fa-2x'
-                            )
+                    dbc.NavLink('', id=f'collapse-doc-link-{i}',
+                        href='/assets/docs/documentation.pdf',
+                        target='_blank',
+                        external_link=True,
+                        style={
+                            'float':'right',
+                            'display':'inline-block', 
+                            'padding': '4px' 
+                        },
+                        className='fas fa-info-circle fa-2x text-info'
+                        )
                     ]),
                     color="primary",
                     id=f"{i}-toggle".replace(' ','_'),
                     style={'padding': '0px', 'padding-right': '6px'}
                 ),
-                # dbc.NavItem(dbc.NavLink('Help', href='test')),
                 dbc.Collapse(
                     dbc.CardBody(
                         [dcc.Tabs(value=Model_tabs[i][0], children=[
@@ -526,14 +527,23 @@ def run_desal_design(desalDesign, desalData):
         return
 
 @app.callback([Output(f"collapse-title-{i}", 'children') for i in models],
+            [Output(f'collapse-doc-link-{i}', 'href') for i in models],
             [Input('tabs-card','children')])
 def title_collapse_buttons(x):
-    '''Titles the collapse buttons based on values stored in JSON file'''
+    '''
+    Titles the collapse buttons based on values stored in JSON file
+    For the models selected, figures out the page in our documentation
+    to point the user to and returns the link to that page
+    '''
     app_vals = helpers.json_load(cfg.app_json)
     d = f"{cfg.Desal[app_vals['desal']].rstrip()} Desalination System"
     s = cfg.Solar[app_vals['solar']].rstrip()
     f = cfg.Financial[app_vals['finance']].rstrip()
-    return d,s,f
+    doclink = "/assets/docs/documentation.pdf"
+    ddoc = f"{doclink}#page={cfg.Documentation[app_vals['desal']]}"
+    sdoc = f"{doclink}#page={cfg.Documentation[app_vals['solar']]}"
+    fdoc = f"{doclink}#page={cfg.Documentation[app_vals['finance']]}"
+    return d,s,f,ddoc,sdoc,fdoc
 
 @app.callback(
     Output('model-card','children'),

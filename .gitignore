@@ -137,6 +137,7 @@ app/logs/applog.log
 utils/rtree.dat
 app/assets/*
 !app/assets/images
+!app/assets/docs
 app/global_water_tarrifs.geojson
 app/global_water_tarrifs.kdtree
 app/logs/applog.log
