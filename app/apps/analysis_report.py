@@ -76,7 +76,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
@@ -127,7 +127,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
 
@@ -179,7 +179,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add data from desal design input
@@ -228,7 +228,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
  
@@ -274,7 +274,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         
@@ -399,7 +399,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         indexp = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[indexp]['Value']})
         
@@ -445,7 +445,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         
@@ -708,14 +708,14 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'FO':
         return ([
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         ])
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
@@ -741,7 +741,7 @@ def set_system_performance(x):
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Number of modules required: {r['n_modules']:.0f} "),
         html.Div(f"Module type: {r['m_type']} "),
         html.Div("   Single module performance",

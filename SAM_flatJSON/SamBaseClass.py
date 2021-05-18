@@ -376,7 +376,12 @@ class SamBaseClass(object):
             from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
             self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
             self.design_output =  self.MDB.design()         
-        
+
+        elif desal == 'ABS':
+            from DesalinationModels.ABS import ABS
+            self.ABS = ABS(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'], Tcond  = self.desal_values_json['Tcond'], pump_type= self.desal_values_json['pump_type'])
+            self.design_output = self.ABS.design()        
+                
         
         elif desal == 'LTMED':
             from DesalinationModels.LT_MED_General import lt_med_general

@@ -98,11 +98,7 @@ class lt_med_general(object):
         self.average_d = self.brine_d * self.RR + self.distillate_d * (1-self.RR)
 
         self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
-        print('result')
-        print(self.P_req * 3600)
-        print(self.qF * 1000 * self.h_b - self.qF * 1000 * self.h_sw)
-        print(self.q_cooling / 1000)
-        
+
         self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
@@ -110,8 +106,9 @@ class lt_med_general(object):
 #        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
         self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})        
-        self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
+        self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})  
+        if self.q_cooling[0] > 0:
+            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
