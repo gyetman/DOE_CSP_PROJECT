@@ -1,0 +1,12 @@
+{
+	"Ts" : 80,
+	"Nef" : 12,
+	"FeedC_r" : 30,
+	"RR" : 0.5,
+	"Tin" : 15,
+	"Capacity": 2000,
+	"Fossil_f": 0,
+	"storage_hour":0,
+	"Tcond": 35,
+	"pump_type": 1
+}
