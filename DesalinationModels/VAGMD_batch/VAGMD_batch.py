@@ -151,7 +151,7 @@ class VAGMD_batch(object):
         self.PFlux_avg= sum(self.PFlux) / len(self.PFlux)
         self.df = self.df.round(decimals = 1)
         self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
-        self.P_req = self.ave_stec * self.Capacity / 24  # kW
+        self.P_req = self.ave_stec * self.Capacity / 24   # kW
         # self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
         
         self.design_output = []
@@ -160,7 +160,7 @@ class VAGMD_batch(object):
         self.design_output.append({'Name':'Actual recovery rate','Value':self.RR[-1],'Unit':'%'})          
         self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
         self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
-        self.design_output.append({'Name':'Thermal power consumption','Value': self.P_req / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Thermal power consumption','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
         

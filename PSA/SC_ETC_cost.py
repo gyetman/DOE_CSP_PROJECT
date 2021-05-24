@@ -20,7 +20,7 @@ class ETC_cost(object):
                  coe = 0.05 , # Unit cost of electricity ($/kWh)
                  p_OM = 0.5, # % of the capital cost
                  unit_cost = 372, # unit cost ($/m2)
-                 P_req = 200, # required thermal energy from the desalination
+                 P_req = 200, # required thermal energy from the desalination (kW)
                  cost_boiler = 102.36, # $/kW
                  
                  thermal_gen = 1000 * 0.3 * 24 * 365, # annual energy generation (kWh)
@@ -41,7 +41,7 @@ class ETC_cost(object):
         self.p_OM = p_OM / 100
         self.thermal_gen = thermal_gen
         self.land_cost = land_cost
-        self.P_req = P_req
+        self.P_req = P_req # kW
         
     def lcoh(self):
         
