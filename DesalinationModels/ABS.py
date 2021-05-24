@@ -14,7 +14,7 @@ from scipy.optimize import fmin
 from DesalinationModels.VAGMD_batch.SW_functions import SW_Density
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
-class lt_med_general(object):
+class ABS(object):
     
     def __init__(self,
          Xf      =  35 , # Feedwater salinity  (g/L)
@@ -23,6 +23,8 @@ class lt_med_general(object):
          Capacity = 2000,    # Capacity of the plant (m3/day)
          Tin     = 15 , # Inlet seawater temperature
          RR      = 0.5 , # recovery ratio
+         Tcond   = 35, # Temperature of end condenser
+         pump_type = 1, # Absorption Heat Pump type ('1' for single effect, '2' for double effect (serial flow), '3' for double effect (parallel flow))
          Fossil_f = 1 # Fossil fuel fraction
          ):
         
@@ -33,6 +35,8 @@ class lt_med_general(object):
         self.Xf = Xf *1000
         self.RR = RR
         self.Tin  = Tin
+        self.Tcond = Tcond
+        self.pump_type = pump_type
     
     def design(self):
         p1 = self.Xf
@@ -80,14 +84,7 @@ class lt_med_general(object):
         
         self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *1000/3600
         self.P_req = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *self.Capacity *1000/24/3600
-        
-        # self.system = lt_med_calculation(Nef = self.Nef, Ts = self.Ts, Ms = self.qs, Mf = self.qF, Tcwin = self.Tin)
-        # self.system.model_execution() 
-        # print('calculated STEC:', self.system.STE)
-        # print('calculated GOR:', self.system.GOR)
-        # print('calculated sumA:', self.system.sum_A)
-        # print('calculated production:', self.system.Mprod_m3_day)
-        
+        self.PR = 2326 / self.STEC * 1000 /3600
         
         self.T_b = 37  # Brine temperature at last effect (T_b = T_d = T_cool = T_cond)
         self.h_b = TD_func.enthalpyreg1(self.T_b + 273.15, 1)    # Enthalpy of the flow at brine temperature
@@ -99,6 +96,55 @@ class lt_med_general(object):
 
         self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
 
+        # Add ABS  
+        pp1 = self.Tcond
+        pp2 = self.Ts
+
+        if self.pump_type == 1:
+            abs_coeff = [
+                [0.009258,-0.0082026,-0.0001356,1.9532,5.4857e-5,7.8857e-5],
+                [0.1686,0.0024348,4.7353e-5,-0.17905,-0.0085011,-0.00012585,-1.4067e-6,0.0052416,0.00016374,1.7127e-6,-6.8253e-5,-1.1867e-6,2.5029,3.44e-7,4.7067e-7],
+                [-0.328,1.20229,-0.008,10.8171,0.00457143,0.00457143],
+                [-0.736,1.808,-0.0264,22.0257,0.012,0.0142857]]
+            abs_params = [
+                [pp1, pp2, pp1*pp2, 1, pp2**2, pp1**2],
+                [pp1, pp1**2, pp1**3, pp2, pp1*pp2, pp2*pp1**2, pp2*pp1**3,pp2**2,pp2**2*pp1,pp2**2*pp1**2,pp2**3,pp2**3*pp1,1,pp2**4,pp1**4],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2]
+                ]
+       
+        elif self.pump_type == 2:
+            abs_coeff = [
+                [0.002266,-0.022654,-0.0003024,2.8248,0.00014057,0.00017086],
+                [0.0083408,-0.0097175,-0.0001152,0.97403,5.8114e-5,7.8286e-5],
+                [-0.038,1.1574,-0.0068,3.0757,0.0028571,0.0028571],
+                [-0.446,1.98886,-0.0956,37.9357,0.0417143,0.0514286]]
+            abs_params = [
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2]                ]
+        
+        elif self.pump_type == 3:
+            abs_coeff = [
+                [0.023072,-0.022487,-0.00003024,2.8621,0.00013829,0.000168],
+                [0.0067028,-0.0058181,-3.128e-5,0.80108,4.5714e-6,2.7771e-5],
+                [-0.216,1.376,-0.0032,-1.4743,8.7918e-17,0.0022857],
+                [-0.468,1.15086,-0.1136,70.5714,0.0537143,0.0657143]]
+
+            abs_params = [
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
+                [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2]                ]
+        
+        self.COP = np.dot(abs_params[0],abs_coeff[0])
+        self.sA_pump = np.dot(abs_params[1],abs_coeff[1])        
+        self.T_sh = np.dot(abs_params[2],abs_coeff[2])        
+        self.T_gen = np.dot(abs_params[3],abs_coeff[3])
+                
+        print(self.COP, self.sA_pump, self.T_sh, self.T_gen)
+         
         self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
@@ -106,11 +152,15 @@ class lt_med_general(object):
 #        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
         self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req/1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})  
+        self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})     
         if self.q_cooling[0] > 0:
             self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
-        self.design_output.append({'Name':'Specific heat transfer area','Value':self.sA,'Unit':'m2/m3/day'})
+        self.design_output.append({'Name':'Specific heat transfer area of MED','Value':self.sA,'Unit':'m2/m3/day'})
+        self.design_output.append({'Name':'Specific heat transfer area of the absorption heat pump','Value':self.sA_pump,'Unit':'m2/kW'})      
+        self.design_output.append({'Name':'Overall performance ratio','Value':self.PR * self.COP,'Unit':'kg/kg'})   
+        self.design_output.append({'Name':'Outlet temperature of the superheated steasm from the heat pump','Value':self.T_sh,'Unit':'oC'}) 
+        self.design_output.append({'Name':'Temprature of the saturated steam required to drive the heat pump generator','Value':self.T_gen,'Unit':'oC'})   
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
         self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
         if self.DELTAT < 2:

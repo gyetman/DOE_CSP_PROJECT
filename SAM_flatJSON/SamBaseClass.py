@@ -125,7 +125,7 @@ class SamBaseClass(object):
 
             self.collector_cost = ETC_cost(aperture_area = self.sc_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'], capacity = solar_input['desal_thermal_power_req'] * 1000,
                                            EC = cost_input['EC'], yrs = cost_input['yrs'], int_rate = cost_input['int_rate'], coe = cost_input['coe'], p_OM = cost_input['p_OM'],
-                                           unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.P_req)
+                                           unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.design_output[0]['Value'])
             self.cost_out = self.collector_cost.lcoh()
             self.lcoh = self.cost_out[2]['Value']  
             
@@ -376,7 +376,12 @@ class SamBaseClass(object):
             from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
             self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
             self.design_output =  self.MDB.design()         
-        
+
+        elif desal == 'ABS':
+            from DesalinationModels.ABS import ABS
+            self.ABS = ABS(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'], Tcond  = self.desal_values_json['Tcond'], pump_type= self.desal_values_json['pump_type'])
+            self.design_output = self.ABS.design()        
+                
         
         elif desal == 'LTMED':
             from DesalinationModels.LT_MED_General import lt_med_general
@@ -474,6 +479,13 @@ class SamBaseClass(object):
 
             self.simu_output = self.LTMED.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
 
+        elif desal == 'ABS':
+            from DesalinationModels.ABS import ABS
+            self.ABS = ABS(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'], Tcond  = self.desal_values_json['Tcond'], pump_type= self.desal_values_json['pump_type'])
+            self.design_output = self.ABS.design() 
+
+            self.simu_output = self.ABS.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
+            
         elif desal == 'MEDTVC':
             from DesalinationModels.MED_TVC_General import med_tvc_general
             self.MEDTVC = med_tvc_general(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['rr']/100,  Nef =self.desal_values_json['nef'], Tin =self.desal_values_json['tin'], Pm =self.desal_values_json['pm'], Fossil_f = self.desal_values_json['Fossil_f'] )
@@ -698,11 +710,20 @@ class SamBaseClass(object):
         elif desal == 'LTMED':
             from DesalinationModels.LTMED_cost import LTMED_cost
             self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], 
-                                   # HEX_area = self.LTMED.system.sum_A,
+                                    HEX_area = self.LTMED.sA*24*3.6,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.cost_values_json['sam_coh'], cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
+            
+        elif desal == 'ABS':
+            from DesalinationModels.ABS_cost import ABS_cost
+            self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], 
+                                   # HEX_area = self.LTMED.system.sum_A,
+                                   Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
+                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.cost_values_json['sam_coh'], cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.ABS.storage_cap)
+            self.cost_output = self.LCOW.lcow()  
             
         elif desal == 'MEDTVC':
             from DesalinationModels.MEDTVC_cost import MEDTVC_cost
@@ -716,7 +737,7 @@ class SamBaseClass(object):
         elif desal == 'FO':
             from DesalinationModels.FO_cost import FO_cost
             self.LCOW = FO_cost(    Capacity = self.desal_values_json['Mprod'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.cost_values_json['STEC'], labor = self.cost_values_json['labor'], 
-                                    unit_capex = self.cost_values_json['capex'], chem_cost = self.cost_values_json['chem_cost'], goods_cost = self.cost_values_json['goods_cost'], 
+                                    unit_capex = self.cost_values_json['unit_capex'], chem_cost = self.cost_values_json['chem_cost'], goods_cost = self.cost_values_json['goods_cost'], 
                                     Cap_membrane = self.cost_values_json['Cap_membrane'], Cap_HXs = self.cost_values_json['Cap_HXs'], Cap_construct = self.cost_values_json['Cap_construct'], Cap_DS = self.cost_values_json['Cap_DS'],
                                     Cap_coalescers = self.cost_values_json['Cap_coalescers'], Cap_structural = self.cost_values_json['Cap_structural'], Cap_polishing = self.cost_values_json['Cap_polishing'], Cap_pipes = self.cost_values_json['Cap_pipes'],
                                     Cap_filtration = self.cost_values_json['Cap_filtration'], Cap_electrical = self.cost_values_json['Cap_electrical'], Cap_pumps = self.cost_values_json['Cap_pumps'], Cap_instrumentation = self.cost_values_json['Cap_instrumentation'],

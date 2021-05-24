@@ -76,7 +76,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add specific data from desal design output
@@ -127,7 +127,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
 
@@ -167,7 +167,7 @@ def gather_data(x):
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})        
     ## Temporal 'if' condition for another desal technology
-    elif updates['desal'] == 'LTMED':
+    elif updates['desal'] == 'LTMED' or updates['desal'] == 'ABS':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         fossil_fuel = "Yes" if d['Fossil_f'] else "No"
         updates.update({'FeedC_r':d['FeedC_r'],
@@ -179,7 +179,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         # add data from desal design input
@@ -228,7 +228,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
  
@@ -274,7 +274,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         
@@ -399,7 +399,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         indexp = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[indexp]['Value']})
         
@@ -445,7 +445,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
-        updates.update({'fossil_usage':ds[index]['Value']})
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
         
@@ -580,7 +580,7 @@ def set_desal_config(x):
         html.Div(f"Specific electric energy consumption: {r['electric_energy_consumption']:.2f}  kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW")
         ])
-    elif app['desal'] == 'LTMED' or app['desal'] == 'MEDTVC':
+    elif app['desal'] == 'LTMED' or app['desal'] == 'MEDTVC' or app['desal'] == 'ABS':
         return ([
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
@@ -702,20 +702,20 @@ def set_solar_config(x):
 def set_system_performance(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
-    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC':
+    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == 'ABS':
         return ([
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'FO':
         return ([
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         ])
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
@@ -741,7 +741,7 @@ def set_system_performance(x):
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Number of modules required: {r['n_modules']:.0f} "),
         html.Div(f"Module type: {r['m_type']} "),
         html.Div("   Single module performance",
@@ -766,7 +766,7 @@ def set_system_performance(x):
 def set_cost_analysis(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
-    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == "MDB":
+    if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == "MDB" or app['desal'] == 'ABS':
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),

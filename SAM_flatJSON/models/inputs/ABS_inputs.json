@@ -1,0 +1,83 @@
+{
+    "ABS": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "Plant capacity (2000 to 100,000)",
+            "Units": "m3/day",
+            "Require": "*",
+            "Constraint": ">2000,<100000"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration (30 to 60)",
+            "Units": "g/L",
+            "Require": "*",
+            "Costraint": "<60,>30"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "RR",
+            "Label": "Recovery ratio (0.3 to 0.5)",
+            "Units": "",
+            "Require": "*",
+            "Constraint": ">0.3, <0.5"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Nef",
+            "Label": "Number of effects (12, 14 or 16)",
+            "Units": "none",
+            "Require": "*"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Ts",
+            "Label": "The temperature of the steam at the inlet (65 to 80)",
+            "Units": "C",
+            "Require": "*",
+            "Constraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Tin",
+            "Label": "Inlet feedwater temperature (15 to 35)",
+            "Units": "C",
+            "Require": "*",
+            "Constraint": ">15, <35"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Tcond",
+            "Label": "Temperature of the end condendser (25 to 45)",
+            "Units": "C",
+            "Require": "*",
+            "Constraint": ">15, <35"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "pump_type",
+            "Label": "Absorption Heat Pump type: '1' for single effect, '2' for double effect (serial flow), '3' for double effect (parallel flow)",
+            "Units": "",
+            "Require": "*",
+            "Constraint": ">15, <35"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hours",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel fraction threshold (0 to 1)",
+            "Units": "",
+            "Require": "*",
+            "Costraint": "<1, >0"
+        }
+    ]
+}

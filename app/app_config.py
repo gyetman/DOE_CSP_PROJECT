@@ -57,9 +57,11 @@ app_json_init = {'solar':'Solar','desal':'Desal','finance':'Finance'}
 
 #columns that will be used in data tables
 cols = [{'name':'Variable', 'id':'Label','editable':False},
-       # {'name':'Value',    'id':'Value','editable':True, 'type':'numeric'},
         {'name':'Value',    'id':'Value','editable':True},
         {'name':'Units',    'id':'Units','editable':False}]
+
+# NOTE: make sure any changes to these values are also reflected 
+# in model_selection.py and the Documentation dict below
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FO':'Forward Osmosis (FO)                       ',
@@ -87,7 +89,6 @@ Financial = {'utilityrate5':'Commercial (Distributed)                   ',
              'singleowner':'PPA Single Owner (Utility)                 ',
              }
 
-# NOTE: make sure any changes in this table are also reflected in app.layout
 # dict for solar/CSP 'values' and 'labels'
 Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
          'SC_FPC' :'Static Collector (Flat Plate)',
@@ -101,18 +102,32 @@ Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
          'tcstrough_physical'  :'Parabolic Trough Physical       '
           }
 
+# dict for which documentation page to link to based on our model code
+Documentation = {
+    #Desal
+    'FO':27, 'VAGMD':27, 'MDB':27, 'LTMED':27, 'ABS':27, 'MEDTVC':27,
+    'NUN':27, 'RO':27, 'COMRO':27, 'OARO':27, 'LSRRO':27, 'RO_FO':27,
+    'RO_MDB':27,
+    #Financial
+    'utilityrate5':30, 'lcoefcr':30, 'iph_to_lcoefcr':30, 'levpartflip':30,
+    'equpartflip':30, 'saleleaseback':30, 'singleowner':30,
+    #Solar
+    'pvsamv1':19,'SC_FPC':19,'SC_ETC':19,'trough_physical_process_heat':19,'linear_fresnel_dsg_iph':19,'tcslinear_fresnel':19, 'tcsMSLF':19,
+    'tcsdirect_steam':19, 'tcsmolten_salt':19, 'tcstrough_physical':19
+}
+
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
     'pvsamv1' : [('FO',True),('VAGMD',True),('LTMED',True),('ABS',True),('MEDTVC',True),('MDB',True),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'SC_FPC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'SC_ETC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'tcsMSLF': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'tcsdirect_steam': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'tcsmolten_salt': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
-    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',True),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'SC_FPC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'SC_ETC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'tcsMSLF': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'tcsdirect_steam': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'tcsmolten_salt': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
+    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen

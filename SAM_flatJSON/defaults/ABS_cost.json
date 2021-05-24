@@ -1,0 +1,15 @@
+{
+	"yrs" : 20,
+	"int_rate" : 0.04,
+	"coe" : 0.05,
+	"coh" : 0.01,
+	"sam_coh": 0.015,
+	"f_HEX" : 0.4,
+	"cost_storage": 26,
+	"Chemicals": 0.04,
+	"Labor": 0.033,
+	"Miscellaneous": 0.1,
+	"Discharge": 0.02,
+	"Maintenance": 2,
+	"SEEC": 1.5
+}

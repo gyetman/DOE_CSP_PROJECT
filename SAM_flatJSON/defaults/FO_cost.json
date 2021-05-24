@@ -3,7 +3,7 @@
 	"int_rate" : 0.04,
 	"coe" : 0.05,
 	"coh" : 0.01,
-	"capex": 1000,
+	"unit_capex": 1000,
 	"labor": 0.13,
 	"chem_cost": 0.07,
 	"goods_cost": 0.05,
