@@ -108,7 +108,7 @@ class ABS(object):
                 [-0.736,1.808,-0.0264,22.0257,0.012,0.0142857]]
             abs_params = [
                 [pp1, pp2, pp1*pp2, 1, pp2**2, pp1**2],
-                [pp1, pp1^2, pp1^3, pp2, pp1*pp2, pp2*pp1**2, pp2*pp1**3,pp2**2,pp2**2*pp1,pp2**2*pp1**2,pp2**3,pp2**3*pp1,1,pp2**4,pp1**4],
+                [pp1, pp1**2, pp1**3, pp2, pp1*pp2, pp2*pp1**2, pp2*pp1**3,pp2**2,pp2**2*pp1,pp2**2*pp1**2,pp2**3,pp2**3*pp1,1,pp2**4,pp1**4],
                 [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2],
                 [pp1, pp2, pp1*pp2, 1,pp2**2, pp1**2]
                 ]

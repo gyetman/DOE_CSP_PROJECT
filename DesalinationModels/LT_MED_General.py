@@ -104,7 +104,7 @@ class lt_med_general(object):
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
 #        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
 #        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req ,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req/1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})  
         if self.q_cooling[0] > 0:

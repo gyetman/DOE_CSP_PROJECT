@@ -12,7 +12,7 @@ import DesalinationModels.IAPWS97_thermo_functions as TD_func
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 from scipy.optimize import fmin
 from DesalinationModels.VAGMD_batch.SW_functions import SW_Density
-from iapws import IAPWS97
+from iapws import IAPWS97, SeaWater
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
 class med_tvc_general(object):
@@ -106,26 +106,27 @@ class med_tvc_general(object):
         self.qF = np.dot(paras,coeffs[4])
         self.sA = np.dot(paras,coeffs[5])
         self.Ts = 70
-        self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *1000/3600
+        self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Tin + 10 +273.15))[0] *1000/3600
         
         # Pressure = self.Pm
         # h_steam = IAPWS97(P=20,x=1).h
         # h_cond = IAPWS97(T=273.15+70,x=0).h
 
         # self.P_req = 1/self.GOR * (h_steam-h_cond) *self.Capacity *1000/24/3600
-        self.P_req = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *self.Capacity *1000/24/3600        
+        self.P_req = self.STEC *self.Capacity *1000/24/3600        
        
-        self.T_b = 37  # Brine temperature at last effect (T_b = T_d = T_cool = T_cond)
-        self.h_b = IAPWS97(T=273.15+30,x=0).h    # Enthalpy of the flow at brine temperature
-        self.h_sw = IAPWS97(T=273.15+15,x=0).h         
-        print(self.h_b, self.h_sw)
+        self.T_b = self.Tin + 10  # Brine temperature at last effect (T_b = T_d = T_cool = T_cond)
+        self.h_b = IAPWS97(T=273.15+ self.T_b,x=0).h    # Enthalpy of the flow at brine temperature
+        self.h_sw = SeaWater(T=273.15+15,P = 0.101325, S = 0.035).h   
+        print('QMED', self.P_req)
+        print('enthalpy:', self.h_b, self.h_sw)
         
         self.brine_d = SW_Density(self.T_b,'c',0,'ppt',1,'bar')
         self.distillate_d = SW_Density(self.T_b,'c',self.Xf * 2,'ppm',1,'bar')     
         self.average_d = self.brine_d * self.RR + self.distillate_d * (1-self.RR)        
-        self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
+        # self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
+        self.q_cooling = 0.95 * self.P_req * 3.6   /(self.h_b - self.h_sw)
         print(self.P_req * 3600)
-        print((self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw))
         print((self.h_b - self.h_sw))
         
         from DesalinationModels.LTMED_cost import LTMED_cost
@@ -139,8 +140,8 @@ class med_tvc_general(object):
         self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req / 1000,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})
-        if self.q_cooling[0] > 0:
-            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'}) 
+        if self.q_cooling > 0:
+            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
         self.design_output.append({'Name':'Heating steam mass flow rate entering the first effect','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Movive steam mass flow rate entering the thermocompressor','Value':self.qm,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific area','Value':self.sA,'Unit':'m2 per m3/day'})

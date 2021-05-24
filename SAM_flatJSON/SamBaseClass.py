@@ -737,7 +737,7 @@ class SamBaseClass(object):
         elif desal == 'FO':
             from DesalinationModels.FO_cost import FO_cost
             self.LCOW = FO_cost(    Capacity = self.desal_values_json['Mprod'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.cost_values_json['STEC'], labor = self.cost_values_json['labor'], 
-                                    unit_capex = self.cost_values_json['capex'], chem_cost = self.cost_values_json['chem_cost'], goods_cost = self.cost_values_json['goods_cost'], 
+                                    unit_capex = self.cost_values_json['unit_capex'], chem_cost = self.cost_values_json['chem_cost'], goods_cost = self.cost_values_json['goods_cost'], 
                                     Cap_membrane = self.cost_values_json['Cap_membrane'], Cap_HXs = self.cost_values_json['Cap_HXs'], Cap_construct = self.cost_values_json['Cap_construct'], Cap_DS = self.cost_values_json['Cap_DS'],
                                     Cap_coalescers = self.cost_values_json['Cap_coalescers'], Cap_structural = self.cost_values_json['Cap_structural'], Cap_polishing = self.cost_values_json['Cap_polishing'], Cap_pipes = self.cost_values_json['Cap_pipes'],
                                     Cap_filtration = self.cost_values_json['Cap_filtration'], Cap_electrical = self.cost_values_json['Cap_electrical'], Cap_pumps = self.cost_values_json['Cap_pumps'], Cap_instrumentation = self.cost_values_json['Cap_instrumentation'],
