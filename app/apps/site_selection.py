@@ -71,6 +71,16 @@ canals = dl.GeoJSON(
     #defaultstyle=dict(fillColor='blue', weight=2, opacity=1, color='blue'),
 )
 
+# load wells
+wells = dl.GeoJSON(
+    url='/assets/wells_sw.geojson',
+    id = {'type':'json_theme','index':'geojson_wells'},
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={'radius': 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
+)
+
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
@@ -121,6 +131,7 @@ radios = dbc.FormGroup([
         options=[{'label':'Canals', 'value':'canals'},
                     {'label':'Power Plants', 'value':'pplants'},
                     {'label':'Desalination Plants', 'value':'desal'},
+                    {'label':'Water wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}],
         labelStyle={'display': 'inline-block'},
         value='canals',
@@ -164,7 +175,9 @@ theme_ids = {
     'canals': html.Div([canals]),
     'pplants': html.Div([power_plants, info]),
     'desal': html.Div([desal, info]),
-    'regulatory': regulatory
+    #'wells': wells,
+    'wells': html.Div([wells, info]),
+    'regulatory': regulatory,
 }
 
 
@@ -243,7 +256,10 @@ def info_hover(features):
     ''' callback for feature hover '''
     header = [html.H4("Feature Details")]
     #feature is a list of dicts, grab first feature
-    feature = features[0]
+    if features: 
+       feature = features[0]
+    else:
+        return header + ["Hover over a feature"]
     if feature:
         #check if feature is a cluster
         if feature['properties']['cluster']:
@@ -255,6 +271,14 @@ def info_hover(features):
             units = 'm3/day'
             return header+[html.B(name), html.Br(),
                 f"{capacity_field} Capacity {units}"]
+        elif 'TDS' in feature['properties'].keys():
+            print('in TDS!')
+            name = feature['properties']['orgName']
+            tds = feature['properties']['TDS']
+            temp = feature['properties']['TEMP']
+            units = 'mg/L'
+            return header+[html.B(name), html.Br(),
+                f"{capacity_field} TDS {units}"]
         #feature is Power Plant
         else:
             name = feature['properties']['name']

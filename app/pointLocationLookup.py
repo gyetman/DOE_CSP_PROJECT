@@ -1,3 +1,4 @@
+from datetime import date
 import app_config as cfg 
 import json
 import logging
@@ -125,7 +126,7 @@ def lookupLocation(pt, mapTheme='default'):
     logging.debug('Performing intersections')
 
     if not country: # outside land areas
-        logging.info('international, only getting subset of features')
+        logging.info('water, only getting subset of features')
         # TODO: refactor to use method or better logic, not hard-coded keys! 
         exclude = set(['county','desalPlants','powerPlants','canals','waterProxy','tx_county'])
         for key, value in themeLyrs.items():
@@ -519,14 +520,19 @@ def _updateMapJson(atts, pnt):
 
 if __name__ == '__main__':
     ''' main method for testing/development '''
+    import datetime
+    start = datetime.datetime.now()
     _setup_logging(False)
     logging.info('starting test...')
     #ptCoords = (-73.988033,41.035572) # matches two counties
     #ptCoords = (-119.0, 26.0) # doesn't match any counties
     #ptCoords = (34.0, -115.0) # matches one county
     ptCoords = (37.0,-110.0)
-    lookupLocation(ptCoords)
+    #lookupLocation(ptCoords)
+
     #print(getClosestPlants(ptCoords))
     #print(_calcDistance([0,0],[1,1]))
-    ptCoords = (34.0, -115.0) # matches one county
+    ptCoords = (34.0, 115.0) 
     lookupLocation(ptCoords)
+    end = datetime.datetime.now()
+    print(f'total process took {end - start}')
