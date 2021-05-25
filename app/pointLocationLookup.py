@@ -16,6 +16,8 @@ from rtree import index
 from haversine import haversine, Unit
 from urllib.parse import urlparse
 
+# set basic logging for when module is imported 
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 # patch module-level attribute to enable pickle to work
 #kdtree.node = kdtree.KDTree.node
@@ -76,7 +78,7 @@ restrictionsLayers = {
 
 def _setup_logging(verbose=False):
     if verbose:
-        level = logging.INFO
+        level = logging.DEBUG
     else:
         level = logging.INFO
 
@@ -88,13 +90,13 @@ def _setup_logging(verbose=False):
     )
 
 
-def lookupLocation(pt, mapTheme='default'):
+def lookupLocation(pt, mapTheme='default', verbose=False):
     ''' Method to check inputs and lookup parameters based on location. 
     Generates Markdown text (based on theme) and updates the parameters for the 
     model. 
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [mapTheme]: name of map theme. '''
-    _setup_logging(verbose=False)
+    _setup_logging(verbose)
 
     # check that coord is lat/long 
     logging.debug('Checking point coords...')
@@ -255,10 +257,8 @@ def _findIntersectFeatures(pt,intersectLyr):
     # make the point a poly geometry
     queryPoly = Point(pt).buffer(0.1)
     bounds = list(queryPoly.bounds)
-    print(bounds)
     # rtree uses a different order: left, bottom, right, top
     bounds = (bounds[1],bounds[0],bounds[3],bounds[2])
-    print(bounds)
     # open the layer and find the matches
     logging.info(f'Finding intersections with {intersectLyr.stem}...')
     rtreeFile = Path(f'{intersectLyr.parent}/{intersectLyr.stem}')
@@ -271,7 +271,7 @@ def _findIntersectFeatures(pt,intersectLyr):
         # TODO: open & find with slow method
     
     if len(possibleMatches) == 0:
-        print(f'No matching feature foound for {intersectLyr.stem}')
+        logging.info(f'No matching feature foound for {intersectLyr.stem}')
         return None
     elif len(possibleMatches) == 1:
         # single match 
@@ -340,9 +340,8 @@ def _generateMarkdown(theme, atts, pnt):
         desal = atts['desalPlants']['properties']
         try:
             mdown += f"Capacity: {float(desal.get('Capacity')):,.0f} m3/day  \n"
-            print(desal.get('Capacity'))
         except Exception as e:
-            print(e)
+            logging.error(e)
             mdown += f"Capacity: -  \n"    
         mdown += f"Technology: {desal.get('Technology')}  \n"
         mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
@@ -435,15 +434,11 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"Residential price: -  \n"
     mdown += f"Residential provider: {water.get('UtilityShortName')}  \n"
 
-    print(atts.keys())
-    print(atts['tx_county'])
     if atts['tx_county']:
-        print('Getting Texas prices')
         tx_prices = atts['tx_county']['properties']
         mdown += f'**Texas County Water Prices**  \n'
         comm_price = tx_prices.get('comm_avg')
         res_price = tx_prices.get('res_avg')
-        print(comm_price,res_price)
         if comm_price:
             mdown += f'Average Commercial Price: ${comm_price:,.2f}/m3  \n'
         else:
@@ -453,7 +448,7 @@ def _generateMarkdown(theme, atts, pnt):
         else:
             mdown += "Average Residential Prices: $-  \n"
     else:
-        print('No Texas County!!!')
+        logging.info('No Texas County!!!')
 
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')

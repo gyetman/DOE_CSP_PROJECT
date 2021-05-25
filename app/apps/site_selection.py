@@ -6,7 +6,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_leaflet as dl
 import pandas as pd
-import helpers
+#import helpers
 import pointLocationLookup
 
 from dash.dependencies import ALL, Input, Output, State, MATCH
@@ -254,40 +254,54 @@ def enableButton(site,site_properties):
     )
 def info_hover(features):
     ''' callback for feature hover '''
-    header = [html.H4("Feature Details")]
+    header = ['Hover over a Feature\n']
     #feature is a list of dicts, grab first feature
     if features: 
        feature = features[0]
     else:
-        return header + ["Hover over a feature"]
+        return header
     if feature:
         #check if feature is a cluster
         if feature['properties']['cluster']:
-            return header + ["Click cluster to expand"]
+            return ["Click cluster to expand"]
         #if feature is Desalination Plant
         elif 'Technology' in feature['properties'].keys():
+            header = ['Desalination Plant\n', html.Br()]
             name = feature['properties']['Project name']
             capacity_field = feature['properties']['Capacity (m3/d)']
             units = 'm3/day'
             return header+[html.B(name), html.Br(),
                 f"{capacity_field} Capacity {units}"]
         elif 'TDS' in feature['properties'].keys():
-            print('in TDS!')
+            header = ['Well\n', html.Br()]
             name = feature['properties']['orgName']
             tds = feature['properties']['TDS']
-            temp = feature['properties']['TEMP']
+            temperature = feature['properties']['TEMP']
             units = 'mg/L'
-            return header+[html.B(name), html.Br(),
-                f"{capacity_field} TDS {units}"]
+            temp_units = 'C'
+            if all((temperature, tds)):
+                return header + [html.B(name), html.Br(),
+                    f"TDS: {tds:,} {units}", html.Br(), 
+                    f"{temperature:.1f} Temp {temp_units}" ]
+            elif(temperature):
+                return header + [html.B(name), html.Br(),
+                f"TDS: - {units}", html.Br(),
+                f"Temperature: {temperature:.1f} {temp_units}"]
+            elif(tds):
+                return header + [html.B(name), html.Br(),
+                f"TDS: {tds:,} {units}", html.Br(), 
+                f"Temperature: - {temp_units}"]
+
         #feature is Power Plant
         else:
+            header = ['Power Plant\n', html.Br()] 
             name = feature['properties']['name']
             capacity_field = feature['properties']['capacity_mw']
             units = 'MW'
             return header + [html.B(name), html.Br(),
                 f"{float(capacity_field):,.1f} Capacity {units}"]
     else:
-        return header + ["Hover over a feature"]
+        return ['Hover over a feature']
 
 
 external_stylesheets = [dbc.themes.FLATLY]
