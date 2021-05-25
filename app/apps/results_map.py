@@ -73,6 +73,16 @@ canals = dl.GeoJSON(
     id='geojson_canals', 
 )
 
+# load wells
+wells = dl.GeoJSON(
+    url='/assets/wells_sw.geojson',
+    id = {'type':'json_theme','index':'geojson_wells'},
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={'radius': 75},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
+)
+
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
@@ -138,6 +148,7 @@ radios = dbc.FormGroup([
         options=[{'label':'Canals', 'value':'canals'},
                     {'label':'Power Plants', 'value':'pplants'},
                     {'label':'Desalination Plants', 'value':'desal'},
+                    {'label':'Water wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}],
         labelStyle={'display': 'inline-block'},
         value='canals',
@@ -161,6 +172,7 @@ theme_ids = {
 'canals': html.Div([canals]),
 'pplants': html.Div([power_plants, info]),
 'desal': html.Div([desal, info]),
+'wells': html.Div([wells, info]),
 'regulatory': regulatory
 }
 
@@ -320,31 +332,83 @@ def get_point_info(_,site_details_state):
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
         prevent_initial_call = True
     )
-def get_info(features=None):
+def get_info(features):
     ''' callback for feature hover '''
-    header = [html.H4("Feature Details")]
+    header = ['Hover over a Feature\n']
     #feature is a list of dicts, grab first feature
-    feature = features[0]
+    if features: 
+       feature = features[0]
+    else:
+        return header
     if feature:
         #check if feature is a cluster
         if feature['properties']['cluster']:
-            return header + ["Click cluster to expand"]
+            return ["Click cluster to expand"]
         #if feature is Desalination Plant
         elif 'Technology' in feature['properties'].keys():
+            header = ['Desalination Plant\n', html.Br()]
             name = feature['properties']['Project name']
             capacity_field = feature['properties']['Capacity (m3/d)']
             units = 'm3/day'
             return header+[html.B(name), html.Br(),
-                f"{capacity_field} Capacity {units}"]
+                f"Capacity: {capacity_field} {units}"]
+        elif 'TDS' in feature['properties'].keys():
+            header = ['Well\n', html.Br()]
+            name = feature['properties']['orgName']
+            tds = feature['properties']['TDS']
+            temperature = feature['properties']['TEMP']
+            units = 'mg/L'
+            temp_units = 'C'
+            if all((temperature, tds)):
+                return header + [html.B(name), html.Br(),
+                    f"TDS: {tds:,} {units}", html.Br(), 
+                    f"Temperature: {temperature:.1f} {temp_units}" ]
+            elif(temperature):
+                return header + [html.B(name), html.Br(),
+                f"TDS: - {units}", html.Br(),
+                f"Temperature: {temperature:.1f} {temp_units}"]
+            elif(tds):
+                return header + [html.B(name), html.Br(),
+                f"TDS: {tds:,} {units}", html.Br(), 
+                f"Temperature: - {temp_units}"]
+
         #feature is Power Plant
         else:
+            header = ['Power Plant\n', html.Br()] 
             name = feature['properties']['name']
             capacity_field = feature['properties']['capacity_mw']
             units = 'MW'
             return header + [html.B(name), html.Br(),
-                f"{float(capacity_field):,.1f} Capacity {units}"]
+                f"Capacity: {float(capacity_field):,.1f} {units}"]
     else:
-        return header + ["Hover over a feature"]
+        return ['Hover over a feature']
+
+
+# def get_info(features=None):
+#     ''' callback for feature hover '''
+#     header = [html.H4("Feature Details")]
+#     #feature is a list of dicts, grab first feature
+#     feature = features[0]
+#     if feature:
+#         #check if feature is a cluster
+#         if feature['properties']['cluster']:
+#             return header + ["Click cluster to expand"]
+#         #if feature is Desalination Plant
+#         elif 'Technology' in feature['properties'].keys():
+#             name = feature['properties']['Project name']
+#             capacity_field = feature['properties']['Capacity (m3/d)']
+#             units = 'm3/day'
+#             return header+[html.B(name), html.Br(),
+#                 f"{capacity_field} Capacity {units}"]
+#         #feature is Power Plant
+#         else:
+#             name = feature['properties']['name']
+#             capacity_field = feature['properties']['capacity_mw']
+#             units = 'MW'
+#             return header + [html.B(name), html.Br(),
+#                 f"{float(capacity_field):,.1f} Capacity {units}"]
+#     else:
+#         return header + ["Hover over a feature"]
 
 external_stylesheets = [dbc.themes.FLATLY]
 app.layout = render_results_map()
