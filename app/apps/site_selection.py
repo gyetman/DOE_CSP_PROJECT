@@ -271,7 +271,7 @@ def info_hover(features):
             capacity_field = feature['properties']['Capacity (m3/d)']
             units = 'm3/day'
             return header+[html.B(name), html.Br(),
-                f"{capacity_field} Capacity {units}"]
+                f"Capacity: {capacity_field} {units}"]
         elif 'TDS' in feature['properties'].keys():
             header = ['Well\n', html.Br()]
             name = feature['properties']['orgName']
@@ -282,7 +282,7 @@ def info_hover(features):
             if all((temperature, tds)):
                 return header + [html.B(name), html.Br(),
                     f"TDS: {tds:,} {units}", html.Br(), 
-                    f"{temperature:.1f} Temp {temp_units}" ]
+                    f"Temperature: {temperature:.1f} {temp_units}" ]
             elif(temperature):
                 return header + [html.B(name), html.Br(),
                 f"TDS: - {units}", html.Br(),
@@ -299,7 +299,7 @@ def info_hover(features):
             capacity_field = feature['properties']['capacity_mw']
             units = 'MW'
             return header + [html.B(name), html.Br(),
-                f"{float(capacity_field):,.1f} Capacity {units}"]
+                f"Capacity: {float(capacity_field):,.1f} {units}"]
     else:
         return ['Hover over a feature']
 
