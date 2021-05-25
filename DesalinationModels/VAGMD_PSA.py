@@ -220,7 +220,7 @@ class VAGMD_PSA(object):
         self.design_output.append({'Name':'(Suggested) Condenser channel inlet temperature','Value':max(20,min(30,xopt[1])),'Unit':'oC'})
         self.design_output.append({'Name':'(Suggested) Feed flow rate ','Value':max(400, min(1100,xopt[2])),'Unit':'l/h'})
         # self.design_output.append({'Name':'Estimated LCOW ','Value':yopt,'Unit':'$/m3'})
-        self.P_req = self.design_output[4]['Value']
+        self.P_req = self.design_output[4]['Value'] * 1000
         return self.P_req, self.design_output
         
 

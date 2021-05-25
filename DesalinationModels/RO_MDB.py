@@ -78,7 +78,7 @@ class RO_MDB(object):
         MDB_b_s =  RO_brine_salinity  * RO_brine / (RO_brine - MDB_Mprod)
                    # RO power[0],      FO power[1],   , RO_bs[2]         , FO_bs[3],Recovery rate[4],           #   RO permeate[5],     FO permeate[6],   Overall STEC,[7]                  Overall SEC[8],                            ,[9]Feed water flowrate
         #result = [RO_case.PowerTotal, Thermal_load[0], RO_brine_salinity, FO_b_s, (FO_Mprod+RO_permeate)/RO_feed, self.RO_capacity,     FO_Mprod,         STEC[0]*FO_Mprod/self.capacity,   RO_case.SEC_RO*RO_capacity/self.capacity,   RO_feed ]
-        
+        self.P_req = Thermal_load
         self.design_output = []
         self.design_output.append({'Name':'Overall recovery rate','Value':(MDB_Mprod+RO_permeate)/RO_feed * 100,'Unit':'%'})        
         self.design_output.append({'Name':'RO capacity','Value':self.RO_capacity,'Unit':'m3/day'})

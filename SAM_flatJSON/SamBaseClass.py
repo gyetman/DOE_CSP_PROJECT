@@ -125,7 +125,7 @@ class SamBaseClass(object):
 
             self.collector_cost = ETC_cost(aperture_area = self.sc_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'], capacity = solar_input['desal_thermal_power_req'] * 1000,
                                            EC = cost_input['EC'], yrs = cost_input['yrs'], int_rate = cost_input['int_rate'], coe = cost_input['coe'], p_OM = cost_input['p_OM'],
-                                           unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.design_output[0]['Value'])
+                                           unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.P_req)
             self.cost_out = self.collector_cost.lcoh()
             self.lcoh = self.cost_out[2]['Value']  
             
@@ -375,28 +375,32 @@ class SamBaseClass(object):
         elif desal == 'MDB':
             from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
             self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
-            self.design_output =  self.MDB.design()         
+            self.design_output =  self.MDB.design() 
+            self.P_req = self.MDB.P_req
 
         elif desal == 'ABS':
             from DesalinationModels.ABS import ABS
             self.ABS = ABS(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'], Tcond  = self.desal_values_json['Tcond'], pump_type= self.desal_values_json['pump_type'])
             self.design_output = self.ABS.design()        
-                
+            self.P_req = self.ABS.P_req
         
         elif desal == 'LTMED':
             from DesalinationModels.LT_MED_General import lt_med_general
             self.LTMED = lt_med_general(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['RR'], Tin = self.desal_values_json['Tin'] ,Ts = self.desal_values_json['Ts'], Nef  = self.desal_values_json['Nef'], Fossil_f= self.desal_values_json['Fossil_f'])
             self.design_output = self.LTMED.design()
-        
+            self.P_req = self.LTMED.P_req
+            
         elif desal == 'MEDTVC':
             from DesalinationModels.MED_TVC_General import med_tvc_general
             self.MEDTVC = med_tvc_general(Capacity = self.desal_values_json['Capacity'],Xf =self.desal_values_json['FeedC_r'], RR =self.desal_values_json['rr']/100,  Nef =self.desal_values_json['nef'], Tin =self.desal_values_json['tin'], Pm =self.desal_values_json['pm'], Fossil_f = self.desal_values_json['Fossil_f'] )
             self.design_output = self.MEDTVC.design()  
-                
+            self.P_req = self.MEDTVC.P_req
+            
         elif desal == 'FO':
             from DesalinationModels.FO_Generalized import FO_generalized
             self.FO = FO_generalized(Mprod = self.desal_values_json['Mprod'],FeedC_r =self.desal_values_json['FeedC_r'], T_sw =self.desal_values_json['T_sw'], NF_rr = self.desal_values_json['NF_rr'] ,RO_rr = self.desal_values_json['RO_rr'], A  = self.desal_values_json['A'], Fossil_f= self.desal_values_json['Fossil_f'], p_margin= self.desal_values_json['p_margin'], r= self.desal_values_json['r'], hm= self.desal_values_json['hm'], T_DS= self.desal_values_json['T_DS'], dT_sw_sup= self.desal_values_json['dT_sw_sup'], dT_prod= self.desal_values_json['dT_prod'], T_separator= self.desal_values_json['T_separator'], T_loss_sep= self.desal_values_json['T_loss_sep'], dT_hotin= self.desal_values_json['dT_hotin'], dT_hotout= self.desal_values_json['dT_hotout'], T_app_C= self.desal_values_json['T_app_C'], T_app_1B= self.desal_values_json['T_app_1B'], T_app_2B= self.desal_values_json['T_app_2B'])
             self.design_output = self.FO.FO_design()
+            self.P_req = self.FO.P_req            
             
         elif desal == 'OARO':
             from DesalinationModels.OARO import OARO
@@ -419,6 +423,7 @@ class SamBaseClass(object):
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
                                nFP = self.desal_values_json['nFP'],Nel1 = self.desal_values_json['Nel1'])
             self.design_output = self.RO_FO.design()
+            self.P_req = self.RO_FO.P_req
             
         elif desal == 'RO_MDB':
             from DesalinationModels.RO_MDB import RO_MDB
@@ -428,7 +433,8 @@ class SamBaseClass(object):
                                module = self.desal_values_json['module'],TCI_r = self.desal_values_json['TCI_r'],
                                TEI_r = self.desal_values_json['TEI_r'],FFR_r = self.desal_values_json['FFR_r'],
                                V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'])
-            self.design_output = self.RO_MDB.design()        
+            self.design_output = self.RO_MDB.design()  
+            self.P_req = self.RO_MDB.P_req
             
         # Write design output to json
         filename = desal + '_design_output' + self.timestamp + '.json'

@@ -487,7 +487,7 @@ def gather_data(x):
         updates.update({'footprint2':s['q_pb_des'] * 8})
 
         # add sam simulation output
-        so = helpers.json_load(cfg.sam_solar_simulation_outfile)
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
         updates.update({'actual_aperture':so[index]['Value']})
    

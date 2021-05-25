@@ -50,6 +50,7 @@ def build_file_lookup(solar,desal,finance,timestamp):
     #solar model variables and corresponding default values
     'solar_values_file' : json_defaults_dir / f'{solar}_{finance}.json',
     'solar_variables_file': json_infiles_dir/ f'{solar}_inputs.json',
+    'sam_solar_simulation_outfile': sam_results_dir / f'Solar_output{timestamp}.json'
     }
 
 
