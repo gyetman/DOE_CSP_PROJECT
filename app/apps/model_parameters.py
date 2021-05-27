@@ -803,7 +803,10 @@ def parametric_simulation(parametric_dict,
                 desal_model_outfile_path = Path(cfg.json_outpath / desal_model_outfile)
                 with desal_model_outfile_path.open('w') as write_file:
                     json.dump(desal_output_vars, write_file)
-                finance_model_outfile = f"{app['finance']}{timestamp}_inputs.json"
+                if app['solar'] == 'SC_FPC' or app['solar'] == 'SC_ETC':
+                    finance_model_outfile = f"lcoh_calculator{timestamp}_inputs.json"
+                else:
+                    finance_model_outfile = f"{app['finance']}{timestamp}_inputs.json"
                 finance_model_outfile_path = Path(cfg.json_outpath / finance_model_outfile)
                 with finance_model_outfile_path.open('w') as write_file:
                     json.dump(finance_output_vars, write_file)

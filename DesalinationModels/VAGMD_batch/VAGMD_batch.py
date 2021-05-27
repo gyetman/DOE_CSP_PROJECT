@@ -122,7 +122,7 @@ class VAGMD_batch(object):
             self.GOR.append(new_results[7])
             self.STEC.append(new_results[6])
         
-        self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.Vd, self.S, self.PFR, self.PFlux, self.RR, self.TCO, self.TEO, self.Ttank, self.ATml, self.ThPower, self.ThEnergy, self.AccThEnergy,  self.GOR, self.STEC])
+        self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.Vd, self.S, self.PFR, self.PFlux, self.RR, self.TCO, self.TEO, self.Ttank, self.ATml, self.ThPower, self.ThEnergy, self.AccThEnergy, self.CPower, self.CEnergy, self.AccCEnergy, self.GOR, self.STEC])
 
         self.df = pd.DataFrame(data=self.output,  index=['Step',                                                
                                                          'Operation time (min)',
@@ -138,11 +138,11 @@ class VAGMD_batch(object):
                                                          'Log mean temp difference (oC)',
                                                          'Thermal power (kW-th)',
                                                          'Thermal energy (kWh-th)',
-                                                         'Accumulated Thermal energy (kWh-th)',
-                                                         # 'CPower',
-                                                         # 'CEnergy',
-                                                         # 'AccCEnergy',
-                                                         'GOR (%)',
+                                                         'Accumulated thermal energy (kWh-th)',
+                                                         'Cooling power (kW-th)',
+                                                         'Cooling energy (kWh-th)',
+                                                         'Accumulated cooling energy (kWh-th)',
+                                                         'GOR (kg/kg)',
                                                          'STEC (kWh-th/m3)'])#,
                                # columns = [ str(i) for i in range(len(self.STEC))])         
         

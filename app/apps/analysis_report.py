@@ -306,21 +306,18 @@ def gather_data(x):
         updates.update({'sam_lcoe':f['sam_coe']})
         
     elif updates['desal'] == 'RO_FO':
-        # d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
-        # fossil_fuel = "Yes" if d['Fossil_f'] else "No"
-        # updates.update({'FeedC_r':d['FeedC_r'],
-        #                 'Capacity':d['nominal_daily_cap_tmp'],
-        #                 'storage_hour':d['storage_hour'],
-        #                 'fossil_fuel': fossil_fuel,
-        #                 'RR': d['R1'] * 100})
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['capacity']
+                        })
         # # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         # index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         # updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total grid electricity usage')
-        updates.update({'grid_usage':ds[index]['Value']})
+        updates.update({'grid_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total external thermal energy usage')
-        updates.update({'external_heat':ds[index]['Value']})
+        updates.update({'external_heat':ds[index]['Value']/1000})
 
         
         
@@ -328,10 +325,14 @@ def gather_data(x):
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
-        # updates.update({'electric_power_consumption':dd[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Specific energy consumption') 
-        # updates.update({'specific_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
+        updates.update({'electric_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption') 
+        updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','RO capacity')
+        updates.update({'RO_capacity':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','FO capacity') 
+        updates.update({'FO_capacity':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -346,21 +347,18 @@ def gather_data(x):
         updates.update({'water_prod':dc[index]['Value']})
        
     elif updates['desal'] == 'RO_MDB':
-        # d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
-        # fossil_fuel = "Yes" if d['Fossil_f'] else "No"
-        # updates.update({'FeedC_r':d['FeedC_r'],
-        #                 'Capacity':d['nominal_daily_cap_tmp'],
-        #                 'storage_hour':d['storage_hour'],
-        #                 'fossil_fuel': fossil_fuel,
-        #                 'RR': d['R1'] * 100})
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['capacity']
+                        })
         # # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         # index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
         # updates.update({'thermal_storage_capacity':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total grid electricity usage')
-        updates.update({'grid_usage':ds[index]['Value']})
+        updates.update({'grid_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total external thermal energy usage')
-        updates.update({'external_heat':ds[index]['Value']})
+        updates.update({'external_heat':ds[index]['Value']/1000})
 
         
         
@@ -368,10 +366,14 @@ def gather_data(x):
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
-        # updates.update({'electric_power_consumption':dd[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Specific energy consumption') 
-        # updates.update({'specific_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
+        updates.update({'electric_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption') 
+        updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','RO capacity')
+        updates.update({'RO_capacity':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','MD capacity') 
+        updates.update({'MD_capacity':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -637,6 +639,26 @@ def set_desal_config(x):
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         # html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
         ])
+    elif app['desal'] == "RO_FO":
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"RO capacity: {r['RO_capacity']:.1f} m3/day"),
+        html.Div(f"FO capacity: {r['FO_capacity']:.1f} m3/day"),
+        html.Div(f"Electric energy consumption: {r['electric_power_consumption']:.1f} kW(e)"),
+        html.Div(f"Thermal power consumption: {r['thermal_power_consumption']:.2f} MW(th)")
+        ])
+    elif app['desal'] == "RO_MDB":
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"RO capacity: {r['RO_capacity']:.1f} m3/day"),
+        html.Div(f"MD capacity: {r['MD_capacity']:.1f} m3/day"),
+        html.Div(f"Electric energy consumption: {r['electric_power_consumption']:.1f} kW(e)"),
+        html.Div(f"Thermal power consumption: {r['thermal_power_consumption']:.2f} MW(th)")
+        ])
 @app.callback(
     Output('solar-config', 'children'),
     [Input('data-initialize', 'children')])
@@ -722,8 +744,8 @@ def set_system_performance(x):
         html.H5('System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Overall recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} kWh"),
-        html.Div(f"Total external heat usage: {r['external_heat']:.0f} kWh"),
+        html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
+        html.Div(f"Total external heat usage: {r['external_heat']:.0f} MWh"),
         ])
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
         return ([

@@ -13,6 +13,7 @@ class MDB_cost(object):
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
                  fuel_usage = 0, # %
+                 RR = 30, # %
                  Area = 25.92 , # Membrane area (m2)
                  Pflux = 2.832,  # Permeate flux per module (l/h/module)
                  TCO  = 76.288, # Condenser channel outlet temperature (ºC)
@@ -73,7 +74,7 @@ class MDB_cost(object):
         self.th_module = th_module
         self.FFR = FFR
         self.coe = coe
-
+        self.Capacity = Capacity
         self.coh = coh
         self.sam_coh = sam_coh
 
@@ -101,7 +102,7 @@ class MDB_cost(object):
         self.pump_capacity = pump_capacity
         self.other = other
         self.other_capacity = other_capacity
-   
+        self.RR = RR / 100
         
     def lcow(self):
         self.module_cost = (self.MD_module*self.MD_module_capacity*(self.num_modules/self.MD_module_capacity)**0.8 + self.MD_membrane * self.Area * self.num_modules) 
@@ -110,7 +111,7 @@ class MDB_cost(object):
         self.LMTD = (self.delta_T2 - self.delta_T1) / math.log(self.delta_T2/self.delta_T1)
         self.HX_area = self.num_modules * self.th_module / self.HX_eff / 2.5 / self.LMTD
         self.HX_cost = 2 * ( self.endplates * (self.HX_area/self.endplates_capacity)**0.6 + self.HX * self.HX_area) 
-        self.Feed = self.FFR * self.num_modules / 1000
+        self.Feed = self.Capacity / 24 / self.RR
         self.other_cap = (self.h_r * (self.num_modules/self.h_r_capacity)**0.6 + self.tank * (self.num_modules/self.tank_capacity)**0.5 + self.pump*(self.Feed/self.pump_capacity)**0.6 + self.other *(self.num_modules/self.other_capacity)**0.3 + 0.25*5 + 2*self.heat_cool*(self.Feed/self.heat_cool_capacity)**0.6) 
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap / 1000)
 

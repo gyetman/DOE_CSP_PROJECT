@@ -219,7 +219,7 @@ class RO_FO(object):
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
         simu_output.append({'Name':'Storage Capacity','Value':self.storage_cap,'Unit':'kWh'})
         simu_output.append({'Name':'Grid electricity usage','Value':grid,'Unit':'kWh'})
-        simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
+        simu_output.append({'Name':'Annual water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total grid electricity usage','Value':sum(grid),'Unit':'kWh'})
         
