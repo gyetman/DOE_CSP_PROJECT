@@ -232,6 +232,7 @@ def set_theme_layer(theme):
 
 @app.callback([Output(RESULTS_MAP_ID, 'children'),
             Output('water-price', 'children')],
+            Output('price_difference', 'children'),
             [Input("price-factor",'value')],
             [Input("results-closest-facilities",'children')])
 def update_price_layers(price_factor,closest_from_map):
@@ -288,7 +289,8 @@ def update_price_layers(price_factor,closest_from_map):
             dl.LayerGroup(id="results-closest-facilities",children=closest_from_map),
             html.Div(id='results-theme-layer'),
             ],
-        f'Projected LCOW from desalination: ${model_price:,.2f}'
+        f'Projected LCOW from desalination: ${model_price:,.2f}',
+        html.P(f'Price difference between model and factor: ${abs(model_price - price_factor * model_price):.2f}',id="price_difference")
 
     )
 
@@ -375,10 +377,12 @@ def get_info(features):
         #feature is Power Plant
         else:
             header = ['Power Plant\n', html.Br()] 
-            name = feature['properties']['name']
-            capacity_field = feature['properties']['capacity_mw']
+            name = feature['properties']['Plant_name']
+            fuel = feature['properties']['Plant_primary_fuel']
+            capacity_field = feature['properties']['Plant_nameplate_capacity__MW_']
             units = 'MW'
             return header + [html.B(name), html.Br(),
+                f"Fuel: {fuel}", html.Br(),
                 f"Capacity: {float(capacity_field):,.1f} {units}"]
     else:
         return ['Hover over a feature']
