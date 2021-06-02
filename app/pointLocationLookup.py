@@ -52,7 +52,7 @@ defaultLayers = {
     'ghi':{'raster':cfg.gis_query_path / 'GHI.tif'},
     'desalPlants':{'point':cfg.gis_query_path / 'global_desal.shp'},
     #'desalPlants':{'point':cfg.gis_query_path / 'global_desal_plants.geojson'},
-    'powerPlants':{'point':cfg.gis_query_path / 'PowerPlantsPotenialEnergy.shp'},
+    'powerPlants':{'point':cfg.gis_query_path / 'power_plants.geojson'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
@@ -372,27 +372,27 @@ def _generateMarkdown(theme, atts, pnt):
         power = atts['powerPlants']['properties']
         power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
         power_dist = _calcDistance(pnt,power_pt)
-        mdown += f"**Closest power plant** ({power_dist:,.1f} km), name: {power.get('Plant_name')}  \n"
+        mdown += f"**Closest power plant** ({power_dist:,.1f} km): {power.get('Plant_name')}  \n"
 
-        mdown += f"Primary generation: {power.get('Plant_prim')}  \n"
+        mdown += f"Primary generation: {power.get('Plant_primary_fuel')}  \n"
         try:
-            mdown += f"Production: {power.get('Plant_tota'):,.0f} MWh  \n"
+            mdown += f"Nameplate Capacity: {power.get('Plant_nameplate_capacity__MW_'):,.0f} MW  \n"
         except:
             mdown += f"Production: -  \n"
-        mdown += f"Total Annual Production: {power.get('Plant_annu'):,.1f} GJ  \n"
+        mdown += f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  \n"
         try:
-            mdown += f"Exhaust Residual Heat: {power.get('Exhaust_Re'):,.0f} MJ (91 C < T < 128 C)  \n"
+            mdown += f"Year of data: {power.get('Data_Year')}  \n"
         except:
-            mdown += f"Exhaust Residual Heat: -  \n"
-        try:
-            mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
-        except:
-            mdown += f"Condenser Heat: -  \n"
+            pass
+        # try:
+        #     mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
+        # except:
+        #     mdown += f"Condenser Heat: -  \n"
 
     water = atts['waterPrice']['properties']
     mdown += f"**Residential Water Prices**  \n"
     try:
-
+        mdown += f"Utility provider: {water.get('UtilityShortName')}  \n"
         mc6 = water.get('CalcTot6M3CurrUSD')
         mc15 = water.get('CalcTot15M3CurrUSD')
         mc50 = water.get('CalcTot50M3CurrUSD')
@@ -432,7 +432,7 @@ def _generateMarkdown(theme, atts, pnt):
     except Exception as e:
         logging.error(e)
         mdown += f"Residential price: -  \n"
-    mdown += f"Residential provider: {water.get('UtilityShortName')}  \n"
+
 
     if atts['tx_county']:
         tx_prices = atts['tx_county']['properties']

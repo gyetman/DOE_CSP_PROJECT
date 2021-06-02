@@ -295,10 +295,12 @@ def info_hover(features):
         #feature is Power Plant
         else:
             header = ['Power Plant\n', html.Br()] 
-            name = feature['properties']['name']
-            capacity_field = feature['properties']['capacity_mw']
+            name = feature['properties']['Plant_name']
+            fuel = feature['properties']['Plant_primary_fuel']
+            capacity_field = feature['properties']['Plant_nameplate_capacity__MW_']
             units = 'MW'
             return header + [html.B(name), html.Br(),
+                f"Fuel: {fuel}", html.Br(),
                 f"Capacity: {float(capacity_field):,.1f} {units}"]
     else:
         return ['Hover over a feature']
