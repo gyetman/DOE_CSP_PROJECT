@@ -16,8 +16,7 @@ import pandas as pd
 app.title = "Analysis Report"
 
 chart_navbar = dbc.NavbarSimple(
-    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
-              dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
+    children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
               dbc.NavItem(dbc.NavLink("Report"), active=True),
               dbc.NavItem(dbc.NavLink("Results Map", href='/results-map')),
               html.P(id='data-initialize')],
@@ -455,11 +454,11 @@ def gather_data(x):
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-      
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
-        updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        
+        dd = helpers.json_load(flkup['desal_design_outfile'])        
+        updates.update({'specific_thermal_power_consumption':dd['STEC']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -481,7 +480,52 @@ def gather_data(x):
         updates.update({'labor':dc[index]['Value']})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
+        
+    elif updates['desal'] == 'Generic':
+        d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
+        fossil_fuel = "Yes" if d['Fossil_f'] else "No"
+        updates.update({'FeedC_r':d['FeedC_r'],
+                        'Capacity':d['Capacity'],
+                        'storage_hour':d['storage_hour'],
+                        'fossil_fuel': fossil_fuel,
+                        'RR': d['RR']})
+        # add specific data from desal simulation output
+        ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
+        updates.update({'thermal_storage_capacity':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total fossil fuel usage')
+        updates.update({'fossil_usage':ds[index]['Value']/1000})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
+        updates.update({'water_prod':ds[index]['Value']})
+        
+        
+        # add specific data from desal design output
+        dd = helpers.json_load(flkup['desal_design_infile'])
+      
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        updates.update({'thermal_power_consumption':dd[index]['Value'] * 1000})
 
+        # add specific data from desal cost output
+        dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
+        updates.update({'lcow':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from fossile fuel)')
+        updates.update({'lcoh':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
+        updates.update({'sam_lcoh':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        # updates.update({'capital_cost':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
+        # updates.update({'energy_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
+        updates.update({'capital_cost':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
+        updates.update({'ops_cost':dc[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dc,'Name','Labor cost')
+        # updates.update({'labor':dc[index]['Value']})
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'lcoe':f['coe']})
+        
     if updates['solar'] == 'linear_fresnel_dsg_iph':
         # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
@@ -660,6 +704,17 @@ def set_desal_config(x):
         html.Div(f"Electric energy consumption: {r['electric_power_consumption']:.1f} kW(e)"),
         html.Div(f"Thermal power consumption: {r['thermal_power_consumption']:.2f} MW(th)")
         ])
+    elif app['desal'] == "Generic":
+        return ([
+        html.H5('Desalination System Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
+        html.Div(f"Design capacity: {r['Capacity']} m3/day"),
+        html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
+        html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
+        # html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+        html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
+        ])
 @app.callback(
     Output('solar-config', 'children'),
     [Input('data-initialize', 'children')])
@@ -772,7 +827,7 @@ def set_system_performance(x):
         dash_table.DataTable(id='table',
                               columns= [{"name": i, "id": i} for i in df.columns], 
                               data=df.to_dict('records'),
-                              style_cell={'backgroundColor': 'rgb(230, 247, 240)','color':'black'},
+                              style_cell={'backgroundColor': 'rgb(230, 247, 240)','color':'black','font-size':'12px'},
                               style_header = {'fontWeight':'bold','color':'rgb(9, 131, 143)','font-size':'16px'},
                               style_cell_conditional=[
                                   {
@@ -782,7 +837,13 @@ def set_system_performance(x):
                               export_format = 'xlsx'
                               ),
         ])
-
+    elif app['desal'] == 'Generic':
+        return ([
+        html.H5('System Performance', className='card-title'),
+        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        ])
 @app.callback(
     Output('cost-analysis', 'children'),
     [Input('data-initialize', 'children')])
@@ -837,4 +898,18 @@ def set_cost_analysis(x):
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
           
         ])
-    
+    elif app['desal'] =='Generic':
+        return ([
+        html.H5('Cost Analysis', className='card-title'),
+
+        html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
+        html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
+        html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
+        html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
+
+        # html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
+        # html.Div(f"Unit CAPEX: {r['unit_capex']:.2f} $/m3/day"),
+        # html.Div(f"Labor cost: {r['labor']:.2f} $/m3"),          
+        ])    

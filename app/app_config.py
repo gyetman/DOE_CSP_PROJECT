@@ -108,7 +108,7 @@ SAMD = "/assets/docs/sam-help-2018-11-11.pdf"
 SDAT = "/assets/docs/documentation.pdf"
 Documentation = {
     #Desal
-    'FO':{'doc':SDAT,'page':27}, 'VAGMD':{'doc':SDAT,'page':27}, 'MDB':{'doc':SDAT,'page':27}, 'LTMED':{'doc':SDAT,'page':27}, 'ABS':{'doc':SDAT,'page':27}, 'MEDTVC':{'doc':SDAT,'page':27}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':27}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':27}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':27}, 'RO_MDB':{'doc':SDAT,'page':27},
+    'FO':{'doc':SDAT,'page':27}, 'VAGMD':{'doc':SDAT,'page':27}, 'MDB':{'doc':SDAT,'page':27}, 'LTMED':{'doc':SDAT,'page':27}, 'ABS':{'doc':SDAT,'page':27}, 'MEDTVC':{'doc':SDAT,'page':27}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':27}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':27}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':27}, 'RO_MDB':{'doc':SDAT,'page':27}, , 'Generic':{'doc':SDAT,'page':27}
     #Financial
     'utilityrate5':{'doc':SDAT,'page':30}, 'lcoefcr':{'doc':SDAT,'page':30}, 'iph_to_lcoefcr':{'doc':SDAT,'page':30}, 'levpartflip':{'doc':SDAT,'page':30}, 'equpartflip':{'doc':SDAT,'page':30}, 'saleleaseback':{'doc':SDAT,'page':30}, 'singleowner':{'doc':SDAT,'page':30},
     #Solar

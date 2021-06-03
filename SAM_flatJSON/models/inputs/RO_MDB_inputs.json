@@ -110,9 +110,45 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "Ttank",
+            "Label": "Initial temperature of feed water (Valid range: 20 to 30)",
+            "Units": "oC",
+            "Require": "*",
+            "Constraint": "<1101,>399",
+            "Tab": "VAGMD-batch"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "RR",
             "Label": "Recovery rate",
             "Units": "%",
+            "Require": "*",
+            "Constraint": "<1101,>399",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_STRING",
+            "Name": "j",
+            "Label": "Type of cooling system ('o' for open circuit, 'c' for closed circuit",
+            "Units": "",
+            "Require": "*",
+            "Constraint": "<1101,>399",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TCoolIn",
+            "Label": "Initial temperature of the cooling water (Valid range: < Feed water temperature)",
+            "Units": "oC",
+            "Require": "*",
+            "Constraint": "<1101,>399",
+            "Tab": "VAGMD-batch"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt",
+            "Label": "Time step for the simulation (Recommended range: 10 to 480)",
+            "Units": "second",
             "Require": "*",
             "Constraint": "<1101,>399",
             "Tab": "VAGMD-batch"

@@ -12,6 +12,7 @@ import numpy as np
 import math
 import pandas as pd
 from pathlib import Path
+import math
 import json
 
 import app_config as cfg
@@ -28,7 +29,12 @@ class VAGMD_batch(object):
         RR     = 30,  # Recovery rate
         
         Capacity = 1000, # System Capcity (m3/day)
-        Fossil_f = 1 # Fossil fuel fraction
+        Fossil_f = 1, # Fossil fuel fraction
+        
+        j = 'c', # cooling system: 'c' for closed, 'o' for open
+        Ttank = 25, # Initial temeprature of the saline feed
+        TCoolIn = 15, # Initial tmeeprature of the cooling water
+        dt = 60, # Time step for the simulation (< 480 second)
         ):
         
         self.module  = module
@@ -42,24 +48,25 @@ class VAGMD_batch(object):
         self.V0       = V0
         self.RR       = RR
         self.Fossil_f = Fossil_f        
-      
+        self.j = j
+        self.Ttank = Ttank
+        self.TCoolIn = TCoolIn
+        self.dt = dt
         self.base_path = Path(__file__).resolve().parent.parent.parent.absolute()
 
     def design(self):
         Vdisch  = 3.2175 # (L)
         minS   = 35     # (g/L)       
-        
+        maxS   = 292.2 # g/L
         if self.module == 0:
-            maxS = 175.3
             k = 7
             self.Area = self.Area_small
         else:
-            maxS = 105
             k = 26
             self.Area = self.Area_big
         
         RRf   = 100 * (1 - self.FeedC_r/maxS) # Maximum value of final recovery ratio allowed
-        maxRR = 100 * (1 - (minS/maxS))  # 
+        # maxRR = 100 * (1 - (minS/maxS))  # 
 
         if self.RR > RRf:
             raise Exception("The recovery rate must be below ", RRf, "%")
@@ -67,86 +74,123 @@ class VAGMD_batch(object):
         
         self.Sf = self.FeedC_r / ( 1 - self.RR/100)  # Final feed salinity (g/L)  
        
+       # Selection of model and ocoling system
+        if ( k == 7 and self.Sf > 175.3) or ( k ==26 and self.Sf > 140.2):
+            self.TEI_r = 80
+            self.FFR_r = 1100
+            self.TCI_r = 25
+            self.j = 'c' # cooling circuit is closed to maintain TCI constant
+        
+       
         #  Calculate [PFlux, TCO, TEO, PFR, ATml, ThPower, STEC, GOR]
         #                 0,   1,   2,   3,    4,       5,    6,   7
-        results = self.VAGMD_Models_NaCl(self.TEI_r, self.FFR_r, self.TCI_r, self.FeedC_r, k)
+        
+        results = self.VAGMD_Models_NaCl(self.TEI_r, self.FFR_r, self.TCI_r, self.FeedC_r, k, self.Ttank)
+        #  Calculate [PFlux, TCO, TEO, RhoF, CpF, RhoC, CpC, RhoP, AHvP, A, ATml, ThPower, STEC, GOR]
+        #             0      1    2    3     4    5     6    7     8     9   10   11       12    13
     
+        U = 3168 # Wth/m2/oC (overall heat transefr coefficient)
+        AHX = 1.34 # m2 (effective heat transfer surface)
+        self.CFR = 1265 # l/h (cooling flow rate)
+        self.TCoolIn = [self.TCoolIn]        
+        
         # Initialize the time series
-        self.t = [0]
-        self.tminute = [0]
-        self.V = [self.V0]
+        self.PFlux = [results[0]] # kg/h/m2        
+        self.PFR   = [results[0] * results[9]] # kg/h
         self.Vd = [0]
+        self.AccVd = [0]
+        self.Discharges = [math.floor(self.AccVd[0] / Vdisch)]
+        self.t = [0]        
+        self.tminute = [0]  
+        self.R = [0]
         self.S = [self.FeedC_r]
-        self.RR = [0]
-        self.PFlux = [results[0]] # kg/h/m2
-        self.PFR   = [results[3]] # kg/h
+        self.RR = [100 * ( 1- ((self.FFR_r - self.PFR[0])/self.FFR_r*(self.S[0]/self.S[0])*(1-self.R[0]/100)))]
         self.TCO   = [results[1]]
         self.TEO   = [results[2]]    
-        self.ATml  = [results[4]] 
-        self.ThPower = [results[5]] # kW(th)
-        t_next = Vdisch / self.PFR[0]
-        self.Ttank = [(self.FFR_r * t_next * self.TEO[0] + self.V0 * self.TCI_r) / (self.V0 + self.FFR_r * t_next)] 
+        self.ATml  = [results[10]]
+        self.ThPower = [results[11]] # kW(th)             
         self.ThEnergy = [0] # kW(th)
         self.AccThEnergy = [0]  # kW(th)
-        self.CPower = [self.FFR_r / 3600 * 4180 * (self.Ttank[0] - self.TCI_r) / 1000]  # kW(th)
+        self.TCoolOut = [20]
+        self.Ch = [0]
+        self.Cc = [0]
+        self.Eff = [0]        
+        self.CPower = [0]  # kW(th)
         self.CEnergy = [0] # kWh(th)
-        self.AccCEnergy = [0] # kWh(th)
-        self.GOR = [results[7]]
-        self.STEC = [results[6]]
+        self.AccCEnergy = [0] # kWh(th)        
+        self.GOR = [0]
+        self.STEC = [0]
+        self.V = [self.V0]
+        
+        self.RhoF = results[3]
+        self.CpF = results[4]
+        self.RhoC = results[5]        
+        self.CpC = results[6]
+        
+        self.TCI = [self.TCI_r]
+        self.Ttank = [self.Ttank]
         
         # Complete the time series
-        while self.S[-1] < self.Sf:
-            self.t.append(self.t[-1]+t_next)
+        while self.S[-1] < self.Sf and self.V[-1] > 0:
+            self.t.append(self.t[-1]+ self.dt/3600)
             self.tminute.append(self.t[-1]*60)
-            
-            self.V.append(self.V[-1] - Vdisch)
-            self.Vd.append(self.Vd[-1] + Vdisch)
+            self.Vd.append(self.PFR[-1] * self.dt/3600)
+            self.V.append(self.V[-1] - self.Vd[-1])
             self.S.append(self.V[-2]/self.V[-1]*self.S[-1])
+            self.Ttank.append((self.FFR_r * self.dt/3600 * self.TEO[-1] + self.V[-2] * self.Ttank[-1]) / (self.V[-2] + self.FFR_r * self.dt/3600))
+            self.Ch.append(self.FFR_r * self.RhoF * self.CpF / 3600 / 1000) # Wth/oC
+            self.Cc.append(self.CFR * self.RhoC * self.CpC / 3600 / 1000)
+            self.Cmin = min(self.Ch[-1], self.Cc[-1])
+            self.Cmax = max(self.Ch[-1], self.Cc[-1]) 
+            self.NTU = U * AHX / self.Cmin
+            self.Eff.append( (1-math.exp(-(1-(self.Cmin/self.Cmax))*self.NTU))/(1-self.Cmin/self.Cmax*math.exp(-(1-(self.Cmin/self.Cmax))*self.NTU)))
             
-            new_results = self.VAGMD_Models_NaCl(self.TEI_r, self.FFR_r, self.TCI_r, self.S[-1], k)
+            if self.j == 'o':
+                self.TCoolIn.append(self.TCoolIn[-1])
+                self.CPower.append(self.Eff[-1] * self.Cmin * (self.Ttank[-1] - self.TCoolIn[-1]) / 1000) # kWth
+                self.TCoolOut.append(self.TCoolIn[-1] + (self.CPower[-1] * 1000 / self.Cc[-1]))
+                self.TCI.append(self.Ttank[-1] - self.CPower[-1] * 1000 / self.Ch[-1])
+
+            else:
+                self.TCI.append(self.TCI[-1])
+                self.CPower.append(self.Ch[-1] * (self.Ttank[-1]-self.TCI[-1])/1000)
+                self.TCoolIn.append(self.Ttank[-1] - self.CPower[-1] * 1000 / (self.Eff[-1] * self.Cmin))
+                self.TCoolOut.append(self.TCoolIn[-1] + self.Ch[-1] / self.Cc[-1] * (self.Ttank[-1] - self.TCI[-1]))
+            
+            new_results = self.VAGMD_Models_NaCl(self.TEI_r, self.FFR_r, self.TCI[-1], self.S[-1], k, self.Ttank[-1])
             self.PFlux.append(new_results[0])
-            self.PFR.append(new_results[3])
-            self.RR.append(100*(1-self.S[0]/self.S[-1]))
+            self.PFR.append(new_results[0] * new_results[9])
+            self.AccVd.append(self.Vd[-1] + self.AccVd[-1])
+            self.Discharges.append(math.floor(self.AccVd[-1]/ Vdisch))
+            self.R.append(100 * (1-self.S[0]/self.S[-1]))
+            self.RR.append(100 * ( 1- ((self.FFR_r - self.PFR[-1])/self.FFR_r*(self.S[-1]/self.S[0])*(1-self.R[-1]/100))))
             self.TCO.append(new_results[1])
-            self.TEO.append(new_results[2])            
-            self.ATml.append(new_results[4])            
-            self.ThPower.append(new_results[5])
-            
-            t_next = Vdisch / self.PFR[-1] 
-            self.Ttank.append( (self.FFR_r * t_next * self.TEO[-1] + self.V[-1] * self.TCI_r) / (self.V[-1] + self.FFR_r * t_next))
-            self.ThEnergy.append(self.ThPower[-1] * (self.t[-1]-self.t[-2]))
-            self.AccThEnergy.append(self.ThEnergy[-1] + self.AccThEnergy[-1])
-            self.CPower.append(self.FFR_r / 3600 * 4180 * (self.Ttank[-1] - self.TCI_r) / 1000)
-            self.CEnergy.append(self.CPower[-1] * (self.t[-1] - self.t[-2]))
+            self.TEO.append(new_results[2])             
+            self.ATml.append(new_results[10])
+            self.ThPower.append(new_results[11])    # kW-th        
+            self.ThEnergy.append(self.ThPower[-1] * self.dt/3600)
+            self.AccThEnergy.append(self.ThEnergy[-1] + self.AccThEnergy[-1])            
+            self.CEnergy.append(self.CPower[-1] * (self.t[-1] - self.t[-2]))            
             self.AccCEnergy.append(self.CEnergy[-1] + self.AccCEnergy[-1])
-            self.GOR.append(new_results[7])
-            self.STEC.append(new_results[6])
+            self.GOR.append(new_results[13])
+            self.STEC.append(new_results[12])
         
-        self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.Vd, self.S, self.PFR, self.PFlux, self.RR, self.TCO, self.TEO, self.Ttank, self.ATml, self.ThPower, self.ThEnergy, self.AccThEnergy, self.CPower, self.CEnergy, self.AccCEnergy, self.GOR, self.STEC])
+
+        
+        self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.AccVd, self.S, self.PFlux, self.R, self.ThEnergy, self.CEnergy])
 
         self.df = pd.DataFrame(data=self.output,  index=['Step',                                                
-                                                         'Operation time (min)',
-                                                         'Batch volume (m3)',
-                                                         'Discharged volume (m3)',
-                                                         'Brine salinity (g/L)',
-                                                         'Permeate flow rate (kg/hr)',
-                                                         'Permeate flux (kg/hr/m2)',
-                                                         'Recovery rate (%)',
-                                                         'Condenser outlet temperature (oC)',
-                                                         'Evaporator outlet temperature (oC)',
-                                                         'Tank temperature (oC)',
-                                                         'Log mean temp difference (oC)',
-                                                         'Thermal power (kW-th)',
-                                                         'Thermal energy (kWh-th)',
-                                                         'Accumulated thermal energy (kWh-th)',
-                                                         'Cooling power (kW-th)',
-                                                         'Cooling energy (kWh-th)',
-                                                         'Accumulated cooling energy (kWh-th)',
-                                                         'GOR (kg/kg)',
-                                                         'STEC (kWh-th/m3)'])#,
-                               # columns = [ str(i) for i in range(len(self.STEC))])         
+                                                          'Operation time (min)',
+                                                          'Batch volume (L)',
+                                                          'Accumulated discharge volume (L)',
+                                                          'Brine salinity (g/L)',
+                                                          'Permeate flux (kg/hr/m2)',
+                                                          'Recovery rate (%)',
+                                                          'Thermal energy (kWh-th)',
+                                                          'Cooling energy (kWh-th)',])#,
+                                # columns = [ str(i) for i in range(len(self.STEC))])         
         
-        self.num_modules = math.ceil(self.Capacity *1000 / (self.Vd[-1] / self.t[-1] * 24) )
+        self.num_modules = math.ceil(self.Capacity *1000 / (self.AccVd[-1] / self.t[-1] * 24) )
         self.ave_stec = sum(self.STEC)/len(self.STEC)
         self.PFlux_avg= sum(self.PFlux) / len(self.PFlux)
         self.df = self.df.round(decimals = 1)
@@ -155,19 +199,26 @@ class VAGMD_batch(object):
         # self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
         
         self.design_output = []
+        self.design_output.append({'Name':'Selected module size','Value':self.Area,'Unit':'m2'})
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
-        self.design_output.append({'Name':'Maximum recovery rate allowed','Value':RRf,'Unit':'%'})  
-        self.design_output.append({'Name':'Actual recovery rate','Value':self.RR[-1],'Unit':'%'})          
-        self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
-        self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
+        self.design_output.append({'Name':'Maximum potential recovery rate','Value':RRf,'Unit':'%'})  
+        self.design_output.append({'Name':'Actual recovery rate','Value':self.R[-1],'Unit':'%'})    
+        self.design_output.append({'Name':'Final brine salinity','Value':self.Sf,'Unit':'g/L'})      
+        # self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
+        # self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
         self.design_output.append({'Name':'Thermal power consumption','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
+        if ( k == 7 and self.Sf > 175.3):
+            self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
+        if ( k == 26 and self.Sf > 140.2):
+            self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 140.2 g/L in module AS26C2.7L(373), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
         
+                
         
         return self.design_output
                 
-    def VAGMD_Models_NaCl(self, TEI_r, FFR_r, TCI_r, Sgl_r, k):
+    def VAGMD_Models_NaCl(self, TEI_r, FFR_r, TCI_r, Sgl_r, k, Ttank):
         a1 = 0.983930048493388
         a2 = -4.8359231959954E-04
         S_r = a1 * Sgl_r + a2 * Sgl_r**2             
@@ -184,44 +235,85 @@ class VAGMD_batch(object):
         if k == 7:
             A = 7.2
             self.Area = 7.2
-            FullModel_PFlux268 = matfile['FullModel_PFlux268'].transpose().tolist()[0]      
-            FullModel_TCO268 = matfile['FullModel_TCO268'].transpose().tolist()[0]
-            FullModel_TEO268 = matfile['FullModel_TEO268'].transpose().tolist()[0]
-            
-            TEI_c = np.dot(FullModels_CoderVars[0], FullModels_Coder[0])
-            FFR_c = np.dot(FullModels_CoderVars[1], FullModels_Coder[1])
-            TCI_c = np.dot(FullModels_CoderVars[2], FullModels_Coder[2])
-            S_c   = np.dot(FullModels_CoderVars[3], FullModels_Coder[3])
+            if self.Sf > 175.3:
+                FullModel_PFlux268 = matfile['FullModel_PFlux268_high'].transpose().tolist()[0]        
+                FullModel_TCO268 = matfile['FullModel_TCO268_high'].transpose().tolist()[0]
+                FullModel_TEO268 = matfile['FullModel_TEO268_high'].transpose().tolist()[0]                
+                
+                TEI_c = 0
+                FFR_c = 0
+                TCI_c = 0
+                S_c = S_r
 
-            FullModels_VarsPFlux268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
-            PFlux = np.dot(FullModel_PFlux268, FullModels_VarsPFlux268)
+                FullModels_VarsPFlux268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                PFlux = np.dot(FullModel_PFlux268, FullModels_VarsPFlux268)
+                
+                FullModels_VarsTCO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, FFR_c**2, S_c**2, FFR_c**3]
+                TCO   = np.dot(FullModel_TCO268, FullModels_VarsTCO268)
             
-            FullModels_VarsTCO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, FFR_c**2, S_c**2, FFR_c**3]
-            TCO   = np.dot(FullModel_TCO268, FullModels_VarsTCO268)
-        
-            FullModels_VarsTEO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
-            TEO   = np.dot(FullModel_TEO268, FullModels_VarsTEO268)
+                FullModels_VarsTEO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TEO   = np.dot(FullModel_TEO268, FullModels_VarsTEO268)                
+                
+                
+            else:
+                FullModel_PFlux268 = matfile['FullModel_PFlux268_low'].transpose().tolist()[0]      
+                FullModel_TCO268 = matfile['FullModel_TCO268_low'].transpose().tolist()[0]
+                FullModel_TEO268 = matfile['FullModel_TEO268_low'].transpose().tolist()[0]
+                
+                TEI_c = np.dot(FullModels_CoderVars[0], FullModels_Coder[0])
+                FFR_c = np.dot(FullModels_CoderVars[1], FullModels_Coder[1])
+                TCI_c = np.dot(FullModels_CoderVars[2], FullModels_Coder[2])
+                S_c   = np.dot(FullModels_CoderVars[3], FullModels_Coder[3])
+    
+                FullModels_VarsPFlux268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                PFlux = np.dot(FullModel_PFlux268, FullModels_VarsPFlux268)
+                
+                FullModels_VarsTCO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, FFR_c**2, S_c**2, FFR_c**3]
+                TCO   = np.dot(FullModel_TCO268, FullModels_VarsTCO268)
+            
+                FullModels_VarsTEO268 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TEO   = np.dot(FullModel_TEO268, FullModels_VarsTEO268)
         
         elif k == 26:
             A = 25.92
             self.Area = 25.92
-            FullModel_PFlux373 = matfile['FullModel_PFlux373'].transpose().tolist()[0]
-            FullModel_TCO373   = matfile['FullModel_TCO373'].transpose().tolist()[0]
-            FullModel_TEO373   = matfile['FullModel_TEO373'].transpose().tolist()[0]
+            if self.Sf > 140.2:
+                FullModel_PFlux373 = matfile['FullModel_PFlux373_high'].transpose().tolist()[0]
+                FullModel_TCO373   = matfile['FullModel_TCO373_high'].transpose().tolist()[0]
+                FullModel_TEO373   = matfile['FullModel_TEO373_high'].transpose().tolist()[0]                
+
+                TEI_c = 0
+                FFR_c = 0
+                TCI_c = 0
+                S_c = S_r
+
+                FullModels_VarsPFlux373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                PFlux = np.dot(FullModel_PFlux373, FullModels_VarsPFlux373) 
             
-            TEI_c = np.dot(FullModels_CoderVars[0], FullModels_Coder[4])
-            FFR_c = np.dot(FullModels_CoderVars[1], FullModels_Coder[5])
-            TCI_c = np.dot(FullModels_CoderVars[2], FullModels_Coder[6])
-            S_c   = np.dot(FullModels_CoderVars[3], FullModels_Coder[7])  
+                FullModels_VarsTCO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TCO   = np.dot(FullModel_TCO373, FullModels_VarsTCO373) 
+                
+                FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)                
+                
+            else:                
+                FullModel_PFlux373 = matfile['FullModel_PFlux373_low'].transpose().tolist()[0]
+                FullModel_TCO373   = matfile['FullModel_TCO373_low'].transpose().tolist()[0]
+                FullModel_TEO373   = matfile['FullModel_TEO373_low'].transpose().tolist()[0]
+                
+                TEI_c = np.dot(FullModels_CoderVars[0], FullModels_Coder[4])
+                FFR_c = np.dot(FullModels_CoderVars[1], FullModels_Coder[5])
+                TCI_c = np.dot(FullModels_CoderVars[2], FullModels_Coder[6])
+                S_c   = np.dot(FullModels_CoderVars[3], FullModels_Coder[7])  
+                
+                FullModels_VarsPFlux373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                PFlux = np.dot(FullModel_PFlux373, FullModels_VarsPFlux373) 
             
-            FullModels_VarsPFlux373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
-            PFlux = np.dot(FullModel_PFlux373, FullModels_VarsPFlux373) 
-        
-            FullModels_VarsTCO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
-            TCO   = np.dot(FullModel_TCO373, FullModels_VarsTCO373) 
-            
-            FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
-            TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)
+                FullModels_VarsTCO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TCO   = np.dot(FullModel_TCO373, FullModels_VarsTCO373) 
+                
+                FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)
             
         P = 101325 #% [Pa].
         nullS = 0 #% [g/kg].
@@ -229,7 +321,8 @@ class VAGMD_batch(object):
         CpF = SW_SpcHeat(TEI_r,'c',S_r,'ppt',P,'pa') #% [J/kg/ºC].
         RhoP = SW_Density(((TEI_r + TCI_r) / 2),'c',nullS,'ppt',P,'pa') # % [kg/m3].
         AHvP = SW_LatentHeat(((TEI_r + TCI_r) / 2),'c',nullS,'ppt') #% [J/kg].  
-        
+        RhoC = SW_Density(((TCI_r + Ttank ) / 2), 'c', nullS, 'ppt', P, 'pa') # [kg/m3]
+        CpC = SW_SpcHeat((TCI_r + Ttank ) /2,'c',S_r,'ppt',P,'pa') #% [J/kg/ºC].
         # Permeate flow rate (kg/h)
         PFR = PFlux * A
         
@@ -245,12 +338,13 @@ class VAGMD_batch(object):
         # GOR 
         GOR = PFR * AHvP * RhoP / ThPower / 3600 / 1000 / 1000
         
-        return [PFlux, TCO, TEO, PFR, ATml, ThPower, STEC, GOR]
+        # return [PFlux, TCO, TEO, PFR, ATml, ThPower, STEC, GOR]
+        return [PFlux, TCO, TEO, RhoF, CpF, RhoC, CpC, RhoP, AHvP, A, ATml, ThPower, STEC, GOR]
     
     
     def simulation(self, gen, storage):
         self.thermal_load = sum(self.ThEnergy) / self.t[-1] * self.num_modules # kWh per hour
-        self.max_prod = self.Vd[-1] / self.t[-1] /1000 * self.num_modules # m3/h
+        self.max_prod = self.AccVd[-1] / self.t[-1] /1000 * self.num_modules # m3/h
         self.storage_cap = storage * self.thermal_load # kWh
         
         to_desal = [0 for i in range(len(gen))]

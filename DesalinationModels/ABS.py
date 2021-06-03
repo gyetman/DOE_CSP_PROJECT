@@ -143,8 +143,11 @@ class ABS(object):
         self.T_sh = np.dot(abs_params[2],abs_coeff[2])        
         self.T_gen = np.dot(abs_params[3],abs_coeff[3])
                 
-        print(self.COP, self.sA_pump, self.T_sh, self.T_gen)
-         
+
+        self.STEC = self.STEC / self.COP
+        self.PR = self.PR * self.COP
+        self.GOR = self.GOR * self.COP
+        
         self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})

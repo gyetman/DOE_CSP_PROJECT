@@ -36,7 +36,10 @@ class RO_MDB(object):
                  # FeedC_r = 35,
                  V0 = 30,
                  RR = 30,
-                 
+                 j = 'c', # cooling system: 'c' for closed, 'o' for open
+                 Ttank = 25, # Initial temeprature of the saline feed
+                 TCoolIn = 15, # Initial tmeeprature of the cooling water
+                 dt = 60 # Time step for the simulation (< 480 second)                 
                  
                  ):
         self.capacity = capacity
@@ -49,6 +52,10 @@ class RO_MDB(object):
         self.FFR_r = FFR_r
         self.V0 = V0
         self.RR = RR / 100
+        self.j = j
+        self.Ttank = Ttank
+        self.TCoolIn = TCoolIn
+        self.dt = dt        
 
         self.nERD=nERD
         self.nBP=nBP
@@ -70,7 +77,8 @@ class RO_MDB(object):
         MDB_Mprod = self.capacity - self.RO_capacity
         
         self.MDB = VAGMD_batch( module = self.module, FeedC_r = RO_brine_salinity, RR=self.RR, Capacity = MDB_Mprod, TEI_r = self.TEI_r,
-                          TCI_r = self.TCI_r, FFR_r = self.FFR_r, V0 = self.V0)
+                          TCI_r = self.TCI_r, FFR_r = self.FFR_r, V0 = self.V0,
+                          j = self.j, Ttank = self.Ttank, TCoolIn = self.TCoolIn, dt = self.dt )
         self.MDB.design() 
         Thermal_load = self.MDB.ave_stec * self.MDB.Capacity / 24 # kWh
         STEC = self.MDB.ave_stec
