@@ -236,7 +236,8 @@ loading = html.Div([
 )
 
 parameters_navbar = dbc.NavbarSimple(
-    children=[dbc.NavItem(dbc.NavLink("Models", href='/model-selection')),
+    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
+              dbc.NavItem(dbc.NavLink("Models", href='/model-selection')),
               dbc.NavItem(dbc.NavLink("Parameters"), active=True),
               dbc.NavItem(dbc.NavLink('Help', href='/assets/docs/documentation.pdf', target='_blank', external_link=True))
     ],
