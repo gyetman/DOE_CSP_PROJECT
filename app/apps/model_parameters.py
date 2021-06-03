@@ -547,8 +547,8 @@ def title_collapse_buttons(x):
     f = cfg.Financial[fref].rstrip()
     # create documentation links
     ddoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[dref]['page']}"
-    sdoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[sref]['page']}"
-    fdoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[fref]['page']}"
+    sdoc = f"{cfg.Documentation[sref]['doc']}#page={cfg.Documentation[sref]['page']}"
+    fdoc = f"{cfg.Documentation[fref]['doc']}#page={cfg.Documentation[fref]['page']}"
     return d,s,f,ddoc,sdoc,fdoc
 
 @app.callback(
