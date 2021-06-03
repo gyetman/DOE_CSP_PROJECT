@@ -111,7 +111,7 @@ city_price_lyr = dl.GeoJSON(
     hoverStyle=dict(weight=5, color='#666', dashArray=''),
 )
 # placeholder for mouseover data
-info = html.Div(children='Hover over a Feature',
+info = html.Div(children='',
                 className="mapinfo",
                 style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
                 id="results-info")
@@ -387,32 +387,6 @@ def get_info(features):
     else:
         return ['Hover over a feature']
 
-
-# def get_info(features=None):
-#     ''' callback for feature hover '''
-#     header = [html.H4("Feature Details")]
-#     #feature is a list of dicts, grab first feature
-#     feature = features[0]
-#     if feature:
-#         #check if feature is a cluster
-#         if feature['properties']['cluster']:
-#             return header + ["Click cluster to expand"]
-#         #if feature is Desalination Plant
-#         elif 'Technology' in feature['properties'].keys():
-#             name = feature['properties']['Project name']
-#             capacity_field = feature['properties']['Capacity (m3/d)']
-#             units = 'm3/day'
-#             return header+[html.B(name), html.Br(),
-#                 f"{capacity_field} Capacity {units}"]
-#         #feature is Power Plant
-#         else:
-#             name = feature['properties']['name']
-#             capacity_field = feature['properties']['capacity_mw']
-#             units = 'MW'
-#             return header + [html.B(name), html.Br(),
-#                 f"{float(capacity_field):,.1f} Capacity {units}"]
-#     else:
-#         return header + ["Hover over a feature"]
 
 external_stylesheets = [dbc.themes.FLATLY]
 app.layout = render_results_map()

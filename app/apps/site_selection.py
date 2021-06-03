@@ -85,7 +85,7 @@ wells = dl.GeoJSON(
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
 # placeholder for mouseover data
-info = html.Div(children='Hover over a Feature',
+info = html.Div(children='',
                 className="mapinfo",
                 style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
                 id="info")
