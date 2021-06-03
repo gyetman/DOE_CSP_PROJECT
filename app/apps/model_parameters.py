@@ -537,13 +537,18 @@ def title_collapse_buttons(x):
     to point the user to and returns the link to that page
     '''
     app_vals = helpers.json_load(cfg.app_json)
-    d = f"{cfg.Desal[app_vals['desal']].rstrip()} Desalination System"
-    s = cfg.Solar[app_vals['solar']].rstrip()
-    f = cfg.Financial[app_vals['finance']].rstrip()
-    doclink = "/assets/docs/documentation.pdf"
-    ddoc = f"{doclink}#page={cfg.Documentation[app_vals['desal']]}"
-    sdoc = f"{doclink}#page={cfg.Documentation[app_vals['solar']]}"
-    fdoc = f"{doclink}#page={cfg.Documentation[app_vals['finance']]}"
+    # shorter references
+    dref = app_vals['desal']
+    sref = app_vals['solar']
+    fref = app_vals['finance']
+    # pull out model names
+    d = f"{cfg.Desal[dref].rstrip()} Desalination System"
+    s = cfg.Solar[sref].rstrip()
+    f = cfg.Financial[fref].rstrip()
+    # create documentation links
+    ddoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[dref]['page']}"
+    sdoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[sref]['page']}"
+    fdoc = f"{cfg.Documentation[dref]['doc']}#page={cfg.Documentation[fref]['page']}"
     return d,s,f,ddoc,sdoc,fdoc
 
 @app.callback(
