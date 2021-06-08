@@ -143,9 +143,9 @@ class med_tvc_general(object):
         if self.q_cooling > 0:
             self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
         self.design_output.append({'Name':'Heating steam mass flow rate entering the first effect','Value':self.qs,'Unit':'kg/s'})
-        self.design_output.append({'Name':'Movive steam mass flow rate entering the thermocompressor','Value':self.qm,'Unit':'kg/s'})
+        self.design_output.append({'Name':'Motive steam mass flow rate entering the thermocompressor','Value':self.qm,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific area','Value':self.sA,'Unit':'m2 per m3/day'})
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  
         self.design_output.append({'Name':'Mean temperature difference between effects','Value':self.DELTAT,'Unit':'oC'})
         if self.DELTAT < 2:
             self.design_output.append({'Name':'Warning','Value':'Delta T is too small, the cost might be high','Unit':''})

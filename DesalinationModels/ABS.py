@@ -142,7 +142,7 @@ class ABS(object):
         self.sA_pump = np.dot(abs_params[1],abs_coeff[1])        
         self.T_sh = np.dot(abs_params[2],abs_coeff[2])        
         self.T_gen = np.dot(abs_params[3],abs_coeff[3])
-                
+        self.P_req /= self.COP     
 
         self.STEC = self.STEC / self.COP
         self.PR = self.PR * self.COP
@@ -161,10 +161,10 @@ class ABS(object):
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area of MED','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Specific heat transfer area of the absorption heat pump','Value':self.sA_pump,'Unit':'m2/kW'})      
-        self.design_output.append({'Name':'Overall performance ratio','Value':self.PR * self.COP,'Unit':'kg/kg'})   
-        self.design_output.append({'Name':'Outlet temperature of the superheated steasm from the heat pump','Value':self.T_sh,'Unit':'oC'}) 
-        self.design_output.append({'Name':'Temprature of the saturated steam required to drive the heat pump generator','Value':self.T_gen,'Unit':'oC'})   
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
+        self.design_output.append({'Name':'Overall performance ratio','Value':self.PR * self.COP,'Unit':'kJ/kJ'})   
+        self.design_output.append({'Name':'Outlet temperature of the superheated steam from the heat pump','Value':self.T_sh,'Unit':'oC'}) 
+        self.design_output.append({'Name':'Temperature of the saturated steam required to drive the heat pump generator','Value':self.T_gen,'Unit':'oC'})   
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  
         self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
         if self.DELTAT < 2:
             self.design_output.append({'Name':'Warning','Value':'Delta T is too small, cost might be high','Unit':''})

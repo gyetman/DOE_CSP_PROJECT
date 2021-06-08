@@ -743,7 +743,7 @@ class SamBaseClass(object):
             
         elif desal == 'ABS':
             from DesalinationModels.ABS_cost import ABS_cost
-            self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], 
+            self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], P_req = self.P_req,
                                    # HEX_area = self.LTMED.system.sum_A,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],

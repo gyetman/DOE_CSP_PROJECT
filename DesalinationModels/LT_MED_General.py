@@ -111,7 +111,7 @@ class lt_med_general(object):
             self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area','Value':self.sA,'Unit':'m2/m3/day'})
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})  
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  
         self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
         if self.DELTAT < 2:
             self.design_output.append({'Name':'Warning','Value':'Delta T is too small, cost might be high','Unit':''})
