@@ -374,12 +374,19 @@ def _generateMarkdown(theme, atts, pnt):
         power_dist = _calcDistance(pnt,power_pt)
         mdown += f"**Closest power plant** ({power_dist:,.1f} km): {power.get('Plant_name')}  \n"
 
-        mdown += f"Primary generation: {power.get('Plant_primary_fuel')}  \n"
+        mdown += f"Primary Generation: {power.get('Plant_primary_fuel')}  \n"
         try:
             mdown += f"Nameplate Capacity: {power.get('Plant_nameplate_capacity__MW_'):,.0f} MW  \n"
         except:
             mdown += f"Production: -  \n"
-        mdown += f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  \n"
+        try:
+            mdown += f"Number of Generators: {power.get('Number_of_generators')}  \n"
+        except:
+            mdown += f"Number of Generators: -  \n"
+        try: 
+            mdown += f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  \n"
+        except:
+            mdown += "Annual Net Generation: - MWh  \n"
         try:
             mdown += f"Year of data: {power.get('Data_Year')}  \n"
         except:
@@ -390,7 +397,7 @@ def _generateMarkdown(theme, atts, pnt):
         #     mdown += f"Condenser Heat: -  \n"
 
     water = atts['waterPrice']['properties']
-    mdown += f"**Residential Water Prices**  \n"
+    mdown += f"**Residential Water Prices** (2018)  \n"
     try:
         mdown += f"Utility provider: {water.get('UtilityShortName')}  \n"
         mc6 = water.get('CalcTot6M3CurrUSD')

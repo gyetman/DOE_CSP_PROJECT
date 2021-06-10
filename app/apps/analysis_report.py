@@ -646,7 +646,7 @@ def set_local_condition(x):
         return None
     return ([
     html.H5('Local Condition', className='card-title'),
-    html.Div(f"Location: {r['county']}, {r['state']}"),
+    html.Div(f"Location: {r['city']}, {r['state']}"),
     html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2/day"),
     html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2/day"),
     html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
