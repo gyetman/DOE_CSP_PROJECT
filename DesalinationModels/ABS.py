@@ -161,7 +161,7 @@ class ABS(object):
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area of MED','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Specific heat transfer area of the absorption heat pump','Value':self.sA_pump,'Unit':'m2/kW'})      
-        self.design_output.append({'Name':'Overall performance ratio','Value':self.PR * self.COP,'Unit':'kJ/kJ'})   
+        self.design_output.append({'Name':'Overall performance ratio','Value':self.PR * self.COP,'Unit':''})   
         self.design_output.append({'Name':'Outlet temperature of the superheated steam from the heat pump','Value':self.T_sh,'Unit':'oC'}) 
         self.design_output.append({'Name':'Temperature of the saturated steam required to drive the heat pump generator','Value':self.T_gen,'Unit':'oC'})   
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  
