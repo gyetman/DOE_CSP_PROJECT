@@ -91,7 +91,8 @@ info = html.Div(children='',
                 id="info")
 
 map_navbar = dbc.NavbarSimple(
-    children='',
+    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
+              dbc.NavItem(dbc.NavLink("Site Selection"), active=True)],
     brand='Site Selection',
     color='primary',
     dark=True,

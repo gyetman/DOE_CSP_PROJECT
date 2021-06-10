@@ -1,5 +1,5 @@
 # Need to pip install APMonitor and add dependency in beta version
-from DesalinationModels.apm import *
+from DesalinationModels.APMonitor.apm import *
 import os
 from pathlib import Path
 

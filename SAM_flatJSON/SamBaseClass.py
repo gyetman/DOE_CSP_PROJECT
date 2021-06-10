@@ -432,10 +432,19 @@ class SamBaseClass(object):
                                nFP = self.desal_values_json['nFP'],Nel1 = self.desal_values_json['Nel1'],
                                module = self.desal_values_json['module'],TCI_r = self.desal_values_json['TCI_r'],
                                TEI_r = self.desal_values_json['TEI_r'],FFR_r = self.desal_values_json['FFR_r'],
-                               V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'])
+                               V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'],
+                               j = self.desal_values_json['j'], TCoolIn = self.desal_values_json['TCoolIn'],
+                               Ttank = self.desal_values_json['Ttank'], dt = self.desal_values_json['dt'])
             self.design_output = self.RO_MDB.design()  
             self.P_req = self.RO_MDB.P_req
-            
+        
+        elif desal == 'Generic':
+            from DesalinationModels.generic import generic
+            self.Generic = generic(Capacity = self.desal_values_json['Capacity'], FeedC_r = self.desal_values_json['FeedC_r'], RR = self.desal_values_json['RR'], 
+                                   STEC = self.desal_values_json['STEC'], SEC = self.desal_values_json['SEC'], Fossil_f =self.desal_values_json['Fossil_f'])
+            self.design_output = self.Generic.design()
+            self.P_req = self.Generic.P_req
+        
         # Write design output to json
         filename = desal + '_design_output' + self.timestamp + '.json'
 
@@ -559,7 +568,16 @@ class SamBaseClass(object):
             elif self.cspModel == 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat' or self.cspModel == 'SC_FPC' or self.cspModel == 'SC_ETC':
                 self.simu_output = self.RO_MDB.simulation(elec_gen = 0, thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
             else:
-                self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = self.heat_gen, solar_type = 'csp', storage = 0)            
+                self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = self.heat_gen, solar_type = 'csp', storage = 0)    
+                
+        elif desal == 'Generic':
+            from DesalinationModels.generic import generic
+            self.Generic = generic(Capacity = self.desal_values_json['Capacity'], FeedC_r = self.desal_values_json['FeedC_r'], RR = self.desal_values_json['RR'], 
+                                   STEC = self.desal_values_json['STEC'], SEC = self.desal_values_json['SEC'], Fossil_f =self.desal_values_json['Fossil_f'])
+            self.design_output = self.Generic.design()
+
+            self.simu_output = self.Generic.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
+
         # Write design output to csv
         filename = desal + '_design_output' + self.timestamp + '.json'
         csvname  = self.project_name + '_' + desal + '_design_output' + '_' + self.timestamp + '.csv'
@@ -689,7 +707,7 @@ class SamBaseClass(object):
             from DesalinationModels.MDB_cost import MDB_cost
             print('lcoh:', self.lcoh)
             self.LCOW = MDB_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.MDB.Area,
-                                 Pflux = self.MDB.PFlux_avg, RR = self.MDB.RR[-1],
+                                 Pflux = self.MDB.PFlux_avg, RR = self.MDB.R[-1],
                                  TCO = sum(self.MDB.TCO) / len(self.MDB.TCO), TEI = self.MDB.TEI_r, FFR = self.MDB.FFR_r, th_module = sum(self.MDB.ThPower)/len(self.MDB.ThPower),
                                  STEC = self.MDB.ave_stec, SEEC = self.cost_values_json['SEEC'],  MD_membrane = self.cost_values_json['MD_membrane'],
                                  MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], 
@@ -725,7 +743,7 @@ class SamBaseClass(object):
             
         elif desal == 'ABS':
             from DesalinationModels.ABS_cost import ABS_cost
-            self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], 
+            self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], P_req = self.P_req,
                                    # HEX_area = self.LTMED.system.sum_A,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
@@ -829,7 +847,13 @@ class SamBaseClass(object):
                                           MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
-
+        elif desal == 'Generic':
+            from DesalinationModels.Generic_cost import Generic_cost
+            self.LCOW = Generic_cost(unit_cost = self.cost_values_json['unit_cost'],
+                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.desal_values_json['SEC'], STEC = self.desal_values_json['STEC'],
+                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.Generic.storage_cap)
+            self.cost_output = self.LCOW.lcow()
 
 
 

@@ -1,0 +1,9 @@
+{
+	"Capacity" : 2000,
+	"FeedC_r" : 35,
+	"STEC": 50,
+	"SEC": 1.5,
+	"RR": 50,
+	"Fossil_f": 0,
+	"storage_hour": 0
+}

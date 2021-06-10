@@ -6,15 +6,15 @@
             "Label": "Plant capacity",
             "Units": "m3/day",
             "Require": "*",
-            "Costraint": ""
+            "Constraint": ""
         },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration",
+            "Label": "Feed concentration (Valid range: 35 to 292.2)",
             "Units": "g/L",
             "Require": "*",
-            "Costraint": "<106,>34"
+            "Constraint": "<106,>34"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -26,47 +26,79 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "TEI_r",
-            "Label": "Evaporator channel inlet temperature",
+            "Label": "Evaporator channel inlet temperature (Valid range: 60 to 80)",
             "Units": "C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TCI_r",
-            "Label": "Condenser channel inlet temperature",
+            "Label": "Condenser channel inlet temperature (Valid range: 20 to 30)",
             "Units": "C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "FFR_r",
-            "Label": "Feed flow rate",
+            "Label": "Feed flow rate (Valid range: 400 to 1100)",
             "Units": "l/h",
             "Require": "*",
-            "Costraint": "<1111,>399"
+            "Constraint": "<1111,>399"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "V0",
-            "Label": "Initial batch volume",
-            "Units": "m3",
+            "Label": "Initial batch volume (Valid range: > 50)",
+            "Units": "L",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "Ttank",
+            "Label": "Initial temperature of feed water (Valid range: 20 to 30)",
+            "Units": "oC",
+            "Require": "*",
+            "Constraint": "<1101,>399"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "RR",
-            "Label": "Recovery rate",
+            "Label": "Target recovery rate",
             "Units": "%",
             "Require": "*",
-            "Costraint": "<1101,>399"
-        },		
+            "Constraint": "<1101,>399"
+        },
+        {
+            "DataType": "SSC_STRING",
+            "Name": "j",
+            "Label": "Type of cooling system ('o' for open circuit, 'c' for closed circuit",
+            "Units": "",
+            "Require": "*",
+            "Constraint": "<1101,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "TCoolIn",
+            "Label": "Initial temperature of the cooling water (Valid range: < Feed water temperature)",
+            "Units": "oC",
+            "Require": "*",
+            "Constraint": "<1101,>399"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dt",
+            "Label": "Time step for the simulation (Recommended range: 10 to 480)",
+            "Units": "second",
+            "Require": "*",
+            "Constraint": "<1101,>399"
+        },				
 		{
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",
             "Label": "Thermal storage hours",
             "Units": "hour",
             "Require": "*",
-            "Costraint": ">0"
+            "Constraint": ">0"
         },
 		{
             "DataType": "SSC_NUMBER",
@@ -74,7 +106,7 @@
             "Label": "Fossil fuel fraction threshold (0 to 1)",
             "Units": "",
             "Require": "*",
-            "Costraint": "<1, >0"
+            "Constraint": "<1, >0"
         }
     ]
 }

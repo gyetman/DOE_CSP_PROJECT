@@ -16,7 +16,7 @@ class ABS_cost(object):
                  HEX_area = 389, # Heat exchanger area (m2)
                  STEC = 60 , # Thermal energy consumption (kW)
                  SEEC = 1.5, # Specifc Electricity energy consumption (kWh/m3)
-                 
+                 P_req = 400, # Q_MED
                  # OPEX parameters
                  Chemicals = 0.04, # Chemical unit cost ($/m3)
                  Labor = 0.033, # Labor unit cost ($/m3)
@@ -33,7 +33,7 @@ class ABS_cost(object):
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 0 # Capacity of thermal storage (kWh)
-
+                 
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
@@ -45,7 +45,7 @@ class ABS_cost(object):
         self.fuel_usage = fuel_usage/100
         self.coh = coh
         self.sam_coh = sam_coh
-
+        self.P_req = P_req
         self.Prod = Prod
         self.SEEC = SEEC
         self.Chemicals = Chemicals
@@ -62,7 +62,13 @@ class ABS_cost(object):
     def lcow(self):
         
         self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/(self.Capacity/24/3.6)/302.01)**0.8) 
-        self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
+        
+        if self.P_req < 400:
+            self.cost_AHP = (226.85 - 0.332 * self.P_req) * 1.2  # $/kW
+        else:
+            self.cost_AHP = (95.04 - 0.002432 * self.P_req) * 1.2
+            
+        self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap + self.cost_AHP * self.P_req)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
 
@@ -79,6 +85,7 @@ class ABS_cost(object):
         cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Energy cost','Value':self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC,'Unit':'$/m3'})
+        cost_output.append({'Name':'Absorption heat pump capital cost','Value':self.cost_AHP,'Unit':'$/kW'})
          
         
         return cost_output

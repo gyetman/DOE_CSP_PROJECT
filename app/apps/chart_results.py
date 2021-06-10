@@ -50,7 +50,8 @@ desal_names = {'FO': ('Water production','Storage status','Fossil fuel usage'),
                'LSRRO':('Water production','Grid electricity usage', 'Storage status'),
                'COMRO':('Water production','Fossil fuel usage', 'Storage status'),
                'RO_FO':('Water production','Grid electricity usage', 'External thermal energy usage'),
-               'RO_MDB':('Water production','Grid electricity usage', 'External thermal energy usage')}    
+               'RO_MDB':('Water production','Grid electricity usage', 'External thermal energy usage'),
+               'Generic':('Water production','Fossil fuel usage', 'Storage status')}    
 sumCols = {'Field total mass flow delivered','Heat sink thermal power','Thermal power generation','System power generated','Irradiance GHI from weather file','Water production','Receiver thermal losses','Fossil fuel usage','Steam mass flow rate','Waste heat generation','Grid electricity usage', 'External thermal energy usage'}
 
 
@@ -86,7 +87,8 @@ time_series = [{'label':' Hourly', 'value':'Hourly'},
                {'label':' Weekly','value':'Weekly'}]
 
 chart_navbar = dbc.NavbarSimple(
-    children=[dbc.NavItem(dbc.NavLink("Charts"), active=True),
+    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
+              dbc.NavItem(dbc.NavLink("Charts"), active=True),
               dbc.NavItem(dbc.NavLink("Report", href='/analysis-report')),
               dbc.NavItem(dbc.NavLink("Results Map", href='/results-map'))],
     brand="Model Results",

@@ -18,6 +18,8 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
         {'name':'Units',    'id':'Units','editable':False}]
 
 chart_navbar = dbc.NavbarSimple(
+    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
+              dbc.NavItem(dbc.NavLink("Models"), active=True)],
     brand="Model Selection",
     color="primary",
     dark=True,

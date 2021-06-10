@@ -5,8 +5,12 @@
 	"FFR_r" : 582.7,
 	"FeedC_r" : 35,
 	"Capacity": 1000,
-	"V0": 30,
+	"V0": 50,
 	"RR": 30,
 	"Fossil_f": 0,
-	"storage_hour": 0
+	"storage_hour": 0,
+	"j": "c",
+	"Ttank": 25,
+	"TCoolIn": 15,
+	"dt": 60
 }

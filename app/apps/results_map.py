@@ -118,9 +118,10 @@ info = html.Div(children='',
 
 
 map_navbar = dbc.NavbarSimple(
-    children=[dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
-            dbc.NavItem(dbc.NavLink("Report", href='/analysis-report')),
-            dbc.NavItem(dbc.NavLink("Results Map"), active=True)],
+    children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
+              dbc.NavItem(dbc.NavLink("Charts", href='/chart-results')),
+              dbc.NavItem(dbc.NavLink("Report", href='/analysis-report')),
+              dbc.NavItem(dbc.NavLink("Results Map"), active=True)],
     brand='Water Prices',
     color='primary',
     dark=True,
