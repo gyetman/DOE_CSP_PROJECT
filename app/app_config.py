@@ -113,8 +113,8 @@ Documentation = {
     #Financial
     'utilityrate5':{'doc':SDAT,'page':30}, 'lcoefcr':{'doc':SDAT,'page':30}, 'iph_to_lcoefcr':{'doc':SDAT,'page':30}, 'levpartflip':{'doc':SDAT,'page':30}, 'equpartflip':{'doc':SDAT,'page':30}, 'saleleaseback':{'doc':SDAT,'page':30}, 'singleowner':{'doc':SDAT,'page':30},
     #Solar
-    'pvsamv1':{'doc':SDAT,'page':19},'SC_FPC':{'doc':SDAT,'page':19},'SC_ETC':{'doc':SDAT,'page':19},'trough_physical_process_heat':{'doc':SDAT,'page':19},'linear_fresnel_dsg_iph':{'doc':SDAT,'page':19},'tcslinear_fresnel':{'doc':SDAT,'page':19}, 'tcsMSLF':{'doc':SDAT,'page':19},
-    'tcsdirect_steam':{'doc':SDAT,'page':19}, 'tcsmolten_salt':{'doc':SDAT,'page':19}, 'tcstrough_physical':{'doc':SDAT,'page':19}
+    'pvsamv1':{'doc':SDAT,'page':171},'SC_FPC':{'doc':SDAT,'page':19},'SC_ETC':{'doc':SDAT,'page':19},'trough_physical_process_heat':{'doc':SDAT,'page':706},'linear_fresnel_dsg_iph':{'doc':SDAT,'page':741},'tcslinear_fresnel':{'doc':SDAT,'page':605}, 'tcsMSLF':{'doc':SDAT,'page':627},
+    'tcsdirect_steam':{'doc':SDAT,'page':563}, 'tcsmolten_salt':{'doc':SDAT,'page':526}, 'tcstrough_physical':{'doc':SDAT,'page':437}
 }
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
