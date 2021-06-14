@@ -248,10 +248,21 @@ parameters_navbar = dbc.NavbarSimple(
     style={'margin-bottom':60}
 )
 
-tabs_accordion = dbc.Card('TEST',
-    className="accordion h-100", 
-    id='tabs-card'
-)
+parametric_alert = html.Div([
+    dbc.Alert([html.Strong("For Parametric Studies"), 
+        html.P("Check the box for up to two targeted variables and input Min, Max and Interval values. Be aware that parametric study selection does not produce an analysis report.")],
+        className="alert alert-dismissible alert-light",
+        dismissable=True,
+        id='parametric-alert',
+        is_open = False)
+    ],id='p-alert-init')
+
+tabs_accordion = html.Div([
+    parametric_alert, 
+    dbc.Card('TEST',
+        className="accordion h-100", 
+        id='tabs-card')
+])
 
 desal_side_panel = dbc.CardBody([
     html.H4("Desalination Design Model", className="card-title"),
@@ -589,7 +600,18 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
     elif button_id == f"{models[2]}-toggle".replace(' ','_') and n3:
         return False, False, not is_open3
     return False, False, False
+
+@app.callback(
+    Output('parametric-alert', 'is_open'),
+    [Input('p-alert-init', 'children')])
+def toggle_model_tabs(_init):
+    appj = helpers.json_load(cfg.app_json)
+    return appj["parametric"]
         
+    
+
+    return
+
 @app.callback(
     [Output('model-loading-output','children'),
     Output('model-loading', 'children'),
