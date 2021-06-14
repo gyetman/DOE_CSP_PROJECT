@@ -326,33 +326,8 @@ model_tables_layout = html.Div([parameters_navbar, tabs])
 ### CALLBACKS
 #     
 
-#NOTE: EXAMPLE CALLBACK FOR CALLBACK DEPENDENCY - delete later
-# @app.callback(
-#     Output({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'},'data'),
-#     [Input({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp'),Input({'type':'solar-table', 'index': 'Power_CycleOperationGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp')],
-#     [State({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data')],
-#     prevent_initial_call=True)
-# def upd_tbl(tblTime, tblTime2, tblData):
-#     inputs=dash.callback_context.inputs
-#     triggered=dash.callback_context.triggered
-#     print(tblData)
-#     for row in tblData:
-#         try:
-#             if row['Name'] == 'adjust:periods':
-#                 print('found row')
-#                 row['Value'] = str(tblData[helpers.index_in_list_of_dicts(tblData,'Name','adjust:hourly')]['Value'] + .001)
-#             else:
-#                 row['Value'] = float(row['Value']) ** 2
-#         except(ValueError):
-#             row['Value'] = 99
-#     print(f'states: {tblData}')
-#     print(f'type: {type(tblData)}')
-#     return tblData
-
 # NOTE: we'll want to eventually unpack the dict for the function call... 
 for model, functions in pdeps.functions_per_model.items():
-    # output_ids=set()
-    # input_ids=set()
     model_type=pdeps.find_model_type(model)
     for function in functions:    
         @app.callback(
@@ -425,12 +400,6 @@ def create_tabs_and_tables(x):
     # find the weather file table and update
     if weather_file:
         wf_index = helpers.index_in_list_of_dicts(solar_model_vars,'Name','file_name')
-        #???
-        # NOT SURE IF THIS IS THE RIGHT INDEX
-        # wf_table = solar_model_vars[wf_index]
-        # wf_table[wf_index]['Value']=str(weather_file)
-        #SO INSTEAD OF UPDATING TABLE THAT NO LONGER EXIST WE 
-        #SHOULD PROBABLY JUST...
         solar_model_vars[wf_index]['Value']=str(weather_file)
 
     # find the TDS Feed Concentration table and update
@@ -604,13 +573,10 @@ def toggle_model_tabs(n1, n2, n3, is_open1, is_open2, is_open3):
 @app.callback(
     Output('parametric-alert', 'is_open'),
     [Input('p-alert-init', 'children')])
-def toggle_model_tabs(_init):
+def toggle_parametric_alert(_init):
+    '''reads app json and opens alert if parametric set to true'''
     appj = helpers.json_load(cfg.app_json)
     return appj["parametric"]
-        
-    
-
-    return
 
 @app.callback(
     [Output('model-loading-output','children'),
