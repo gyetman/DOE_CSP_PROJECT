@@ -33,7 +33,7 @@ SAM_flatJSON/CSV results/*
 app/GISdata/Readme.md
 app/gen.csv
 utils/test_read_rtree.py
-app/GISQueryData/*
+GISQueryData/*
 utils/county.dat
 utils/county.idx
 utils/rtree.dat
