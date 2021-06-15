@@ -53,6 +53,23 @@ card_quick_analysis = dtc.Card(
     style={'padding':16}
 )
 
+contact = dbc.Card([
+    dbc.Card(
+        dbc.CardBody([
+            html.H4("Contact Us", className="card-title"),
+            html.P([html.A("Vasilis Fthenakis", href="https://www.eee.columbia.edu/faculty/vasilis-fthenakis"), ", ", html.A("Center for Life Cycle Analysis", href="http://www.clca.columbia.edu/"), html.Br(), "Columbia University. Principal Investigator"]),
+            html.P([html.A("Greg Yetman", href="http://ciesin.columbia.edu/yetman.html"), ", ", html.A("Center for International Earth Science Information Network", href="https://www.ciesin.columbia.edu/"), html.Br(), "Columbia University. Co-investigator"]),
+        ])),
+    dbc.Card(
+        dbc.CardBody([
+            html.P(html.I("Copyright 2021. The Trustees of Columbia University in the City of New York.")),
+            html.P(html.I("This material is based upon work supported by the U.S. Department of Energy’s Office of Energy Efficiency and Renewable Energy (DOE-EERE) under the Solar Energy Technologies Office (SETO) Award Number DE00008401.  This software was prepared as an account of work sponsored by an agency of the United States Government. Neither the United States Government nor any agency thereof, nor any of their employees, makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately owned rights. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the Department of Energy.")),
+            html.P("The resources collected here are made available for use in solar facility development under the license of the original data authors as noted in each item.")   
+        ]))],
+    outline=True, 
+    className='card border-info mb-3', 
+)
+
 cards = dbc.Row([
     card_select_model,
     card_select_site,
@@ -62,7 +79,7 @@ cards = dbc.Row([
 ],style={'padding':16})
 
 chart_navbar = dbc.NavbarSimple(
-    brand="WHAT|WHO",
+    brand="COLUMBIA UNIVERSITY | SOLAR DESALINATION ANALYSIS TOOL",
     color="primary",
     dark=True,
     sticky='top',
@@ -75,7 +92,7 @@ homepage_layout = html.Div([
     html.H3("Solar Desalination Analysis Tool", className='text-success', style={'text-align':'center'}),
     dbc.Container([
         cards,
-        dbc.Row(dbc.Col(([dbc.Card("Contact Us Goes Here...", color='dark', outline=True, className='glyphicon glyphicon-cloud', style={'text-align':'center'})])))
+        dbc.Row(dbc.Col(([contact])))
     ],style={'margin-top':45} ),
     
 ])
