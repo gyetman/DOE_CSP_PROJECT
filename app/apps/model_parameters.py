@@ -6,6 +6,7 @@ from datetime import datetime
 from operator import itemgetter
 from pathlib import Path
 import itertools
+import base64
 
 import dash
 import dash_bootstrap_components as dbc
@@ -308,6 +309,18 @@ primary_card = dbc.Card(
     ]),color="secondary", className="text-white"
 )
 
+
+SAM_JSON_file = dcc.Upload(
+    html.Button('Optional: If you want to modify the inputs from the SAM interface, you may click here to upload a SAM generated JSON file (Not for parametric study)'),
+    style={
+        'width': '100%',
+        'height': '60px',
+        'lineHeight': '45px',
+        'textAlign': 'center',
+        'margin': '10px'
+    },
+    id = 'sam-json')
+
 model_card = dbc.Card(children=desal_side_panel,id='model-card',color="secondary", className="text-white")
 
 desal_design_results_card = dbc.Card(
@@ -320,7 +333,7 @@ side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],cla
 
 tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9, id='tabs-data-initialize')],no_gutters=True)
 
-model_tables_layout = html.Div([parameters_navbar, tabs])
+model_tables_layout = html.Div([parameters_navbar, SAM_JSON_file, tabs])
 
 #
 ### CALLBACKS
@@ -355,9 +368,10 @@ for model, functions in pdeps.functions_per_model.items():
                 
 @app.callback(
     Output('tabs-card', 'children'),
-    [Input('tabs-data-initialize', 'children')]
+    [Input('tabs-data-initialize', 'children'),
+     Input('sam-json','contents')]
 )
-def create_tabs_and_tables(x):
+def create_tabs_and_tables(x, samjson):
     # return the tabs belonging to the collapse button
 
     #create dict lookups for model and filenames
@@ -406,6 +420,29 @@ def create_tabs_and_tables(x):
     if tds_value:
         tds_index = helpers.index_in_list_of_dicts(desal_model_vars,'Name','FeedC_r')
         desal_model_vars[tds_index]['Value']=tds_value
+
+    # Update value from SAM generated JSON 
+    if samjson:
+        content_type, content_string = samjson.split(',')
+        decoded = base64.b64decode(content_string)
+        imported_json = json.loads(decoded.decode('utf-8'))
+        for i in solar_model_vars:
+            try:
+                if i['DataType']=='SSC_ARRAY' or i['DataType']=='SSC_MATRIX':
+                    i['Value']=str(imported_json[i['id']])
+                else:
+                    i['Value']=imported_json[i['id']]
+            except:
+                i['Value'] = None
+        for i in finance_model_vars:
+            try:
+                if i['DataType']=='SSC_ARRAY' or i['DataType']=='SSC_MATRIX':
+                    i['Value']=str(imported_json[i['id']])
+                else:
+                    i['Value']=imported_json[i['id']]
+            except:
+                i['Value'] = None
+
 
     # append the desal_finance variables to the finance variables
     finance_model_vars += desal_finance_model_vars
