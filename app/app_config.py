@@ -105,7 +105,7 @@ Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
           }
 
 # dict for which documentation page to link to based on our model code
-SAMD = "/assets/docs/sam-help-2018-11-11.pdf"
+SAMD = "/assets/docs/sam-help-2020-2-29-r1.pdf"
 SDAT = "/assets/docs/documentation.pdf"
 Documentation = {
     #Desal
