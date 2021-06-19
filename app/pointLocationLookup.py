@@ -19,11 +19,6 @@ from urllib.parse import urlparse
 # set basic logging for when module is imported 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
-# patch module-level attribute to enable pickle to work
-#kdtree.node = kdtree.KDTree.node
-#kdtree.leafnode = kdtree.KDTree.leafnode
-#kdtree.innernode = kdtree.KDTree.innernode
-
 # TODO: fix lat/longitude written to JSON file
 
 ''' Module to lookup features based on a point location. Uses rtrees if they exist. '''
@@ -34,7 +29,6 @@ logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 # layer dictionaries. defaultLayers is always queried for model parameters. Other layers are added
 # to the defaultLayers in the method call. 
 # TODO: need to move to JSON files
-# TODO: calculate distances to water plants, desal & power plant
 
 # generalized country layer
 countryLayer = {
@@ -56,7 +50,9 @@ defaultLayers = {
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
     'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
-    'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
+    #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
+    # Canals are now stored by state, just the base path here
+    'canals':{'point':cfg.gis_query_path / 'canals_split_points' / ''},
     'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
     'tx_county':{'poly':cfg.gis_query_path / 'tx_county_water_prices.shp'},
 
@@ -150,7 +146,12 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
     elif country['properties']['iso_merged'] == 'US':
         for key, value in themeLyrs.items():
             if 'point' in value.keys():
-                closestFeatures[key] = _findClosestPoint(pt,value['point'])
+                # handle state-level data
+                if key == 'canals':
+                    st = f"{state['properties']['STATEAB']}.shp"
+                    closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
+                else:
+                    closestFeatures[key] = _findClosestPoint(pt,value['point'])
             elif 'poly' in value.keys():
                 closestFeatures[key] = _findIntersectFeatures(pt,value['poly'])
             elif 'raster' in value.keys():
@@ -194,9 +195,13 @@ def getClosestInfrastructure(pnt):
         return None
 
     if country['properties']['iso_merged'] == 'US':
+        # get the state
+        state = _findIntersectFeatures(pnt,countyLayer['county']['poly'])
+        st = f"{state['properties']['STATEAB']}.shp"
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
         plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
-        canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
+        canal = _findClosestPoint(pnt, defaultLayers['canals']['point'] / st)
+        #canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
         water = _findClosestPoint(pnt,defaultLayers['waterProxy']['point'])
         return {
             'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],

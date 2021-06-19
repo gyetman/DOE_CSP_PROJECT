@@ -254,7 +254,7 @@ def update_price_layers(price_factor,closest_from_map):
     us_counties = dl.GeoJSON(
         data=counties,
         id='water_prices',
-        options=dict(style=dlx.choropleth.style),
+        options=dict(),
                 hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
     )
 
