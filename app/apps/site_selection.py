@@ -108,8 +108,8 @@ legend = html.Img(
 site_selection_map = dl.Map(
     id=MAP_ID, 
     style={'width': '100%', 'height': '500px'}, 
-    center=[30.25,-97.05], 
-    zoom=10,
+    center=[40.25,-97.05], 
+    zoom=4,
     children=[
         dl.TileLayer(id=BASE_LAYER_ID),
         dl.ScaleControl(metric=True, imperial=True),
