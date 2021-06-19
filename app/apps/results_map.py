@@ -87,17 +87,17 @@ wells = dl.GeoJSON(
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
 # County price data
-with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
-    counties= json.load(f)
+# with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
+#     counties= json.load(f)
 
         
-us_counties = dl.GeoJSON(
-    #url='/assets/us_counties2.geojson',
-    data=counties,
-    id='water_prices',
-    options=dict(),
-    hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
-)
+# us_counties = dl.GeoJSON(
+#     #url='/assets/us_counties2.geojson',
+#     data=counties,
+#     id='water_prices',
+#     options=dict(),
+#     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
+# )
 
 with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
     city_prices = json.load(f)
@@ -113,7 +113,7 @@ city_price_lyr = dl.GeoJSON(
 # placeholder for mouseover data
 info = html.Div(children='',
                 className="mapinfo",
-                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
+                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000", "background": "lightgrey"},
                 id="results-info")
 
 
@@ -244,19 +244,19 @@ def update_price_layers(price_factor,closest_from_map):
     model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'],app_json['timestamp'])
     finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
     model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
-    with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
-        counties= json.load(f)
-    new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
-    new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
+    # with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
+    #     counties= json.load(f)
+    # new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
+    # new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
 
-    counties['features'] = new_features
+    # counties['features'] = new_features
 
-    us_counties = dl.GeoJSON(
-        data=counties,
-        id='water_prices',
-        options=dict(),
-                hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
-    )
+    # us_counties = dl.GeoJSON(
+    #     data=counties,
+    #     id='water_prices',
+    #     options=dict(),
+    #             hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
+    # )
 
     with open('./assets/global_water_tarrifs.geojson','r', encoding = 'UTF-8') as f:
         city_prices = json.load(f)
@@ -284,7 +284,7 @@ def update_price_layers(price_factor,closest_from_map):
     return([
             dl.TileLayer(id=RESULTS_BASE_LAYER_ID),
             dl.ScaleControl(metric=True, imperial=True),
-            us_counties,
+            # us_counties,
             dl.LayerGroup(markers),
             info,
             dl.LayerGroup(id="results-closest-facilities",children=closest_from_map),
@@ -393,6 +393,6 @@ external_stylesheets = [dbc.themes.FLATLY]
 app.layout = render_results_map()
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8155)
+    app.run_server(debug=False, port=8155)
 
 
