@@ -90,15 +90,13 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
     counties= json.load(f)
 
-#removed #style=dlx.choropleth.style),
-        #hoverStyle=dict(weight=5, color='#666', dashArray=''),
         
 us_counties = dl.GeoJSON(
     #url='/assets/us_counties2.geojson',
     data=counties,
     id='water_prices',
-    options=dict(
-        hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
+    options=dict(),
+    hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
 )
 
 with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
