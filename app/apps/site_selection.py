@@ -87,7 +87,7 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 # placeholder for mouseover data
 info = html.Div(children='',
                 className="mapinfo",
-                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000"},
+                style={"position": "absolute", "top": "10px", "right": "10px", "zIndex": "1000", "background": "lightgrey"},
                 id="info")
 
 map_navbar = dbc.NavbarSimple(
@@ -314,6 +314,6 @@ app.title = 'Site Selection (Beta)'
 # register_map(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8150)
+    app.run_server(debug=False, port=8150)
 
 
