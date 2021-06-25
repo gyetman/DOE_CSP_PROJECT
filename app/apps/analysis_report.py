@@ -80,6 +80,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -131,7 +134,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
-
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         # index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
@@ -183,6 +188,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
         updates.update({'RR':ddin['RR'] * 100})        
@@ -230,6 +238,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
         updates.update({'RR':ddin['RR'] * 100})        
@@ -281,6 +292,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
  
         
         
@@ -327,6 +341,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})
         
         
         # add specific data from desal design output
@@ -368,7 +385,12 @@ def gather_data(x):
         updates.update({'grid_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total external thermal energy usage')
         updates.update({'external_heat':ds[index]['Value']/1000})
-
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of grid electricity consumption')
+        updates.update({'grid_percent':ds[index]['Value']})
+        updates.update({'elec_solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of external fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'thermal_solar_percent': 100-ds[index]['Value']})
         
         
         # # add specific data from desal design output
@@ -409,7 +431,12 @@ def gather_data(x):
         updates.update({'grid_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total external thermal energy usage')
         updates.update({'external_heat':ds[index]['Value']/1000})
-
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of grid electricity consumption')
+        updates.update({'grid_percent':ds[index]['Value']})
+        updates.update({'elec_solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of external fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'thermal_solar_percent': 100-ds[index]['Value']})
         
         
         # # add specific data from desal design output
@@ -454,13 +481,15 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         indexp = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[indexp]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})        
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
    
         index = helpers.index_in_list_of_dicts(dd,'Name','Electricity consumption')
-        updates.update({'electric_power_consumption':dd[index]['Value']})
+        updates.update({'electric_power_consumption':dd[index]['Value'] * 1000})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific electricity consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
@@ -500,15 +529,16 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})        
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
-        
-        dd = helpers.json_load(flkup['desal_design_outfile'])        
-        updates.update({'specific_thermal_power_consumption':dd['STEC']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption')     
+        updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -547,7 +577,9 @@ def gather_data(x):
         updates.update({'fossil_usage':ds[index]['Value']/1000})
         index = helpers.index_in_list_of_dicts(ds,'Name','Total water production')
         updates.update({'water_prod':ds[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
+        updates.update({'fossil_percent':ds[index]['Value']})
+        updates.update({'solar_percent': 100-ds[index]['Value']})        
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
@@ -616,6 +648,12 @@ def gather_data(x):
         updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['system_capacity'] * 6 /1000 })
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
+    elif updates['solar'] == 'tcsmolten_salt':
+    # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['P_ref']})
+        updates.update({'footprint1':s['P_ref'] * 6 })
+        updates.update({'footprint2':s['P_ref'] * 8 })
     elif updates['solar'] == 'tcsdirect_steam':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
@@ -801,11 +839,18 @@ def set_solar_config(x):
         html.Div(f"Design thermal energy production: {r['q_pb_des']:.2f} MW"),
         html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
         ])
-    elif app['solar'] == "tcsdirect_steam":
+    elif app['solar'] == "tcsdirect_steam" :
         return ([
         html.H5('Solar Field Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Design electricity production: {r['q_pb_des']:.2f} kW"),
+        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
+        ])
+    elif  app['solar'] == "tcsmolten_salt":
+        return ([
+        html.H5('Solar Field Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Design electricity production: {r['q_pb_des']:.0f} MW"),
         html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
         ])
     elif app['solar'] == "tcslinear_fresnel":
@@ -837,6 +882,8 @@ def set_system_performance(x):
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'FO':
         return ([
@@ -844,6 +891,8 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
@@ -852,6 +901,10 @@ def set_system_performance(x):
         html.Div(f"Overall recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
         html.Div(f"Total external heat usage: {r['external_heat']:.0f} MWh"),
+        html.Div(f"Percentage of electric energy from solar field: {r['elec_solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of electric energy from grid: {r['grid_percent']:.1f} %"), 
+        html.Div(f"Percentage of thermal energy from solar field: {r['thermal_solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of thermal energy from fossil fuel: {r['fossil_percent']:.1f} %"),
         ])
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
         return ([
@@ -860,6 +913,8 @@ def set_system_performance(x):
         html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
         html.Div(f"Recovery ratio: {r['rr']:.1f} %"),    
         #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'MDB':       
         df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
@@ -870,6 +925,8 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
         html.Div(f"Number of modules required: {r['n_modules']:.0f} "),
         html.Div(f"Module type: {r['m_type']} "),
         html.Div("   Single module performance",
@@ -893,6 +950,8 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
         ])
 @app.callback(
     Output('cost-analysis', 'children'),

@@ -203,7 +203,7 @@ class RO_FO(object):
                 if max(0,load[i] / self.thermal_load) < self.Fossil_f:
                     fuel[i] = self.thermal_load - load[i]
                 if max(0,elec_gen[i] / self.elec_load) < self.Fossil_f:
-                    grid[i] = self.elec_load - elec_gen[i]
+                    grid[i] = self.elec_load - max(0,elec_gen[i])
     
                 th_energy_consumption[i] = fuel[i]+load[i]
                 elec_energy_consumption[i] = self.elec_load

@@ -117,10 +117,10 @@ def display_model_parameters(solar, desal, finance, parametric, project_name):
     if solar and desal and finance:
         toggle=True if parametric else False
         try:
-            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle, 'project_name': project_name, 'timestamp': '0'}, filename=cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle, 'project_name': project_name, 'timestamp': '2021-06-19_10-03-11'}, filename=cfg.app_json)
         except FileNotFoundError:
             helpers.initialize_json(cfg.app_json_init,cfg.app_json)
-            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle, 'project_name': project_name, 'timestamp': '0'}, filename=cfg.app_json)
+            helpers.json_update(data={'solar':solar, 'desal':desal, 'finance':finance, 'parametric':toggle, 'project_name': project_name, 'timestamp': '2021-06-19_10-03-11'}, filename=cfg.app_json)
         return html.Div([
             html.P(),
             dcc.Link(dbc.Button("Next", color="primary", block=True, size='lg'), href='/model-variables')])
