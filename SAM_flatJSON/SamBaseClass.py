@@ -307,7 +307,8 @@ class SamBaseClass(object):
                 self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
                 for i in range(len(self.mass_fr_hr)):
                     self.mass_fr_hr[i] *= 50            
-
+            
+            self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
             self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')    
             self.lcoh = self.lcoe * 0.27

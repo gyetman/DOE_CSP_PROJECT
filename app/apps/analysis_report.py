@@ -417,6 +417,18 @@ def gather_data(x):
         updates.update({'ops_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Annual water production')
         updates.update({'water_prod':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of electricity (from solar field)')
+        updates.update({'sam_lcoe':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
+        updates.update({'sam_lcoh':dc[index]['Value']})
+
+        
+        # add from cost input 
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'lcoe':f['coe']})
+        updates.update({'lcoh':f['coh']})
+        
+        # add from 
        
     elif updates['desal'] == 'RO_MDB':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -463,6 +475,15 @@ def gather_data(x):
         updates.update({'ops_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Annual water production')
         updates.update({'water_prod':dc[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of electricity (from solar field)')
+        updates.update({'sam_lcoe':dc[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
+        updates.update({'sam_lcoh':dc[index]['Value']})
+
+        # add from cost input 
+        f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
+        updates.update({'lcoe':f['coe']})
+        updates.update({'lcoh':f['coh']})
         
     elif updates['desal'] == 'OARO' or updates['desal'] == 'LSRRO' or updates['desal'] == 'COMRO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -1016,7 +1037,10 @@ def set_cost_analysis(x):
     #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-          
+        html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of electric energy (LCOE, from grid): {r['lcoe']:.2f} $/kWh"),
+        html.Div(f"Levelized cost of electric energy (LCOE, from solar field): {r['sam_lcoe']:.2f} $/kWh"),          
         ])
     elif app['desal'] =='Generic':
         return ([

@@ -212,7 +212,7 @@ class RO_MDB(object):
             grid =  [0 for i in range(len(gen))]
             th_energy_consumption =  [0 for i in range(len(gen))]
             elec_energy_consumption =  [0 for i in range(len(gen))]
-            print('elec_load', self.elec_load)
+
             for i in range(len(gen)):
                 to_desal[i] = min(self.thermal_load, gen[i])
                 to_storage[i] = abs(gen[i] - to_desal[i])
@@ -236,9 +236,6 @@ class RO_MDB(object):
                 Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
                 Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
             
-            print('elec_gen', elec_gen[0:24])
-            print('grid',grid[0:24])
-            print('grid_perc',grid_percentage)
         simu_output = []
 
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
