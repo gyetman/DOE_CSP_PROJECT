@@ -19,6 +19,11 @@ from urllib.parse import urlparse
 # set basic logging for when module is imported 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
+# patch module-level attribute to enable pickle to work
+#kdtree.node = kdtree.KDTree.node
+#kdtree.leafnode = kdtree.KDTree.leafnode
+#kdtree.innernode = kdtree.KDTree.innernode
+
 # TODO: fix lat/longitude written to JSON file
 
 ''' Module to lookup features based on a point location. Uses rtrees if they exist. '''
@@ -29,6 +34,7 @@ logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 # layer dictionaries. defaultLayers is always queried for model parameters. Other layers are added
 # to the defaultLayers in the method call. 
 # TODO: need to move to JSON files
+# TODO: calculate distances to water plants, desal & power plant
 
 # generalized country layer
 countryLayer = {
@@ -51,11 +57,10 @@ defaultLayers = {
     'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
     #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
-    # Canals are now stored by state, just the base path here
+    # Canals are stored by state, just the base path here
     'canals':{'point':cfg.gis_query_path / 'canals_split_points' / ''},
     'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
     'tx_county':{'poly':cfg.gis_query_path / 'tx_county_water_prices.shp'},
-
 }
 
 # lookup for URLs of regulatory information by state
@@ -194,6 +199,7 @@ def getClosestInfrastructure(pnt):
     if not country: 
         return None
 
+    print(country['properties'])
     if country['properties']['iso_merged'] == 'US':
         # get the state
         state = _findIntersectFeatures(pnt,countyLayer['county']['poly'])
@@ -298,7 +304,7 @@ def _findClosestPoint(pt,lyr):
     # TODO: update max dist, I believe it's in DD, not meters or km
     queryPoint = np.asarray([pt[1],pt[0]]) 
     # open each layer and find the matches
-    logging.info(f'Finding closes point for {lyr.stem}...')
+    logging.info(f'Finding closest point for {lyr.stem}...')
     # check for kdtree
     kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
     if kdFile.exists:
