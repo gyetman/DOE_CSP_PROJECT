@@ -75,16 +75,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "sam_coh",
-            "Label": "Unit cost of heat from solar field (LCOH)",
-            "Units": "$/kWh(th)",
-            "Require": "*",
-            "Constraint": "",
-			"Tab": "Desalination",
-			"Section": " LCOW calculation inputs"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "cost_storage",
             "Label": "Cost of thermal storage",
             "Units": "$/kWh",

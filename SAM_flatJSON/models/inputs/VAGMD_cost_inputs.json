@@ -43,15 +43,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "sam_coh",
-            "Label": "Unit cost of heat from solar field (LCOH)",
-            "Units": "$/kWh(th)",
-            "Require": "*",
-            "Constraint": "",
-			"Tab": "Desalination"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "solar_inlet",
             "Label": "Heat source inlet temperature",
             "Units": "oC",

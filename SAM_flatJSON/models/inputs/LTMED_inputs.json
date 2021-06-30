@@ -58,7 +58,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Fossil_f",
-            "Label": "Fossil fuel fraction threshold (0 to 1)",
+            "Label": "Fossil fuel participation (fraction from 0 to 1)",
             "Units": "",
             "Require": "*",
             "Costraint": "<1, >0"
