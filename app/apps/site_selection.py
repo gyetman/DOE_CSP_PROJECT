@@ -109,7 +109,10 @@ legend = html.Img(
 query_status = dcc.Loading(
     id=QUERY_STATUS,
     type='default',
-    color='#18bc9c'    
+    color='#ffff', 
+    style={"position": "absolute", "top": "200px", "right": "50%", "zIndex": "1000"},
+    
+      
 )
 site_selection_map = dl.Map(
     id=MAP_ID, 
