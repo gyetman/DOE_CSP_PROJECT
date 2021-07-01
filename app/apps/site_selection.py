@@ -37,6 +37,7 @@ BASE_LAYER_ID = "base-layer-id"
 BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS2 = "site-details-selection"
 USER_POINT = 'user_point'
+QUERY_STATUS = 'query_status'
 
 def get_style(feature):
     return dict()
@@ -105,6 +106,11 @@ legend = html.Img(
     src='assets/legend_update2.png'
 )
 
+query_status = dcc.Loading(
+    id=QUERY_STATUS,
+    type='default',
+    color='#18bc9c'    
+)
 site_selection_map = dl.Map(
     id=MAP_ID, 
     style={'width': '100%', 'height': '500px'}, 
@@ -157,6 +163,7 @@ def render_map():
         # dbc.Input(id='price_factor',value='1.0',type='hidden'),
         dbc.Row([
             dbc.Col([
+                query_status,
                 site_selection_map,
                 dbc.Row([
                     dbc.Col(radios, width=7),
@@ -205,28 +212,30 @@ def click_coord(coords):
     else:
         return coords
 
-@app.callback([Output(SITE_DETAILS2, 'children'),Output("closest-facilities", 'children')],
-                [Input(MAP_ID, 'click_lat_lng')],prevent_initial_call=True)
+@app.callback([
+        Output(SITE_DETAILS2, 'children'),
+        Output("closest-facilities", 'children'),
+        Output(QUERY_STATUS, 'children'),
+    ],
+    [Input(MAP_ID, 'click_lat_lng')],
+    prevent_initial_call=True)
+
 def get_point_info(lat_lng):
-    ''' callback to update the site information based on the user selected point'''
-    if lat_lng is None:
-        return('Click on the Map to see site details.'), [0,0]
+    markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+    closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
+    if not closest:
+        return markdown, [None,None,None,None], None
+    elif 'plant' in closest.keys():
+        desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
+        plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
+        canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
+        water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
+        return markdown, [desal,plant,canal,water], None
+    elif 'desal' in closest.keys():
+        desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])
+        return markdown, [desal,None,None,None], None
     else:
-        markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
-        closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
-        if not closest:
-            return markdown, [None,None,None,None]
-        elif 'plant' in closest.keys():
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
-            plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
-            canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
-            water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-            return markdown, [desal,plant,canal,water]
-        elif 'desal' in closest.keys():
-            desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])
-            return markdown, [desal,None,None,None]
-        else:
-            return markdown, [None,None,None,None]
+        return markdown, [None,None,None,None], None
 
         
 @app.callback(
