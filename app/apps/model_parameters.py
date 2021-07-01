@@ -178,6 +178,14 @@ def create_variable_lists(model_name, json_vars, json_vals):
         #converting to string, otherwise array brackets are removed in tables
         if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
             tempdict['Value']=str(tempdict['Value'])
+        elif tempdict['DataType'] == 'SSC_NUMBER':
+            tempval = tempdict['Value']
+            if type(tempval) is float:
+                if tempval < 1:
+                    tempdict['Value'] = round(tempval,4)
+                else:
+                    tempdict['Value'] = round(tempval, 1)
+
         model_vars.append(tempdict)
     # sort the lists by hierarchy
     model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
