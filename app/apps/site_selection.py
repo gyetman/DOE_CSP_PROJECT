@@ -111,7 +111,7 @@ query_status = dcc.Loading(
     type='default',
     color='#ffff', 
     style={"position": "absolute", "top": "200px", "right": "50%", "zIndex": "1000"},
-    
+    children = ['Querying GIS Layers']
       
 )
 site_selection_map = dl.Map(
@@ -289,12 +289,18 @@ def info_hover(features):
             header = ['Well\n', html.Br()]
             name = feature['properties']['orgName']
             tds = feature['properties']['TDS']
+            depth = feature['properties']['DEPTH']
+            if not depth:
+                depth = '-'
+            # todo, get this dynamically
+            depth_units = 'feet'
             temperature = feature['properties']['TEMP']
             units = 'mg/L'
             temp_units = 'C'
             if all((temperature, tds)):
                 return header + [html.B(name), html.Br(),
                     f"TDS: {tds:,} {units}", html.Br(), 
+                    f"Depth: {depth} ft", html.Br(),
                     f"Temperature: {temperature:.1f} {temp_units}" ]
             elif(temperature):
                 return header + [html.B(name), html.Br(),
@@ -303,6 +309,7 @@ def info_hover(features):
             elif(tds):
                 return header + [html.B(name), html.Br(),
                 f"TDS: {tds:,} {units}", html.Br(), 
+                f"Depth: {depth} ft", html.Br(),
                 f"Temperature: - {temp_units}"]
 
         #feature is Power Plant
