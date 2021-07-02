@@ -41,11 +41,13 @@ solar_config = dbc.CardBody(id='solar-config')
 
 system_performance = dbc.CardBody(id='system-performance')
 
+sam_performance = dbc.CardBody(id='sam-performance')
+
 cost_analysis = dbc.CardBody(id='cost-analysis')
 
 system_description = dbc.Card([dbc.CardHeader(html.H4('System Description')),local_condition, desal_config, solar_config], id='system-description', color='primary', inverse=True)
 
-simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
+simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, sam_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
 
 analysis_report_layout = [chart_navbar, 
                           dbc.Container(dbc.CardDeck([system_description, simulation_results]),style={'margin-bottom':150})]
@@ -640,6 +642,9 @@ def gather_data(x):
         so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(so,'Name','Actual aperture')
         updates.update({'actual_aperture':so[index]['Value']})
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value']) / 3650 /24 / s['q_pb_des']})        
    
     elif updates['solar'] == 'trough_physical_process_heat':
         # add specific data from solar GUI output
@@ -648,6 +653,10 @@ def gather_data(x):
         updates.update({'footprint1':s['q_pb_design'] * 6})
         updates.update({'footprint2':s['q_pb_design'] * 8})
         # add sam simulation output
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','Heat sink thermal power')
+        updates.update({'heat_gen':sum(so[index]['Value'] / 1000)})
+        updates.update({'cf':sum(so[index]['Value']) /1000 / 3.65 /24 / s['q_pb_design']})
         
     elif updates['solar'] == 'pvsamv1':
     # add specific data from solar GUI output
@@ -657,37 +666,92 @@ def gather_data(x):
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
 
         # add sam simulation output
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
+
     elif updates['solar'] == 'SC_FPC' or updates['solar'] == 'SC_ETC':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['desal_thermal_power_req']})
         updates.update({'footprint1':s['desal_thermal_power_req'] * 6 })
         updates.update({'footprint2':s['desal_thermal_power_req'] * 8 })
+        # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','Thermal power generation')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])/1000  / 3.65 /24 / s['desal_thermal_power_req']})
+        
     elif updates['solar'] == 'tcslinear_fresnel':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['system_capacity'] * 6 /1000 })
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
+    # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
+        index = helpers.index_in_list_of_dicts(so,'Name','Waste heat generation')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
+        
     elif updates['solar'] == 'tcsmolten_salt':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['P_ref']})
         updates.update({'footprint1':s['P_ref'] * 6 })
         updates.update({'footprint2':s['P_ref'] * 8 })
+    # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','Total electric power to grid w/ avail. derate')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])/1000  / 3.65 /24 / s['P_ref']})
+        index = helpers.index_in_list_of_dicts(so,'Name','Waste heat generation')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
+
+    elif updates['solar'] == 'tcsMSLF':
+    # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['system_capacity']})
+        updates.update({'footprint1':s['P_ref'] * 6  })
+        updates.update({'footprint2':s['P_ref'] * 8  })
+    # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])/1000  / 3.65 /24 / s['P_ref']})
+        index = helpers.index_in_list_of_dicts(so,'Name','Waste heat generation')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
+        
     elif updates['solar'] == 'tcsdirect_steam':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['system_capacity'] * 6 /1000})
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
+    # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
+        index = helpers.index_in_list_of_dicts(so,'Name','Waste heat generation')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
+
     elif updates['solar'] == 'tcstrough_physical':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
         updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['system_capacity'] * 6 /1000})
         updates.update({'footprint2':s['system_capacity'] * 8 /1000})
-
+    # add sam simulation output        
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
+        index = helpers.index_in_list_of_dicts(so,'Name','Waste heat generation')
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000 / 1000})
     
         
     
@@ -824,6 +888,7 @@ def set_desal_config(x):
         # html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
         ])
+    
 @app.callback(
     Output('solar-config', 'children'),
     [Input('data-initialize', 'children')])
@@ -888,8 +953,90 @@ def set_solar_config(x):
         html.Div(f"Design electricity production: {r['q_pb_des']:.2f} kW"),
         html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
         ])
+    elif app['solar'] == "tcsMSLF":
+        return ([
+        html.H5('Solar Field Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Design electricity production: {r['q_pb_des']:.2f} kW"),
+        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
+        ])
 
-
+@app.callback(
+    Output('sam-performance', 'children'),
+    [Input('data-initialize', 'children')])
+def sam_performance(x):
+    r = helpers.json_load(cfg.report_json)
+    app = helpers.json_load(cfg.app_json)
+    
+    if app['solar'] == "linear_fresnel_dsg_iph":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),     
+        ])
+    elif app['solar'] == "trough_physical_process_heat":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),         
+        ])
+    elif app['solar'] == "pvsamv1":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),      
+        ])
+    elif app['solar'] == "SC_FPC" or app['solar'] == 'SC_ETC':
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual thermal energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),      
+        ])
+    elif app['solar'] == "tcsdirect_steam" :
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        ])
+    elif  app['solar'] == "tcsmolten_salt":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        ])
+    elif app['solar'] == "tcslinear_fresnel":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        ])
+    elif app['solar'] == "tcstrough_physical":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        ])
+    elif app['solar'] == "tcsMSLF":
+        return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        ])
+    
 @app.callback(
     Output('system-performance', 'children'),
     [Input('data-initialize', 'children')])
@@ -898,7 +1045,7 @@ def set_system_performance(x):
     app = helpers.json_load(cfg.app_json)
     if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == 'ABS':
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
@@ -908,7 +1055,7 @@ def set_system_performance(x):
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'FO':
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
@@ -917,7 +1064,7 @@ def set_system_performance(x):
         ])
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Overall recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
@@ -929,7 +1076,7 @@ def set_system_performance(x):
         ])
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['actual_prod']:.0f} m3"),
         html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
         html.Div(f"Assumed recovery ratio: {r['rr']:.1f} %"),    
@@ -942,7 +1089,7 @@ def set_system_performance(x):
         for i in range(1,len(df.columns.values)):
             df.columns.values[i] = str(i)
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
@@ -967,7 +1114,7 @@ def set_system_performance(x):
         ])
     elif app['desal'] == 'Generic':
         return ([
-        html.H5('System Performance', className='card-title'),
+        html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),

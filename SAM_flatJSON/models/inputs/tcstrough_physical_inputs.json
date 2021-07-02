@@ -394,7 +394,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_ITD_des",
-            "Label": "ITD at design for dry system",
+            "Label": "ITD at design (user modified for co-generation)",
             "Units": "C",
             "Group": "powerblock",
             "Require": "pc_config=0",

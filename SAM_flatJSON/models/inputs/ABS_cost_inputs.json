@@ -44,7 +44,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "cost_storage",
-            "Label": "Cost of thermal storage",
+            "Label": "Cost of thermal storage (from solar field)",
             "Units": "$/kWh",
             "Require": "*",
             "Constraint": "",

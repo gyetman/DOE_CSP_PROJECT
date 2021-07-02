@@ -234,8 +234,14 @@ class SamBaseClass(object):
                 if self.financialModel == 'utilityrate5':
                     self.module_create_execute('cashloan')
             self.P_cond = self.ssc.data_get_array(self.data, b'P_cond') # Pa
-            self.T_cond = self.P_T_conversion(self.P_cond) # oC
+            # self.T_cond = self.P_T_conversion(self.P_cond) # oC
 
+            self.T_amb = self.ssc.data_get_number(self.data, b'T_amb_des') # Pa
+            self.T_dry = self.ssc.data_get_array(self.data, b'tdry') # Pa            
+            with open(self.json_values, "r") as read_file:
+                sam_input = json.load(read_file)
+            T_ITD = sam_input['T_ITD_des']
+            self.T_cond = [self.T_amb + T_ITD for i in self.T_dry ]
             
             # self.mass_fr = self.ssc.data_get_array(self.data, b'm_dot') # kg/s
             # self.mass_fr_hr = np.dot(self.mass_fr, 3600) # kg/hr
@@ -293,11 +299,12 @@ class SamBaseClass(object):
                     self.module_create_execute('cashloan')       
 
 
-            self.T_dry = self.ssc.data_get_array(self.data, b'tdry') # Pa
+            self.T_amb = self.ssc.data_get_number(self.data, b'T_amb_des') # Pa
+            self.T_dry = self.ssc.data_get_array(self.data, b'tdry') # Pa            
             with open(self.json_values, "r") as read_file:
                 sam_input = json.load(read_file)
             T_ITD = sam_input['T_ITD_des']
-            self.T_cond = [i + T_ITD for i in self.T_dry ]
+            self.T_cond = [self.T_amb + T_ITD for i in self.T_dry ]
             
             if self.cspModel== 'tcsmolten_salt':
                 self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_water_pc') # kg/s
