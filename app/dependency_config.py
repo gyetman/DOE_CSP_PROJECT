@@ -84,11 +84,11 @@ def tcslinear_fresnel(invalues):
     	solarm = loop_aperture * nLoops / sm1_aperture   
 
     
-    q_pb_des = demand_var / eta_ref 
+    q_pb_des = demand_var / eta_ref
     actual_aper = loop_aperture * nLoops
     q_max_aux = 1e-6 * actual_aper * I_bn_des * total_loop_conv_eff 
     P_turb_des = P_boil_des
-    system_capacity = demand_var * gross_net_conv_factor * 1000
+    system_capacity = demand_var * gross_net_conv_factor
     
     return [nLoops, q_pb_des, q_max_aux, solarm, specified_total_aperture, P_turb_des, system_capacity]
 

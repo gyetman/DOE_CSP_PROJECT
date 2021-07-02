@@ -174,8 +174,6 @@ class RO_FO_cost(object):
         cost_output.append({'Name':'Annual water production','Value':self.Prod,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/kWh(e)'})
         cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/kWh(th)'})
-        cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/m3'})
-        cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
         # cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
         
         return cost_output

@@ -1005,7 +1005,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_ITD_des",
-            "Label": "ITD at design (user modified for co-generation)",
+            "Label": "Approach temperature for dry cooling",
             "Units": "C",
             "Group": "dsg_controller",
             "Require": "*",
