@@ -1,0 +1,9 @@
+Name,Value,Unit
+Number of modules required,1030,
+Maximum recovery rate allowed,66.66666666666667,%
+Actual recovery rate,32.17500000000001,%
+Total processing time for one batch volume,0.23855565577811966,h
+Permeate flow volume for each batch volume,9.6525,L
+Thermal power consumption,2.286827201623831,MW(th)
+Specific thermal power consumption,54.88385283897194,kWh(th)/m3
+Gained output ratio,11.8909013035045,

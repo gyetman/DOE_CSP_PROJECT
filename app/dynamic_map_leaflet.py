@@ -100,7 +100,8 @@ info = html.Div(children='Hover over a Feature',
                 id="info")
 
 map_navbar = dbc.NavbarSimple(
-    children='',
+    children=[dbc.NavItem(dbc.NavLink("Site Selection"), active=True),
+              dbc.NavItem(dbc.NavLink("Quick Analysis", href='/quick-analysis'))],
     brand='Site Selection',
     color='primary',
     dark=True,

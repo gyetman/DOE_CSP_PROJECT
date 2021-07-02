@@ -18,6 +18,14 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "Annual downtime percentage",
+            "Units": "%",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "coe",
             "Label": "Unit cost of electricity from the grid (LCOE)",
             "Units": "$/kWh",

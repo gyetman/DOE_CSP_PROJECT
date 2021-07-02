@@ -1,6 +1,5 @@
 {
 	"FeedC_r" : 70,
 	"Capacity": 1000,
-	"Fossil_f": 0,
-	"storage_hour": 0
+	"rr": 25
 }

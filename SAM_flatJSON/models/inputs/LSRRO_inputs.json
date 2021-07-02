@@ -11,26 +11,18 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration",
+            "Label": "Feed concentration (Inputs are limited to 20, 35, 70 and 125 g/L)",
             "Units": "g/L",
             "Require": "*",
             "Constraint": "20,35 or 70"
         },
 		{
             "DataType": "SSC_NUMBER",
-            "Name": "storage_hour",
-            "Label": "Storage hours",
-            "Units": "hour",
+            "Name": "rr",
+            "Label": "Recovery rate (Inputs are limited to 25% and 50% for 125 g/L feed concentration)",
+            "Units": "%",
             "Require": "*",
             "Constraint": ">0"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "Fossil_f",
-            "Label": "Fossil fuel fraction threshold (0 to 1)",
-            "Units": "",
-            "Require": "*",
-            "Constraint": "<1, >0"
         }
     ]
 }

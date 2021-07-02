@@ -1,0 +1,60 @@
+{
+    "Generic": [
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Capacity",
+            "Label": "System Capacity",
+            "Units": "m3/day",
+            "Require": "*",
+            "Constraint": "<1, >0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "FeedC_r",
+            "Label": "Feed concentration",
+            "Units": "g/L",
+            "Require": "*",
+            "Constraint": "<106,>34"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "RR",
+            "Label": "Recovery rate",
+            "Units": "%",
+            "Require": "*",
+            "Constraint": ""
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "STEC",
+            "Label": "Specific thermal energy consumption ",
+            "Units": "kWh(th)/m3",
+            "Require": "*",
+            "Constraint": ">0"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "SEC",
+            "Label": "Specific electricity consumption",
+            "Units": "kWh(e)/m3",
+            "Require": "*",
+            "Constraint": "<1, >0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Fossil_f",
+            "Label": "Fossil fuel participation (fraction from 0 to 1)",
+            "Units": "",
+            "Require": "*",
+            "Constraint": "<1111,>399"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Thermal storage hours",
+            "Units": "hour",
+            "Require": "*",
+            "Constraint": ">0"
+        }
+    ]
+}
