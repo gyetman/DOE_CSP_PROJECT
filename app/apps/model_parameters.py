@@ -144,6 +144,7 @@ def create_model_variable_page(tab, model_vars, model_type):
                     tab_page.append(html.H6(subsec))
     #add the final table
     tableID = '{}{}{}'.format(tab,sec,subsec).replace(' ','_').replace('(','').replace(')','').replace('/','')
+
     tab_page.append(create_data_table(tableData,tableID,model_type, app[model_type],app['parametric'])) #ZZZ
     return tab_page
 
@@ -174,6 +175,12 @@ def create_variable_lists(model_name, json_vars, json_vals):
         tempdict['Tab']=tempdict['Tab'].strip()
         tempdict['Section']=tempdict['Section'].strip()
         tempdict['Subsection']=tempdict['Subsection'].strip()
+        
+        # #Hide variables
+        # if "Hidden" in var.keys():
+        #     print(var['Lab'])
+        #     continue
+        
         #TODO create a better way to display and edit arrays/matrices
         #converting to string, otherwise array brackets are removed in tables
         if tempdict['DataType']=='SSC_ARRAY' or tempdict['DataType']=='SSC_MATRIX':
@@ -185,7 +192,7 @@ def create_variable_lists(model_name, json_vars, json_vals):
                     tempdict['Value'] = round(tempval,4)
                 else:
                     tempdict['Value'] = round(tempval, 1)
-
+                    
         model_vars.append(tempdict)
     # sort the lists by hierarchy
     model_vars.sort(key=itemgetter('Tab','Section','Subsection'))
@@ -319,7 +326,7 @@ primary_card = dbc.Card(
 
 
 SAM_JSON_file = dcc.Upload(
-    html.Button('Optional: If you want to modify the inputs from the SAM interface, you may click here to upload a SAM generated JSON file (Not for parametric study)'),
+    html.Button('If you start your project from SAM, you may click here to upload a SAM generated JSON file and import the inputs (Not for parametric study)'),
     style={
         'width': '100%',
         'height': '60px',

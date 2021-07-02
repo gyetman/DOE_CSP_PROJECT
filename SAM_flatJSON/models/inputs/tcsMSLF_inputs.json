@@ -886,7 +886,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "field_fluid",
-            "Label": "Label",
+            "Label": "Field HTF (Number)",
             "Group": "controller",
             "Require": "*"
         },
@@ -921,7 +921,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "is_hx",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -947,7 +947,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "hx_config",
-            "Label": "Label",
+            "Label": "Thermal storage configuration",
             "Group": "controller",
             "Require": "*"
         },
@@ -955,7 +955,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "q_max_aux",
-            "Label": "Label",
+            "Label": "Max flow velocity",
             "Group": "controller",
             "Require": "*"
         },
@@ -972,7 +972,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "V_tank_hot_ini",
-            "Label": "Label",
+            "Label": "Intial volumn in the hot tank",
             "Group": "controller",
             "Require": "*"
         },
@@ -980,7 +980,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "T_tank_hot_ini",
-            "Label": "Label",
+            "Label": "Intial temperature in the hot tank",
             "Group": "controller",
             "Require": "*"
         },
@@ -988,7 +988,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "T_tank_cold_ini",
-            "Label": "Label",
+            "Label": "Initial temperature in the tank",
             "Group": "controller",
             "Require": "*"
         },
@@ -1069,7 +1069,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "T_field_in_des",
-            "Label": "Label",
+            "Label": "Field inlet temperature at design point",
             "Group": "controller",
             "Require": "*"
         },
@@ -1077,7 +1077,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "T_field_out_des",
-            "Label": "Label",
+            "Label": "Field outlet temperature at design point",
             "Group": "controller",
             "Require": "*"
         },
@@ -1085,7 +1085,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "q_pb_design",
-            "Label": "Label",
+            "Label": "Design capacity",
             "Group": "controller",
             "Require": "*"
         },
@@ -1093,7 +1093,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "W_pb_design",
-            "Label": "Label",
+            "Label": "Design thermal energy to the powerblock",
             "Group": "controller",
             "Require": "*"
         },
@@ -1119,7 +1119,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "solarm",
-            "Label": "Label",
+            "Label": "Solar multiple",
             "Group": "controller",
             "Require": "*"
         },
@@ -1191,7 +1191,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "fthr_ok",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*",
             "Constraint": "INTEGER"
@@ -1200,7 +1200,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "nSCA",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1208,7 +1208,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "fc_on",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1225,7 +1225,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "tes_type",
-            "Label": "Label",
+            "Label": "Thermal storage HTF type",
             "Group": "controller",
             "Require": "*"
         },
@@ -1233,25 +1233,31 @@
             "Hidden": "1",
             "DataType": "SSC_ARRAY",
             "Name": "tslogic_a",
-            "Label": "Label",
+            "Label": "Storage dispatch w/ solar",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
         },
         {
             "Hidden": "1",
             "DataType": "SSC_ARRAY",
             "Name": "tslogic_b",
-            "Label": "Label",
+            "Label": "Storage dispatch w/o solar",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
         },
         {
             "Hidden": "1",
             "DataType": "SSC_ARRAY",
             "Name": "tslogic_c",
-            "Label": "Label",
+            "Label": "Turb. out. fraction",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Thermal Storage",
+            "Section": "Dispatch Control"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1265,7 +1271,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "tc_fill",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1273,7 +1279,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "tc_void",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1281,7 +1287,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "t_dis_out_min",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1289,7 +1295,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "t_ch_out_max",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1297,7 +1303,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "nodes",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
@@ -1305,7 +1311,7 @@
             "Hidden": "1",
             "DataType": "SSC_NUMBER",
             "Name": "f_tc_cold",
-            "Label": "Label",
+            "Label": "System parameter (Do not change)",
             "Group": "controller",
             "Require": "*"
         },
