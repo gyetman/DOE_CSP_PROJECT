@@ -202,7 +202,6 @@ def render_results_map():
             dbc.Col([
                 html.H4('Water Price:'),
                 html.P(id='water-price'),
-                html.P(f'Price difference in closest demand location: ${price_difference:.2f}', id='price_difference'),
                 html.P(f'Factor for adapting LCOW for incremental costs or credits:', id='factor_tooltip'),
                 dcc.Input(
                     id='price-factor',
@@ -216,6 +215,9 @@ def render_results_map():
                     "If subsidies, decrease LCOW. If additional costs, increase it. ",
                     target='factor_tooltip'
                 ),
+                html.P(f'Price difference between model and adjusted value: ${price_difference:.2f}', id='price_difference'),
+
+
                 html.H3('Site details:', className='text-success'),
                 html.Div(id=RESULTS_SITE_DETAILS)
             ],width=3)
