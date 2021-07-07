@@ -52,7 +52,7 @@ colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=color_scale, widt
 loading_status = dcc.Loading(
     id=LOADING_STATUS,
     type='default',
-    color='#ffff', 
+    color='#18BC9C', 
     style={"position": "absolute", "top": "200px", "right": "50%", "zIndex": "1000"},
     children = ['Querying GIS Layers']
       
