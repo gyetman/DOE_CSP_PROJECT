@@ -190,11 +190,13 @@ class OARO(object):
                    # 'ma':   sol['ma'] * self.num_modules,
                    'sec':  SEC
                   }         
-
+        brine_s = self.FeedC_r / (1 - int(recrate)/100)
         self.design_output = []
         # self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
         self.design_output.append({'Name':'Permeate flow rate','Value':(468/24*rtq) * self.num_modules  *24,'Unit':'m3/day'})    
-        self.design_output.append({'Name':'Electricity consumption','Value':self.ThPower * self.num_modules / 1000,'Unit':'MW(e)'})
+        self.design_output.append({'Name':'Electric energy requirement','Value':self.ThPower * self.num_modules / 1000,'Unit':'MW(e)'})
+        self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
+        
         self.design_output.append({'Name':'Specialized membrane area','Value': specialized_area * self.num_modules,'Unit':'m2'})    
         self.design_output.append({'Name':'Conventional RO membrane area','Value':ro_area * self.num_modules,'Unit':'m2'})
         self.design_output.append({'Name':'Specific electricity consumption','Value': SEC,'Unit':'kWh(e)/m3'})
@@ -252,7 +254,9 @@ class OARO(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})           
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(load)) / 1000000) ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(load))) / sum(gen) * 100 ,'Unit':'%'})    
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output

@@ -136,13 +136,18 @@ class RO(object):
         self.HP_power=HP_power
         self.FP_power=FP_power
         self.PowerTotal=PowerTotal
-
+        
+        RO_brine = self.Qb1*24        
+        RO_permeate = self.Qp1*24
+        RO_feed = self.Qf1*24
+        RO_brine_salinity = (self.Cf * RO_feed - self.Cp * RO_permeate)/ RO_brine    
         
         design_output = []
         design_output.append({'Name':'Permeate flow rate of the system','Value':self.Qp1,'Unit':'m3/h'})
         design_output.append({'Name':'Number of vessels','Value':self.NV1,'Unit':''})
+        design_output.append({'Name':'Brine concentration','Value':RO_brine_salinity,'Unit':'g/L'})
     #            design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
-        design_output.append({'Name':'Electric energy consumption','Value':self.PowerTotal,'Unit':'kW(e)'})
+        design_output.append({'Name':'Electric energy requirement','Value':self.PowerTotal,'Unit':'kW(e)'})
         design_output.append({'Name':'Specific energy consumption','Value':self.SEC,'Unit':'kWh(e)/m3'})
     #            design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         return design_output
@@ -208,7 +213,9 @@ class RO(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})          
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(load)) / 1000000) ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(load))) / sum(gen) * 100 ,'Unit':'%'}) 
         
         return simu_output
 

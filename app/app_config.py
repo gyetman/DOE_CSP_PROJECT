@@ -78,7 +78,7 @@ Desal = {'FO':'Forward Osmosis (FO)                       ',
          # 'LSRRO': 'Low-salt-rejection Reverse Osmosis',
          'RO_FO': 'Hybrid System (RO - FO)',
          'RO_MDB': 'Hybrid System (RO - VAGMD-batch)',
-         'Generic': 'Generic Desalination System'
+         'Generic': 'Generic Model'
          }
 
 #dict for financial model 'values' and 'labels' 
@@ -111,7 +111,7 @@ Documentation = {
     #Desal
     'FO':{'doc':SDAT,'page':27}, 'VAGMD':{'doc':SDAT,'page':27}, 'MDB':{'doc':SDAT,'page':27}, 'LTMED':{'doc':SDAT,'page':27}, 'ABS':{'doc':SDAT,'page':27}, 'MEDTVC':{'doc':SDAT,'page':27}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':27}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':27}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':27}, 'RO_MDB':{'doc':SDAT,'page':27}, 'Generic':{'doc':SDAT,'page':27},
     #Financial
-    'utilityrate5':{'doc':SDAT,'page':30}, 'lcoefcr':{'doc':SDAT,'page':30}, 'iph_to_lcoefcr':{'doc':SDAT,'page':30}, 'levpartflip':{'doc':SDAT,'page':30}, 'equpartflip':{'doc':SDAT,'page':30}, 'saleleaseback':{'doc':SDAT,'page':30}, 'singleowner':{'doc':SDAT,'page':30},
+    'utilityrate5':{'doc':SAMD,'page':771}, 'lcoefcr':{'doc':SAMD,'page':829}, 'iph_to_lcoefcr':{'doc':SAMD,'page':829}, 'levpartflip':{'doc':SAMD,'page':803}, 'equpartflip':{'doc':SAMD,'page':813}, 'saleleaseback':{'doc':SAMD,'page':821}, 'singleowner':{'doc':SAMD,'page':787},
     #Solar
     'pvsamv1':{'doc':SAMD,'page':171},'SC_FPC':{'doc':SAMD,'page':19},'SC_ETC':{'doc':SAMD,'page':19},'trough_physical_process_heat':{'doc':SAMD,'page':706},'linear_fresnel_dsg_iph':{'doc':SAMD,'page':741},'tcslinear_fresnel':{'doc':SAMD,'page':605}, 'tcsMSLF':{'doc':SAMD,'page':627},
     'tcsdirect_steam':{'doc':SAMD,'page':563}, 'tcsmolten_salt':{'doc':SAMD,'page':526}, 'tcstrough_physical':{'doc':SAMD,'page':437}
@@ -119,16 +119,16 @@ Documentation = {
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'pvsamv1' : [('FO',True),('VAGMD',True),('LTMED',True),('ABS',True),('MEDTVC',True),('MDB',True),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'SC_FPC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'SC_ETC' : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'tcsMSLF': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'tcsdirect_steam': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'tcsmolten_salt': [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('LTMED',False),('ABS',False),('MEDTVC',False),('MDB',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'SC_FPC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'SC_ETC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'tcslinear_fresnel': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'tcsMSLF': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'tcsdirect_steam': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'tcsmolten_salt': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'tcstrough_physical'  : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     }
 
 #dict containing the finance options ('value' and 'disabled') after desal model chosen

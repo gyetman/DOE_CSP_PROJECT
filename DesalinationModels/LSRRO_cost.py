@@ -45,7 +45,6 @@ class LSRRO_cost(object):
                  storage_cap = 0, # Capacity of battery (kWh)
                  cost_storage = 26
                  ):
-        self.downtime = downtime #* (1-downtime) # Average daily operation hour (h/day)
         self.ann_prod=Prod * (1-downtime/100)
         self.chem_cost=chem_cost
         self.labor_cost=labor_cost

@@ -195,7 +195,7 @@ class StaticCollector_fp(object):
                     T_input = T_output
                 
                 Tout_row.append(max(self.initial_water_temp,T_output))
-                gen.append(self.d*mass_flow_corrected*(Tout_row[i]-self.initial_water_temp)* self.num_total_col)
+                gen.append(self.d*mass_flow_corrected*(Tout_row[i]-self.initial_water_temp)* self.num_row)
             else:
                 k_theta.append(1)
                 Tout_col.append(self.initial_water_temp)
@@ -205,8 +205,7 @@ class StaticCollector_fp(object):
         staticcollector_output.append({'Name':'Field outlet temperature','Value':Tout_row,'Unit':'oC'})   
         staticcollector_output.append({'Name':'Thermal power generation','Value':gen,'Unit':'kWh'})   
         staticcollector_output.append({'Name':'Design capacity','Value':self.desal_thermal_power_req/1000,'Unit':'MWh'})   
-        
-     
+  
         return gen, staticcollector_output
 
 

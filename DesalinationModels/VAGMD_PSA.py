@@ -185,13 +185,16 @@ class VAGMD_PSA(object):
             self.GOR     = ((self.PFlux * self.Area) * self.AHvP * self.RhoP / self.ThPower) / (3600*1000*1000)
         
         
+        RR= self.F / self.FFR_r
+        brine_salinity = self.FeedC_r / (1-RR)      
         self.num_modules = math.ceil(self.Capacity *1000 / self.F /24 )
         self.design_output = []
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
         self.design_output.append({'Name':'Permeate flux of module','Value':self.PFlux,'Unit':'l/m2 h'})
         self.design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
-        self.design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.ThPower * self.num_modules / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})
+        self.design_output.append({'Name':'Brine concentration','Value':brine_salinity,'Unit':'g/L'})    
+        self.design_output.append({'Name':'Thermal power requirement','Value':self.ThPower * self.num_modules / 1000,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
         self.design_output.append({'Name':'Recovery ratio','Value':self.F / self.FFR_r *100 ,'Unit':'%'})
@@ -270,7 +273,9 @@ class VAGMD_PSA(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})     
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output
@@ -363,8 +368,8 @@ class VAGMD_PSA(object):
 ##    print('STEC: ', case.STEC_AS26_allM)
 ##    print('GOR: ', case.GOR_AS26_allM)
     
-case = VAGMD_PSA()
-case.design()
+# case = VAGMD_PSA()
+# case.design()
 # case.opt()
 
             

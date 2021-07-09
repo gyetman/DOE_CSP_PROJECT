@@ -95,8 +95,8 @@ class RO_MDB(object):
         self.design_output.append({'Name':'RO brine salinity','Value':RO_brine_salinity,'Unit':'g/L'})
         self.design_output.append({'Name':'MD brine salinity','Value':MDB_b_s,'Unit':'g/L'})        
         
-        self.design_output.append({'Name':'Electric energy consumption','Value':RO_case.PowerTotal,'Unit':'kW(e)'})
-        self.design_output.append({'Name':'Thermal power consumption','Value':Thermal_load / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Electric energy requirement','Value':RO_case.PowerTotal,'Unit':'kW(e)'})
+        self.design_output.append({'Name':'Thermal power requirement','Value':Thermal_load / 1000,'Unit':'MW(th)'})
         
         self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'STEC-MD (Specific thermal power consumption)','Value':STEC,'Unit':'kWh(th)/m3'})   
@@ -144,7 +144,7 @@ class RO_MDB(object):
                 prod[i] = (grid[i]+load[i] )/ self.elec_load * self.max_prod  
                 fuel[i] = self.thermal_load
 
-            
+            elec_load = load
             
             grid_percentage = sum(grid)/sum(energy_consumption)*100
             fossil_percentage = 1
@@ -185,7 +185,8 @@ class RO_MDB(object):
                 energy_consumption[i] = fuel[i]+load[i]
                 prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
                 grid[i] = self.design_output[5]['Value'] 
-
+            
+            elec_load = [0]
             
             grid_percentage = 1
             fossil_percentage = sum(fuel)/sum(energy_consumption)*100
@@ -212,6 +213,7 @@ class RO_MDB(object):
             grid =  [0 for i in range(len(gen))]
             th_energy_consumption =  [0 for i in range(len(gen))]
             elec_energy_consumption =  [0 for i in range(len(gen))]
+            elec_load =  [0 for i in range(len(gen))]
 
             for i in range(len(gen)):
                 to_desal[i] = min(self.thermal_load, gen[i])
@@ -227,7 +229,8 @@ class RO_MDB(object):
                     fuel[i] = self.thermal_load - load[i]
                 if max(0,elec_gen[i] / self.elec_load) < self.Fossil_f:
                     grid[i] = self.elec_load - max(0,elec_gen[i])
-    
+                    
+                elec_load[i] = min(self.elec_load, max(0,elec_gen[i]))    
                 th_energy_consumption[i] = fuel[i]+load[i]
                 elec_energy_consumption[i] = self.elec_load
                 prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
@@ -251,6 +254,11 @@ class RO_MDB(object):
         simu_output.append({'Name':'Total external thermal energy usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'External thermal energy usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Overall recovery rate','Value':self.design_output[0]['Value'],'Unit':'%'})
+
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(thermal_gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed thermal energy','Value':(sum(thermal_gen) - sum(load)) / (sum(thermal_gen)+1) * 100 ,'Unit':'%'})
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(elec_gen) - sum(elec_load))) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed electric energy','Value':max(0,(sum(elec_gen) - sum(elec_load))) / (sum(elec_gen)+1) * 100 ,'Unit':'%'})
         
         return simu_output            
         
