@@ -120,7 +120,11 @@ site_selection_map = dl.Map(
     center=[40.25,-97.05], 
     zoom=4,
     children=[
-        dl.TileLayer(id=BASE_LAYER_ID),
+        dl.TileLayer(
+            id=BASE_LAYER_ID, 
+            tileSize=512,
+            zoomOffset=-1,
+        ),
         dl.ScaleControl(metric=True, imperial=True),
         # placeholder for lines to nearby plants
         dl.LayerGroup(id="closest-facilities"),
