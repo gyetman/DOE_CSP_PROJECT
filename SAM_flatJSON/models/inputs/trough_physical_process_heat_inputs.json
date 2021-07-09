@@ -76,7 +76,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "tshours",
-            "Label": "Hours of storae at design point ",
+            "Label": "Hours of storage at design point ",
             "Units": "hr",
             "Group": "system_design",
             "Require": "*",
@@ -1096,7 +1096,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "L_xpan_hdr",
-            "Label": "Compined perpendicular lengths of each header expansion loop",
+            "Label": "Combined perpendicular lengths of each header expansion loop",
             "Units": "m",
             "Group": "solar_field",
             "Require": "*"
@@ -1104,7 +1104,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "L_xpan_rnr",
-            "Label": "Compined perpendicular lengths of each runner expansion loop",
+            "Label": "Combined perpendicular lengths of each runner expansion loop",
             "Units": "m",
             "Group": "solar_field",
             "Require": "*"

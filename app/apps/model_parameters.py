@@ -282,10 +282,10 @@ tabs_accordion = html.Div([
 
 desal_side_panel = dbc.CardBody([
     html.H4("Desalination Design Model", className="card-title"),
-    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. For thermal desalination models, you should run the design model first if you change any variable in the desalination system. Then you should size the solar field capacity according to the resulted thermal power consumption. \nThe solar system capacity in different solar thermal models can be found as below:", className='card-text'),
-    html.P("Static Collector model: System Design - Design capacity", className='card-text'),
-    html.P("Industrial Process Heat Parabolic Trough: Controller - Design heat input to power block ", className='card-text'),
-    html.P("Industrial Process Linear Fresnel: System Design - Heat sink power", className='card-text'),
+    html.P("This model estimates the nominal power consumption given the specified parameters in the desalination system. For thermal desalination models, you should run the design model first if you change any variable in the desalination system. Then you should size the solar field capacity according to the resulted thermal power consumption. \nThe solar system capacity in different solar thermal models can be found in the following sub-folders:", className='card-text'),
+    html.P("Static Collector model: System Design / Design capacity", className='card-text'),
+    html.P("Industrial Process Heat Parabolic Trough: System Design / Design Point Parameters / Heat Sink / Heat sink power ", className='card-text'),
+    html.P("Industrial Process Linear Fresnel Direct Steam: System Design / Heat sink power", className='card-text'),
     dbc.Button('Run Design Model', 
         color="primary", 
         id='run-desal-design'),

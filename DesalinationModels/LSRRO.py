@@ -8,11 +8,11 @@ class LSRRO(object):
     def __init__(self,
                  FeedC_r = 35, # Feed concentration (g/L)
                  Capacity = 1000, # System capacity  (m3/day)
-                 rr = 25
+                 
                  ):
         self.FeedC_r = FeedC_r
         self.Capacity = Capacity
-        self.rr = rr
+        self.Fossil_f = Fossil_f
         self.base_path = Path(__file__).resolve().parent.absolute()        
     def design(self):
         s = 'http://byu.apmonitor.com'
@@ -46,14 +46,10 @@ class LSRRO(object):
             recrate = '85'
         elif self.FeedC_r == 20:
             recrate = '92'
-        elif self.FeedC_r == 125:
-            recrate = str(self.rr)
-            
+           
         LSRRO_70g_L_75rec=ROOT_DIR/'LSRRO_8stage_cin_70_r_75.apm'
         LSRRO_35g_L_85rec=ROOT_DIR/'LSRRO_6stage_cin_35_r_85.apm'
-        LSRRO_20g_L_92rec=ROOT_DIR/'LSRRO_6stage_cin_20_r_92.apm'   
-        LSRRO_125g_L_50rec=ROOT_DIR/'LSRRO_8stage_cin_125_r_50.apm'
-        LSRRO_125g_L_25rec=ROOT_DIR/'LSRRO_5stage_cin_125_r_25.apm'
+        LSRRO_20g_L_92rec=ROOT_DIR/'LSRRO_6stage_cin_20_r_92.apm'       
         feedsal = str(self.FeedC_r)
         tech = 'LSRRO'
         model_file= eval(tech + "_" + feedsal + "g_L_"+ recrate + "rec")
@@ -73,12 +69,7 @@ class LSRRO(object):
                 apm_option(s,a,'apm.otol',1e-4) # default tolerance is 1e-6
             elif feedsal=='20':
                 apm_option(s,a,'apm.otol',1e-3) # default tolerance is 1e-6
-        elif (tech=='LSRRO'):
-            if (feedsal=='125') & (recrate=='25'):
-                apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6  
-            elif (feedsal=='125') & (recrate=='50'):        
-                apm_option(s,a,'apm.otol',1e-7) # default tolerance is 1e-6  
-                
+        
         else:
             apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6
         output = apm(s,a,'solve');
@@ -191,7 +182,8 @@ class LSRRO(object):
         self.max_prod = (468/24*self.rtq)  * self.num_modules # m3/h
         for i in range(len(gen)):
             gen[i] /= 1000
-        self.Fossil_f = 1
+        print(self.thermal_load)
+        print(self.max_prod)
         self.storage_cap = storage * self.thermal_load # kWh
         
         to_desal = [0 for i in range(len(gen))]

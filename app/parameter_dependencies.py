@@ -161,7 +161,6 @@ def update_val(tables,function, output_names,values):
         l, index=helpers.index_in_lists_of_dicts(tables[indexes:],'Name',output_names[i])    
         tables[indexes:][l][index]['Value']=values[i]    
         
-
     return tables[indexes:]
 
 def function_switcher(func, intables):

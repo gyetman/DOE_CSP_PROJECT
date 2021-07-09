@@ -73,8 +73,8 @@ class RO_FO(object):
         self.design_output.append({'Name':'RO brine salinity','Value':RO_brine_salinity,'Unit':'g/L'})
         self.design_output.append({'Name':'FO brine salinity','Value':FO_b_s,'Unit':'g/L'})        
         
-        self.design_output.append({'Name':'Electric energy consumption','Value':RO_case.PowerTotal,'Unit':'kW(e)'})
-        self.design_output.append({'Name':'Thermal power consumption','Value':FO.Thermal_power[0] / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Electric energy requirement','Value':RO_case.PowerTotal,'Unit':'kW(e)'})
+        self.design_output.append({'Name':'Thermal power requirement','Value':FO.Thermal_power[0] / 1000,'Unit':'MW(th)'})
         
         self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'STEC-FO (Specific thermal power consumption)','Value':FO.STEC[0],'Unit':'kWh(th)/m3'})   
@@ -86,8 +86,9 @@ class RO_FO(object):
         return self.design_output
     
     def simulation(self, elec_gen, thermal_gen, solar_type = "pv", storage = 0 ): # solar_type = (pv, csp, thermal)
-        gen = elec_gen
+
         if solar_type == 'pv':
+            gen = elec_gen
             self.elec_load = self.design_output[5]['Value']  # kWh
             self.thermal_load = self.design_output[6]['Value']*1000 # kWh
             self.max_prod = self.capacity / 24 # m3/h
@@ -122,7 +123,8 @@ class RO_FO(object):
                 prod[i] = (grid[i]+load[i] )/ self.elec_load * self.max_prod  
                 fuel[i] = self.thermal_load
 
-            
+            th_energy_consumption = [0]
+            elec_load = load            
             
             grid_percentage = sum(grid)/sum(energy_consumption)*100
             fossil_percentage = 1
@@ -164,6 +166,8 @@ class RO_FO(object):
                 prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
                 grid[i] = self.design_output[5]['Value'] 
 
+            th_energy_consumption = energy_consumption
+            elec_load = [0]
             
             grid_percentage = 1
             fossil_percentage = sum(fuel)/sum(energy_consumption)*100
@@ -190,6 +194,7 @@ class RO_FO(object):
             grid =  [0 for i in range(len(gen))]
             th_energy_consumption =  [0 for i in range(len(gen))]
             elec_energy_consumption =  [0 for i in range(len(gen))]
+            elec_load =  [0 for i in range(len(gen))]
             for i in range(len(gen)):
                 to_desal[i] = min(self.thermal_load, gen[i])
                 to_storage[i] = abs(gen[i] - to_desal[i])
@@ -204,7 +209,8 @@ class RO_FO(object):
                     fuel[i] = self.thermal_load - load[i]
                 if max(0,elec_gen[i] / self.elec_load) < self.Fossil_f:
                     grid[i] = self.elec_load - max(0,elec_gen[i])
-    
+                elec_load[i] = min(self.elec_load, max(0,elec_gen[i]))
+                    
                 th_energy_consumption[i] = fuel[i]+load[i]
                 elec_energy_consumption[i] = self.elec_load
                 prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
@@ -212,7 +218,8 @@ class RO_FO(object):
                 fossil_percentage = sum(fuel)/sum(th_energy_consumption)*100                             
                 Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
                 Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
-                                
+                
+    
         simu_output = []
 
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
@@ -228,7 +235,13 @@ class RO_FO(object):
         simu_output.append({'Name':'Total external thermal energy usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'External thermal energy usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Overall recovery rate','Value':self.design_output[0]['Value'],'Unit':'%'})
-        
+
+        print(elec_gen[0:24])
+        print(elec_load[0:24])
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(thermal_gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed thermal energy','Value':(sum(thermal_gen) - sum(load)) / (sum(thermal_gen)+1) * 100 ,'Unit':'%'})
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(elec_gen) - sum(elec_load))) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed electric energy','Value':max(0,(sum(elec_gen) - sum(elec_load))) / (sum(elec_gen)+1) * 100 ,'Unit':'%'})
         return simu_output            
         
         # elif solar_type == 'thermal':

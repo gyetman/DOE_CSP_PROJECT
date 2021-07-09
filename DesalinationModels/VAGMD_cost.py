@@ -135,5 +135,5 @@ class VAGMD_cost(object):
         
         return cost_output
 #%%
-case2 = VAGMD_cost(coh = 100)
-print(case2.lcow())
+# case2 = VAGMD_cost(coh = 100)
+# print(case2.lcow())

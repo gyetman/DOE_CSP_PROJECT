@@ -98,14 +98,15 @@ class lt_med_general(object):
         self.average_d = self.brine_d * self.RR + self.distillate_d * (1-self.RR)
 
         self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
-
+        brine_s = self.Xf / 1000 / (1- self.RR)
         self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
 #        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
 #        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.P_req/1000 ,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Thermal power requirement','Value':self.P_req/1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
+        self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})  
         if self.q_cooling[0] > 0:
             self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
@@ -166,7 +167,8 @@ class lt_med_general(object):
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
         simu_output.append({'Name':'Solar energy curtailment','Value':solar_loss,'Unit':'kWh'})
-               
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})               
         return simu_output
             
 #%% MODEL EXECUTION            

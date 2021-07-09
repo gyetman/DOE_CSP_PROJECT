@@ -29,12 +29,12 @@ class generic(object):
         self.P_req = self.Capacity * self.STEC / 24  # kW        
         self.Cb  =  self.FeedC_r / (1 - self.RR)
         self.elec = self.SEC * self.Capacity / 24 # kW
-        
+        brine_s = self.FeedC_r / (1-self.RR)
         
         
         self.design_output = []
-        self.design_output.append({'Name':'Thermal power consumption','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
-        self.design_output.append({'Name':'Brine salinity', 'Value': self.Cb, 'Unit': 'g/L'})
+        self.design_output.append({'Name':'Thermal power requirement','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Brine concentration', 'Value': self.Cb, 'Unit': 'g/L'})
         self.design_output.append({'Name':'Thermal energy consumption','Value':self.elec,'Unit':'kW(e)'})        
         
         return self.design_output
@@ -84,7 +84,9 @@ class generic(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})    
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})      
         # simu_output.append({'Name':'Dataframe','Value':self.json_df,'Unit':''})        
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         

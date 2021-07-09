@@ -85,9 +85,14 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})         
+        
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
@@ -97,6 +102,8 @@ def gather_data(x):
         updates.update({'n_modules':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
         updates.update({'RR':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of water')
@@ -139,10 +146,15 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})   
+        
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
-        # updates.update({'thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
+        updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
@@ -152,7 +164,9 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(dd,'Name','Actual recovery rate')
         updates.update({'RR':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
-        updates.update({'n_modules':dd[index]['Value']})  
+        updates.update({'n_modules':dd[index]['Value']}) 
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']}) 
         
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -193,18 +207,25 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})   
+        
+        
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
         updates.update({'RR':ddin['RR'] * 100})        
-        
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -243,18 +264,27 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})         
+        
+        
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
-        updates.update({'RR':ddin['RR'] * 100})        
+        updates.update({'RR':ddin['RR'] * 100}) 
+    
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
-        updates.update({'gained_output_ratio':dd[index]['Value']})
+        updates.update({'gained_output_ratio':dd[index]['Value']})       
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})    
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -297,17 +327,22 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
- 
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']}) 
         
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -346,16 +381,21 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar electric energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})         
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of vessels')
         updates.update({'number_vessels':dd[index]['Value']})        
-        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
         updates.update({'electric_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific energy consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -393,20 +433,29 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of external fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'thermal_solar_percent': 100-ds[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed thermal energy')
+        updates.update({'curtail_p':ds[index]['Value']})         
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar electric energy')
+        updates.update({'curtail2':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed electric energy')
+        updates.update({'curtail2_p':ds[index]['Value']}) 
         
         # # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
-        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
         updates.update({'electric_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption') 
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement') 
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','RO capacity')
         updates.update({'RO_capacity':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','FO capacity') 
         updates.update({'FO_capacity':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','FO brine salinity')
+        updates.update({'p_brine':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -451,20 +500,29 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of external fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'thermal_solar_percent': 100-ds[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed thermal energy')
+        updates.update({'curtail_p':ds[index]['Value']})         
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar electric energy')
+        updates.update({'curtail2':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed electric energy')
+        updates.update({'curtail2_p':ds[index]['Value']})         
         
         # # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
-        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
         updates.update({'electric_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption') 
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement') 
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','RO capacity')
         updates.update({'RO_capacity':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','MD capacity') 
         updates.update({'MD_capacity':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','MD brine salinity')
+        updates.update({'p_brine':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -506,17 +564,23 @@ def gather_data(x):
         updates.update({'water_prod':ds[indexp]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
-        updates.update({'solar_percent': 100-ds[index]['Value']})        
+        updates.update({'solar_percent': 100-ds[index]['Value']})
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar electric energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})              
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
    
-        index = helpers.index_in_list_of_dicts(dd,'Name','Electricity consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
         updates.update({'electric_power_consumption':dd[index]['Value'] * 1000})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific electricity consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
         updates.update({'rr':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -554,14 +618,20 @@ def gather_data(x):
         updates.update({'water_prod':ds[index]['Value']})
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
-        updates.update({'solar_percent': 100-ds[index]['Value']})        
+        updates.update({'solar_percent': 100-ds[index]['Value']})  
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})       
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption')     
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -603,12 +673,17 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of fossil fuel consumption')
         updates.update({'fossil_percent':ds[index]['Value']})
         updates.update({'solar_percent': 100-ds[index]['Value']})        
-        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Curtailed solar thermal energy')
+        updates.update({'curtail':ds[index]['Value']})        
+        index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
+        updates.update({'curtail_p':ds[index]['Value']})                 
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
       
-        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power consumption')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value'] * 1000})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        updates.update({'p_brine':dd[index]['Value']})
 
         # add specific data from desal cost output
         dc = helpers.json_load(flkup['sam_desal_finance_outfile'])
@@ -655,8 +730,8 @@ def gather_data(x):
         # add sam simulation output
         so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(so,'Name','Heat sink thermal power')
-        updates.update({'heat_gen':sum(so[index]['Value'] / 1000)})
-        updates.update({'cf':sum(so[index]['Value']) /1000 / 3.65 /24 / s['q_pb_design']})
+        updates.update({'heat_gen':sum(so[index]['Value']) / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['q_pb_design']})
         
     elif updates['solar'] == 'pvsamv1':
     # add specific data from solar GUI output
@@ -802,7 +877,7 @@ def set_desal_config(x):
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
-        html.Div(f"Specific electric energy consumption: {r['electric_energy_consumption']:.2f}  kWh/m3"),
+        # html.Div(f"Specific electric energy consumption: {r['electric_energy_consumption']:.2f}  kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW")
         ])
     elif app['desal'] == 'LTMED' or app['desal'] == 'MEDTVC' or app['desal'] == 'ABS':
@@ -815,7 +890,7 @@ def set_desal_config(x):
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW"),
-        html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh")
+        # html.Div(f"Required electric energy: {r['electric_energy_consumption']:.2f}  kWh/m3")
         ])
     elif app['desal'] == 'RO':
         return ([
@@ -849,7 +924,7 @@ def set_desal_config(x):
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
-        html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
+        html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW")
         ])
     elif app['desal'] == "MDB":
         return ([
@@ -860,7 +935,7 @@ def set_desal_config(x):
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
-        # html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
+        html.Div(f"Thermal power consumption: {r['thermal_power_consumption']:.2f} MW")
         ])
     elif app['desal'] == "RO_FO":
         return ([
@@ -978,68 +1053,221 @@ def sam_performance(x):
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),     
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),   
         ])
     elif app['solar'] == "trough_physical_process_heat":
         return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),         
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),        
         ])
     elif app['solar'] == "pvsamv1":
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),      
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),   
+        ])
+        else:        
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),   
         ])
     elif app['solar'] == "SC_FPC" or app['solar'] == 'SC_ETC':
         return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual thermal energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),      
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),  
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),      
         ])
     elif app['solar'] == "tcsdirect_steam" :
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
+        ])
+        
+        if app['desal'] =='RO' or app['desal'] == 'OARO':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
+        ])
+                
+        else:
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
         ])
     elif  app['solar'] == "tcsmolten_salt":
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] == 'RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
+        ])
+        
+        if app['desal'] =='RO' or app['desal'] == 'OARO':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
+        ])
+                
+        else:
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
         ])
     elif app['solar'] == "tcslinear_fresnel":
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
+        ])
+        
+        if app['desal'] =='RO' or app['desal'] == 'OARO':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
+        ])
+                
+        else:
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
         ])
     elif app['solar'] == "tcstrough_physical":
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
+        ])
+        
+        if app['desal'] =='RO' or app['desal'] == 'OARO':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
+        ])
+                
+        else:
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
         ])
     elif app['solar'] == "tcsMSLF":
-        return ([
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor: {r['cf']:.1f} %"),   
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
+        ])
+        
+        if app['desal'] =='RO' or app['desal'] == 'OARO':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
+        ])
+                
+        else:
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
+        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
+        html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
         ])
     
 @app.callback(
@@ -1052,6 +1280,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),        
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
@@ -1062,6 +1291,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1071,6 +1301,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Overall recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
         html.Div(f"Total external heat usage: {r['external_heat']:.0f} MWh"),
@@ -1083,6 +1314,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['actual_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
         html.Div(f"Assumed recovery ratio: {r['rr']:.1f} %"),    
         #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
@@ -1096,6 +1328,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1121,6 +1354,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1141,7 +1375,8 @@ def set_cost_analysis(x):
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
+        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),
         ])
     elif app['desal'] =='ABS':
         return ([
@@ -1153,7 +1388,8 @@ def set_cost_analysis(x):
         html.Div(f"Capital cost of heat pump: {r['AHP_cost']:.0f} $/kW"),        
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
+        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),
         ])
     elif app['desal'] =='FO':
         return ([
@@ -1166,9 +1402,12 @@ def set_cost_analysis(x):
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Assumed cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
 
-        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
-        html.Div(f"Unit CAPEX: {r['unit_capex']:.2f} $/m3/day"),
-        html.Div(f"Labor cost: {r['labor']:.2f} $/m3"),          
+        html.Div(f"     -Unit energy cost: {r['energy_cost']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),
+        html.Div(f"     -Unit CAPEX: {r['unit_capex']:.2f} $/m3/day",
+                 style = { 'margin-left' : '30px' }),
+        html.Div(f"     -Labor cost: {r['labor']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),          
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
         return ([
@@ -1179,7 +1418,8 @@ def set_cost_analysis(x):
         html.Div(f"Levelized cost of electricity (LCOE, from solar field): {r['sam_lcoe']:.3f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3"),
+        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),
           
         ])
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB' :

@@ -174,6 +174,7 @@ class FO_generalized(object):
         self.RO_r   = 1 - RO_rr # RO retentate reject rate
         self.A      = A
         self.p_margin = p_margin
+        self.FeedC_r = FeedC_r
         self.salinity = FeedC_r / 1000
         self.r      = r       
         self.hm     = hm
@@ -713,11 +714,12 @@ class FO_generalized(object):
         self.flow_rate_calculations()
         self.T_memb_solver()
         self.find_operational_parameters()
-        
+        brine_s = self.FeedC_r / (1 - self.r)
         self.design_output = []
         self.design_output.append({'Name':'Weak draw solution concentration','Value':self.B*100,'Unit':'%'})
         self.design_output.append({'Name':'Strong draw solution flow rate','Value':self.SD,'Unit':'m3/day'}) 
-        self.design_output.append({'Name':'Thermal power consumption','Value':self.Thermal_power[0] / 1000,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})         
+        self.design_output.append({'Name':'Thermal power requirement','Value':self.Thermal_power[0] / 1000,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC[0],'Unit':'kWh(th)/m3'})
         self.P_req = self.Thermal_power[0] / 1000
         return self.design_output
@@ -768,7 +770,8 @@ class FO_generalized(object):
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
-        
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})          
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output        

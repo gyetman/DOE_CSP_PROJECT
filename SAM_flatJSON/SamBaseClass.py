@@ -556,9 +556,9 @@ class SamBaseClass(object):
                                nFP = self.desal_values_json['nFP'],Nel1 = self.desal_values_json['Nel1'])
             self.design_output = self.RO_FO.design()
             if self.cspModel=='pvsamv1':
-                self.simu_output = self.RO_FO.simulation(elec_gen = self.elec_gen, thermal_gen = 0,  solar_type = 'pv', storage = 0)
+                self.simu_output = self.RO_FO.simulation(elec_gen = self.elec_gen, thermal_gen = [0],  solar_type = 'pv', storage = 0)
             elif self.cspModel == 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat' or self.cspModel == 'SC_FPC' or self.cspModel == 'SC_ETC':
-                self.simu_output = self.RO_FO.simulation(elec_gen = 0, thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
+                self.simu_output = self.RO_FO.simulation(elec_gen = [0], thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
             else:
                 self.simu_output = self.RO_FO.simulation(elec_gen = self.elec_gen, thermal_gen = self.heat_gen, solar_type = 'csp', storage = 0)
                 
@@ -572,9 +572,9 @@ class SamBaseClass(object):
                                V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'])
             self.design_output = self.RO_MDB.design() 
             if self.cspModel=='pvsamv1':
-                self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = 0,  solar_type = 'pv', storage = 0)
+                self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = [0],  solar_type = 'pv', storage = 0)
             elif self.cspModel == 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat' or self.cspModel == 'SC_FPC' or self.cspModel == 'SC_ETC':
-                self.simu_output = self.RO_MDB.simulation(elec_gen = 0, thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
+                self.simu_output = self.RO_MDB.simulation(elec_gen = [0], thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
             else:
                 self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = self.heat_gen, solar_type = 'csp', storage = 0)    
                 

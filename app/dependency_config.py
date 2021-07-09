@@ -233,7 +233,7 @@ def trough_physical_process_heat(invalues):
         L_aperture.append(L_SCA[i] / ColperSCA[i])
     
     
-    return [nLoops, solar_mult, L_aperture]
+    return [nLoops, solar_mult, str(L_aperture)]
 
 
 #%%

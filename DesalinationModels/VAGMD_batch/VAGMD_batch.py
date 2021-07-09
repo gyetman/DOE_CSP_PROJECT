@@ -203,10 +203,10 @@ class VAGMD_batch(object):
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
         self.design_output.append({'Name':'Maximum potential recovery rate','Value':RRf,'Unit':'%'})  
         self.design_output.append({'Name':'Actual recovery rate','Value':self.R[-1],'Unit':'%'})    
-        self.design_output.append({'Name':'Final brine salinity','Value':self.Sf,'Unit':'g/L'})      
+        self.design_output.append({'Name':'Brine concentration','Value':self.Sf,'Unit':'g/L'})      
         # self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
         # self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
-        self.design_output.append({'Name':'Thermal power consumption','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
+        self.design_output.append({'Name':'Thermal power requirement','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
         if ( k == 7 and self.Sf > 175.3):
@@ -387,7 +387,9 @@ class VAGMD_batch(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})        
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'}) 
+        simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})
         # simu_output.append({'Name':'Dataframe','Value':self.json_df,'Unit':''})        
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
