@@ -746,7 +746,7 @@ class SamBaseClass(object):
         elif desal == 'LTMED':
             from DesalinationModels.LTMED_cost import LTMED_cost
             self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], 
-                                    HEX_area = self.LTMED.sA*24*3.6,
+                                    HEX_area = self.LTMED.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
