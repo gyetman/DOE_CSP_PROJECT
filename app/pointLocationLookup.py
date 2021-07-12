@@ -420,27 +420,27 @@ def _generateMarkdown(theme, atts, pnt):
         elif float(mc6) < 0.005:
             mdown += f"Consumption to 6m3: $ - /m3  \n"
         else:
-            mdown += f"Consumption to 6m3: ${float(mc6)/6:,.2f}/m3  \n"
+            mdown += f"Consumption to 6m3: ${float(mc6):,.2f}/m3  \n"
         if not mc15:
             mdown += f"Consumption to 15m3: $ - /m3  \n"
         elif float(mc15) < 0.005:
             mdown += f"Consumption to 15m3: $ - /m3  \n"
         else:
-            mdown += f"Consumption to 15m3: ${float(mc15)/15:,.2f}/m3  \n"
+            mdown += f"Consumption to 15m3: ${float(mc15):,.2f}/m3  \n"
                
         if not mc50:
             mdown += f"Consumption to 50m3: $ - /m3  \n"
         elif float(mc50) < 0.005:
             mdown += f"Consumption to 50m3: $ - /m3  \n"
         else:
-            mdown += f"Consumption to 50m3: ${float(mc50)/50:,.2f}/m3  \n"
+            mdown += f"Consumption to 50m3: ${float(mc50):,.2f}/m3  \n"
 
         if not mc100:
             mdown += f"Consumption to 100m3: $ - /m3  \n"
-        elif float(mc100) < 0.005:
+        elif float(mc100) < 0.06:
             mdown += f"Consumption to 100m3: $ - /m3  \n"
         else:
-            mdown += f"Consumption to 100m3: ${float(mc100)/100:,.2f}/m3  \n"
+            mdown += f"Consumption to 100m3: ${float(mc100):,.2f}/m3  \n"
 
         address = water.get('WebAddress')
         if address: 
