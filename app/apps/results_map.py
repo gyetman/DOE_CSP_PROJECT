@@ -109,7 +109,9 @@ regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvp
 #     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
 # )
 
-with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
+# with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
+#     city_prices = json.load(f)
+with open('./assets/water_prices_ibnet.geojson', 'r', encoding='UTF-8') as f:
     city_prices = json.load(f)
 
 city_price_lyr = dl.GeoJSON(
@@ -295,7 +297,11 @@ def update_price_layers(price_factor,closest_from_map):
         )
     )
     return([
-            dl.TileLayer(id=RESULTS_BASE_LAYER_ID),
+            dl.TileLayer(
+                id=RESULTS_BASE_LAYER_ID,
+                tileSize=512,
+                zoomOffset=-1,
+            ),
             dl.ScaleControl(metric=True, imperial=True),
             # us_counties,
             dl.LayerGroup(markers),

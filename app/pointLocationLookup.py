@@ -54,7 +54,7 @@ defaultLayers = {
     #'desalPlants':{'point':cfg.gis_query_path / 'global_desal_plants.geojson'},
     'powerPlants':{'point':cfg.gis_query_path / 'power_plants.geojson'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
-    'waterPrice':{'point':cfg.gis_query_path / 'global_water_tarrifs.geojson'},
+    'waterPrice':{'point':cfg.gis_query_path / 'water_prices_ibnet.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
     #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     # Canals are stored by state, just the base path here
