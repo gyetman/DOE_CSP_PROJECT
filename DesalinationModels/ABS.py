@@ -160,8 +160,8 @@ class ABS(object):
         self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
         
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})     
-        if self.q_cooling[0] > 0:
-            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
+        # if self.q_cooling[0] > 0:
+            # self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area of MED','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Specific heat transfer area of the absorption heat pump','Value':self.sA_pump,'Unit':'m2/kW'})      

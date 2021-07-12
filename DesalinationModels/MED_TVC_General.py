@@ -143,8 +143,8 @@ class med_tvc_general(object):
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})
-        if self.q_cooling > 0:
-            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
+        # if self.q_cooling > 0:
+            # self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
         self.design_output.append({'Name':'Heating steam mass flow rate entering the first effect','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Motive steam mass flow rate entering the thermocompressor','Value':self.qm,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific area','Value':self.sA,'Unit':'m2 per m3/day'})

@@ -12,7 +12,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "int_rate",
             "Label": "Average interest rate",
-            "Units": "",
+            "Units": "%",
             "Require": "*",
 			"Tab": "Static collector"
         },		
@@ -20,7 +20,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "non_solar_area_multiplier",
             "Label": "Non-solar area multiplier",
-            "Units": "none",
+            "Units": "",
             "Require": "*",
 			"Tab": "Static collector"
         },
