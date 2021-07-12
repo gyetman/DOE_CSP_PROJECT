@@ -22,7 +22,7 @@ class lt_med_general(object):
          Nef     =  14  , # The feed water salinity, ppm
          Capacity = 2000,    # Capacity of the plant (m3/day)
          Tin     = 15 , # Inlet seawater temperature
-         RR      = 0.5 , # recovery ratio
+         RR      = 50 , # recovery ratio (%)
          Fossil_f = 1 # Fossil fuel fraction
          ):
         
@@ -31,7 +31,7 @@ class lt_med_general(object):
         self.Capacity = Capacity
         self.Fossil_f = Fossil_f
         self.Xf = Xf *1000
-        self.RR = RR
+        self.RR = RR / 100
         self.Tin  = Tin
     
     def design(self):
@@ -51,7 +51,7 @@ class lt_med_general(object):
                 [-9.60E-06,-21.51409613,2.42E-05,-0.061912353,2.07E-07,0.030173611,0.001216995,-1.40E-10,-0.000380288,-2.24E-06,0.137686707,-6.94E-08,-0.032135417,0.000468958,2.43E-06,0.35824605,-0.000958009,-6.89E-11,0.000166019,27.46921296,3.29E-13],
                 [3.33E-06,0.677813505,-1.60E-05,-0.046184467,-7.50E-08,-0.001725347,-1.85E-05,-2.02E-12,-1.19E-06,3.47E-08,0.168129352,-6.74E-08,2.40E-05,-0.000370854,2.54E-07,-4.754444471,-0.000497023,-2.28E-11,-0.000111815,-0.58099537,-6.56E-11,],
                 [-0.00230634,-15202.30125,0.005467824,0.095607094,1.65E-06,-0.116666667,0.215904117,-7.71E-08,-0.267987407,1.54E-06,-0.108918713,1.62E-08,0.279166667,-0.002399306,-4.49E-06,2970.129599,0.000423611,4.42E-11,0.001111111,18672.98611,9.07E-10,],
-                [1.04E-05,0.264283592,1.32E-05,0.047163315,3.38E-07,0.016777778,9.20E-06,2.81E-11,1.70E-06,4.33E-08,-0.100193974,-3.51E-07,-0.019045139,-0.001225,-1.68E-07,3.645635965,0.000934421,1.40E-11,0.000734769,0.507407407,7.63E-11,]
+                [0.000141792,6.98288098,0.000100856,0.634134693,4.00E-06,0.193006944,8.28E-05,2.79E-10,1.48E-05,7.93E-07,-1.119140682,-4.08E-06,-0.213583333,-0.015357535,-1.66E-06,36.54209567,0.01065544,1.36E-10,0.00857912,2.04537037,7.11E-10,]
                 ]
 
         if self.Nef == 14:
@@ -60,7 +60,7 @@ class lt_med_general(object):
                 [-9.73E-06,-22.67687709,2.75E-05,-0.010527825,2.27E-07,0.023135417,0.001127253,-1.16E-10,-0.000384457,-1.68E-06,0.011084368,-1.09E-07,-0.018871528,-0.000242465,1.49E-06,4.266662392,4.93E-05,-8.73E-14,0.000185856,27.85023148,1.35E-11,],
                 [6.75E-07,0.931018519,-1.66E-05,-0.069638611,-6.36E-08,-0.002311111,-2.91E-20,5.67E-25,1.48E-20,1.32E-22,0.072969167,-5.47E-08,-0.002188889,-3.17E-06,-5.42E-23,-1.027806019,-1.78E-06,3.88E-25,-3.44E-06,-0.68,-5.22E-11,],
                 [-0.002387192,-15205.67551,0.005463889,0.022750069,2.02E-06,-0.070486111,0.215886167,-7.70E-08,-0.268027502,1.13E-06,-0.031589059,2.78E-08,0.240625,-0.0016875,-3.60E-06,2970.837205,-0.000141204,-1.89E-11,0.00081713,18679.35185,1.65E-09,],
-                [1.06E-05,0.138408802,1.73E-05,0.052775079,4.72E-07,0.025378472,4.64E-10,2.38E-15,-2.08E-09,-3.81E-11,-0.074957782,-4.37E-07,-0.023222222,-0.001440799,-9.41E-12,2.683753369,0.000810648,1.63E-14,0.000828704,0.681481481,1.08E-10,]
+                [0.000172627,6.280192354,0.000188127,0.755528969,6.46E-06,0.338440972,1.65E-08,-1.50E-14,-2.10E-08,9.16E-12,-1.050862538,-6.11E-06,-0.32046875,-0.02017691,-6.30E-11,33.68053424,0.011342014,-2.27E-14,0.011636528,5.718055556,1.34E-09,]
                 ]          
             
         if self.Nef == 16:
@@ -69,7 +69,7 @@ class lt_med_general(object):
                 [-1.06E-05,-22.79269847,3.05E-05,-0.010484096,2.67E-07,0.025336806,0.001024431,-9.68E-11,-0.000380987,-1.44E-06,0.009776589,-1.25E-07,-0.019774306,-0.000281181,1.32E-06,4.357185487,7.20E-05,1.79E-13,0.000188981,27.84259259,1.33E-11,],
                 [7.36E-07,0.932166667,-1.69E-05,-0.060634167,-6.45E-08,-0.002480556,-2.84E-20,2.04E-25,1.06E-20,1.43E-22,0.064106111,-5.49E-08,-0.002052778,-3.28E-06,1.42E-22,-0.943036574,-2.63E-06,3.41E-25,-3.13E-06,-0.68462963,-5.33E-11,],
                 [-0.002376352,-15203.25577,0.005467593,0.017976383,2.00E-06,-0.06875,0.215886212,-7.70E-08,-0.26807285,9.48E-07,-0.085658082,2.55E-08,0.204513889,-0.001583333,-3.11E-06,2972.305599,0.000277778,1.45E-11,0.000791667,18679.44444,1.53E-09,],
-                [1.45E-05,0.310544108,2.96E-05,0.05907776,7.85E-07,0.045659722,-1.33E-09,1.43E-14,4.15E-09,1.52E-11,-0.093275772,-7.39E-07,-0.042868056,-0.00199184,-1.17E-11,3.142157733,0.001137361,-4.09E-15,0.001181042,1.188194444,2.04E-10,]
+                [0.000254866,9.327583362,0.000417519,0.962597788,1.24E-05,0.712548611,1.49E-09,8.32E-15,-5.90E-09,3.16E-11,-1.494248195,-1.18E-05,-0.680930556,-0.031864271,6.60E-11,46.37199204,0.01819,-4.17E-14,0.018914444,15.24027778,3.08E-09,]
                 ]
                         
         self.GOR = np.dot(paras,coeffs[0])
@@ -88,17 +88,25 @@ class lt_med_general(object):
         # print('calculated sumA:', self.system.sum_A)
         # print('calculated production:', self.system.Mprod_m3_day)
         
-        
-        self.T_b = 37  # Brine temperature at last effect (T_b = T_d = T_cool = T_cond)
+        self.T_d = self.Tin + 10  
+        self.T_b = self.T_d + 1  
+        self.DTPH = 3
+        self.T_cool = self.T_d - self.DTPH
         self.h_b = TD_func.enthalpyreg1(self.T_b + 273.15, 1)    # Enthalpy of the flow at brine temperature
         self.h_sw = TD_func.enthalpyreg1(self.Tin + 273.15, 1)  
+        self.h_d = TD_func.enthalpyreg1(self.T_d + 273.15, 1)
+        self.h_cool = TD_func.enthalpyreg1(self.T_cool + 273.15, 1)
         
-        self.brine_d = SW_Density(self.T_b,'c',0,'ppt',1,'bar')
-        self.distillate_d = SW_Density(self.T_b,'c',self.Xf * 2,'ppm',1,'bar')     
+        brine_s = self.Xf / 1000 / (1- self.RR)        
+        self.brine_d = SW_Density(self.T_b,'c',brine_s,'ppt',1,'bar')
+        self.distillate_d = SW_Density(self.T_b,'c',0,'ppm',1,'bar')     
         self.average_d = self.brine_d * self.RR + self.distillate_d * (1-self.RR)
+        
+        
+        # Calculate cooling water flow rate
+        self.q_cooling = (0.85 * self.P_req * 3600 - self.brine_d * self.qF * (1- self.RR) * self.h_b - self.distillate_d * self.qF * self.RR * self.h_d + self.qF * self.average_d * self.h_sw ) / (self.h_cool - self.h_sw)
+        # self.q_cooling = ( 0.85 * self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
 
-        self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
-        brine_s = self.Xf / 1000 / (1- self.RR)
         self.design_output = []
 #        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
 #        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
@@ -109,7 +117,7 @@ class lt_med_general(object):
         self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})  
         if self.q_cooling[0] > 0:
-            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
+            self.design_output.append({'Name':'Rejected cooling water flow rate','Value':self.q_cooling[0] / 1000,'Unit':'m3/h'})         
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  

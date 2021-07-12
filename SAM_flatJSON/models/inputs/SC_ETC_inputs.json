@@ -12,7 +12,7 @@
         {
             "DataType": "SSC_ARRAY",
             "Name": "design_point_date",
-            "Label": "design day/time",
+            "Label": "Design point [year, month, day, hh, mm, ss]",
             "Units": "",
             "Group": "System Design",
             "Require": "*",
@@ -60,7 +60,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "v_azim",
-            "Label": "Surface azimuth angle (180 degrees facing south)",
+            "Label": "Collector surface azimuth angle (180 degrees facing south)",
             "Units": "degree",
             "Group": "System Design",
             "Require": "*",

@@ -8,6 +8,7 @@ import helpers
 import csv
 import xlwt
 
+
 class SamBaseClass(object):
     """description of class"""
 
@@ -241,14 +242,16 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 sam_input = json.load(read_file)
             T_ITD = sam_input['T_ITD_des']
-            self.T_cond = [self.T_amb + T_ITD for i in self.T_dry ]
+            self.T_cond = [i + T_ITD for i in self.T_dry ]
             
-            # self.mass_fr = self.ssc.data_get_array(self.data, b'm_dot') # kg/s
+            self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_st_bd') # kg/hr
+
             # self.mass_fr_hr = np.dot(self.mass_fr, 3600) # kg/hr
             # if  self.cspModel== 'tcslinear_fresnel':
             #     self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_field') # kg/hr
             # elif self.cspModel== 'tcsdirect_steam':
-            self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            # self.mass_fr_hr = self.ssc.data_get_array(self.data, b'm_dot_makeup') # kg/hr
+            
             for i in range(len(self.mass_fr_hr)):
                 self.mass_fr_hr[i] *= 50
             P_cond = np.dot(self.P_cond, 1e-6)
@@ -1194,12 +1197,14 @@ class SamBaseClass(object):
         return Cond_temp_root2
     
     def temp_to_heat(self, T_cond, mass_fr, T_feedin):
+        import DesalinationModels.IAPWS97_thermo_functions as TD_func
         Q_capacity = []
-        
+
         for i in range(len(T_cond)):
 
             try:
-                Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600))
+                Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600)  # sensible heat 
+                                 + 0.75 * mass_fr[i] / 3600 * (TD_func.enthalpySatVapTW(T_cond[i]+273.15)-TD_func.enthalpySatLiqTW(T_cond[i]+273.15))[0]) # latent heat
             except:
                 Q_capacity.append(0)
                         
