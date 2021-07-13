@@ -1443,7 +1443,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "P_ref",
             "Label": "Reference output electric power at design condition",
-            "Units": "-",
+            "Units": "MWe",
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle",

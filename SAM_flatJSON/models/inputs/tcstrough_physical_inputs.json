@@ -224,7 +224,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "system_capacity",
-            "Label": "Nameplate capacity",
+            "Label": "Estimated net output (nameplate)",
             "Units": "kW",
             "Group": "trough",
             "Require": "*",
@@ -244,7 +244,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_ref",
-            "Label": "Rated plant capacity",
+            "Label": "Design turbine gross output",
             "Units": "MWe",
             "Group": "solar_field",
             "Require": "*",
@@ -254,7 +254,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "W_pb_design",
-            "Label": "Rated plant capacity",
+            "Label": "Design turbine gross output",
             "Units": "MWe",
             "Group": "controller",
             "Require": "*"

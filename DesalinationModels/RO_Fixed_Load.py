@@ -185,6 +185,7 @@ class RO(object):
         prod =  [0 for i in range(len(gen))]
         fuel =  [0 for i in range(len(gen))]
         energy_consumption =  [0 for i in range(len(gen))]
+        actual_load =  [0 for i in range(len(gen))]
         for i in range(len(gen)):
             to_desal[i] = min(self.thermal_load, gen[i])
             to_storage[i] = abs(gen[i] - to_desal[i])
@@ -197,7 +198,8 @@ class RO(object):
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
             if max(0,load[i] / self.thermal_load) < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
-
+            
+            actual_load[i] = max(0,load[i])
             energy_consumption[i] = fuel[i]+load[i]
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
             
@@ -214,8 +216,8 @@ class RO(object):
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
         simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})          
-        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(load)) / 1000000) ,'Unit':'GWh'})   
-        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(load))) / sum(gen) * 100 ,'Unit':'%'}) 
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(actual_load)) / 1000000) ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(actual_load))) / sum(gen) * 100 ,'Unit':'%'}) 
         
         return simu_output
 

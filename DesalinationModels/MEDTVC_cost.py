@@ -60,7 +60,7 @@ class MEDTVC_cost(object):
         
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/(self.Capacity/24/3.6)/302.01)**0.8) 
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area*24*3.6/302.01)**0.8) 
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
