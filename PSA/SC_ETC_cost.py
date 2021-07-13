@@ -16,7 +16,7 @@ class ETC_cost(object):
                  capacity = 1000, # solar field capacity (kW)
                  EC = 1, # % of capacity (kW)
                  yrs = 20, # Expected plant lifetime
-                 int_rate = 4 , # Average interest rate
+                 int_rate = 0.04 , # Average interest rate
                  coe = 0.05 , # Unit cost of electricity ($/kWh)
                  p_OM = 0.5, # % of the capital cost
                  unit_cost = 372, # unit cost ($/m2)
@@ -31,7 +31,7 @@ class ETC_cost(object):
 
         self.coe = coe
         self.yrs = yrs
-        self.int_rate = int_rate / 100
+        self.int_rate = int_rate 
         self.EC = EC / 100
         self.capacity = capacity
         self.unit_cost = unit_cost
