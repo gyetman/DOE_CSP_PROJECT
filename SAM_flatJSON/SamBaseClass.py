@@ -1203,8 +1203,11 @@ class SamBaseClass(object):
         for i in range(len(T_cond)):
 
             try:
-                Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600)  # sensible heat 
+                if T_cond[i] > 70:
+                    Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600)  # sensible heat 
                                  + 0.75 * mass_fr[i] / 3600 * (TD_func.enthalpySatVapTW(T_cond[i]+273.15)-TD_func.enthalpySatLiqTW(T_cond[i]+273.15))[0]) # latent heat
+                else:
+                    Q_capacity.append(0)
             except:
                 Q_capacity.append(0)
                         
