@@ -1047,7 +1047,20 @@ def set_solar_config(x):
 def sam_performance(x):
     r = helpers.json_load(cfg.report_json)
     app = helpers.json_load(cfg.app_json)
-    
+
+
+    def curtailed_thermal(cte):
+        if cte > 20:
+            return html.Div([
+                html.Div(f"Percentage of curtailed thermal energy: {cte:.1f} %"),
+                html.Details([
+                    html.Summary("High energy curtailment!",style={'color':'yellow'}),
+                    html.Div(f"Consider adding Thermal Storage hours in the Desalination Model Input and/or Reduce the Capacity of the Solar Field in Power Cycle Input")
+                ])
+            ])
+        else:
+            return html.Div(f"Percentage of curtailed thermal energy: {cte:.1f} %")
+
     if app['solar'] == "linear_fresnel_dsg_iph":
         return ([
         html.H5('Solar Field Performance', className='card-title'),
@@ -1055,7 +1068,7 @@ def sam_performance(x):
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),   
+        curtailed_thermal(r['curtail_p']) ,  
         ])
     elif app['solar'] == "trough_physical_process_heat":
         return ([
@@ -1064,7 +1077,7 @@ def sam_performance(x):
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),        
+        curtailed_thermal(r['curtail_p']) ,       
         ])
     elif app['solar'] == "pvsamv1":
         if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
@@ -1092,7 +1105,7 @@ def sam_performance(x):
         html.Div(f"Annual thermal energy production: {r['elec_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor: {r['cf']:.1f} %"),  
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),      
+        curtailed_thermal(r['curtail_p']) ,     
         ])
     elif app['solar'] == "tcsdirect_steam" :
         if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
@@ -1103,7 +1116,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        curtailed_thermal(r['curtail_p']) ,
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
         ])
@@ -1127,7 +1140,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
+        curtailed_thermal(r['curtail_p']) , 
         ])
     elif  app['solar'] == "tcsmolten_salt":
         if app['desal'] =='RO_FO' or app['desal'] == 'RO_MDB':
@@ -1138,7 +1151,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        curtailed_thermal(r['curtail_p']) ,
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
         ])
@@ -1162,7 +1175,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
+        curtailed_thermal(r['curtail_p']) , 
         ])
     elif app['solar'] == "tcslinear_fresnel":
         if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
@@ -1173,7 +1186,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        curtailed_thermal(r['curtail_p']) ,
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
         ])
@@ -1197,7 +1210,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
+        curtailed_thermal(r['curtail_p']) , 
         ])
     elif app['solar'] == "tcstrough_physical":
         if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
@@ -1208,7 +1221,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        curtailed_thermal(r['curtail_p']) ,
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
         ])
@@ -1232,7 +1245,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
+        curtailed_thermal(r['curtail_p']) , 
         ])
     elif app['solar'] == "tcsMSLF":
         if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
@@ -1243,7 +1256,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"), 
+        curtailed_thermal(r['curtail_p']) ,
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),         
         ])
@@ -1267,7 +1280,7 @@ def sam_performance(x):
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
         html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"), 
         html.Div(f"Curtailed thermal energy: {r['curtail']:.2f} GWh"),    
-        html.Div(f"Percentage of curtailed thermal energy: {r['curtail_p']:.1f} %"),  
+        curtailed_thermal(r['curtail_p']) , 
         ])
     
 @app.callback(
