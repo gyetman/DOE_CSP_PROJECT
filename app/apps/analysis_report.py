@@ -848,6 +848,13 @@ def set_local_condition(x):
         city = r.get('county')
     if not city:
         city = '-'
+
+    wn_dist = r.get('dist_water_network')
+    wn_dist = round(wn_dist,1) if wn_dist else '-'
+
+    pp_dist = r.get('dist_power_plant')
+    pp_dist = round(pp_dist) if pp_dist else '-'
+ 
     return ([
     html.H5('Local Condition', className='card-title'),
     html.Div(f"Location: {city}, {r['state']}"),
@@ -856,8 +863,8 @@ def set_local_condition(x):
     html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
     html.Div(f"Market water price: {r['water_price']} $/m3"), 
     html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
-    html.Div(f"Distance to nearest water network: {r['dist_water_network']:.1f} km"),
-    html.Div(f"Distance to nearest power plant: {r['dist_power_plant']:.1f} km")
+    html.Div(f"Distance to nearest water network: {wn_dist} km"),
+    html.Div(f"Distance to nearest power plant: {pp_dist} km")
     ])
 
 @app.callback(
