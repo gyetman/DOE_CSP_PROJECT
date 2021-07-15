@@ -1126,8 +1126,7 @@ def sam_performance(x):
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
-        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"), 
         html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
         ])
@@ -1162,7 +1161,6 @@ def sam_performance(x):
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
-        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
         html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
         ])
@@ -1197,7 +1195,6 @@ def sam_performance(x):
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
-        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
         html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
         ])
@@ -1232,7 +1229,6 @@ def sam_performance(x):
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
-        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
         html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
         ])
@@ -1266,8 +1262,7 @@ def sam_performance(x):
         html.H5('Solar Field Performance', className='card-title'),
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
-        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),   
-        html.Div(f"Annual thermal energy production: {r['heat_gen']:.2f} GWh"),  
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),  
         html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),         
         ])
