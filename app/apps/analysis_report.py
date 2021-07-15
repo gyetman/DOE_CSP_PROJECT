@@ -215,7 +215,7 @@ def gather_data(x):
         
         # add data from desal design input
         ddin = helpers.json_load(flkup['desal_design_outfile'])
-        updates.update({'RR':ddin['RR'] * 100})        
+        updates.update({'RR':ddin['RR'] })        
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
