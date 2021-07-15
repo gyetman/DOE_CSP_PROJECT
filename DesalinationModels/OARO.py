@@ -94,6 +94,8 @@ class OARO(object):
             apm_option(s,a,'apm.otol',1e-6) # default tolerance is 1e-6
         output = apm(s,a,'solve');
         
+        SEC = 0
+        
         if (apm_tag(s,a,'apm.appstatus')==1):
             # retrieve solution if successful
             sol = apm_sol(s,a)

@@ -267,7 +267,7 @@ class SamBaseClass(object):
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
             self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
-            self.lcoh = max(0.03, self.lcoe * 0.23)
+            self.lcoh =  self.lcoe * 0.23
             
             # print(self.elec_gen[0:24])
             # print(self.heat_gen[0:24])
@@ -321,7 +321,7 @@ class SamBaseClass(object):
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
             self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')    
-            self.lcoh = max(0.03, self.lcoe * 0.27)
+            self.lcoh =  self.lcoe * 0.27
             
             if self.desalination:
                 self.desal_simulation(self.desalination)
@@ -1095,7 +1095,6 @@ class SamBaseClass(object):
                     
                     
                     varName = ssc_var["name"]
-
                     added_variables[varName] = False
                     
                     if (ssc_var["datatype"] == "SSC_STRING"):
@@ -1127,9 +1126,14 @@ class SamBaseClass(object):
 ##                                    self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), int(varValue))
 ##                                    added_variables[varName] = True
 #                        else:
-                        self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
-                        added_variables[varName] = True
 
+
+                        self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
+                                
+                        added_variables[varName] = True
+                    
+                    
+                    
                     else:
                         # Add value to the dictionary.
                         raise Exception("Specified variable type for SAM file from the JSON is not found in definitions.")
