@@ -2402,7 +2402,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_c_fa_U0",
             "Label": "Extended Faiman model U_0",
-            "Units": "W/m虏K",
+            "Units": "W/m K",
             "Require": "module_model=5",
             "Tab": "Shading and Layout"
         },
@@ -2410,7 +2410,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "mlm_T_c_fa_U1",
             "Label": "Extended Faiman model U_1",
-            "Units": "W/m鲁sK",
+            "Units": "W/m s K",
             "Require": "module_model=5",
             "Tab": "Shading and Layout"
         },
