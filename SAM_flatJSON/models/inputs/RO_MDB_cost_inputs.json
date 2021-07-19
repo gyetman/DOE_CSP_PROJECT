@@ -36,15 +36,6 @@
 			"Tab": "Desalination",
 			"Section": "General"
         },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "sam_coe",
-            "Label": "Unit cost of electricity from solar field (LCOE)",
-            "Units": "$/kWh",
-            "Require": "",
-			"Tab": "Desalination",
-			"Section": "General"
-        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "unit_capex",
@@ -112,6 +103,16 @@
             "DataType": "SSC_NUMBER",
             "Name": "coh",
             "Label": "Unit cost of heat from fossil fuel (LCOH)",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_STRING",
+            "Name": "solar_coh",
+            "Label": "Unit cost of heat from solar field (LCOH) (Input value to overwrite LCOH calculated from solar field)",
             "Units": "$/kWh",
             "Require": "*",
             "Constraint": "",

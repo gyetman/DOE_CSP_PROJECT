@@ -42,6 +42,15 @@
 			"Tab": "Desalination"
         },
         {
+            "DataType": "SSC_STRING",
+            "Name": "solar_coh",
+            "Label": "Unit cost of heat from solar field (LCOH) (Input value to overwrite LCOH calculated from solar field)",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination"
+        },
+        {
             "DataType": "SSC_NUMBER",
             "Name": "cost_storage",
             "Label": "Cost of thermal storage",

@@ -66,7 +66,7 @@ cols = [{'name':'Variable', 'id':'Label','editable':False},
 
 # dict for desalination 'values' and 'labels'
 Desal = {'FO':'Forward Osmosis (FO)                       ',
-         'VAGMD':'Vacuum Air Gap Membrane Distillation (VAGMD)    ',
+         'VAGMD':'Vacuum Air Gap Membrane Distillation (VAGMD-one pass)    ',
          'MDB':'Vacuum Air Gap Membrane Distillation - Batch  (VAGMD-batch)   ',
          'LTMED':'Low Temperature Multi-Effect Distillation (LT-MED)', 
          'ABS':'MED with Absorption Heat Pumps (MED-ABS)        ',
@@ -119,11 +119,11 @@ Documentation = {
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',True),('RO_MDB',True),('Generic',False)],
     'SC_FPC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'SC_ETC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
-    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
+    'trough_physical_process_heat': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',True),('RO_MDB',True),('Generic',False)],
+    'linear_fresnel_dsg_iph': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',True),('RO_MDB',True),('Generic',False)],
     'tcslinear_fresnel': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'tcsMSLF': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'tcsdirect_steam': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',False),('OARO',False),('RO_FO',False),('RO_MDB',False),('Generic',False)],

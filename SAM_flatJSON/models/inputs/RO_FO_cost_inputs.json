@@ -110,6 +110,16 @@
 			"Section": "General"
         },
         {
+            "DataType": "SSC_STRING",
+            "Name": "solar_coh",
+            "Label": "Unit cost of heat from solar field (LCOH) (Input value to overwrite LCOH calculated from solar field)",
+            "Units": "$/kWh",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
             "DataType": "SSC_NUMBER",
             "Name": "FO_unit_capex",
             "Label": "Unit capital cost (Default value specific to 2000 m3/day capacity; adjusted internally for capacity unless the user introduces a different cost)",

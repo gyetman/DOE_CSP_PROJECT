@@ -32,14 +32,6 @@
             "Require": "",
 			"Tab": "Desalination"
         },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "sam_coe",
-            "Label": "Unit cost of electricity from solar field (LCOE)",
-            "Units": "$/kWh",
-            "Require": "",
-			"Tab": "Desalination"
-        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "oaro_cost",

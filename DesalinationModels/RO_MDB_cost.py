@@ -93,6 +93,7 @@ class RO_MDB_cost(object):
                  FFR  = 1100, # Feed flow rate per module (l/h/module)
                  th_module  = 4.560, # Thermal power supplied per module (kW(th)/module)
                  insurance = 0.5,  # %
+                 solar_coh ='',
                  sam_coh = 0.02, # $/kWh
                  coh = 0.01, # $/kWh
                  MDB_fuel_usage = 0, # %
@@ -170,7 +171,10 @@ class RO_MDB_cost(object):
         self.other = other
         self.other_capacity = other_capacity
         self.insurance = insurance / 100
-        self.sam_coh = sam_coh # $/kWh
+        if solar_coh != '':
+            self.sam_coh = float(solar_coh)
+        else:
+            self.sam_coh = sam_coh
         self.coh = coh # $/kWh
         self.MDB_fuel_usage = MDB_fuel_usage / 100 # %
         self.MDB_SEC = MDB_SEC

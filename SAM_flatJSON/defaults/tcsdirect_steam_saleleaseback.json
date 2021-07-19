@@ -99,7 +99,7 @@
 	"T_amb_des" : 42,
 	"dT_cw_ref" : 10,
 	"T_approach" : 5,
-	"T_ITD_des" : 16,
+	"T_ITD_des" : 40,
 	"hl_ffact" : 1,
 	"h_boiler" : 10.42870044708252,
 	"d_t_boiler" : 0.025399999693036079,

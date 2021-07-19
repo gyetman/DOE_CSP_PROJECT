@@ -230,10 +230,12 @@ class SamBaseClass(object):
             if self.financialModel:
                 annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
                 self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
-                self.module_create_execute(self.financialModel)
+                if self.cspModel == 'tcslinear_fresnel':
+                    self.module_create_execute(self.financialModel)
+                    if self.financialModel == 'utilityrate5':
+                        self.module_create_execute('cashloan')
 
-                if self.financialModel == 'utilityrate5':
-                    self.module_create_execute('cashloan')
+
             self.P_cond = self.ssc.data_get_array(self.data, b'P_cond') # Pa
             # self.T_cond = self.P_T_conversion(self.P_cond) # oC
 
@@ -266,9 +268,12 @@ class SamBaseClass(object):
             
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
-            self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            if self.cspModel == 'tcslinear_fresnel':
+                self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            else:
+                # tempelate value 
+                self.lcoe = 0.136
             self.lcoh =  self.lcoe * 0.23
-            
             # print(self.elec_gen[0:24])
             # print(self.heat_gen[0:24])
             if self.desalination:
@@ -320,7 +325,11 @@ class SamBaseClass(object):
             
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
-            self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')    
+            if self.cspModel != 'tcsmolten_salt':
+                self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            else:
+                # tempelate value   
+                self.lcoe = 0.136
             self.lcoh =  self.lcoe * 0.27
             
             if self.desalination:
@@ -488,7 +497,7 @@ class SamBaseClass(object):
             self.VAGMD = VAGMD_PSA(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'])
             self.VAGMD.design()
             self.P_req, self.design_output = self.VAGMD.opt()
-
+            
             self.simu_output = self.VAGMD.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
 
         elif desal == 'MDB':
@@ -699,7 +708,7 @@ class SamBaseClass(object):
 
             self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), fuel_usage = self.simu_output[7]['Value'], Area = self.cost_values_json['Area'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
-                                unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.cost_values_json['sam_coe'], cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
+                                unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
 
@@ -709,14 +718,14 @@ class SamBaseClass(object):
 
             self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'],
                                    MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.VAGMD.storage_cap )
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.VAGMD.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
 
         elif desal == 'MDB':
             
             from DesalinationModels.MDB_cost import MDB_cost
-            print('lcoh:', self.lcoh)
+
             self.LCOW = MDB_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.MDB.Area,
                                  Pflux = self.MDB.PFlux_avg, RR = self.MDB.R[-1],
                                  TCO = sum(self.MDB.TCO) / len(self.MDB.TCO), TEI = self.MDB.TEI_r, FFR = self.MDB.FFR_r, th_module = sum(self.MDB.ThPower)/len(self.MDB.ThPower),
@@ -729,7 +738,7 @@ class SamBaseClass(object):
                                  tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], 
                                  pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
                                  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
-                                 coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], 
+                                 coh =  self.cost_values_json['coh'], solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], 
                                  solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], 
                                  cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MDB.storage_cap )
 
@@ -749,7 +758,7 @@ class SamBaseClass(object):
                                     HEX_area = self.LTMED.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'ABS':
@@ -758,7 +767,7 @@ class SamBaseClass(object):
                                    # HEX_area = self.LTMED.system.sum_A,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.ABS.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'],  solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.ABS.storage_cap)
             self.cost_output = self.LCOW.lcow()  
             
         elif desal == 'MEDTVC':
@@ -767,7 +776,7 @@ class SamBaseClass(object):
                                     HEX_area = self.MEDTVC.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.MEDTVC.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MEDTVC.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'],  solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MEDTVC.storage_cap)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'FO':
@@ -778,15 +787,15 @@ class SamBaseClass(object):
                                     Cap_coalescers = self.cost_values_json['Cap_coalescers'], Cap_structural = self.cost_values_json['Cap_structural'], Cap_polishing = self.cost_values_json['Cap_polishing'], Cap_pipes = self.cost_values_json['Cap_pipes'],
                                     Cap_filtration = self.cost_values_json['Cap_filtration'], Cap_electrical = self.cost_values_json['Cap_electrical'], Cap_pumps = self.cost_values_json['Cap_pumps'], Cap_instrumentation = self.cost_values_json['Cap_instrumentation'],
                                     Cap_valves = self.cost_values_json['Cap_valves'], Cap_CIP = self.cost_values_json['Cap_CIP'], Cap_tanks = self.cost_values_json['Cap_tanks'], Cap_pretreatment = self.cost_values_json['Cap_pretreatment'],
-                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.FO.storage_cap)
+                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.FO.storage_cap)
             self.cost_output = self.LCOW.lcow()
 
         elif desal == 'OARO':
             from DesalinationModels.OARO_cost import OARO_cost
-
+            print('lcoe', self.lcoe)
             self.LCOW = OARO_cost(Capacity = self.desal_values_json['Capacity'], Prod = (self.simu_output[4]['Value']), fuel_usage = self.simu_output[7]['Value'], oaro_area  = self.costout['oaro_area'], ro_area  = self.costout['ro_area'],  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 downtime =  self.cost_values_json['downtime'],chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'], pumpcost = self.costout['pumpcost'], erdcost  = self.costout['erdcost'], ro_cost  =  self.cost_values_json['ro_cost'], oaro_cost  =  self.cost_values_json['oaro_cost'],
-                                sec =  self.costout['sec'], sam_coe = self.cost_values_json['sam_coe'], practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
+                                sec =  self.costout['sec'], sam_coe = self.lcoe, practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
         
             self.cost_output = self.LCOW.lcow()
             
@@ -824,7 +833,7 @@ class SamBaseClass(object):
                                           FO_labor = self.cost_values_json['FO_labor'], FO_chem_cost = self.cost_values_json['FO_chem_cost'], FO_goods_cost = self.cost_values_json['FO_goods_cost'], 
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
                                           FO_SEC = self.cost_values_json['FO_SEC'], FO_capacity = self.design_output[2]['Value'], FO_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          FO_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          FO_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'RO_MDB':
@@ -855,7 +864,7 @@ class SamBaseClass(object):
                                    
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
                                           MDB_SEC = self.cost_values_json['MDB_SEC'], MDB_capacity = self.design_output[2]['Value'], MDB_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'Generic':
@@ -863,7 +872,7 @@ class SamBaseClass(object):
             self.LCOW = Generic_cost(unit_cost = self.cost_values_json['unit_cost'],
                                     Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.desal_values_json['SEC'], STEC = self.desal_values_json['STEC'],
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.Generic.storage_cap)
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], solar_coh = self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.Generic.storage_cap)
             self.cost_output = self.LCOW.lcow()
 
 
@@ -1128,8 +1137,10 @@ class SamBaseClass(object):
 #                        else:
 
 
-                        self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
-                                
+                        if varName == 'ppa_price_input':
+                            self.ssc.data_set_array( self.data, b''+ varName.encode("ascii", "backslashreplace"), [varValue] )
+                        else:
+                            self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
                         added_variables[varName] = True
                     
                     
@@ -1207,9 +1218,9 @@ class SamBaseClass(object):
         for i in range(len(T_cond)):
 
             try:
-                if T_cond[i] > 70:
-                    Q_capacity.append(max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600)  # sensible heat 
-                                 +  mass_fr[i] / 3600 * (TD_func.enthalpySatVapTW(T_cond[i]+273.15)-TD_func.enthalpySatLiqTW(T_cond[i]+273.15))[0]) # latent heat
+                if T_cond[i] > 65:
+                    Q_capacity.append(0.95* max(0, 1.996 * mass_fr[i] * (T_cond[i] - T_feedin) / 3600)  # sensible heat 
+                                 +  0.95 * mass_fr[i] / 3600 * (TD_func.enthalpySatVapTW(T_cond[i]+273.15)-TD_func.enthalpySatLiqTW(T_cond[i]+273.15))[0]) # latent heat
                 else:
                     Q_capacity.append(0)
             except:

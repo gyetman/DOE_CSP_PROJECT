@@ -11,7 +11,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration",
+            "Label": "Feed concentration (35 to 105)",
             "Units": "g/L",
             "Require": "*",
             "Costraint": "<106,>34"
@@ -42,21 +42,21 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "TEI_r",
-            "Label": "Evaporator channel inlet temperature",
+            "Label": "Evaporator channel inlet temperature (60 to 80)",
             "Units": "C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TCI_r",
-            "Label": "Condenser channel inlet temperature",
+            "Label": "Condenser channel inlet temperature (20 to 30)",
             "Units": "C",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "FFR_r",
-            "Label": "Feed flow rate",
+            "Label": "Feed flow rate (400 to 1100)",
             "Units": "l/h",
             "Require": "*",
             "Costraint": "<1111,>399"

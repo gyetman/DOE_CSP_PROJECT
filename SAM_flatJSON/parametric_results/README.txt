@@ -1,0 +1,1 @@
+This directory contains JSON-formatted model results, to be converted into Excel format.

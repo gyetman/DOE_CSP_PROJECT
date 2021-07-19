@@ -4,6 +4,7 @@
 	"downtime": 10,
 	"coe" : 0.04,
 	"sam_coe" : 0.05,
+	"solar_coh": "",
 	"unit_capex" : 1100,
 	"Area" : 40.8,
 	"membrane_cost" : 30,

@@ -33,6 +33,7 @@ class RO_FO_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
+                 solar_coh = '',
                  sam_coe = 0.02,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
@@ -126,7 +127,10 @@ class RO_FO_cost(object):
             self.FO_unit_capex = 26784 * self.FO_capacity ** (-0.428)
         self.FO_goods_cost = FO_goods_cost # $/m3
         self.FO_chem_cost = FO_chem_cost
-        self.sam_coh = sam_coh # $/kWh
+        if solar_coh != '':
+            self.sam_coh = float(solar_coh)
+        else:
+            self.sam_coh = sam_coh
         self.coh = coh # $/kWh
         self.FO_fuel_usage = FO_fuel_usage / 100   # %
 

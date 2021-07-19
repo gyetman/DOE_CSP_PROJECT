@@ -41,5 +41,6 @@
 	"insurance": 0.5,
 	"coe": 0.05,
 	"coh": 0.01,
+	"solar_coh": "",
 	"sam_coh": 0.01
 }

@@ -130,12 +130,14 @@ class RO(object):
         FP_power=self.Qf1*self.Pfp/self.nFP/36
         PowerTotal=FP_power+HP_power+BP_power
         self.PowerRO=HP_power+BP_power
-        self.SEC=PowerTotal/self.Qp1
+        # SEC is added 1 for pretreatment
+        self.SEC=PowerTotal/self.Qp1 + 1
+        
         self.SEC_RO=self.PowerRO/self.Qp1
         self.BP_power=BP_power
         self.HP_power=HP_power
         self.FP_power=FP_power
-        self.PowerTotal=PowerTotal
+        self.PowerTotal=self.SEC * self.Qp1
         
         RO_brine = self.Qb1*24        
         RO_permeate = self.Qp1*24
@@ -202,7 +204,7 @@ class RO(object):
             actual_load[i] = max(0,load[i])
             energy_consumption[i] = fuel[i]+load[i]
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
-            
+        
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
         Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
     
@@ -215,9 +217,9 @@ class RO(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})          
-        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(actual_load)) / 1000000) ,'Unit':'GWh'})   
-        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(actual_load))) / sum(gen) * 100 ,'Unit':'%'}) 
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/max(1,sum(energy_consumption))*100,'Unit':'%'})          
+        simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(load)) / 1000000) ,'Unit':'GWh'})   
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(load))) / sum(gen) * 100 ,'Unit':'%'}) 
         
         return simu_output
 

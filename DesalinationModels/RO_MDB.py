@@ -234,8 +234,8 @@ class RO_MDB(object):
                 th_energy_consumption[i] = fuel[i]+load[i]
                 elec_energy_consumption[i] = self.elec_load
                 prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod  
-                grid_percentage = sum(grid)/sum(elec_energy_consumption)*100  
-                fossil_percentage = sum(fuel)/sum(th_energy_consumption)*100                             
+                grid_percentage = sum(grid)/max(1, sum(elec_energy_consumption))*100  
+                fossil_percentage = sum(fuel)/max(1, sum(th_energy_consumption))*100                             
                 Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
                 Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
             

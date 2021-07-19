@@ -95,7 +95,7 @@ class OARO(object):
         output = apm(s,a,'solve');
         
         SEC = 0
-        
+        rtq = 0
         if (apm_tag(s,a,'apm.appstatus')==1):
             # retrieve solution if successful
             sol = apm_sol(s,a)
@@ -209,10 +209,7 @@ class OARO(object):
     def simulation(self, gen, storage):
         self.thermal_load = self.ThPower * self.num_modules # kWh
         self.max_prod = (468/24*self.rtq) * self.num_modules # m3/h
-        for i in range(len(gen)):
-            gen[i] /= 1000
-        print(self.thermal_load)
-        print(self.max_prod)
+
         self.storage_cap = storage * self.thermal_load # kWh
         self.Fossil_f = 1
         
@@ -227,10 +224,11 @@ class OARO(object):
         prod =  [0 for i in range(len(gen))]
         fuel =  [0 for i in range(len(gen))]
         energy_consumption =  [0 for i in range(len(gen))]
+        actual_load =  [0 for i in range(len(gen))]
         for i in range(len(gen)):
-            to_desal[i] = max(0,min(self.thermal_load, gen[i]))
-            to_storage[i] = abs(max(0,gen[i] - to_desal[i]))
-            storage_load[i] = max(0,gen[i]) - self.thermal_load
+            to_desal[i] = min(self.thermal_load, gen[i])
+            to_storage[i] = abs(gen[i] - to_desal[i])
+            storage_load[i] = gen[i] - self.thermal_load
             if i != 0:
                 storage_cap_1[i] = storage_status[i-1]
             storage_cap_2[i] = max(storage_load[i] + storage_cap_1[i], 0)
@@ -239,11 +237,10 @@ class OARO(object):
             load[i] = to_desal[i] + max(0, storage_cap_1[i] - storage_cap_2[i])
             if load[i] / self.thermal_load < self.Fossil_f:
                 fuel[i] = self.thermal_load - load[i]
-
+            actual_load[i] = max(0,load[i])
             energy_consumption[i] = fuel[i]+load[i] 
             prod[i] = (fuel[i]+load[i] )/ self.thermal_load * self.max_prod
-
-            
+        
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
         Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
     
@@ -256,7 +253,7 @@ class OARO(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/sum(energy_consumption)*100,'Unit':'%'})           
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/max(1,sum(energy_consumption))*100,'Unit':'%'})           
         simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(gen) - sum(load)) / 1000000) ,'Unit':'GWh'})   
         simu_output.append({'Name':'Percentage of curtailed energy','Value':max(0, (sum(gen) - sum(load))) / sum(gen) * 100 ,'Unit':'%'})    
         # Add brine volume and concentration (using 100% rejection(make it a variable))

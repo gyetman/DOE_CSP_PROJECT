@@ -112,6 +112,7 @@ def gather_data(x):
         updates.update({'lcoh':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
         updates.update({'sam_lcoh':dc[index]['Value']})
+        print('sam_lcoh',dc[index])
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
@@ -408,11 +409,12 @@ def gather_data(x):
         updates.update({'ops_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
         updates.update({'energy_cost':dc[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of electricity (from solar field)')
+        updates.update({'sam_lcoe':dc[index]['Value']})        
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
-        updates.update({'sam_lcoe':f['sam_coe']})
+
         
     elif updates['desal'] == 'RO_FO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -592,11 +594,11 @@ def gather_data(x):
         updates.update({'ops_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Energy cost')
         updates.update({'energy_cost':dc[index]['Value']})
-        
+        index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of electricity (from solar field)')
+        updates.update({'sam_lcoe':dc[index]['Value']})        
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
-        updates.update({'sam_lcoe':f['sam_coe']}) 
         updates.update({'downtime': f['downtime']})
         updates.update({'actual_prod':(1-f['downtime']/100) * ds[indexp]['Value']})
         
@@ -1060,10 +1062,8 @@ def sam_performance(x):
         if cte > 20:
             return html.Div([
                 html.Div(f"Percentage of curtailed thermal energy: {cte:.1f} %"),
-                html.Details([
-                    html.Summary("High energy curtailment!",style={'color':'yellow'}),
-                    html.Div(f"Consider adding Thermal Storage hours in the Desalination Model Input and/or Reduce the Capacity of the Solar Field in Power Cycle Input")
-                ])
+                html.Div(f"High energy curtailment!",style={'color':'yellow'}),
+                html.Div(f"Consider adding Thermal Storage hours in the Desalination Model Input and/or Reduce the Capacity of the Solar Field in Power Cycle Input" , style = {'color':'yellow'})
             ])
         else:
             return html.Div(f"Percentage of curtailed thermal energy: {cte:.1f} %")

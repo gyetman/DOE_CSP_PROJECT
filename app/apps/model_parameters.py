@@ -273,8 +273,18 @@ parametric_alert = html.Div([
         is_open = False)
     ],id='p-alert-init')
 
+powertower_alert = html.Div([
+    dbc.Alert([html.Strong("For Power Tower systems"), 
+        html.P("System capacity should not be less than 20 MW.")],
+        className="alert alert-dismissible alert-light",
+        dismissable=True,
+        id='powertower-alert',
+        is_open = False)
+    ],id='powertower-alert-init')
+
 tabs_accordion = html.Div([
     parametric_alert, 
+    powertower_alert,
     dbc.Card('TEST',
         className="accordion h-100", 
         id='tabs-card')
@@ -629,6 +639,14 @@ def toggle_parametric_alert(_init):
     '''reads app json and opens alert if parametric set to true'''
     appj = helpers.json_load(cfg.app_json)
     return appj["parametric"]
+
+@app.callback(
+    Output('powertower-alert', 'is_open'),
+    [Input('powertower-alert-init', 'children')])
+def toggle_powertower_alert(_init):
+    '''reads app json and opens alert if parametric set to true'''
+    appj = helpers.json_load(cfg.app_json)
+    return appj["solar"] == 'tcsdirect_steam' or appj["solar"] == 'tcsmolten_salt' 
 
 @app.callback(
     [Output('model-loading-output','children'),

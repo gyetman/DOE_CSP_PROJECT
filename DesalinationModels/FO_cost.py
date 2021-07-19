@@ -46,6 +46,7 @@ class FO_cost(object):
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.04 , # Unit cost of electricity ($/kWh)
                  coh = 0.01 , # Unit cost of fossil fuel ($/kWh(th))
+                 solar_coh = '',
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
                  storage_cap = 0 # Capacity of thermal storage (kWh)
@@ -59,7 +60,10 @@ class FO_cost(object):
         self.coe = coe
         self.fuel_usage = fuel_usage/100
         self.coh = coh
-        self.sam_coh = sam_coh
+        if solar_coh != '':
+            self.sam_coh = float(solar_coh)
+        else:
+            self.sam_coh = sam_coh
         # if total_CAPEX:
         #     self.total_CAPEX = 4500000
         # else:

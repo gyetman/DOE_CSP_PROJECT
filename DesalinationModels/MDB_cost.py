@@ -29,6 +29,7 @@ class MDB_cost(object):
                  coe = 0.05 , # Unit cost of electricity ($/kWh)
                  coh = 0.01 , # Unit cost of heat ($/kWh)
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
+                 solar_coh = '',
                  solar_inlet = 85, # Solar field inlet temperature
                  solar_outlet = 95, # Solar field outlet temperature
                  HX_eff = 0.85, # Heat exchanger efficiency
@@ -76,7 +77,11 @@ class MDB_cost(object):
         self.coe = coe
         self.Capacity = Capacity
         self.coh = coh
-        self.sam_coh = sam_coh
+        
+        if solar_coh != '':
+            self.sam_coh = float(solar_coh)
+        else:
+            self.sam_coh = sam_coh
 
         self.cost_module_re = cost_module_re
         self.Prod = Prod
