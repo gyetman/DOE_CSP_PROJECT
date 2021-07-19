@@ -691,7 +691,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_ref",
-            "Label": "Design turbine gross output",
+            "Label": "Design turbine gross output ( >20)",
             "Units": "MW",
             "Group": "system_design",
             "Require": "*",
