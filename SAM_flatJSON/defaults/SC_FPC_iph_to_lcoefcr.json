@@ -4,7 +4,7 @@
 	"design_point_date" : [2010, 3 ,18 ,12, 0, 0],
 	"initial_date" : [2010, 3 ,18, 9, 0, 0],
 	"final_date" : [2010, 3, 18, 17, 0 ,0],
-	"desal_thermal_power_req" : 2.237,
+	"desal_thermal_power_req" : 2.5,
 	"initial_water_temp" : 85,
 	"outlet_water_temp": 95,
 	"qm" : 0.02,

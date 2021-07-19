@@ -356,3 +356,76 @@ def FO(invalues):
     labor = 0.04757 * Mprod ** (-0.178)
     print(capex, labor)
     return [capex, labor]
+
+#%%
+"""
+Model name: PV detailed
+Model label: pvsamv1
+"""
+# nLoops
+eqn05 = {
+        'model': 'pvsamv1',
+        'outputs': ['system_capacity', 'total_AC_capacity', 'DC_to_AC'],
+        # , 'vol_tank'],
+        'inputs':['subarray1_nstrings', 'subarray1_modules_per_string', 'cec_v_mp_ref', 'cec_i_mp_ref',
+                  'inv_snl_paco', 'inverter_count'
+                  ],
+        'function': 'pvsamv1'
+        }
+                                                                                    
+def pvsamv1(invalues):
+    subarray1_nstrings, subarray1_modules_per_string, cec_v_mp_ref, cec_i_mp_ref, \
+    inv_snl_paco, inverter_count \
+    = invalues
+
+    system_capacity = subarray1_nstrings * subarray1_modules_per_string * cec_v_mp_ref * cec_i_mp_ref /1000
+    total_AC_capacity = inverter_count * inv_snl_paco / 1000
+    DC_to_AC = system_capacity / total_AC_capacity
+
+    return [system_capacity, total_AC_capacity, DC_to_AC]
+
+#%%
+"""
+Model name: Power Tower Direct Steam
+Model label: tcsdirect_steam
+"""
+# nLoops
+eqn06 = {
+        'model': 'tcsdirect_steam',
+        'outputs': ['system_capacity'],
+        # , 'vol_tank'],
+        'inputs':['p_cycle_design',  'gross_to_net_eff'
+                  ],
+        'function': 'tcsdirect_steam'
+        }
+                                                                                    
+def tcsdirect_steam(invalues):
+    p_cycle_design,  gross_to_net_eff \
+    = invalues
+
+    system_capacity = p_cycle_design * 1000 * gross_to_net_eff
+
+    return [system_capacity]
+
+#%%
+"""
+Model name: Power Tower Molten Salt
+Model label: tcsmolten_salt
+"""
+# nLoops
+eqn07 = {
+        'model': 'tcsmolten_salt',
+        'outputs': ['system_capacity'],
+        # , 'vol_tank'],
+        'inputs':['P_ref',  'gross_to_net_eff'
+                  ],
+        'function': 'tcsmolten_salt'
+        }
+                                                                                    
+def tcsmolten_salt(invalues):
+    P_ref,  gross_to_net_eff \
+    = invalues
+
+    system_capacity = P_ref * gross_to_net_eff
+
+    return [system_capacity]

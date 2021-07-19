@@ -87,19 +87,36 @@ functions_per_model = {
                 'function': 'tcstrough_physical'
             },
         ],
-    # 'FO': 
-    #     [
-    #         {
-    #             'outputs': dpcfg.eqn04['outputs'],
-    #             # 'output_ids': list(set([get_table_id(i, 'finance', 'FO') for i in dpcfg.eqn04['outputs']])),
-    #             'output_ids': list(set([get_table_id(i, 'desal', 'FO') for i in dpcfg.eqn04['outputs']])),
-    #             'inputs': dpcfg.eqn04['inputs'],
-    #             'input_ids': list(set([get_table_id(i, 'desal', 'FO') for i in dpcfg.eqn04['inputs']])),
-    #             'out_model': 'lcoefcr',
-    #             'function': 'FO'
-    #         },
-    #     ]
-
+    'pvsamv1': 
+        [
+            {
+                'outputs': dpcfg.eqn05['outputs'],
+                'output_ids': list(set([get_table_id(i, 'solar', 'pvsamv1') for i in dpcfg.eqn05['outputs']])),
+                'inputs': dpcfg.eqn05['inputs'],
+                'input_ids': list(set([get_table_id(i, 'solar', 'pvsamv1') for i in dpcfg.eqn05['inputs']])),
+                'function': 'pvsamv1'
+            },
+        ],
+    'tcsdirect_steam': 
+        [
+            {
+                'outputs': dpcfg.eqn06['outputs'],
+                'output_ids': list(set([get_table_id(i, 'solar', 'tcsdirect_steam') for i in dpcfg.eqn06['outputs']])),
+                'inputs': dpcfg.eqn06['inputs'],
+                'input_ids': list(set([get_table_id(i, 'solar', 'tcsdirect_steam') for i in dpcfg.eqn06['inputs']])),
+                'function': 'tcsdirect_steam'
+            },
+        ],
+    'tcsmolten_salt': 
+        [
+            {
+                'outputs': dpcfg.eqn07['outputs'],
+                'output_ids': list(set([get_table_id(i, 'solar', 'tcsmolten_salt') for i in dpcfg.eqn07['outputs']])),
+                'inputs': dpcfg.eqn06['inputs'],
+                'input_ids': list(set([get_table_id(i, 'solar', 'tcsmolten_salt') for i in dpcfg.eqn07['inputs']])),
+                'function': 'tcsmolten_salt'
+            },
+        ],
 }
 
 #NOTE: EXAMPLE CALLBACK FROM model_parameters
@@ -170,7 +187,10 @@ def function_switcher(func, intables):
         'tcslinear_fresnel':           ['eqn01','tcslinear_fresnel'],
         'trough_physical_process_heat':['eqn02','trough_physical_process_heat'],
         'tcstrough_physical':          ['eqn03','tcstrough_physical'],
-        'FO':                          ['eqn04','FO']
+        'FO':                          ['eqn04','FO'],
+        'pvsamv1':                     ['eqn05','pvsamv1'],
+        'tcsdirect_steam':             ['eqn06','tcsdirect_steam'],
+        'tcsmolten_salt':              ['eqn07','tcsmolten_salt']
     }    
     
     # dependent_var_switcher = {

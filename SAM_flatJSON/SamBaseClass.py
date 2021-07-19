@@ -301,10 +301,10 @@ class SamBaseClass(object):
                 self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
                 gen = self.ssc.data_get_array(self.data, b'gen')
                 self.ssc.data_set_array( self.data, b'gen', gen )
-                self.module_create_execute(self.financialModel)
-
-                if self.financialModel == 'utilityrate5':
-                    self.module_create_execute('cashloan')       
+                if self.cspModel != 'tcsmolten_salt':
+                    self.module_create_execute(self.financialModel)
+                    if self.financialModel == 'utilityrate5':
+                        self.module_create_execute('cashloan')       
 
 
             self.T_amb = self.ssc.data_get_number(self.data, b'T_amb_des') # Pa

@@ -105,6 +105,24 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "total_AC_capacity",
+            "Label": "Total AC capacity  (Automatically calculated)",
+            "Units": "kWac",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Sizing Summary"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "DC_to_AC",
+            "Label": "DC to AC ratio  (Automatically calculated)",
+            "Units": "",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Sizing Summary"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "use_wf_albedo",
             "Label": "Use albedo in weather file if provided",
             "Units": "0/1",
@@ -3724,13 +3742,6 @@
             "DataType": "SSC_NUMBER",
             "Name": "batt_chem",
             "Label": "Battery chemistry"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "inverter_count",
-            "Label": "Number of inverters",
-            "Tab": "System Design",
-            "Section": "AC Sizing"
         },
         {
             "DataType": "SSC_NUMBER",

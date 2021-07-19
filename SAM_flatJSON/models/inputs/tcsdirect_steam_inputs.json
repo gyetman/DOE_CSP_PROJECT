@@ -12,10 +12,12 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "system_capacity",
-            "Label": "Nameplate capacity",
+            "Label": "Nameplate capacity (automatically calculated)",
             "Units": "kW",
             "Group": "direct steam tower",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -959,6 +961,16 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "gross_to_net_eff",
+            "Label": "Estimated gross to net conversion factor",
+            "Units": "",
+            "Group": "dsg_controller",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "ct",
             "Label": "Cooling Type",
             "Units": "-",
@@ -1374,17 +1386,6 @@
             "Require": "*",
             "Tab": "Power Cycle",
             "Section": "Operation"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "T_ITD_des",
-            "Label": "ITD at design for dry system",
-            "Units": "C",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Design",
-            "Subsection": "Plant Cooling Mode"
         },
         {
             "DataType": "SSC_NUMBER",

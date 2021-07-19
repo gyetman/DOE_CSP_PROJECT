@@ -270,21 +270,34 @@ parametric_alert = html.Div([
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='parametric-alert',
-        is_open = False)
+        is_open = False,
+        style={'color':'Brown'})
     ],id='p-alert-init')
 
 powertower_alert = html.Div([
-    dbc.Alert([html.Strong("For Power Tower systems"), 
-        html.P("System capacity should not be less than 20 MW.")],
+    dbc.Alert([html.Strong("For Power Tower Molten Salt system"), 
+        html.P("System capacity should not be less than 20 MW, and large size of desalination plant is recommended so that the required thermal energy matches the solar field.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='powertower-alert',
-        is_open = False)
+        is_open = False,
+        style={'color':'Brown'})
     ],id='powertower-alert-init')
+
+powertower2_alert = html.Div([
+    dbc.Alert([html.Strong("For Power Tower Direct Steam system"), 
+        html.P("System capacity should not be less than 30 MW, and large size of desalination plant is recommended so that the required thermal energy matches the solar field.")],
+        className="alert alert-dismissible alert-light",
+        dismissable=True,
+        id='powertower2-alert',
+        is_open = False,
+        style={'color':'Brown'})
+    ],id='powertower2-alert-init')
 
 tabs_accordion = html.Div([
     parametric_alert, 
     powertower_alert,
+    powertower2_alert,
     dbc.Card('TEST',
         className="accordion h-100", 
         id='tabs-card')
@@ -646,7 +659,15 @@ def toggle_parametric_alert(_init):
 def toggle_powertower_alert(_init):
     '''reads app json and opens alert if parametric set to true'''
     appj = helpers.json_load(cfg.app_json)
-    return appj["solar"] == 'tcsdirect_steam' or appj["solar"] == 'tcsmolten_salt' 
+    return  appj["solar"] == 'tcsmolten_salt' 
+
+@app.callback(
+    Output('powertower2-alert', 'is_open'),
+    [Input('powertower2-alert-init', 'children')])
+def toggle_powertower2_alert(_init):
+    '''reads app json and opens alert if parametric set to true'''
+    appj = helpers.json_load(cfg.app_json)
+    return appj["solar"] == 'tcsdirect_steam' 
 
 @app.callback(
     [Output('model-loading-output','children'),

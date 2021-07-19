@@ -77,7 +77,7 @@ class VAGMD_cost(object):
         
         self.coh = coh
 
-        if solar_coh != '':
+        if solar_coh != '' and solar_coh != None:
             self.sam_coh = float(solar_coh)
         else:
             self.sam_coh = sam_coh

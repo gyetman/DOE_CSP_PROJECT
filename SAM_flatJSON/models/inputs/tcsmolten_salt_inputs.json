@@ -691,7 +691,27 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "P_ref",
-            "Label": "Reference output electric power at design condition",
+            "Label": "Design turbine gross output",
+            "Units": "MW",
+            "Group": "system_design",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Power Cycle"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "gross_to_net_eff",
+            "Label": "Estimated gross to net conversion factor",
+            "Units": "",
+            "Group": "system_design",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "Power Cycle"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "Estimated net output at design(nameplate) (automatically calculated)",
             "Units": "MW",
             "Group": "system_design",
             "Require": "*",

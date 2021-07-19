@@ -1,6 +1,6 @@
 {
 	"FeedC_r" : 35,
-	"capacity" : 1000,
+	"capacity" : 10000,
 	"T_sw" : 15,
 	"RO_rr" : 40,
 	"FO_rr": 30,

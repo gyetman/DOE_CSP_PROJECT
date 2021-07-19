@@ -777,7 +777,7 @@ def gather_data(x):
     elif updates['solar'] == 'tcsmolten_salt':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
-        updates.update({'q_pb_des':s['P_ref']})
+        updates.update({'q_pb_des':s['system_capacity']})
         updates.update({'footprint1':s['P_ref'] * 6 })
         updates.update({'footprint2':s['P_ref'] * 8 })
     # add sam simulation output        
