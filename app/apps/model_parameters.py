@@ -276,7 +276,7 @@ parametric_alert = html.Div([
 
 powertower_alert = html.Div([
     dbc.Alert([html.Strong("For Power Tower Molten Salt system"), 
-        html.P("System capacity should not be less than 20 MW, and large size of desalination plant is recommended so that the required thermal energy matches the solar field.")],
+        html.P("System capacity should be larger than 20 MW, and the desalination plant should be sized accordingly.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='powertower-alert',
@@ -286,7 +286,7 @@ powertower_alert = html.Div([
 
 powertower2_alert = html.Div([
     dbc.Alert([html.Strong("For Power Tower Direct Steam system"), 
-        html.P("System capacity should not be less than 30 MW, and large size of desalination plant is recommended so that the required thermal energy matches the solar field.")],
+        html.P("System capacity should be larger than 30 MW, and the desalination plant should be sized accordingly.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='powertower2-alert',

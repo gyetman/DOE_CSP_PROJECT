@@ -952,7 +952,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "p_cycle_design",
-            "Label": "Design turbine gross output",
+            "Label": "Design turbine gross output (> 30)",
             "Units": "MW",
             "Group": "dsg_controller",
             "Require": "*",
