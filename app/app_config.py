@@ -119,7 +119,7 @@ Documentation = {
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
-    'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',True),('RO_MDB',True),('Generic',False)],
+    'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',True),('RO_MDB',True),('Generic',True)],
     'SC_FPC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'SC_ETC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'trough_physical_process_heat': [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',True),('RO_MDB',True),('Generic',False)],

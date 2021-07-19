@@ -112,7 +112,6 @@ def gather_data(x):
         updates.update({'lcoh':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Levelized cost of heat (from solar field)')
         updates.update({'sam_lcoh':dc[index]['Value']})
-        print('sam_lcoh',dc[index])
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal CAPEX')
         updates.update({'capital_cost':dc[index]['Value']})
         index = helpers.index_in_list_of_dicts(dc,'Name','Desal OPEX')
