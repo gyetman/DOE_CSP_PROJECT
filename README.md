@@ -11,23 +11,17 @@ To run the app (configure environment and run app) follow the brief notes below.
 Checkout the code from GitHub
 Create a Python environment
 
-	conda create –n doe python=3.7
+	conda create –n solar_beta python=3.7
 
-	activate doe
+	activate solar_beta
 
-add dash plotly 
-	
-	pip install dash
+use the yml file to see the required libraries (or just use it to create the solar_beta environmente). 
 
-Run the logic model
+Run the app
 
-	python display_model_variables.py
-#In a second instance of python, run the menu system
+	python index.py
 
-	activate doe
-	python display-results-app.py
+Open your browser and view the home page
 
-Open your browser and choose a model
-
-http://127.0.0.1:8067/model-selection
+http://127.0.0.1:8067/
 Work through from there…
