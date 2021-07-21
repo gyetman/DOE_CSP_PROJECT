@@ -91,8 +91,7 @@ desal_units = {
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
-              dbc.NavItem(dbc.NavLink("Charts"), active=True),
-              dbc.NavItem(dbc.NavLink("Results Map", href='/results-map'))],
+              dbc.NavItem(dbc.NavLink("Charts"), active=True)],
     brand="Parametric Study",
     color="primary",
     dark=True,
