@@ -1308,7 +1308,7 @@ def set_system_performance(x):
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         ])
-    elif app['desal'] == 'RO' or app['desal'] == 'FO':
+    elif app['desal'] == 'RO' :
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
@@ -1318,6 +1318,16 @@ def set_system_performance(x):
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
         ])
+    elif app['desal'] == 'FO':
+        return ([
+        html.H5('Desalination System Performance', className='card-title'),
+        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
+        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
+        ])    
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
@@ -1340,7 +1350,7 @@ def set_system_performance(x):
         html.Div(f"Assumed recovery ratio: {r['rr']:.1f} %"),    
         #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
+        html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'MDB':       
         df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
