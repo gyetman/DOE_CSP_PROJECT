@@ -2,162 +2,191 @@
     "utilityrate5": [
         {
             "DataType": "SSC_NUMBER",
-            "Name": "en_electricity_rates",
-            "Label": "Optionally enable/disable electricity_rate",
-            "Units": "years",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "analysis_period",
             "Label": "Number of years in analysis",
             "Units": "years",
             "Require": "*",
-            "Costraint": "INTEGER,POSITIVE"
+            "Constraints": "INTEGER,POSITIVE",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Analysis Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "system_use_lifetime_output",
             "Label": "Lifetime hourly system outputs",
             "Units": "0/1",
-            "Meta": "0=hourly first year,1=hourly lifetime",
             "Require": "*",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
+            "Constraints": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar Field",
+            "Section": "Unused variables"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TOU_demand_single_peak",
             "Label": "Use single monthly peak for TOU demand charge",
             "Units": "0/1",
-            "Meta": "0=use TOU peak,1=use flat peak",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=1"
-        },
-        {
-            "DataType": "SSC_ARRAY",
-            "Name": "gen",
-            "Label": "System power generated",
-            "Units": "kW",
-            "Group": "Time Series",
-            "Require": "*"
+            "Constraints": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar Field",
+            "Section": "Unused variables"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "load",
             "Label": "Electricity load (year 1)",
             "Units": "kW",
-            "Group": "Time Series"
+            "Tab": "Solar Field",
+            "Section": "Electric Load",
+            "Subsection": "Electric Load Data"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "inflation_rate",
             "Label": "Inflation rate",
             "Units": "%",
-            "Group": "Financials",
             "Require": "*",
-            "Costraint": "MIN=-99"
+            "Constraints": "MIN=-99",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Analysis Parameters"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "degradation",
-            "Label": "Annual energy degradation",
-            "Units": "%",
-            "Group": "AnnualOutput",
-            "Require": "*"
+            "Label": "Annual AC degradation rate",
+            "Units": "%/year",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Lifetime and Degradation",
+            "Subsection": "Annual Degradation for Single-year Simulation"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "load_escalation",
             "Label": "Annual load escalation",
             "Units": "%/year",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "rate_escalation",
             "Label": "Annual electricity rate escalation",
             "Units": "%/year",
-            "Require": "?=0"
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Annual Escalation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_metering_option",
-            "Label": "Metering options",
+            "Label": "Metering options (See user mannual for inputs)",
             "Units": "0=Single meter with monthly rollover credits in kWh,1=Single meter with monthly rollover credits in $,2=Single meter with no monthly rollover credits (Net Billing),3=Single meter with monthly rollover credits in $ (Net Billing $),4=Two meters with all generation sold and all load purchased",
-            "Meta": "Net metering monthly excess",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0,MAX=4"
+            "Constraints": "INTEGER,MIN=0,MAX=4",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Metering and Billing"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_nm_yearend_sell_rate",
-            "Label": "Year end sell rate",
+            "Label": "Sell rate for kWh credits remaining at end of year",
             "Units": "$/kWh",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Metering and Billing"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_monthly_fixed_charge",
             "Label": "Monthly fixed charge",
             "Units": "$",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Fixed Charge"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_sell_eq_buy",
             "Label": "Set sell rate equal to buy rate",
             "Units": "0/1",
-            "Meta": "Optional override",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Unused variables"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_monthly_min_charge",
             "Label": "Monthly minimum charge",
             "Units": "$",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Minimum Charges"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_annual_min_charge",
             "Label": "Annual minimum charge",
             "Units": "$",
-            "Require": "?=0.0"
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Minimum Charges"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ur_en_ts_sell_rate",
-            "Label": "Enable time step sell rates",
+            "Label": "Input 1 to eable time step sell rates",
             "Units": "0/1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Metering and Billing"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "ur_ts_sell_rate",
-            "Label": "Time step sell rates",
-            "Units": "0/1"
+            "Label": "Hourly sell rates",
+            "Units": "0/1",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Metering and Billing"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekday",
             "Label": "Energy charge weekday schedule",
-            "Meta": "12x24",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekend",
             "Label": "Energy charge weekend schedule",
-            "Meta": "12x24",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_tou_mat",
             "Label": "Energy rates table",
-            "Require": "*"
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -165,31 +194,1662 @@
             "Label": "Enable demand charge",
             "Units": "0/1",
             "Require": "?=0",
-            "Costraint": "BOOLEAN"
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_dc_sched_weekday",
             "Label": "Demand charge weekday schedule",
-            "Meta": "12x24"
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_dc_sched_weekend",
             "Label": "Demand charge weekend schedule",
-            "Meta": "12x24"
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_dc_tou_mat",
             "Label": "Demand rates (TOU) table",
-            "Require": "ur_dc_enable=1"
+            "Require": "ur_dc_enable=1",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_dc_flat_mat",
             "Label": "Demand rates (flat) table",
-            "Require": "ur_dc_enable=1"
+            "Require": "ur_dc_enable=1",
+            "Tab": "Solar Field",
+            "Section": "Electricity Rates",
+            "Subsection": "Energy Charges"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "federal_tax_rate",
+            "Label": "Federal income tax rate",
+            "Units": "%",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Project Tax and Insurance Rates"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "state_tax_rate",
+            "Label": "State income tax rate",
+            "Units": "%",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Project Tax and Insurance Rates"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "property_tax_rate",
+            "Label": "Property tax rate",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Property Tax"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "prop_tax_cost_assessed_percent",
+            "Label": "Percent of pre-financing costs assessed",
+            "Units": "%",
+            "Require": "?=95",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Property Tax"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "prop_tax_assessed_decline",
+            "Label": "Assessed value annual decline",
+            "Units": "%",
+            "Require": "?=5",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Property Tax"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "real_discount_rate",
+            "Label": "Real discount rate",
+            "Units": "%",
+            "Require": "*",
+            "Constraints": "MIN=-99",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Analysis Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "inflation_rate",
+            "Label": "Inflation rate",
+            "Units": "%",
+            "Require": "*",
+            "Constraints": "MIN=-99",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Analysis Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance_rate",
+            "Label": "Insurance rate",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Analysis Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_heat_rate",
+            "Label": "System heat rate",
+            "Units": "MMBTus/MWh",
+            "Require": "?=0.0",
+            "Constraints": "MIN=0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loan_term",
+            "Label": "Loan term",
+            "Units": "years",
+            "Require": "?=0",
+            "Constraints": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Project Term Debt"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loan_rate",
+            "Label": "Loan rate",
+            "Units": "%",
+            "Require": "?=0",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Project Term Debt"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "debt_fraction",
+            "Label": "Debt percentage",
+            "Units": "%",
+            "Require": "?=0",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Project Term Debt"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_fixed",
+            "Label": "Fixed O&M annual amount",
+            "Units": "$/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_fixed_escal",
+            "Label": "Fixed O&M escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_production",
+            "Label": "Production-based O&M amount",
+            "Units": "$/MWh",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_production_escal",
+            "Label": "Production-based O&M escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_capacity",
+            "Label": "Capacity-based O&M amount",
+            "Units": "$/kWcap",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_capacity_escal",
+            "Label": "Capacity-based O&M escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_fuel_cost",
+            "Label": "Fuel cost",
+            "Units": "$/MMBtu",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_fuel_cost_escal",
+            "Label": "Fuel cost escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Operation and Maintenance Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "annual_fuel_usage",
+            "Label": "Fuel usage",
+            "Units": "kWht",
+            "Require": "?=0",
+            "Constraints": "MIN=0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_1_usage",
+            "Label": "Biomass feedstock usage",
+            "Units": "unit",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_opt_fuel_1_cost",
+            "Label": "Biomass feedstock cost",
+            "Units": "$/unit",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_1_cost_escal",
+            "Label": "Biomass feedstock cost escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_2_usage",
+            "Label": "Coal feedstock usage",
+            "Units": "unit",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "om_opt_fuel_2_cost",
+            "Label": "Coal feedstock cost",
+            "Units": "$/unit",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "om_opt_fuel_2_cost_escal",
+            "Label": "Coal feedstock cost escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_fed_type",
+            "Label": "Federal depreciation type (0: No depreciation, 1: 5-yr MACRS, 2: Straight line 3: Custom)",
+            "Require": "?=0",
+            "Constraints": "INTEGER,MIN=0,MAX=3",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_fed_sl_years",
+            "Label": "Federal depreciation straight-line Years",
+            "Units": "years",
+            "Require": "depr_fed_type=2",
+            "Constraints": "INTEGER,POSITIVE",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "depr_fed_custom",
+            "Label": "Federal custom depreciation",
+            "Units": "%/year",
+            "Require": "depr_fed_type=3",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_sta_type",
+            "Label": "State depreciation type (0: No depreciation, 1: 5-yr MACRS, 2: Straight line 3: Custom)",
+            "Require": "?=0",
+            "Constraints": "INTEGER,MIN=0,MAX=3",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "depr_sta_sl_years",
+            "Label": "State depreciation straight-line years",
+            "Units": "years",
+            "Require": "depr_sta_type=2",
+            "Constraints": "INTEGER,POSITIVE",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "depr_sta_custom",
+            "Label": "State custom depreciation",
+            "Units": "%/year",
+            "Require": "depr_sta_type=3",
+            "Tab": "Solar Field",
+            "Section": "Financial Parameters",
+            "Subsection": "Depreciation"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount",
+            "Label": "Federal amount-based ITC amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount_deprbas_fed",
+            "Label": "Federal amount-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_amount_deprbas_sta",
+            "Label": "Federal amount-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount",
+            "Label": "State amount-based ITC amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount_deprbas_fed",
+            "Label": "State amount-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_amount_deprbas_sta",
+            "Label": "State amount-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent",
+            "Label": "Federal percentage-based ITC percent",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_maxvalue",
+            "Label": "Federal percentage-based ITC maximum value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_deprbas_fed",
+            "Label": "Federal percentage-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_fed_percent_deprbas_sta",
+            "Label": "Federal percentage-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent",
+            "Label": "State percentage-based ITC percent",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_maxvalue",
+            "Label": "State percentage-based ITC maximum Value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_deprbas_fed",
+            "Label": "State percentage-based ITC reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "itc_sta_percent_deprbas_sta",
+            "Label": "State percentage-based ITC reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Tax Credits (ITC)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ptc_fed_amount",
+            "Label": "Federal PTC amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_fed_term",
+            "Label": "Federal PTC term",
+            "Units": "years",
+            "Require": "?=10",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_fed_escal",
+            "Label": "Federal PTC escalation",
+            "Units": "%/year",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "ptc_sta_amount",
+            "Label": "State PTC amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_sta_term",
+            "Label": "State PTC term",
+            "Units": "years",
+            "Require": "?=10",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ptc_sta_escal",
+            "Label": "State PTC escalation",
+            "Units": "%/year",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Tax Credits (PTC)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount",
+            "Label": "Federal amount-based IBI amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_tax_fed",
+            "Label": "Federal amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_tax_sta",
+            "Label": "Federal amount-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_deprbas_fed",
+            "Label": "Federal amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_amount_deprbas_sta",
+            "Label": "Federal amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount",
+            "Label": "State amount-based IBI amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_tax_fed",
+            "Label": "State amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_tax_sta",
+            "Label": "State amount-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_deprbas_fed",
+            "Label": "State amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_amount_deprbas_sta",
+            "Label": "State amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount",
+            "Label": "Utility amount-based IBI amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_tax_fed",
+            "Label": "Utility amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_tax_sta",
+            "Label": "Utility amount-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_deprbas_fed",
+            "Label": "Utility amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_amount_deprbas_sta",
+            "Label": "Utility amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount",
+            "Label": "Other amount-based IBI amount",
+            "Units": "$",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_tax_fed",
+            "Label": "Other amount-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_tax_sta",
+            "Label": "Other amount-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_deprbas_fed",
+            "Label": "Other amount-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_amount_deprbas_sta",
+            "Label": "Other amount-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent",
+            "Label": "Federal percentage-based IBI percent",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_maxvalue",
+            "Label": "Federal percentage-based IBI maximum value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_tax_fed",
+            "Label": "Federal percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_tax_sta",
+            "Label": "Federal percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_deprbas_fed",
+            "Label": "Federal percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_fed_percent_deprbas_sta",
+            "Label": "Federal percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent",
+            "Label": "State percentage-based IBI percent",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_maxvalue",
+            "Label": "State percentage-based IBI maximum value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_tax_fed",
+            "Label": "State percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_tax_sta",
+            "Label": "State percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_deprbas_fed",
+            "Label": "State percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_sta_percent_deprbas_sta",
+            "Label": "State percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent",
+            "Label": "Utility percentage-based IBI percent",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_maxvalue",
+            "Label": "Utility percentage-based IBI maximum value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_tax_fed",
+            "Label": "Utility percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_tax_sta",
+            "Label": "Utility percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_deprbas_fed",
+            "Label": "Utility percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_uti_percent_deprbas_sta",
+            "Label": "Utility percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent",
+            "Label": "Other percentage-based IBI percent",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_maxvalue",
+            "Label": "Other percentage-based IBI maximum value",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_tax_fed",
+            "Label": "Other percentage-based IBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_tax_sta",
+            "Label": "Other percentage-based IBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_deprbas_fed",
+            "Label": "Other percentage-based IBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "ibi_oth_percent_deprbas_sta",
+            "Label": "Other percentage-based IBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Investment Based Incentive (IBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_amount",
+            "Label": "Federal CBI amount",
+            "Units": "$/Watt",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_maxvalue",
+            "Label": "Federal CBI maximum",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_tax_fed",
+            "Label": "Federal CBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_tax_sta",
+            "Label": "Federal CBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_deprbas_fed",
+            "Label": "Federal CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_fed_deprbas_sta",
+            "Label": "Federal CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_amount",
+            "Label": "State CBI amount",
+            "Units": "$/Watt",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_maxvalue",
+            "Label": "State CBI maximum",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_tax_fed",
+            "Label": "State CBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_tax_sta",
+            "Label": "State CBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_deprbas_fed",
+            "Label": "State CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_sta_deprbas_sta",
+            "Label": "State CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_amount",
+            "Label": "Utility CBI amount",
+            "Units": "$/Watt",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_maxvalue",
+            "Label": "Utility CBI maximum",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_tax_fed",
+            "Label": "Utility CBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_tax_sta",
+            "Label": "Utility CBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_deprbas_fed",
+            "Label": "Utility CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_uti_deprbas_sta",
+            "Label": "Utility CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_amount",
+            "Label": "Other CBI amount",
+            "Units": "$/Watt",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_maxvalue",
+            "Label": "Other CBI maximum",
+            "Units": "$",
+            "Require": "?=1e99",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_tax_fed",
+            "Label": "Other CBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_tax_sta",
+            "Label": "Other CBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_deprbas_fed",
+            "Label": "Other CBI reduces federal depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cbi_oth_deprbas_sta",
+            "Label": "Other CBI reduces state depreciation basis",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Capacity Based Incentive (CBI)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_fed_amount",
+            "Label": "Federal PBI amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_term",
+            "Label": "Federal PBI term",
+            "Units": "years",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_escal",
+            "Label": "Federal PBI escalation",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_tax_fed",
+            "Label": "Federal PBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_fed_tax_sta",
+            "Label": "Federal PBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_sta_amount",
+            "Label": "State PBI amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_term",
+            "Label": "State PBI term",
+            "Units": "years",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_escal",
+            "Label": "State PBI escalation",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_tax_fed",
+            "Label": "State PBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_sta_tax_sta",
+            "Label": "State PBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_uti_amount",
+            "Label": "Utility PBI amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_term",
+            "Label": "Utility PBI term",
+            "Units": "years",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_escal",
+            "Label": "Utility PBI escalation",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_tax_fed",
+            "Label": "Utility PBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_uti_tax_sta",
+            "Label": "Utility PBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "pbi_oth_amount",
+            "Label": "Other PBI amount",
+            "Units": "$/kWh",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_term",
+            "Label": "Other PBI term",
+            "Units": "years",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_escal",
+            "Label": "Other PBI escalation",
+            "Units": "%",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_tax_fed",
+            "Label": "Other PBI federal taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pbi_oth_tax_sta",
+            "Label": "Other PBI state taxable",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "BOOLEAN",
+            "Tab": "Solar Field",
+            "Section": "Incentives",
+            "Subsection": "Production Based Incentive (PBI)"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "batt_bank_replacement",
+            "Label": "Battery bank replacements per year",
+            "Units": "number/year",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "batt_replacement_schedule",
+            "Label": "Battery bank replacements per year (user specified)",
+            "Units": "number/year",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "en_batt",
+            "Label": "Enable battery storage model",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_option",
+            "Label": "Enable battery replacement?",
+            "Units": "0=none,1=capacity based,2=user schedule",
+            "Require": "?=0",
+            "Constraints": "INTEGER,MIN=0,MAX=2",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "battery_per_kWh",
+            "Label": "Battery cost",
+            "Units": "$/kWh",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_computed_bank_capacity",
+            "Label": "Battery bank capacity",
+            "Units": "kWh",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_cost",
+            "Label": "Battery bank replacement cost",
+            "Units": "$/kWh",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "batt_replacement_cost_escal",
+            "Label": "Battery bank replacement cost escalation",
+            "Units": "%/year",
+            "Require": "?=0.0",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "market",
+            "Label": "Residential or Commercial Market",
+            "Units": "0/1",
+            "Require": "?=1",
+            "Constraints": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "mortgage",
+            "Label": "Use mortgage style loan (res. only)",
+            "Units": "0/1",
+            "Require": "?=0",
+            "Constraints": "INTEGER,MIN=0,MAX=1",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "total_installed_cost",
+            "Label": "Total installed cost",
+            "Units": "$",
+            "Require": "*",
+            "Constraints": "MIN=0",
+            "Tab": "Solar Field",
+            "Section": "System Costs",
+            "Subsection": "Total Installed Costs"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "salvage_percentage",
+            "Label": "Salvage value percentage",
+            "Units": "%",
+            "Require": "?=0.0",
+            "Constraints": "MIN=0,MAX=100",
+            "Tab": "Solar Field",
+            "Section": "System Costs"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "annual_energy_value",
+            "Label": "Energy value",
+            "Units": "$",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "elec_cost_with_system",
+            "Label": "Energy value",
+            "Units": "$",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Unused"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "elec_cost_without_system",
+            "Label": "Energy value",
+            "Units": "$",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Unused"
         }
     ]
 }

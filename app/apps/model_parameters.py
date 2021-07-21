@@ -266,7 +266,7 @@ parameters_navbar = dbc.NavbarSimple(
 
 parametric_alert = html.Div([
     dbc.Alert([html.Strong("For Parametric Studies"), 
-        html.P("Check the box for up to two targeted variables and input Min, Max and Interval values. Be aware that parametric study selection does not produce an analysis report.")],
+        html.P("Check the box for up to two targeted variables and input Min, Max and Interval values. Be aware that parametric study may take more than 5 minutes and does not produce an analysis report.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='parametric-alert',
@@ -276,7 +276,7 @@ parametric_alert = html.Div([
 
 powertower_alert = html.Div([
     dbc.Alert([html.Strong("For Power Tower Molten Salt system"), 
-        html.P("System capacity should be larger than 20 MW, and the desalination plant should be sized accordingly.")],
+        html.P("System capacity should be larger than 20 MW, and the desalination plant should be sized accordingly. Be aware that power tower models take longer than other models.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='powertower-alert',
@@ -286,7 +286,7 @@ powertower_alert = html.Div([
 
 powertower2_alert = html.Div([
     dbc.Alert([html.Strong("For Power Tower Direct Steam system"), 
-        html.P("System capacity should be larger than 30 MW, and the desalination plant should be sized accordingly.")],
+        html.P("System capacity should be larger than 30 MW, and the desalination plant should be sized accordingly. Be aware that power tower models take longer than other models.")],
         className="alert alert-dismissible alert-light",
         dismissable=True,
         id='powertower2-alert',

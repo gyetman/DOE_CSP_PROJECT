@@ -2,13 +2,47 @@
     "singleowner": [
         {
             "DataType": "SSC_NUMBER",
-            "Name": "cp_capacity_payment_esc",
-            "Label": "cp_capacity_payment_esc",
-            "Units": "years",
+            "Name": "cp_capacity_payment_type",
+            "Label": "Capacity payment type (0: Capacity basis, 1: Fixed amount)",
+            "Units": "",
             "Group": "Financials",
             "Require": "?=30",
             "Constraint": "INTEGER,MIN=0,MAX=50",
-            "Tab": "Solar System"
+            "Tab": "Solar System",
+            "Section": "Capacity Payment Type"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "cp_capacity_payment_amount",
+            "Label": "Capacity payment amount ($/MW for capacity basis, $/year for fixed amount)",
+            "Units": "$/MW or $/year",
+            "Group": "Financials",
+            "Require": "?=30",
+            "Constraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar System",
+            "Section": "Capacity Payment Type"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "cp_capacity_payment_esc",
+            "Label": "Capacity payment escalation",
+            "Units": "%/year",
+            "Group": "Financials",
+            "Require": "?=30",
+            "Constraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar System",
+            "Section": "Capacity Payment Type"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "cp_capacity_credit_percent",
+            "Label": "Capacity credit (eligible % of nameplate)",
+            "Units": "%/year",
+            "Group": "Financials",
+            "Require": "?=30",
+            "Constraint": "INTEGER,MIN=0,MAX=50",
+            "Tab": "Solar System",
+            "Section": "Capacity Payment Type"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1856,7 +1890,7 @@
             "Section": "Solution Mode"
         },
         {
-            "DataType": "SSC_NUMBER",
+            "DataType": "SSC_ARRAY",
             "Name": "ppa_price_input",
             "Label": "PPA price in first year",
             "Units": "$/kWh",

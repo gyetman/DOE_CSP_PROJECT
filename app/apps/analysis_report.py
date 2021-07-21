@@ -1309,7 +1309,7 @@ def set_system_performance(x):
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
+        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'RO' or app['desal'] == 'FO':
         return ([
@@ -1332,7 +1332,7 @@ def set_system_performance(x):
         html.Div(f"Percentage of electric energy from solar field: {r['elec_solar_percent']:.1f} %"),    
         html.Div(f"Percentage of electric energy from grid: {r['grid_percent']:.1f} %"), 
         html.Div(f"Percentage of thermal energy from solar field: {r['thermal_solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of thermal energy from fossil fuel: {r['fossil_percent']:.1f} %"),
+        html.Div(f"Percentage of thermal energy from other sources: {r['fossil_percent']:.1f} %"),
         ])
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
         return ([
@@ -1343,7 +1343,7 @@ def set_system_performance(x):
         html.Div(f"Assumed recovery ratio: {r['rr']:.1f} %"),    
         #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
+        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'MDB':       
         df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
@@ -1356,7 +1356,7 @@ def set_system_performance(x):
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
+        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         html.Div(f"Number of modules required: {r['n_modules']:.0f} "),
         html.Div(f"Module type: {r['m_type']} "),
         html.Div("   Single module performance",
@@ -1382,7 +1382,7 @@ def set_system_performance(x):
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from fossil fuel: {r['fossil_percent']:.1f} %"), 
+        html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         ])
 @app.callback(
     Output('cost-analysis', 'children'),
@@ -1394,7 +1394,7 @@ def set_cost_analysis(x):
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
-        html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
@@ -1406,7 +1406,7 @@ def set_cost_analysis(x):
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
-        html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Capital cost of heat pump: {r['AHP_cost']:.0f} $/kW"),        
@@ -1422,7 +1422,7 @@ def set_cost_analysis(x):
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Levelized cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Assumed cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
 
@@ -1453,7 +1453,7 @@ def set_cost_analysis(x):
     #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Assumed cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Assumed cost of electric energy (LCOE, from grid): {r['lcoe']:.2f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE, from solar field): {r['sam_lcoe']:.2f} $/kWh"),          
@@ -1465,7 +1465,7 @@ def set_cost_analysis(x):
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
-        html.Div(f"Assumed cost of heat (LCOH, from fossil fuel): {r['lcoh']:.3f} $/kWh"),
+        html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
 

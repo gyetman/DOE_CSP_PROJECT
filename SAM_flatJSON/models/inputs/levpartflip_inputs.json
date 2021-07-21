@@ -1632,7 +1632,7 @@
             "Tab": "Solution Mode"
         },
         {
-            "DataType": "SSC_NUMBER",
+            "DataType": "SSC_ARRAY",
             "Name": "ppa_price_input",
             "Label": "Initial year PPA price",
             "Units": "$/kWh",

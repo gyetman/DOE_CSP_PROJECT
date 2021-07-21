@@ -712,7 +712,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "system_capacity",
             "Label": "Estimated net output at design(nameplate) (automatically calculated)",
-            "Units": "MW",
+            "Units": "kW",
             "Group": "system_design",
             "Require": "*",
             "Tab": "System Design",

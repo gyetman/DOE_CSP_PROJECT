@@ -1284,7 +1284,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "specified_solar_multiple",
-            "Label": "Specified solar multiple",
+            "Label": "Specified solar multiple (Input value if specifying solar multiple)",
             "Units": "none",
             "Group": "solar_field",
             "Require": "*",
@@ -1304,7 +1304,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "specified_total_aperture",
-            "Label": "Specified total aperture",
+            "Label": "Specified total aperture (Input value if specifying aperture area)",
             "Units": "m2",
             "Group": "solar_field",
             "Require": "*",

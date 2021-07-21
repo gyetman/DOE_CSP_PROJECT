@@ -230,11 +230,10 @@ class SamBaseClass(object):
             if self.financialModel:
                 annual_energy = self.ssc.data_get_number(self.data, b'annual_energy')
                 self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
-                if self.cspModel == 'tcslinear_fresnel':
-                    self.module_create_execute(self.financialModel)
-                    if self.financialModel == 'utilityrate5':
-                        self.module_create_execute('cashloan')
-
+                
+                self.module_create_execute(self.financialModel)
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')
 
             self.P_cond = self.ssc.data_get_array(self.data, b'P_cond') # Pa
             # self.T_cond = self.P_T_conversion(self.P_cond) # oC
@@ -268,11 +267,11 @@ class SamBaseClass(object):
             
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
-            if self.cspModel == 'tcslinear_fresnel':
+            if self.financialModel == 'lcoefcr':
                 self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
             else:
-                # tempelate value 
-                self.lcoe = 0.136
+                self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_real') / 100
+
             self.lcoh =  self.lcoe * 0.23
             # print(self.elec_gen[0:24])
             # print(self.heat_gen[0:24])
@@ -301,10 +300,9 @@ class SamBaseClass(object):
                 self.ssc.data_set_number( self.data, b'annual_energy', annual_energy )
                 gen = self.ssc.data_get_array(self.data, b'gen')
                 self.ssc.data_set_array( self.data, b'gen', gen )
-                if self.cspModel != 'tcsmolten_salt':
-                    self.module_create_execute(self.financialModel)
-                    if self.financialModel == 'utilityrate5':
-                        self.module_create_execute('cashloan')       
+                self.module_create_execute(self.financialModel)
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')       
 
 
             self.T_amb = self.ssc.data_get_number(self.data, b'T_amb_des') # Pa
@@ -325,11 +323,10 @@ class SamBaseClass(object):
             
             self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
             self.heat_gen = self.temp_to_heat(T_cond = self.T_cond, mass_fr=self.mass_fr_hr, T_feedin = 25)
-            if self.cspModel != 'tcsmolten_salt':
+            if self.financialModel == 'lcoefcr':
                 self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
             else:
-                # tempelate value   
-                self.lcoe = 0.136
+                self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_real') / 100
             self.lcoh =  self.lcoe * 0.27
             
             if self.desalination:
@@ -951,9 +948,8 @@ class SamBaseClass(object):
             #ssc_json dictionary has all the data
             for model, items in ssc_json.items():
                 for item in items:
-                    all_variables.append(item)
-            
-     
+                    all_variables.append(item)    
+                
             for variable in all_variables:
                 # Set default value for non-specified variables
                 if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1' or self.cspModel== 'tcsmolten_salt': 
@@ -962,8 +958,9 @@ class SamBaseClass(object):
                         variableValues.append({'name': 'solar_resource_file',
                                                'value': varValue,
                                                'datatype': variable['DataType'] })   
- 
                         continue
+                
+
                 
                 if variable['Name'] not in values_json and variable['DataType'] == 'SSC_NUMBER':
                     if 'Require' in variable:
@@ -1078,7 +1075,10 @@ class SamBaseClass(object):
                              "T_pb_out_init" : 290,
                              'standby_control': 0,
                              'latitude': latitude
-                             }
+                             },
+        "singleowner": {
+                        "cp_battery_nameplate": 0,}
+						
         }
 
     def set_data(self, variables):
@@ -1088,11 +1088,16 @@ class SamBaseClass(object):
         added_variables = {}
         
         for name, value in self.other_input_variables[self.cspModel].items():
-
             self.ssc.data_set_number( self.data, b''+ name.encode("ascii", "backslashreplace"), value )
 
-            # self.ssc.data_set_number( self.data, b''+ name.encode("ascii", "backslashreplace"), b'' + varValue)
-            
+        if self.financialModel == 'singleowner':
+            for name, value in self.other_input_variables['singleowner'].items():     
+                if type(value) == list:
+                    self.ssc.data_set_array(  self.data, b''+ name.encode("ascii", "backslashreplace"), value )
+                else:
+                    self.ssc.data_set_number( self.data, b''+ name.encode("ascii", "backslashreplace"), value )
+                
+               						            
         
         # Increment complete TODOs count for each user.
 
@@ -1105,6 +1110,12 @@ class SamBaseClass(object):
                     
                     varName = ssc_var["name"]
                     added_variables[varName] = False
+                    
+                    # assign capacity for singleowner:
+                    if self.financialModel == 'singleowner' and varName == 'system_capacity':
+                        varValue = ssc_var["value"] / 1000
+                        tempName = 'cp_system_nameplate'
+                        self.ssc.data_set_number( self.data, b''+ tempName.encode("ascii", "backslashreplace"), varValue)
                     
                     if (ssc_var["datatype"] == "SSC_STRING"):
                         varValue = ssc_var["value"].encode("ascii", "backslashreplace")
@@ -1136,11 +1147,7 @@ class SamBaseClass(object):
 ##                                    added_variables[varName] = True
 #                        else:
 
-
-                        if varName == 'ppa_price_input':
-                            self.ssc.data_set_array( self.data, b''+ varName.encode("ascii", "backslashreplace"), [varValue] )
-                        else:
-                            self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
+                        self.ssc.data_set_number( self.data, b''+ varName.encode("ascii", "backslashreplace"), varValue)
                         added_variables[varName] = True
                     
                     
@@ -1455,9 +1462,9 @@ class SamBaseClass(object):
 
 
 if __name__ == '__main__':
-    sam = SamBaseClass( CSP = 'SC_FPC',
+    sam = SamBaseClass( CSP = 'tcslinear_fresnel',
                        desalination =  'VAGMD',
-                  financial = 'iph_to_lcoefcr')
+                  financial = 'lcoefcr')
     # sam = SamBaseClass(CSP = 'tcslinear_fresnel',
     #           financial = 'lcoefcr')
     # sam.desal_design(sam.desalination)

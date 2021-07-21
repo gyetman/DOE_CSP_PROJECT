@@ -272,9 +272,9 @@ class VAGMD_PSA(object):
         simu_output.append({'Name':'Total water production','Value':sum(prod),'Unit':'m3'})
         simu_output.append({'Name':'Monthly water production','Value': Monthly_prod,'Unit':'m3'})
         simu_output.append({'Name':'Total fossil fuel usage','Value':sum(fuel),'Unit':'kWh'})
-        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/min(1, sum(energy_consumption))*100,'Unit':'%'})     
+        simu_output.append({'Name':'Percentage of fossil fuel consumption','Value':sum(fuel)/max(1, sum(energy_consumption))*100,'Unit':'%'})     
         simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
-        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / sum(gen) * 100 ,'Unit':'%'})
+        simu_output.append({'Name':'Percentage of curtailed energy','Value':(sum(gen) - sum(load)) / max(1,sum(gen)) * 100 ,'Unit':'%'})
         # Add brine volume and concentration (using 100% rejection(make it a variable))
         
         return simu_output
