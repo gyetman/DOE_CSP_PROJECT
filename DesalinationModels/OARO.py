@@ -10,7 +10,7 @@ class OARO(object):
                  Capacity = 1000, # System capacity  (m3/day)
                  rr = 25,
                  ):
-        self.FeedC_r = FeedC_r
+        self.FeedC_r = int(FeedC_r)
         self.Capacity = Capacity
         self.rr = rr
         self.base_path = Path(__file__).resolve().parent.absolute() 
@@ -201,7 +201,7 @@ class OARO(object):
         
         self.design_output.append({'Name':'Specialized membrane area','Value': specialized_area * self.num_modules,'Unit':'m2'})    
         self.design_output.append({'Name':'Conventional RO membrane area','Value':ro_area * self.num_modules,'Unit':'m2'})
-        self.design_output.append({'Name':'Specific electricity consumption','Value': SEC,'Unit':'kWh(e)/m3'})
+        self.design_output.append({'Name':'Specific energy consumption','Value': SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'Recovery ratio','Value': rtq*100 ,'Unit':'%'})    
         
         return self.design_output, costout
