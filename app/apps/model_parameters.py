@@ -348,8 +348,10 @@ primary_card = dbc.Card(
 )
 
 
+SAM_JSON_BUTTON = html.Div(children=html.Div(id='sam-json'),id='sam-json-button')
+
 SAM_JSON_file = dcc.Upload(
-    html.Button('If you start your project from SAM, you may click here to upload a SAM generated JSON file and import the inputs (Not for parametric study)'),
+    html.Button('If you start your project from SAM, you may click here to upload a SAM generated JSON file and import the inputs'),
     style={
         'width': '100%',
         'height': '60px',
@@ -369,9 +371,9 @@ desal_design_results_card = dbc.Card(
 
 side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],className="h-100", color="secondary")
 
-tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col(tabs_accordion, width=9, id='tabs-data-initialize')],no_gutters=True)
+tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col([tabs_accordion, SAM_JSON_BUTTON], width=9, id='tabs-data-initialize')],no_gutters=True)
 
-model_tables_layout = html.Div([parameters_navbar, SAM_JSON_file, tabs])
+model_tables_layout = html.Div([parameters_navbar, tabs])
 
 #
 ### CALLBACKS
@@ -460,6 +462,7 @@ def create_tabs_and_tables(x, samjson):
         desal_model_vars[tds_index]['Value']=tds_value
 
     # Update value from SAM generated JSON 
+    print(f'{samjson}')
     if samjson:
         content_type, content_string = samjson.split(',')
         decoded = base64.b64decode(content_string)
@@ -652,6 +655,15 @@ def toggle_parametric_alert(_init):
     '''reads app json and opens alert if parametric set to true'''
     appj = helpers.json_load(cfg.app_json)
     return appj["parametric"]
+
+@app.callback(
+    Output('sam-json', 'children'),
+    [Input('sam-json-button', 'children')])
+def sam_json_button(_init):
+    '''reads app json and opens alert if parametric set to true'''
+    appj = helpers.json_load(cfg.app_json)
+    if not appj["parametric"]:
+        return SAM_JSON_file
 
 @app.callback(
     Output('powertower-alert', 'is_open'),
