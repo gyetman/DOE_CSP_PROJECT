@@ -11,7 +11,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration (Valid range: 35 to 292.2)",
+            "Label": "Feed concentration (Valid range: 35 to 200)",
             "Units": "g/L",
             "Require": "*",
             "Constraint": "<106,>34"
