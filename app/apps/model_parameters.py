@@ -25,6 +25,11 @@ from SAM_flatJSON.SamBaseClass import SamBaseClass
 
 models = ['desal','solar','finance']
 
+
+#TODO:
+# use dictionary .get function for parameters on parametric study
+# without it, empty results throw an error, where they should just
+# not enable the run model button. 
 #
 ### FUNCTIONS ###
 #
