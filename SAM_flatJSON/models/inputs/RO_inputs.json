@@ -44,16 +44,9 @@
             "Label": "Battery storage hours",
             "Units": "hour",
             "Require": "*",
-            "Costraint": ">0"
+            "Costraint": ">0",
+            "Tab": "Plant Design Specifications"
         },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "Fossil_f",
-            "Label": "Fossil fuel participation (fraction from 0 to 1)",
-            "Units": "",
-            "Require": "*",
-            "Costraint": "<1, >0"
-        },		
         {
             "DataType": "SSC_NUMBER",
             "Name": "nERD",

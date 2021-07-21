@@ -364,11 +364,9 @@ def gather_data(x):
         updates.update({'lcoe':f['coe']})        
     elif updates['desal'] == 'RO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
-        fossil_fuel = "Yes" if d['Fossil_f'] else "No"
         updates.update({'FeedC_r':d['FeedC_r'],
                         'Capacity':d['nominal_daily_cap_tmp'],
                         'storage_hour':d['storage_hour'],
-                        'fossil_fuel': fossil_fuel,
                         'RR': d['R1'] * 100})
         # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
@@ -908,7 +906,6 @@ def set_desal_config(x):
         html.Div(f"Number of vessels: {r['number_vessels']} "),
         html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
-        html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
         ])
