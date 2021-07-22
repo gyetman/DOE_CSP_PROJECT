@@ -572,8 +572,14 @@ def run_desal_design(desalDesign, desalData):
     stdm.desal_design(desal=app['desal'])
 
     #read the the results and format to display
-    with open(flkup['desal_design_infile'], "r") as read_file:
-        desal_design_load = json.load(read_file)
+    if app['parametric']:
+        with open(flkup['desal_design_parametric_infile'], "r") as read_file:
+            desal_design_load = json.load(read_file)   
+    else:
+        with open(flkup['desal_design_infile'], "r") as read_file:
+            desal_design_load = json.load(read_file)
+    
+    
     dd_outputs = []
     for dd in desal_design_load:
         dd_val = dd['Value']
