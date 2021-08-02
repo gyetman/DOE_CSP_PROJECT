@@ -296,7 +296,7 @@ class VAGMD_batch(object):
                 FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
                 TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)                
                 
-            else:                
+            elif self.Sf <= 140.2 and Sgl_r > 105 and Sgl_r <= 145.2:                
                 FullModel_PFlux373 = matfile['FullModel_PFlux373_low'].transpose().tolist()[0]
                 FullModel_TCO373   = matfile['FullModel_TCO373_low'].transpose().tolist()[0]
                 FullModel_TEO373   = matfile['FullModel_TEO373_low'].transpose().tolist()[0]
@@ -314,6 +314,27 @@ class VAGMD_batch(object):
                 
                 FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
                 TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)
+            
+            else:
+                FullModel_PFlux373 = matfile['FullModel_PFlux373_verylow'].transpose().tolist()[0]
+                FullModel_TCO373   = matfile['FullModel_TCO373_verylow'].transpose().tolist()[0]
+                FullModel_TEO373   = matfile['FullModel_TEO373_verylow'].transpose().tolist()[0]
+                
+                TEI_c = np.dot(FullModels_CoderVars[0], FullModels_Coder[4])
+                FFR_c = np.dot(FullModels_CoderVars[1], FullModels_Coder[5])
+                TCI_c = np.dot(FullModels_CoderVars[2], FullModels_Coder[6])
+                S_c   = np.dot(FullModels_CoderVars[3], FullModels_Coder[7])  
+                
+                FullModels_VarsPFlux373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                PFlux = np.dot(FullModel_PFlux373, FullModels_VarsPFlux373) 
+            
+                FullModels_VarsTCO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TCO   = np.dot(FullModel_TCO373, FullModels_VarsTCO373) 
+                
+                FullModels_VarsTEO373 =[ 1, TEI_c, FFR_c, TCI_c, S_c, FFR_c*TEI_c, TCI_c*TEI_c, S_c*TEI_c, FFR_c*TCI_c, FFR_c*S_c, S_c*TCI_c, TEI_c**2, FFR_c**2, TCI_c**2, S_c**2]
+                TEO   = np.dot(FullModel_TEO373, FullModels_VarsTEO373)                
+            
+            
             
         P = 101325 #% [Pa].
         nullS = 0 #% [g/kg].

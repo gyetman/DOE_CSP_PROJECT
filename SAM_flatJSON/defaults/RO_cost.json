@@ -13,6 +13,7 @@
 	"equip_cost_method": "general",
 	"unit_capex": 1100,
 	"sec": 2.5,
+	"sam_coe": null,
 	"disposal_cost": 0.03,
 	"cost_storage": 26
 }

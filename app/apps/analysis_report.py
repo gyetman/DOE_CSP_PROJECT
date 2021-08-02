@@ -91,7 +91,7 @@ def gather_data(x):
         updates.update({'curtail_p':ds[index]['Value']})         
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -152,11 +152,12 @@ def gather_data(x):
         updates.update({'curtail_p':ds[index]['Value']})   
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
+        print('design_P_req:', updates['thermal_power_consumption'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
@@ -217,7 +218,7 @@ def gather_data(x):
         ddin = helpers.json_load(flkup['desal_design_outfile'])
         updates.update({'RR':ddin['RR'] })        
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -276,7 +277,7 @@ def gather_data(x):
     
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -334,7 +335,7 @@ def gather_data(x):
         
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
@@ -385,7 +386,7 @@ def gather_data(x):
         updates.update({'curtail_p':ds[index]['Value']})         
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of vessels')
         updates.update({'number_vessels':dd[index]['Value']})        
         index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
@@ -442,7 +443,7 @@ def gather_data(x):
         updates.update({'curtail2_p':ds[index]['Value']}) 
         
         # # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
         index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
@@ -509,7 +510,7 @@ def gather_data(x):
         updates.update({'curtail2_p':ds[index]['Value']})         
         
         # # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Overall recovery rate')
         updates.update({'RR':dd[index]['Value']})        
         index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
@@ -570,7 +571,7 @@ def gather_data(x):
         updates.update({'curtail_p':ds[index]['Value']})              
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
    
         index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
         updates.update({'electric_power_consumption':dd[index]['Value'] * 1000})
@@ -624,7 +625,7 @@ def gather_data(x):
         updates.update({'curtail_p':ds[index]['Value']})       
         
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption')     
@@ -677,7 +678,7 @@ def gather_data(x):
         index = helpers.index_in_list_of_dicts(ds,'Name','Percentage of curtailed energy')
         updates.update({'curtail_p':ds[index]['Value']})                 
         # add specific data from desal design output
-        dd = helpers.json_load(flkup['desal_design_infile'])
+        dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
       
         index = helpers.index_in_list_of_dicts(dd,'Name','Thermal power requirement')
         updates.update({'thermal_power_consumption':dd[index]['Value'] * 1000})

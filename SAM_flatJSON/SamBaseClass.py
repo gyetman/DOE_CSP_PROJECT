@@ -379,7 +379,12 @@ class SamBaseClass(object):
 
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
-            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'] )
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],
+                         T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],
+                         nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'],
+                         Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
+                         Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
+                         Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'])
             self.design_output = self.RO.RODesign()
 
 
@@ -484,7 +489,12 @@ class SamBaseClass(object):
             self.desal_values_json = json.load(read_file)
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
-            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'] )
+            self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],
+                         T  = self.desal_values_json['T'],Nel1 = self.desal_values_json['Nel1'],R1 = self.desal_values_json['R1'],
+                         nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'],
+                         Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
+                         Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
+                         Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'])
             self.RO.RODesign()
             self.simu_output = self.RO.simulation(gen = self.elec_gen, storage = self.desal_values_json['storage_hour'])
 
@@ -703,7 +713,9 @@ class SamBaseClass(object):
         if desal == 'RO':
             from DesalinationModels.RO_cost import RO_cost
 
-            self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), fuel_usage = self.simu_output[7]['Value'], Area = self.cost_values_json['Area'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
+            self.LCOW = RO_cost(Capacity = self.desal_values_json['nominal_daily_cap_tmp'], Prod = sum(self.simu_output[0]['Value']), fuel_usage = self.simu_output[7]['Value'], 
+                                Area = self.RO.Am1, yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
+                                num_modules = self.RO.total_number_elements, solar_coe = self.cost_values_json['solar_coe'],
                                 chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
                                 unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
 

@@ -66,7 +66,7 @@ class RO(object):
         self.Pfp=Pfp
         self.T=T +273.15
         self.Am1=Am1
-        self.Qpnom1=Qpnom1
+        self.Qpnom1=Qpnom1 /24
         self.Ptest1 = Ptest1
         self.SR1 = SR1
         self.Rt1 = Rt1
@@ -79,6 +79,28 @@ class RO(object):
         vhfactor =2
         MW_nacl = 58.443
         Ru = 0.0831
+        
+        self.total_number_elements = ceil(self.nominal_daily_cap_tmp/self.Qpnom1/24)
+        self.NV1_min=ceil(self.nominal_daily_cap_tmp/24/self.maxQf/self.R1)
+        self.Nel1_max=ceil(self.total_number_elements/self.NV1_min)
+        
+        
+        if self.Nel1 is None:
+            self.Nel1= self.Nel1_max
+            self.NV1 = self.NV1_min
+            # self.Nel1_temp = ceil(self.total_number_elements/(self.NV1-1))
+            # self.cap_temp = self.Qpnom1*self.Nel1_temp*(self.NV1 -1)*24 
+            # if self.cap_temp>self.nominal_daily_cap_tmp and self.cap_temp < self.Qpnom1*self.Nel1*self.NV1*24 :
+            #     self.NV1 -= 1
+            #     self.Nel1 = self.Nel1_temp
+        else:
+            self.Nel1 = int(self.Nel1)
+            self.NV1 = max(self.NV1_min, ceil(self.total_number_elements / self.Nel1))
+               
+
+        self.nominal_daily_cap=self.Qpnom1*self.Nel1*self.NV1*24        
+        
+        
         Rel = 1/6
         Rel_avg = 1-(1-self.R1)**(1/self.Nel1)
         CPavg=exp(0.7*Rel_avg)
@@ -92,20 +114,18 @@ class RO(object):
         i_nel=cumprod(repmat((1-Rel),(self.Nel1-1),1))
         i_nel=insert(i_nel,0,1)
         self.R1_max=sum(Rel*(i_nel))
-        NV1=ceil(self.nominal_daily_cap_tmp/24/self.maxQf/self.R1)
-        self.nominal_daily_cap=self.Qpnom1*self.Nel1*NV1*24
+
         self.Qp1=self.nominal_daily_cap_tmp/24
-        NDP1=self.Qp1/(self.Nel1*NV1*self.Am1*A1)
+        NDP1=self.Qp1/(self.Nel1*self.NV1*self.Am1*A1)
         Posm_f=vhfactor*Ru*self.T/MW_nacl*self.Cf
         Posm_b=vhfactor*Ru*self.T/MW_nacl*self.Cf/(1-self.R1)
         Posm_avgmem=CPavg*(Posm_f+Posm_b)*0.5
         Cm_avg=CPavg*(self.Cf+self.Cf/(1-self.R1))*0.5
-        self.Cp=Bs1*Cm_avg*self.Nel1*NV1*self.Am1/self.Qp1
+        self.Cp=Bs1*Cm_avg*self.Nel1*self.NV1*self.Am1/self.Qp1
         Posm_perm=vhfactor*Ru*self.T/MW_nacl*self.Cp
         Pf1=NDP1 + Posm_avgmem + Pd*0.5 - Posm_perm
         self.Pb=Pf1-Pd
         Pbp=Pf1-self.nERD*self.Pb
-        self.NV1=NV1
     
         self.Qf1=self.Qp1/self.R1
         self.Qb1=self.Qf1-self.Qp1
@@ -145,8 +165,9 @@ class RO(object):
         RO_brine_salinity = (self.Cf * RO_feed - self.Cp * RO_permeate)/ RO_brine    
         
         design_output = []
-        design_output.append({'Name':'Permeate flow rate of the system','Value':self.Qp1,'Unit':'m3/h'})
+        design_output.append({'Name':'Actual capacity of the system','Value':self.nominal_daily_cap,'Unit':'m3/day'})
         design_output.append({'Name':'Number of vessels','Value':self.NV1,'Unit':''})
+        design_output.append({'Name':'Number of elements per vessel','Value':self.Nel1,'Unit':''})
         design_output.append({'Name':'Brine concentration','Value':RO_brine_salinity,'Unit':'g/L'})
     #            design_output.append({'Name':'Permeate flow rate','Value':self.F * self.num_modules /1000 *24,'Unit':'m3/day'})    
         design_output.append({'Name':'Electric energy requirement','Value':self.PowerTotal,'Unit':'kW(e)'})

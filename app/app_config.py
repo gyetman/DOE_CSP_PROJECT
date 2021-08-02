@@ -27,6 +27,7 @@ def build_file_lookup(solar,desal,finance,timestamp):
     return {
     #created by SAM and an infile to display on the GUI side panel
     'desal_design_infile': base_path / 'SAM_flatJSON' / 'results' / f'{desal}_design_output.json',
+    'desal_design_timestamp_infile': base_path / 'SAM_flatJSON' / 'results' / f'{desal}_design_output{timestamp}.json',
     'desal_design_parametric_infile': parametric_results_dir / f'{desal}_design_output.json',
     #and outfile from the GUI that is then run with SamBaseClass
     'desal_design_outfile': json_outpath / f'{desal}_design_inputs.json',

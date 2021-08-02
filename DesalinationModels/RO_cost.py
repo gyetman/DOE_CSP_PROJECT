@@ -22,8 +22,7 @@ class RO_cost(object):
                  Area = 40.8 , # Membrane area (m2)
                  fuel_usage = 0, # Total fuel usage (%)
                  # Pflux = 1.1375,  # Permeate flow per module (m3/h/module)
-                 NV=7,
-                 Nel=8,  
+                 num_modules = 100, # Number of module (from design model) 
                  membrane_cost=30, # cost per unit area of membrane (USD/m2)
                  
                  pressure_vessel_cost= 1000, # cost per pressure vessel (USD/vessel)-- just guessing 1000 to fill value for now: 2/25/2020 
@@ -34,6 +33,7 @@ class RO_cost(object):
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
                  sam_coe = 0.02,
+                 solar_coe =  0,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
                  rep_rate=0.2,    # membrane replacement rate
@@ -70,11 +70,10 @@ class RO_cost(object):
         # self.Pflux = Pflux
         self.Area = Area
         # self.PF_module = self.Pflux * self.Area
-        self.num_modules = NV*Nel
+        self.num_modules = num_modules
         self.total_area = self.num_modules*self.Area
         self.membrane_cost=membrane_cost
         self.pressure_vessel_cost=pressure_vessel_cost
-        self.NV=NV
         self.SEC=sec
         self.capacity=Capacity
         self.equip_cost_method=equip_cost_method
@@ -87,7 +86,11 @@ class RO_cost(object):
 #        self.FFR = FFR
 
         self.coe = coe
-        self.sam_coe = sam_coe
+        if solar_coe is None:
+            self.sam_coe = sam_coe
+        else:
+            self.sam_coe = float(solar_coe)
+
         self.fuel_usage = fuel_usage / 100
 #        self.cost_module_re = cost_module_re
         self.yrs = yrs
@@ -118,6 +121,9 @@ class RO_cost(object):
         self.OPEX = self.disposal_cost+self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
         #### ADD disposal cost
         self.LCOW = self.CAPEX + self.OPEX
+        
+        
+        
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})

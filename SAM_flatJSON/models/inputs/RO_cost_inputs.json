@@ -24,19 +24,11 @@
             "Require": "",
 			"Tab": "Desalination"
         },
-		{
+        {
             "DataType": "SSC_NUMBER",
-            "Name": "Nel",
-            "Label": "Number of elements per vessel",
-            "Units": "",
-            "Require": "",
-			"Tab": "Desalination"
-        },
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "Area",
-            "Label": "Membrane area",
-            "Units": "m2",
+            "Name": "solar_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Units": "$/kWh",
             "Require": "",
 			"Tab": "Desalination"
         },
