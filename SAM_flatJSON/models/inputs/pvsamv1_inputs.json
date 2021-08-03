@@ -241,7 +241,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_track_mode",
-            "Label": "Sub-array 1 Tracking mode (Check user mannual for input)",
+            "Label": "Sub-array 1 Tracking mode (0: Fixed, 1: One axis, Check user mannual for more input)",
             "Require": "*",
             "Constraints": "INTEGER,MIN=0,MAX=4",
             "Tab": "System Design",
@@ -723,7 +723,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_track_mode",
-            "Label": "Sub-array 2 Tracking mode",
+            "Label": "Sub-array 2 Tracking mode (0: Fixed, 1: One axis, Check user mannual for more input)",
             "Require": "subarray2_enable=1",
             "Constraints": "INTEGER,MIN=0,MAX=4",
             "Tab": "System Design",
@@ -933,7 +933,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_track_mode",
-            "Label": "Sub-array 3 Tracking mode",
+            "Label": "Sub-array 3 Tracking mode (0: Fixed, 1: One axis, Check user mannual for more input)",
             "Require": "subarray3_enable=1",
             "Constraints": "INTEGER,MIN=0,MAX=4",
             "Tab": "System Design",
@@ -1143,7 +1143,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_track_mode",
-            "Label": "Sub-array 4 Tracking mode",
+            "Label": "Sub-array 4 Tracking mode (0: Fixed, 1: One axis, Check user mannual for more input)",
             "Require": "subarray4_enable=1",
             "Constraints": "INTEGER,MIN=0,MAX=4",
             "Tab": "System Design",

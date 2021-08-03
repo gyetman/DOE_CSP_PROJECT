@@ -717,7 +717,7 @@ class SamBaseClass(object):
                                 Area = self.RO.Am1, yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 num_modules = self.RO.total_number_elements, solar_coe = self.cost_values_json['solar_coe'],
                                 chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
-                                unit_capex =  self.cost_values_json['unit_capex'],sec =  self.cost_values_json['sec'],disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
+                                unit_capex =  self.cost_values_json['unit_capex'],sec =  self.RO.SEC ,disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
 
