@@ -1,19 +1,22 @@
 {
 	"yrs" : 20,
 	"int_rate" : 0.04,
-	"coe" : 0.04,
+	"coe" : 0.05,
+	"downtime": 10,
 	"sam_coe" : 0.05,
 	"Nel" : 8,
 	"Area" : 40.8,
 	"membrane_cost" : 30,
 	"pressure_vessel_cost": 1000,
-	"chem_cost": 0.05,
-	"labor_cost": 0.1,
+	"chem_cost": 0.01,
+	"labor_cost": 0.02,
 	"rep_rate": 0.15,
 	"equip_cost_method": "general",
-	"unit_capex": 1100,
+	"unit_capex_main": null,
+	"unit_capex_passes": null,
 	"sec": 2.5,
 	"sam_coe": null,
-	"disposal_cost": 0.03,
-	"cost_storage": 26
+	"disposal_cost": 0.01,
+	"cost_storage": 26,
+	"IX_cost": 0.145
 }

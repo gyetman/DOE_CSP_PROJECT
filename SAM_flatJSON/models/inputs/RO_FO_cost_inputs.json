@@ -39,7 +39,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "unit_capex",
-            "Label": "Unit capital cost",
+            "Label": "Total EPC cost for RO (Calculated as a function of capacity from the design model, unless specified)",
             "Units": "$ per m3/day",
             "Require": "",
 			"Tab": "Desalination",

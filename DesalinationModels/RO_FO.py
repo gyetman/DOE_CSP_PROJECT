@@ -28,8 +28,34 @@ class RO_FO(object):
                  nERD=0.95,            # Energy recovery device efficiency
                  nBP=0.8,
                  nHP=0.8,
-                 nFP=0.8,
-                 Nel1=8,
+                 nFP=0.8,                
+                 nominal_daily_cap_tmp=1000,
+                 stage = 1,
+                 Nel1=None,              #number elements per vessel in stage 1
+                 R1=.4,               #Desired overall recovery rate
+                 R2 = 0.833,          # 2nd stage recovery rate
+                 R3 = 0.9,            # 3rd stage recovery rate
+                 # RO Membrane Property Inputs: 
+                 #load in from a table of membrane types w/properties or enter manually.
+                 # Using default values here based on manufacturer's datasheet for seawater RO membrane element: SWC4B MAX
+                 Qpnom1=27.3/24.0,      #nominal permeate production per membrane element (m3/hr)
+                 Am1=40.8,            #membrane area per membrane element (m^2) 
+                 Pmax1=82.7,          #Max pressure of membrane element (bar)
+                 Ptest1=55.2,         #Applied test pressure for each mem element
+                 Ctest1=32,           #membrane manufacturer's test feed salinity (TDS) for each element (parts per thousand)
+                 SR1=99.8,            #rated salt rejection of each element (%)
+                 Rt1=.1,              #Test recovery rate for each element
+                 Pdropmax=0.6895,     #maximum pressure drop per membrane element (bar)
+                 Pfp=1    ,            # Pressure of intake feed pumps
+                 Tmax = 318.15,
+                 minQb = 2.7,
+                 maxQf = 17,
+                 Fossil_f = 1,
+                
+                 # Booleans
+                 has_erd = 1, # include erd with booster pump
+                 is_first_stage = True, # include intake/feed pump powr requirement if first stage
+                 pretreat_power = 1,  # kWh/m3 assumed for pretreatment
                  # FO parameters
                  FO_salt_rej =0.95):
         self.capacity = capacity
@@ -41,19 +67,45 @@ class RO_FO(object):
         self.nERD=nERD
         self.nBP=nBP
         self.nHP=nHP
-        self.nFP=nFP
-        self.Nel1=Nel1    
+        self.nFP=nFP          
+        self.nominal_daily_cap_tmp=nominal_daily_cap_tmp
+        self.Nel1=Nel1
+        self.R1=R1
+        self.Cf=salinity  
+        self.Pfp=Pfp
+        self.T=T_sw 
+        self.Am1=Am1
+        self.Qpnom1=Qpnom1 
+        self.Ptest1 = Ptest1
+        self.SR1 = SR1
+        self.Rt1 = Rt1
+        self.Ctest1 = Ctest1
+        self.Pdropmax = Pdropmax
+        self.maxQf = maxQf
+        self.Fossil_f = Fossil_f
+        
+        self.has_erd = True if has_erd == 1 else False
+        self.is_first_stage = is_first_stage
+        self.pretreat_power = pretreat_power
+        self.stage = stage
+        self.R2 = R2
+        self.R3 = R3
     def design(self):
         self.RO_capacity = self.capacity / (1 + (1-self.RO_rr)/self.RO_rr * self.FO_rr * 0.9)
-        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr, FeedC_r = self.salinity, 
-                     nERD = self.nERD, nBP = self.nBP, nHP = self.nHP, nFP = self.nFP, Nel1 = self.Nel1) 
+        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr, FeedC_r = self.salinity, stage = 1,
+                     nERD = self.nERD, nBP = self.nBP, nHP = self.nHP, nFP = self.nFP, Nel1 = self.Nel1,
+                    Qpnom1=self.Qpnom1 ,  Am1=self.Am1,  Ptest1=self.Ptest1, Ctest1=self.Ctest1,          
+                    SR1=self.SR1,  Rt1=self.Rt1, Pdropmax=self.Pdropmax,  Pfp=self.Pfp  ,     
+                    maxQf = self.maxQf, Fossil_f = self.Fossil_f, has_erd = self.has_erd, 
+                    is_first_stage = self.is_first_stage, 
+                    pretreat_power = self.pretreat_power) 
         RO_case.RODesign()
         # Retreive system performance from RO model
-        RO_feed = RO_case.Qf1*24
-        RO_brine = RO_case.Qb1*24
-        RO_permeate = RO_case.Qp1*24
-        RO_p_s = RO_case.Cp *1000
-        RO_brine_salinity = (RO_case.Cf * RO_feed - RO_case.Cp * RO_permeate)/ RO_brine  #  g/L 
+        RO_feed = RO_case.case.Qf1*24
+        RO_brine = RO_case.case.Qb1*24
+        RO_permeate = RO_case.case.Qp1*24
+        RO_p_s = RO_case.case.Cp *1000
+        RO_brine_salinity = (RO_case.case.Cf * RO_feed - RO_case.case.Cp * RO_permeate)/ RO_brine  #  g/L 
         FO_Mprod = self.capacity - self.RO_capacity
         
         FO = FO_generalized( T_sw = self.T_sw, FeedC_r = RO_brine_salinity, r=self.FO_rr, Mprod = FO_Mprod, Salt_rej = self.FO_salt_rej)
@@ -73,13 +125,13 @@ class RO_FO(object):
         self.design_output.append({'Name':'RO brine salinity','Value':RO_brine_salinity,'Unit':'g/L'})
         self.design_output.append({'Name':'FO brine salinity','Value':FO_b_s,'Unit':'g/L'})        
         
-        self.design_output.append({'Name':'Electric energy requirement','Value':RO_case.PowerTotal,'Unit':'kW(e)'})
+        self.design_output.append({'Name':'Electric energy requirement','Value':RO_case.case.PowerTotal,'Unit':'kW(e)'})
         self.design_output.append({'Name':'Thermal power requirement','Value':FO.Thermal_power[0] / 1000,'Unit':'MW(th)'})
         
-        self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.SEC,'Unit':'kWh(e)/m3'})
+        self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.case.SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'STEC-FO (Specific thermal power consumption)','Value':FO.STEC[0],'Unit':'kWh(th)/m3'})   
         
-        self.design_output.append({'Name':'Feed flow rate','Value':RO_case.Qf1,'Unit':'m3/h'})        
+        self.design_output.append({'Name':'Feed flow rate','Value':RO_case.case.Qf1,'Unit':'m3/h'})        
         self.design_output.append({'Name':'(FO) Weak draw solution concentration','Value':FO.B*100,'Unit':'%'})
         # self.design_output.append({'Name':'(FO) Strong draw solution flow rate','Value':FO.SD,'Unit':'m3/day'}) 
       

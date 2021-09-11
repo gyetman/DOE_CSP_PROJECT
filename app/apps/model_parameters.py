@@ -50,11 +50,19 @@ def convert_strings_to_literal(v):
     '''converts some string values to their literal values'''
     #arrays and matrices need to be converted back from string
     if v['DataType']=='SSC_ARRAY' or v['DataType']=='SSC_MATRIX':
-        return ast.literal_eval(v['Value'])
+        temp = v.get('Value')
+        if temp:
+            return ast.literal_eval(v['Value']) 
+        else:
+            return None
     #SSC_NUMBER, now represented as string after user edited in table
     #need to be changed back to numbers
     elif v['DataType']=='SSC_NUMBER' and isinstance(v['Value'],str):
-        return ast.literal_eval(v['Value'])
+        temp = v.get('Value')
+        if temp:
+            return ast.literal_eval(v['Value'])
+        else:
+            return None
     else:
         return v['Value']
                         
@@ -242,6 +250,7 @@ tab_style = {
     'borderBottom': '1px solid #300C2D',
 }
 
+
 tab_selected_style = {
     'borderTop': '1px solid #300C2D',
     'borderLeft': '1px solid #300C2D',
@@ -322,6 +331,7 @@ desal_side_panel = dbc.CardBody([
         target="run-desal-design"),
 ])
 
+
 solar_side_panel = dbc.CardBody([
     html.H4("Solar Thermal System Model", className="card-title"),
     html.P("", className='card-text'),
@@ -355,16 +365,50 @@ primary_card = dbc.Card(
 
 SAM_JSON_BUTTON = html.Div(children=html.Div(id='sam-json'),id='sam-json-button')
 
-SAM_JSON_file = dcc.Upload(
+SAM_JSON_file = [dcc.Upload(
     html.Button('If you start your project from SAM, you may click here to upload a SAM generated JSON file and import the inputs'),
     style={
-        'width': '100%',
+        'width': '95%',
         'height': '60px',
         'lineHeight': '45px',
         'textAlign': 'center',
         'margin': '10px'
     },
-    id = 'sam-json')
+    id = 'sam-json'),
+    
+    dbc.NavLink('', id='sam-json-document',
+    href= "/assets/docs/Detailed description for Input Variables.pdf#page=1",
+    target='_blank',
+    external_link=True,
+    style={
+        'float':'right',
+        'display':'inline-block', 
+        'padding': '4px',
+        'font-size': '18px'
+    },
+    className='fas fa-info-circle fa-2x text-info'
+    )]
+
+weather_documentation = dbc.Button(
+                    html.Div([
+                    dbc.NavLink('Weather file format requirement', id='weather-document',
+                        href= f"{cfg.SAMD}#page=120",
+                        target='_blank',
+                        external_link=True,
+                        style={
+                            'float':'right',
+                            'display':'inline-block', 
+                            'padding': '4px',
+                            'font-size': '15px'
+                        },
+                        className='fas fa-info-circle fa-2x text-info'
+                        )
+                    ]),
+                    color="Success",
+                    outline=True, 
+                    size = 'sm',
+                    style={'padding': '4px', 'padding-right': '6px', 'textAlign': 'center'}
+                )
 
 model_card = dbc.Card(children=desal_side_panel,id='model-card',color="secondary", className="text-white")
 
@@ -376,7 +420,7 @@ desal_design_results_card = dbc.Card(
 
 side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],className="h-100", color="secondary")
 
-tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col([tabs_accordion, SAM_JSON_BUTTON], width=9, id='tabs-data-initialize')],no_gutters=True)
+tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col([tabs_accordion,  SAM_JSON_BUTTON], width=9, id='tabs-data-initialize')],no_gutters=True)
 
 model_tables_layout = html.Div([parameters_navbar, tabs])
 
@@ -465,30 +509,40 @@ def create_tabs_and_tables(x, samjson):
     if tds_value:
         tds_index = helpers.index_in_list_of_dicts(desal_model_vars,'Name','FeedC_r')
         desal_model_vars[tds_index]['Value']=tds_value
-
+    
     # Update value from SAM generated JSON 
-    print(f'{samjson}')
+
     if samjson:
+        import_SAM =  True
         content_type, content_string = samjson.split(',')
         decoded = base64.b64decode(content_string)
         imported_json = json.loads(decoded.decode('utf-8'))
         for i in solar_model_vars:
-            try:
-                if i['DataType']=='SSC_ARRAY' or i['DataType']=='SSC_MATRIX':
-                    i['Value']=str(imported_json[i['id']])
-                else:
-                    i['Value']=imported_json[i['id']]
-            except:
-                i['Value'] = None
+            if i['Name'] == "file_name":
+                if "file_name" in imported_json:
+                    solar_model_vars[wf_index]['Value']=str(imported_json["file_name"])
+                    
+                elif "solar_resource_file" in imported_json:
+                    solar_model_vars[wf_index]['Value']=str(imported_json["solar_resource_file"])
+            else:        
+                try:
+                    if i['DataType']=='SSC_ARRAY' or i['DataType']=='SSC_MATRIX' :
+                        i['Value']=str(imported_json[i['id']])
+                    else:
+                        i['Value']=imported_json[i['id']]
+                except:
+                    i['Value'] = None
+                    
         for i in finance_model_vars:
+            if i['Name'] in ["capital_cost", "fixed_operating_cost"]:
+                i['Units'] = '$' 
             try:
                 if i['DataType']=='SSC_ARRAY' or i['DataType']=='SSC_MATRIX':
                     i['Value']=str(imported_json[i['id']])
                 else:
                     i['Value']=imported_json[i['id']]
             except:
-                i['Value'] = None
-
+                i['Value'] = None           
 
     # append the desal_finance variables to the finance variables
     finance_model_vars += desal_finance_model_vars
@@ -504,9 +558,11 @@ def create_tabs_and_tables(x, samjson):
                   models[1]:solar_tabs}
     Model_vars = {models[0]:desal_model_vars,
                   models[2]:finance_model_vars,
-                  models[1]:solar_model_vars}
-
+                  models[1]:solar_model_vars}  
+    
     def _make_tabs_in_collapse(i):
+        model_name = {'solar': app['solar'], 'desal': app['desal'], 'finance': app['finance']}       
+        
         return dbc.Card(
             [
                 dbc.Button(
@@ -532,13 +588,16 @@ def create_tabs_and_tables(x, samjson):
                         [dcc.Tabs(value=Model_tabs[i][0], children=[
                             dcc.Tab(label=j, value=j, style=tab_style, 
                                     selected_style=tab_selected_style,
-                                    children=dbc.CardBody(      
+                                    children= [cfg.other_documentation(model_name[i],j)] + 
+                                    [dbc.CardBody(      
                                         create_model_variable_page(
                                             tab=j,
                                             model_vars=Model_vars[i],
-                                            model_type=i))
+                                            model_type=i))] 
+                                             
+                                              
                                     )for j in Model_tabs[i]
-                        ])]
+                        ])] 
                     ),
                     id=f"collapse-{i}",
                 ),
@@ -671,9 +730,13 @@ def toggle_parametric_alert(_init):
     Output('sam-json', 'children'),
     [Input('sam-json-button', 'children')])
 def sam_json_button(_init):
-    '''reads app json and opens alert if parametric set to true'''
+    '''
+    reads app json and opens alert if parametric set to true
+    Not activated for parametric study and static collector models
+    '''
     appj = helpers.json_load(cfg.app_json)
-    if not appj["parametric"]:
+
+    if not appj["parametric"] and appj['solar'] not in ['SC_ETC', 'SC_FPC']:
         return SAM_JSON_file
 
 @app.callback(
@@ -702,12 +765,14 @@ def toggle_powertower2_alert(_init):
     State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'data'),
     State({'type':'solar-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
     State({'type':'desal-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
-    State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'selected_row_ids')],
+    State({'type':'finance-table', 'index': ALL, 'model': ALL}, 'selected_row_ids'),
+    State('sam-json', 'filename')],
     prevent_initial_call=True)
     # For pulling the selected parametric variables???
     #  Input('datatable-row-ids', 'selected_row_ids'),
 def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, finTableData,
-                                         selectedSolarRows, selectedDesalRows, selectedFinRows  ): 
+                                         selectedSolarRows, selectedDesalRows, selectedFinRows,
+                                         sam_json): 
     '''
     Once someone is done editing the tables they hit the Run Model button
     This triggers the callback.
@@ -765,6 +830,25 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                     parametric_info[fRow['id']] = [fRow['Min'], fRow['Max'], fRow['Interval'],'finance', fRow['Label'], fRow['Units']] 
                 finance_output_vars[fRow['Name']]=convert_strings_to_literal(fRow)
 
+        
+        # Adjust for the LCOE/LCOH calculator variables:
+        if sam_json:
+            print('SAM JSON file imported')
+        else:
+            SC = ['SC_FPC', 'SC_ETC']
+            if app['solar'] not in SC:
+                if app['finance'] == 'lcoefcr':
+                    if app['solar'] in ['pvsamv1', 'tcslinear_fresnel', 'tcsMSLF', 'tcstrough_physical']:
+                        capacity = solar_output_vars['system_capacity']
+                    finance_output_vars['fixed_operating_cost'] *= capacity
+                    finance_output_vars['capital_cost'] *= capacity  
+                    
+                elif app['finance'] == 'iph_to_lcoefcr':
+                    if app['solar'] in ['linear_fresnel_dsg_iph', 'trough_physical_process_heat' ]:
+                        capacity = solar_output_vars['target_thermal_power']
+                        
+                    finance_output_vars['fixed_operating_cost'] *= capacity
+                    finance_output_vars['capital_cost'] *= capacity            
 
         #create the solar JSON file that will be the input to the model
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')

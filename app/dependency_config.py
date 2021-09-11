@@ -7,7 +7,7 @@ Model label: linear_fresnel_dsg_iph
 # Number of loops equation
 eqn1  = {
         'model': 'linear_fresnel_dsg_iph',
-        'outputs': ['nLoops'],
+        'outputs': ['nLoops', 'target_thermal_power'],
         'inputs':['specified_solar_multiple','q_pb_des','I_bn_des','A_aperture','L_col','nModBoil', 'hl_mode',
                   'TrackingError', 'GeomEffects','rho_mirror_clean','dirt_mirror','error',
                   'T_cold_ref','T_amb_des_sf','HL_dT','HCE_FieldFrac','Shadowing','Dirt_HCE','Design_loss'
@@ -42,8 +42,10 @@ def linear_fresnel_dsg_iph(invalues):
                               
     nLoops = specified_solar_multiple * q_pb_des / (I_bn_des * rec_optical_derate * coll_opt_loss_norm_inc * \
             (1 - heat_loss_at_design/( I_bn_des * A_aperture[0][0] / L_col[0][0])) )* 1e6 / (nModBoil * A_aperture[0][0] )
+        
+    target_thermal_power =  q_pb_des *  specified_solar_multiple
 
-    return [int(nLoops) + 1]
+    return [int(nLoops) + 1, target_thermal_power]
 
 #%%
 """
@@ -162,7 +164,7 @@ Model label: trough_physical_process_heat
 # nLoops
 eqn02 = {
         'model': 'trough_physical_process_heat',
-        'outputs': ['nLoops', 'solar_mult', 'L_aperture'],
+        'outputs': ['nLoops', 'solar_mult', 'L_aperture', 'target_thermal_power'],
         'inputs':['specified_solar_multiple', 'q_pb_design', 'I_bn_des', 'trough_loop_control','A_aperture',
                   'L_SCA', 'TrackingError', 'GeomEffects', 'Rho_mirror_clean', 'Dirt_mirror', 'Error',
                   'HCE_FieldFrac','Shadowing', 'Dirt_HCE', 'alpha_abs', 'Tau_envelope', 'Design_loss', 'ColperSCA'
@@ -231,9 +233,11 @@ def trough_physical_process_heat(invalues):
     L_aperture = []
     for i in range(ncol):
         L_aperture.append(L_SCA[i] / ColperSCA[i])
+        
+    target_thermal_power = q_pb_design * specified_solar_multiple * 1000
     
     
-    return [nLoops, solar_mult, str(L_aperture)]
+    return [nLoops, solar_mult, str(L_aperture), target_thermal_power]
 
 
 #%%
@@ -423,6 +427,29 @@ eqn07 = {
         }
                                                                                     
 def tcsmolten_salt(invalues):
+    P_ref,  gross_to_net_eff \
+    = invalues
+
+    system_capacity = P_ref * gross_to_net_eff
+
+    return [system_capacity]
+
+#%%
+"""
+Model name: Linear Fresnel Molten Salt
+Model label: tcsmolten_salt
+"""
+# nLoops
+eqn08 = {
+        'model': 'tcsMSLF',
+        'outputs': ['system_capacity'],
+        # , 'vol_tank'],
+        'inputs':['P_ref',  'gross_to_net_eff'
+                  ],
+        'function': 'tcsMSLF'
+        }
+                                                                                    
+def tcsMSLF(invalues):
     P_ref,  gross_to_net_eff \
     = invalues
 

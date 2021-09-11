@@ -1,6 +1,7 @@
 {
 	"file_name" : "C:/SAM/2020.2.29/solar_resource/tucson_az_32.116521_-110.933042_psmv3_60_tmy.csv",
 	"track_mode" : 1,
+	"gross_to_net_eff": 0.9,
 	"tilt" : 0,
 	"azimuth" : 0,
 	"system_capacity" : 2250,

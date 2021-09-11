@@ -1,10 +1,10 @@
 {
-    "lcoefcr": [
-        {
+    "lcoefcr": [      
+		{
             "DataType": "SSC_NUMBER",
             "Name": "capital_cost",
             "Label": "Capital cost",
-            "Units": "$",
+            "Units": "$/kW",
             "Group": "Simple LCOE",
             "Require": "*",
             "Tab": "Cost Analysis"
@@ -12,8 +12,8 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "fixed_operating_cost",
-            "Label": "Annual fixed operating cost",
-            "Units": "$",
+            "Label": "Fixed operating cost (annual)",
+            "Units": "$/kW",
             "Group": "Simple LCOE",
             "Require": "*",
             "Tab": "Cost Analysis"

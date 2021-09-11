@@ -10,6 +10,14 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "stage",
+            "Label": "Number of permeate passes (1, 2 or 3)",
+            "Units": "",
+            "Require": "*",
+            "Tab": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
             "Label": "Feed TDS",
             "Units": "g/L",
@@ -26,15 +34,37 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "Nel1",
-            "Label": "Number of elements per vessel (calculated internally unless specified here)",
+            "Name": "R1",
+            "Label": "1st pass recovery rate",
             "Require": "*",
             "Tab": "Design Point of the System"
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "R1",
-            "Label": "Desired overall recovery rate",
+            "Name": "R2",
+            "Label": "2nd pass recovery rate (if applicable)",
+            "Require": "*",
+            "Tab": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "R3",
+            "Label": "3rd pass recovery rate (if applicable)",
+            "Require": "*",
+            "Tab": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "has_erd",
+            "Label": "Include ERD with booster pump (Input 0 to remove ERD)",
+            "Require": "*",
+            "Tab": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pretreat_power",
+            "Label": "Power requirement for pretreatment",
+            "Units": "kWh(e)/m3",
             "Require": "*",
             "Tab": "Design Point of the System"
         },

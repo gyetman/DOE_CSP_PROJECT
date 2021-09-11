@@ -50,8 +50,8 @@ functions_per_model = {
     'linear_fresnel_dsg_iph':
         [
             {
-                'outputs': ['nLoops'],
-                'output_ids': [get_table_id('nLoops', 'solar', 'linear_fresnel_dsg_iph') ],
+                'outputs': dpcfg.eqn1['outputs'],
+                'output_ids': list(set([get_table_id(i, 'solar', 'linear_fresnel_dsg_iph') for i in dpcfg.eqn1['outputs']])),
                 'inputs': dpcfg.eqn1['inputs'],
                 'input_ids': list(set([get_table_id(i, 'solar', 'linear_fresnel_dsg_iph') for i in dpcfg.eqn1['inputs']])),
                 'function': 'linear_fresnel_dsg_iph'
@@ -112,9 +112,19 @@ functions_per_model = {
             {
                 'outputs': dpcfg.eqn07['outputs'],
                 'output_ids': list(set([get_table_id(i, 'solar', 'tcsmolten_salt') for i in dpcfg.eqn07['outputs']])),
-                'inputs': dpcfg.eqn06['inputs'],
+                'inputs': dpcfg.eqn07['inputs'],
                 'input_ids': list(set([get_table_id(i, 'solar', 'tcsmolten_salt') for i in dpcfg.eqn07['inputs']])),
                 'function': 'tcsmolten_salt'
+            },
+        ],
+    'tcsMSLF': 
+        [
+            {
+                'outputs': dpcfg.eqn08['outputs'],
+                'output_ids': list(set([get_table_id(i, 'solar', 'tcsMSLF') for i in dpcfg.eqn08['outputs']])),
+                'inputs': dpcfg.eqn08['inputs'],
+                'input_ids': list(set([get_table_id(i, 'solar', 'tcsMSLF') for i in dpcfg.eqn08['inputs']])),
+                'function': 'tcsMSLF'
             },
         ],
 }
@@ -190,7 +200,8 @@ def function_switcher(func, intables):
         'FO':                          ['eqn04','FO'],
         'pvsamv1':                     ['eqn05','pvsamv1'],
         'tcsdirect_steam':             ['eqn06','tcsdirect_steam'],
-        'tcsmolten_salt':              ['eqn07','tcsmolten_salt']
+        'tcsmolten_salt':              ['eqn07','tcsmolten_salt'],
+        'tcsMSLF':                     ['eqn08','tcsMSLF']
     }    
     
     # dependent_var_switcher = {

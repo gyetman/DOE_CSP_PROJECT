@@ -67,11 +67,13 @@ class LTMED_cost(object):
         self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area * 24 * 3.6/302.01)**0.8) 
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
-        
+        print(self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1))
+
 
         self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) \
             + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX \
             + self.Miscellaneous + self.Discharge + self.Insurance/100*self.CAPEX 
+        print(self.cost_sys)
         
         self.LCOW = self.CAPEX + self.OPEX
         
