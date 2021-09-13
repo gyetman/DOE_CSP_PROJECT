@@ -2,9 +2,8 @@
 	"yrs" : 20,
 	"int_rate" : 0.04,
 	"downtime": 10,
-	"coe" : 0.04,
 	"sam_coe" : 0.05,
-	"solar_coh": "",
+	"solar_coh": null,
 	"unit_capex" : null,
 	"Area" : 40.8,
 	"membrane_cost" : 30,
@@ -24,5 +23,5 @@
 	"insurance": 0.5,
 	"coe": 0.05,
 	"coh": 0.01,
-	"sam_coh": 0.01
+	"solar_coe": null
 }

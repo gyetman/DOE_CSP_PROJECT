@@ -101,8 +101,17 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "solar_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "coh",
-            "Label": "Unit cost of heat from fossil fuel (LCOH)",
+            "Label": "Unit cost of heat from external heat sources (LCOH)",
             "Units": "$/kWh",
             "Require": "*",
             "Constraint": "",

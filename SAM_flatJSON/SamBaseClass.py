@@ -454,9 +454,13 @@ class SamBaseClass(object):
             
         elif desal == 'RO_MDB':
             from DesalinationModels.RO_MDB import RO_MDB
-            self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
+            self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], 
+                                 salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'],Nel1 = self.desal_values_json['Nel1'],
+                               nFP = self.desal_values_json['nFP'],  has_erd =  self.desal_values_json['has_erd'], 
+                               Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
+                               Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
+                               Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'],
                                module = self.desal_values_json['module'],TCI_r = self.desal_values_json['TCI_r'],
                                TEI_r = self.desal_values_json['TEI_r'],FFR_r = self.desal_values_json['FFR_r'],
                                V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'],
@@ -593,12 +597,18 @@ class SamBaseClass(object):
                 
         elif desal == 'RO_MDB':
             from DesalinationModels.RO_MDB import RO_MDB
-            self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
+            self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], 
+                                 salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'],Nel1 = self.desal_values_json['Nel1'],
+                               nFP = self.desal_values_json['nFP'],  has_erd =  self.desal_values_json['has_erd'], 
+                               Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
+                               Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
+                               Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'],
                                module = self.desal_values_json['module'],TCI_r = self.desal_values_json['TCI_r'],
                                TEI_r = self.desal_values_json['TEI_r'],FFR_r = self.desal_values_json['FFR_r'],
-                               V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'])
+                               V0 = self.desal_values_json['V0'],RR = self.desal_values_json['RR'],
+                               j = self.desal_values_json['j'], TCoolIn = self.desal_values_json['TCoolIn'],
+                               Ttank = self.desal_values_json['Ttank'], dt = self.desal_values_json['dt'])
             self.design_output = self.RO_MDB.design() 
             if self.cspModel=='pvsamv1':
                 self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = [0],  solar_type = 'pv', storage = 0)
@@ -866,7 +876,7 @@ class SamBaseClass(object):
                                           FO_labor = self.cost_values_json['FO_labor'], FO_chem_cost = self.cost_values_json['FO_chem_cost'], FO_goods_cost = self.cost_values_json['FO_goods_cost'], 
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
                                           FO_SEC = self.cost_values_json['FO_SEC'], FO_capacity = self.design_output[2]['Value'], FO_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          FO_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          FO_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'RO_MDB':
@@ -881,9 +891,11 @@ class SamBaseClass(object):
             else:
                 self.sam_lcoe = self.lcoe
                 self.sam_lcoh = self.lcoh
-
-            self.LCOW = RO_MDB_cost(Capacity = self.design_output[1]['Value'], Prod = self.simu_output[4]['Value'],chem_cost = self.cost_values_json['chem_cost'], labor_cost = self.cost_values_json['labor_cost'],
-                                          unit_capex = self.cost_values_json['unit_capex'],rep_rate = self.cost_values_json['rep_rate'], 
+            
+            Capacity = [self.RO_MDB.RO_capacity]
+            unit_capex = [self.cost_values_json['unit_capex']]
+            self.LCOW = RO_MDB_cost(Capacity = Capacity, Prod = self.simu_output[4]['Value'],chem_cost = self.cost_values_json['chem_cost'], labor_cost = self.cost_values_json['labor_cost'],
+                                          unit_capex = unit_capex, rep_rate = self.cost_values_json['rep_rate'], 
                                           MDB_Area = self.RO_MDB.MDB.Area, Pflux = self.RO_MDB.MDB.PFlux[0], TCO = self.RO_MDB.MDB.TCO[0], TEI = self.RO_MDB.MDB.TEI_r, FFR = self.RO_MDB.MDB.FFR_r, 
                                           th_module = self.RO_MDB.MDB.ThPower[0], 
                                           MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], 
@@ -897,7 +909,7 @@ class SamBaseClass(object):
                                    
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
                                           MDB_SEC = self.cost_values_json['MDB_SEC'], MDB_capacity = self.design_output[2]['Value'], MDB_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'Generic':

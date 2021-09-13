@@ -33,7 +33,8 @@ class RO_FO_cost(object):
                  yrs = 20, # Expected plant lifetime
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
-                 solar_coh = '',
+                 solar_coh = None,
+                 solar_coe = None,
                  sam_coe = 0.02,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
@@ -103,7 +104,10 @@ class RO_FO_cost(object):
 #        self.FFR = FFR
         self.insurance = insurance / 100
         self.coe = coe
-        self.sam_coe = sam_coe
+        if solar_coe:
+            self.sam_coe = solar_coe
+        else:
+            self.sam_coe = sam_coe
         self.grid_usage = grid_usage / 100
 
 #        self.cost_module_re = cost_module_re
@@ -127,7 +131,7 @@ class RO_FO_cost(object):
             self.FO_unit_capex = 26784 * self.FO_capacity ** (-0.428)
         self.FO_goods_cost = FO_goods_cost # $/m3
         self.FO_chem_cost = FO_chem_cost
-        if solar_coh != '':
+        if solar_coh:
             self.sam_coh = float(solar_coh)
         else:
             self.sam_coh = sam_coh
@@ -155,13 +159,8 @@ class RO_FO_cost(object):
                 self.unit_capex_empirical = [3726.1 * self.capacity[0] ** (-0.071)]
             self.EPC_cost = self.capacity[0] * self.unit_capex_empirical[0]
 
-            self.RO_CAPEX =(self.EPC_cost*self.capacity[0] )*self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1) #/ self.ann_prod
-        print(self.capacity, self.unit_capex_empirical)
-        print(self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1))
-        print(self.Prod)
-        print(self.EPC_cost)
-        print(self.RO_CAPEX)
-        print(self.RO_CAPEX/ self.Prod)            
+            self.RO_CAPEX =(self.EPC_cost)*self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1) #/ self.ann_prod
+           
         self.FO_total_CAPEX = self.FO_capacity * self.FO_unit_capex
         self.FO_CAPEX = ((self.FO_total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) 
 
