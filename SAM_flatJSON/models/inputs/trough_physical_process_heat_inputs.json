@@ -32,8 +32,17 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "target_thermal_power",
+            "Label": "Target receiver thermal power (automatically calculated)",
+            "Units": "kW",
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "solar_mult",
-            "Label": "Actual solar multiple",
+            "Label": "Actual solar multiple (automatically calculated)",
             "Units": "none",
             "Group": "solar_field",
             "Require": "*",
@@ -133,7 +142,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "nLoops",
-            "Label": "Actual number of loops",
+            "Label": "Actual number of loops (automatically calculated)",
             "Units": "none",
             "Group": "solar_field",
             "Require": "*",

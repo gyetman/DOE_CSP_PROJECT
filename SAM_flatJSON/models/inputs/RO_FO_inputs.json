@@ -27,46 +27,161 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "RO_rr",
-            "Label": "Recovery rate of RO",
-            "Units": "%",
+            "Label": "Recovery rate",
+			"Units": "%",
             "Require": "*",
-            "Tab": "RO"
+            "Tab": "RO",
+            "Section": "Design Point of the System"
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "Nel1",
-            "Label": "Number of elements per vessel",
+            "Name": "has_erd",
+            "Label": "Include ERD with booster pump (Input 0 to remove ERD)",
             "Require": "*",
-            "Tab": "RO"
+            "Tab": "RO",
+            "Section": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "pretreat_power",
+            "Label": "Power requirement for pretreatment",
+            "Units": "kWh(e)/m3",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Design Point of the System"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Battery storage hours",
+            "Units": "hour",
+            "Require": "*",
+            "Costraint": ">0",
+            "Tab": "RO",
+            "Section": "Design Point of the System"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nERD",
             "Label": "Energy recovery device efficiency",
             "Require": "*",
-            "Tab": "RO"
+            "Tab": "RO",
+            "Section": "Pump and ERD Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nBP",
             "Label": "Boost pump efficiency",
             "Require": "*",
-            "Tab": "RO"
+            "Tab": "RO",
+            "Section": "Pump and ERD Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nHP",
             "Label": "High presssure pump efficiency",
             "Require": "*",
-            "Tab": "RO"
+            "Tab": "RO",
+            "Section": "Pump and ERD Parameters"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "nFP",
             "Label": "Feed pump efficiency",
             "Require": "*",
-            "Tab": "RO"
-        },		
+            "Tab": "RO",
+            "Section": "Pump and ERD Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Qpnom1",
+            "Label": "Nominal permeate production per membrane element",
+			"Units": "m3/hr",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Am1",
+            "Label": "Membrane area per membrane element",
+			"Units": "m2",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pmax1",
+            "Label": "Max pressure of membrane element",
+			"Units": "bar",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Ptest1",
+            "Label": "Applied test pressure for each mem element",
+			"Units": "bar",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Ctest1",
+            "Label": "Membrane manufacturer's test feed salinity (TDS) for each element",
+			"Units": "ppt",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "SR1",
+            "Label": "Rated salt rejection of each element",
+			"Units": "%",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Rt1",
+            "Label": "Test recovery rate for each element",
+			"Units": "",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pdropmax",
+            "Label": "Maximum pressure drop per membrane element",
+			"Units": "bar",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "Pfp",
+            "Label": "Pressure of intake feed pumps",
+			"Units": "bar",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "maxQf",
+            "Label": "Maximum Feed Flow",
+			"Units": "m3/h",
+            "Require": "*",
+            "Tab": "RO",
+            "Section": "Membrane Characteristics from Datasheet"
+        },
         {
             "DataType": "SSC_NUMBER",
             "Name": "FO_rr",

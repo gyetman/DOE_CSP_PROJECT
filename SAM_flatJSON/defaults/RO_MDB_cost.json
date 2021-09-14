@@ -3,8 +3,8 @@
 	"int_rate" : 0.04,
 	"downtime": 10,
 	"coe" : 0.04,
+	"solar_coe": null,
 	"sam_coe" : 0.05,
-	"unit_capex" : 1100,
 	"Area" : 40.8,
 	"membrane_cost" : 30,
 	"pressure_vessel_cost": 1000,
@@ -12,7 +12,7 @@
 	"labor_cost": 0.05,
 	"rep_rate": 5,
 	"equip_cost_method": "general",
-	"unit_capex": 1100,
+	"unit_capex": null,
 	"sec": 2.5,
 	"disposal_cost": 0.03,
 	"cost_storage": 26,
@@ -41,6 +41,6 @@
 	"insurance": 0.5,
 	"coe": 0.05,
 	"coh": 0.01,
-	"solar_coh": "",
+	"solar_coh": null,
 	"sam_coh": 0.01
 }

@@ -387,14 +387,14 @@ def gather_data(x):
         
         # add specific data from desal design output
         dd = helpers.json_load(flkup['desal_design_timestamp_infile'])
-        index = helpers.index_in_list_of_dicts(dd,'Name','Number of vessels')
-        updates.update({'number_vessels':dd[index]['Value']})        
-        index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
-        updates.update({'electric_power_consumption':dd[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dd,'Name','Number of vessels')
+        # updates.update({'number_vessels':dd[index]['Value']})        
+        # index = helpers.index_in_list_of_dicts(dd,'Name','Electric energy requirement')
+        # updates.update({'electric_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific energy consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
-        updates.update({'p_brine':dd[index]['Value']})
+        # index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
+        # updates.update({'p_brine':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -904,11 +904,11 @@ def set_desal_config(x):
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
-        html.Div(f"Number of vessels: {r['number_vessels']} "),
+        # html.Div(f"Number of vessels: {r['number_vessels']} "),
         html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
         html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
-        html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
+        # html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
         ])
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
         return ([
@@ -1313,7 +1313,7 @@ def set_system_performance(x):
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
-        html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
+        # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1441,7 +1441,7 @@ def set_cost_analysis(x):
         html.Div(f"     -Labor cost: {r['labor']:.2f} $/m3",
                  style = { 'margin-left' : '30px' }),          
         ])
-    elif app['desal'] == 'RO' or app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
+    elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO':
         return ([
         html.H5('Cost Analysis', className='card-title'),
         html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
@@ -1452,8 +1452,20 @@ def set_cost_analysis(x):
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
                  style = { 'margin-left' : '30px' }),
-          
         ])
+    elif app['desal'] == 'RO' :
+        return ([
+        html.H5('Cost Analysis', className='card-title'),
+        html.Div(f"Levelized cost of water (LCOW): {r['lcow']:.2f} $/m3"),
+    #    html.Div(f"Levelized cost of heat (LCOH, calculated): {r['lcoh_cal']:.2f} $/m3"),
+        html.Div(f"Assumed cost of electricity (LCOE, from grid): {r['lcoe']:.3f} $/kWh"),
+        html.Div(f"Levelized cost of electricity (LCOE, from solar field): {r['sam_lcoe']:.3f} $/kWh"),
+        html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
+        html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
+        html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
+                 style = { 'margin-left' : '30px' }),
+        ])    
+    
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB' :
         return ([
         html.H5('Cost Analysis', className='card-title'),

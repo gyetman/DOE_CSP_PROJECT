@@ -221,7 +221,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray1_tilt_eq_lat",
-            "Label": "Sub-array 1 Tilt=latitude (Input 1 to override)",
+            "Label": "Sub-array 1 (Input 1 to have tilt = latitude)",
             "Units": "0/1",
             "Constraints": "BOOLEAN",
             "Tab": "System Design",
@@ -698,17 +698,17 @@
             "Constraints": "MIN=0,MAX=90",
             "Tab": "System Design",
             "Section": "DC Sizing and Configuration",
-            "Subsection": "Electrical Configuration"
+            "Subsection": "Tracking & Orientation"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray2_tilt_eq_lat",
-            "Label": "Sub-array 2 Tilt=latitude (Input 1 to override)",
+            "Label": "Sub-array 2 (Input 1 to have tilt = latitude)",
             "Units": "0/1",
             "Constraints": "BOOLEAN",
             "Tab": "System Design",
             "Section": "DC Sizing and Configuration",
-            "Subsection": "Electrical Configuration"
+            "Subsection": "Tracking & Orientation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -718,7 +718,7 @@
             "Constraints": "MIN=0,MAX=359.9",
             "Tab": "System Design",
             "Section": "DC Sizing and Configuration",
-            "Subsection": "Electrical Configuration"
+            "Subsection": "Tracking & Orientation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -728,7 +728,7 @@
             "Constraints": "INTEGER,MIN=0,MAX=4",
             "Tab": "System Design",
             "Section": "DC Sizing and Configuration",
-            "Subsection": "Electrical Configuration"
+            "Subsection": "Tracking & Orientation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -739,7 +739,7 @@
             "Constraints": "MIN=0,MAX=85",
             "Tab": "System Design",
             "Section": "DC Sizing and Configuration",
-            "Subsection": "Electrical Configuration"
+            "Subsection": "Tracking & Orientation"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -913,7 +913,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray3_tilt_eq_lat",
-            "Label": "Sub-array 3 Tilt=latitude (Input 1 to override)",
+            "Label": "Sub-array 3 (Input 1 to have tilt = latitude)",
             "Units": "0/1",
             "Constraints": "BOOLEAN",
             "Tab": "System Design",
@@ -1123,7 +1123,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "subarray4_tilt_eq_lat",
-            "Label": "Sub-array 4 Tilt=latitude override",
+            "Label": "Sub-array 4 (Input 1 to have tilt = latitude)",
             "Units": "0/1",
             "Constraints": "BOOLEAN",
             "Tab": "System Design",

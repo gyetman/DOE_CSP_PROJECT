@@ -36,7 +36,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "system_capacity",
-            "Label": "Estimated net output at design (nameplate)",
+            "Label": "Estimated net output at design (nameplate) (automatically calculated)",
             "Units": "kW",
             "Group": "mslf",
             "Require": "*",
@@ -1444,6 +1444,16 @@
             "Name": "P_ref",
             "Label": "Reference output electric power at design condition",
             "Units": "MWe",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Capacity"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "gross_to_net_eff",
+            "Label": "Estimated gross to net conversion factor",
+            "Units": "",
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle",

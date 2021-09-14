@@ -18,6 +18,14 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "Annual downtime percentage",
+            "Units": "%",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "coe",
             "Label": "Unit cost of electricity from the grid (LCOE)",
             "Units": "$/kWh",
@@ -58,8 +66,16 @@
         },	
         {
             "DataType": "SSC_NUMBER",
-            "Name": "unit_capex",
-            "Label": "Total EPC cost",
+            "Name": "unit_capex_main",
+            "Label": "Total EPC cost for RO (Calculated as a function of capacity from the design model, unless specified)",
+            "Units": "$/(m3/day)",
+            "Require": "*",
+			"Tab": "Desalination"
+        },	
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "unit_capex_passes",
+            "Label": "Total EPC cost for additional passes (same as above, unless specified)",
             "Units": "$/(m3/day)",
             "Require": "*",
 			"Tab": "Desalination"
@@ -71,19 +87,19 @@
             "Units": "$/kWh",
             "Require": "*",
 			"Tab": "Desalination"
-        },		
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "sec",
-            "Label": "Specific energy consumption",
-            "Units": "kwh/m3",
-            "Require": "",
-			"Tab": "Desalination"
         },	
 		{
             "DataType": "SSC_NUMBER",
             "Name": "disposal_cost",
             "Label": "Specific waste disposal cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination"
+        },	
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "IX_cost",
+            "Label": "LCOW increment for adding ion-exchange",
             "Units": "$/m3",
             "Require": "",
 			"Tab": "Desalination"

@@ -7,7 +7,7 @@
             "Group": "Weather",
             "Require": "*",
             "Costraint": "LOCAL_FILE",
-            "Tab": "Weather"
+            "Tab": "Location and Resource"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -48,6 +48,15 @@
             "Units": "",
             "Group": "powerblock",
             "Require": "*",
+            "Tab": "System Design",
+            "Section": "Design Point Parameters",
+            "Subsection": "Solar Field"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "target_thermal_power",
+            "Label": "Target receiver thermal power (automatically calculated)",
+            "Units": "kW",
             "Tab": "System Design",
             "Section": "Design Point Parameters",
             "Subsection": "Solar Field"
@@ -140,7 +149,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "nLoops",
-            "Label": "Number of loops",
+            "Label": "Number of loops (Automatically calculated)",
             "Units": "none",
             "Group": "solarfield",
             "Require": "*",
