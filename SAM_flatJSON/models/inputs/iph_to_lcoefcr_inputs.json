@@ -31,7 +31,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "capital_cost",
             "Label": "Capital cost",
-            "Units": "$",
+            "Units": "$/kW",
             "Group": "Simple LCOE",
             "Require": "*",
             "Tab": "Solar Field"

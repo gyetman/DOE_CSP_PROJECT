@@ -205,7 +205,7 @@ class StaticCollector_fp(object):
         staticcollector_output.append({'Name':'Field outlet temperature','Value':Tout_row,'Unit':'oC'})   
         staticcollector_output.append({'Name':'Thermal power generation','Value':gen,'Unit':'kWh'})   
         staticcollector_output.append({'Name':'Design capacity','Value':self.desal_thermal_power_req/1000,'Unit':'MWh'})   
-  
+        # print(Gk[0:24],Tout_row[0:24], gen[0:24], staticcollector_output[-1])
         return gen, staticcollector_output
 
 

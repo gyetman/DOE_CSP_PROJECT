@@ -34,6 +34,7 @@ class RO_MDB_cost(object):
                  int_rate = 0.04 , # Average interest rate
                  coe = 0.05,  # Unit cost of electricity ($/kWh)
                  sam_coe = 0.02,
+                 solar_coe = None,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
                  rep_rate=5,    # membrane replacement rate
@@ -93,7 +94,7 @@ class RO_MDB_cost(object):
                  FFR  = 1100, # Feed flow rate per module (l/h/module)
                  th_module  = 4.560, # Thermal power supplied per module (kW(th)/module)
                  insurance = 0.5,  # %
-                 solar_coh ='',
+                 solar_coh = None,
                  sam_coh = 0.02, # $/kWh
                  coh = 0.01, # $/kWh
                  MDB_fuel_usage = 0, # %
@@ -132,7 +133,11 @@ class RO_MDB_cost(object):
 #        self.FFR = FFR
 
         self.coe = coe
-        self.sam_coe = sam_coe
+        if solar_coe:
+            self.sam_coe = solar_coe
+        else:
+            self.sam_coe = sam_coe
+
         self.grid_usage = grid_usage / 100
 
 #        self.cost_module_re = cost_module_re
@@ -144,7 +149,7 @@ class RO_MDB_cost(object):
         self.Pflux = Pflux
         self.MDB_Area = MDB_Area
         self.PF_module = self.Pflux * self.MDB_Area
-        self.num_modules = math.ceil(Capacity *1000 / self.PF_module / self.operation_hour)
+        self.num_modules = math.ceil(Capacity[0] *1000 / self.PF_module / self.operation_hour)
         self.HX_eff = HX_eff
         self.solar_inlet = solar_inlet
         self.solar_outlet = solar_outlet
@@ -171,7 +176,7 @@ class RO_MDB_cost(object):
         self.other = other
         self.other_capacity = other_capacity
         self.insurance = insurance / 100
-        if solar_coh != '':
+        if solar_coh:
             self.sam_coh = float(solar_coh)
         else:
             self.sam_coh = sam_coh
@@ -193,9 +198,15 @@ class RO_MDB_cost(object):
 #           (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
             self.unit_capex=self.total_module_cost/self.capacity  
 #        elif self.equip_cost_method=='general':
-        else:    
 
-            self.RO_CAPEX =(self.unit_capex*self.capacity +  self.cost_storage * self.storage_cap)*CR_factor(self.yrs,self.int_rate) #/ self.ann_prod
+        else:    
+            if self.unit_capex[0]:
+                self.unit_capex_empirical = [self.unit_capex]
+            else:
+                self.unit_capex_empirical = [3726.1 * self.capacity[0] ** (-0.071)]
+            self.EPC_cost = self.capacity[0] * self.unit_capex_empirical[0]
+
+            self.RO_CAPEX =(self.EPC_cost)*self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1) #/ self.ann_prod
             
 
 # MDB capital cost

@@ -647,12 +647,12 @@
         {
             "DataType": "SSC_MATRIX",
             "Name": "HCE_FieldFrac",
-            "Label": "Fraction of the field occupied by this HCE type ",
+            "Label": "Variant weighting fraction",
             "Units": "none",
             "Group": "solar_field",
             "Require": "*",
             "Tab": "Receivers (HCEs)",
-            "Section": "Parameters and variations"
+            "Section": "Parameters and Variations"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1324,7 +1324,7 @@
         {
             "DataType": "SSC_MATRIX",
             "Name": "SCAInfoArray",
-            "Label": "Receiver (,1) and collector (,2) type for each assembly in loop",
+            "Label": "Receiver (1,) and collector (,2) type for each assembly in loop",
             "Units": "none",
             "Group": "solar_field",
             "Require": "*",

@@ -1,5 +1,6 @@
 from pathlib import Path
-
+import dash_bootstrap_components as dbc
+import dash_html_components as html
 ### GLOBAL VARIABLES and pre-processing ###
 #
 base_path = Path(__file__).resolve().parent.parent.absolute()
@@ -18,6 +19,8 @@ parametric_info = parametric_results_dir / 'Parametric_Info.json'
 #NOTE does not include timestamp + '.json'
 parametric_solar_simulation_outfile = parametric_results_dir / 'Solar_output'
 weather_path = base_path / 'SAM_flatJSON' / 'solar_resource'
+
+
 
 def build_file_lookup(solar,desal,finance,timestamp):
     '''
@@ -109,6 +112,8 @@ Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
 # dict for which documentation page to link to based on our model code
 SAMD = "/assets/docs/sam-help-2020-2-29-r1.pdf"
 SDAT = "/assets/docs/documentation.pdf"
+ADD = "/assets/docs/Detailed description for Input Variables.pdf"
+
 Documentation = {
     #Desal
     'FO':{'doc':SDAT,'page':27}, 'VAGMD':{'doc':SDAT,'page':27}, 'MDB':{'doc':SDAT,'page':27}, 'LTMED':{'doc':SDAT,'page':27}, 'ABS':{'doc':SDAT,'page':27}, 'MEDTVC':{'doc':SDAT,'page':27}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':27}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':27}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':27}, 'RO_MDB':{'doc':SDAT,'page':27}, 'Generic':{'doc':SDAT,'page':27},
@@ -118,6 +123,63 @@ Documentation = {
     'pvsamv1':{'doc':SAMD,'page':171},'SC_FPC':{'doc':SAMD,'page':19},'SC_ETC':{'doc':SAMD,'page':19},'trough_physical_process_heat':{'doc':SAMD,'page':706},'linear_fresnel_dsg_iph':{'doc':SAMD,'page':741},'tcslinear_fresnel':{'doc':SAMD,'page':605}, 'tcsMSLF':{'doc':SAMD,'page':627},
     'tcsdirect_steam':{'doc':SAMD,'page':563}, 'tcsmolten_salt':{'doc':SAMD,'page':526}, 'tcstrough_physical':{'doc':SAMD,'page':437}
 }
+
+# function to look up additional documentation for each tab
+info = ['Weather file format requirement', 'Detailed description for inputs', 'Variables on this page are not required for input, please ignore them']
+doc_info = {('pvsamv1',                'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('pvsamv1',                'General'):                {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('tcslinear_fresnel',      'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('linear_fresnel_dsg_iph', 'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('linear_fresnel_dsg_iph', 'Collector and Receiver'): {'text': info[1], 'href': f"{ADD}#page=4"},
+            ('tcsMSLF',                'General'):                {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('tcsMSLF',                'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('tcsMSLF',                'Solar Field'):            {'text': info[1], 'href': f"{ADD}#page=9"},
+            ('SC_FPC',                 'Weather'):                {'text': info[0], 'href': f"{ADD}#page=2"},
+            ('SC_ETC',                 'Weather'):                {'text': info[0], 'href': f"{ADD}#page=2"},
+            ('pvsamv1',                'System Design'):          {'text': info[1], 'href': f"{ADD}#page=5"},
+            ('tcstrough_physical',     'Collectors (SCAs)'):      {'text': info[1], 'href': f"{ADD}#page=6"},
+            ('tcstrough_physical',     'Receivers (HCEs)'):       {'text': info[1], 'href': f"{ADD}#page=7"},
+            ('tcstrough_physical',     'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('tcstrough_physical',     'Solar Field'):            {'text': info[1], 'href': f"{ADD}#page=8"},
+            ('tcstrough_physical',     'General'):                {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('tcsdirect_steam',        'General'):                {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('tcsdirect_steam',        'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('tcsmolten_salt',         'General'):                {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('tcsmolten_salt',         'Location and Resource'):  {'text': info[0], 'href': f"{SAMD}#page=120"},
+            ('trough_physical_process_heat','General'):           {'text': info[2], 'href': f"{ADD}#page=1"},
+            ('trough_physical_process_heat','Location and Resource'):{'text': info[2], 'href': f"{ADD}#page=120"},
+            ('trough_physical_process_heat','Collectors (SCAs)'):      {'text': info[1], 'href': f"{ADD}#page=10"},
+            ('trough_physical_process_heat','Receivers (HCEs)'):       {'text': info[1], 'href': f"{ADD}#page=11"},
+            ('trough_physical_process_heat','Solar Field'):            {'text': info[1], 'href': f"{ADD}#page=12"},
+            }
+
+def other_documentation(model, tab):
+    if (model, tab) in doc_info:
+        info = doc_info[(model, tab)]
+        
+        documentation = dbc.Button(
+                        html.Div([
+                        dbc.NavLink(info['text'], id= model + '_' +  tab,
+                            href= info['href'],
+                            target='_blank',
+                            external_link=True,
+                            style={
+                                'float':'right',
+                                'display':'inline-block', 
+                                'padding': '4px',
+                                'font-size': '17px'
+                            },
+                            className='fas fa-info-circle fa-2x text-info'
+                            )
+                        ]),
+                        color="Success",
+                        outline=True, 
+                        size = 'sm',
+                        style={'padding': '4px', 'padding-right': '6px', 'textAlign': 'center'}
+                    )  
+                
+        return documentation
+    
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
@@ -147,3 +209,4 @@ solarToFinance = {
     'tcsmolten_salt': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',True),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
     'tcstrough_physical'  : [('utilityrate5',False),('lcoefcr',False),('iph_to_lcoefcr',True),('levpartflip',False),('equpartflip',False),('saleleaseback',False),('singleowner',False)],
     }
+

@@ -36,6 +36,15 @@
 			"Tab": "Desalination",
 			"Section": "General"
         },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination",
+			"Section": "General"
+        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "unit_capex",

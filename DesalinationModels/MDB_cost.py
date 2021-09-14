@@ -121,12 +121,15 @@ class MDB_cost(object):
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap / 1000)
 
         self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
+
         
         self.cost_elec = self.SEEC * self.coe
         self.other_OM = self.CAPEX  *0.018
         self.insurance = self.CAPEX *0.005 
         self.cost_th = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh)
         self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM + self.insurance
+        
+
         
         self.LCOW = self.CAPEX + self.OPEX
         
