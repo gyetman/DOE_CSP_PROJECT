@@ -838,7 +838,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
             SC = ['SC_FPC', 'SC_ETC']
             if app['solar'] not in SC:
                 if app['finance'] == 'lcoefcr':
-                    if app['solar'] in ['pvsamv1', 'tcslinear_fresnel', 'tcsMSLF', 'tcstrough_physical']:
+                    if app['solar'] in ['pvwattsv7', 'pvsamv1', 'tcslinear_fresnel', 'tcsMSLF', 'tcstrough_physical']:
                         capacity = solar_output_vars['system_capacity']
                     finance_output_vars['fixed_operating_cost'] *= capacity
                     finance_output_vars['capital_cost'] *= capacity  

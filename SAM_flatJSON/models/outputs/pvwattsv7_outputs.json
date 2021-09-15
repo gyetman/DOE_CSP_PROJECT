@@ -1,0 +1,400 @@
+{
+    "Output": [
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "System power generated",
+            "Units": "kW",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "annual_energy_distribution_time",
+            "Label": "Annual energy production as function of time",
+            "Units": "kW",
+            "Group": "Heatmaps"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "system_use_lifetime_output",
+            "Label": "Run lifetime simulation",
+            "Units": "0/1",
+            "Group": "Lifetime",
+            "Require": "?=0"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gh",
+            "Label": "Irradiance GHI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dn",
+            "Label": "Irradiance DNI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "df",
+            "Label": "Irradiance DHI from weather file",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "tamb",
+            "Label": "Weather file ambient temperature",
+            "Units": "C",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "wspd",
+            "Label": "Weather file wind speed",
+            "Units": "m/s",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "snow",
+            "Label": "Weather file snow depth",
+            "Units": "cm",
+            "Group": "Time Series"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "sunup",
+            "Label": "Sun up over horizon",
+            "Units": "0/1",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "shad_beam_factor",
+            "Label": "Shading factor for beam radiation",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "aoi",
+            "Label": "Angle of incidence",
+            "Units": "deg",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa",
+            "Label": "Plane of array irradiance",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "tpoa",
+            "Label": "Transmitted plane of array irradiance",
+            "Units": "W/m2",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "tcell",
+            "Label": "Module temperature",
+            "Units": "C",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dcsnowderate",
+            "Label": "DC power loss due to snow",
+            "Units": "%",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dc",
+            "Label": "DC inverter input power",
+            "Units": "W",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "ac",
+            "Label": "AC inverter output power",
+            "Units": "W",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "poa_monthly",
+            "Label": "Plane of array irradiance",
+            "Units": "kWh/m2",
+            "Group": "Monthly",
+            "Constraint": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "solrad_monthly",
+            "Label": "Daily average solar irradiance",
+            "Units": "kWh/m2/day",
+            "Group": "Monthly",
+            "Constraint": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "dc_monthly",
+            "Label": "DC output",
+            "Units": "kWh",
+            "Group": "Monthly",
+            "Constraint": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "ac_monthly",
+            "Label": "AC output",
+            "Units": "kWh",
+            "Group": "Monthly",
+            "Constraint": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "monthly_energy",
+            "Label": "Monthly energy",
+            "Units": "kWh",
+            "Group": "Monthly",
+            "Constraint": "LENGTH=12"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "solrad_annual",
+            "Label": "Daily average solar irradiance",
+            "Units": "kWh/m2/day",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "ac_annual",
+            "Label": "Annual AC output",
+            "Units": "kWh",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_energy",
+            "Label": "Annual energy",
+            "Units": "kWh",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "capacity_factor",
+            "Label": "Capacity factor",
+            "Units": "%",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "kwh_per_kw",
+            "Label": "Energy yield",
+            "Units": "kWh/kW",
+            "Group": "Annual"
+        },
+        {
+            "Data": "SSC_STRING",
+            "Name": "location",
+            "Label": "Location ID",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_STRING",
+            "Name": "city",
+            "Label": "City",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_STRING",
+            "Name": "state",
+            "Label": "State",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "lat",
+            "Label": "Latitude",
+            "Units": "deg",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "lon",
+            "Label": "Longitude",
+            "Units": "deg",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "tz",
+            "Label": "Time zone",
+            "Units": "hr",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "elev",
+            "Label": "Site elevation",
+            "Units": "m",
+            "Group": "Location",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "inverter_efficiency",
+            "Label": "Inverter efficiency at rated power",
+            "Units": "%",
+            "Group": "PVWatts"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "estimated_rows",
+            "Label": "Estimated number of rows in the system",
+            "Group": "PVWatts"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "ts_shift_hours",
+            "Label": "Time offset for interpreting time series outputs",
+            "Units": "hours",
+            "Group": "Miscellaneous",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "percent_complete",
+            "Label": "Estimated percent of total completed simulation",
+            "Units": "%",
+            "Group": "Miscellaneous"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "System power generated",
+            "Units": "kW",
+            "Group": "Time Series",
+            "Require": "*"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "annual_energy_distribution_time",
+            "Label": "Annual energy production as function of time",
+            "Units": "kW",
+            "Group": "Heatmaps"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "gen",
+            "Label": "System power generated",
+            "Units": "kW",
+            "Meta": "Lifetime system generation",
+            "Group": "System Output"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "system_pre_interconnect_kwac",
+            "Label": "System power before grid interconnect",
+            "Units": "kW",
+            "Meta": "Lifetime system generation"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "capacity_factor_interconnect_ac",
+            "Label": "Capacity factor of the interconnection (year 1)",
+            "Units": "%"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_energy_pre_interconnect_ac",
+            "Label": "Annual Energy AC pre-interconnection (year 1)",
+            "Units": "kWh"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_energy",
+            "Label": "Annual Energy AC (year 1)",
+            "Units": "kWh",
+            "Group": "System Output"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_interconnect_loss_percent",
+            "Label": "Annual Energy loss from interconnection limit (year 1)",
+            "Units": "%"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_interconnect_loss_kwh",
+            "Label": "Annual Energy loss from interconnection limit (year 1)",
+            "Units": "kWh"
+        },
+        {
+            "Data": "SSC_ARRAY",
+            "Name": "system_pre_curtailment_kwac",
+            "Label": "System power before grid curtailment",
+            "Units": "kW",
+            "Meta": "Lifetime system generation"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "capacity_factor_curtailment_ac",
+            "Label": "Capacity factor of the curtailment (year 1)",
+            "Units": "%"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_energy_pre_curtailment_ac",
+            "Label": "Annual Energy AC pre-curtailment (year 1)",
+            "Units": "kWh"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_curtailment_loss_percent",
+            "Label": "Annual Energy loss from curtailment (year 1)",
+            "Units": "%"
+        },
+        {
+            "Data": "SSC_NUMBER",
+            "Name": "annual_ac_curtailment_loss_kwh",
+            "Label": "Annual Energy loss from curtailment (year 1)",
+            "Units": "kWh"
+        },
+        {
+            "Data": "SSC_MATRIX",
+            "Name": "annual_energy_distribution_time",
+            "Label": "Annual energy production as function of time",
+            "Units": "kW",
+            "Group": "Heatmaps"
+        }
+    ]
+}

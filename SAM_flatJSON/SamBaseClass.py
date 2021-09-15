@@ -95,6 +95,34 @@ class SamBaseClass(object):
             self.sam_calculation()
             self.print_impParams()
             self.data_free()
+
+        elif self.cspModel=='pvwattsv7':
+            self.ssc = PySSC()
+            self.create_ssc_module()
+            self.data = self.ssc.data_create()
+            self.varListCsp = self.collect_model_variables()
+    
+            self.set_data(self.varListCsp)
+            # execute csp model
+            self.module_create_execute(self.cspModel)
+            # execute grid limit model
+            self.module_create_execute('grid')
+            # execute financial model, if any
+            if self.financialModel:
+                self.module_create_execute(self.financialModel)
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')
+            self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
+            self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            
+            
+            if self.desalination:
+                self.desal_simulation(self.desalination)
+                self.cost(self.desalination)
+                            
+            self.sam_calculation()
+            self.print_impParams()
+            self.data_free()
       
         
         elif self.cspModel=='SC_FPC':
@@ -1000,7 +1028,7 @@ class SamBaseClass(object):
                 
             for variable in all_variables:
                 # Set default value for non-specified variables
-                if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1' or self.cspModel== 'tcsmolten_salt': 
+                if self.cspModel in [ 'tcsdirect_steam' , 'pvsamv1' , 'tcsmolten_salt' , 'pvwattsv7']: 
                     if variable['Name'] == 'file_name':
                         varValue = values_json['file_name']
                         variableValues.append({'name': 'solar_resource_file',
@@ -1094,6 +1122,7 @@ class SamBaseClass(object):
                                         'mc_bal_sca': 4.5},
         "linear_fresnel_dsg_iph":{},  
         "pvsamv1":{},   
+        "pvwattsv7":{},   
         "SC_FPC":{},
         "tcslinear_fresnel":{'track_mode': 1,
                              'tilt': 0,
