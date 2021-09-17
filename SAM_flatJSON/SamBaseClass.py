@@ -95,6 +95,34 @@ class SamBaseClass(object):
             self.sam_calculation()
             self.print_impParams()
             self.data_free()
+
+        elif self.cspModel=='pvwattsv7':
+            self.ssc = PySSC()
+            self.create_ssc_module()
+            self.data = self.ssc.data_create()
+            self.varListCsp = self.collect_model_variables()
+    
+            self.set_data(self.varListCsp)
+            # execute csp model
+            self.module_create_execute(self.cspModel)
+            # execute grid limit model
+            self.module_create_execute('grid')
+            # execute financial model, if any
+            if self.financialModel:
+                self.module_create_execute(self.financialModel)
+                if self.financialModel == 'utilityrate5':
+                    self.module_create_execute('cashloan')
+            self.elec_gen = self.ssc.data_get_array(self.data, b'gen')
+            self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_fcr')
+            
+            
+            if self.desalination:
+                self.desal_simulation(self.desalination)
+                self.cost(self.desalination)
+                            
+            self.sam_calculation()
+            self.print_impParams()
+            self.data_free()
       
         
         elif self.cspModel=='SC_FPC':
@@ -380,7 +408,7 @@ class SamBaseClass(object):
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
             self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],
-                         stage = self.desal_values_json['stage'], has_erd =  self.desal_values_json['has_erd'],
+                         stage = self.desal_values_json['stage'], has_erd =  1,
                          T  = self.desal_values_json['T'],R1 = self.desal_values_json['R1'],
                          R2 = self.desal_values_json['R2'], R3 = self.desal_values_json['R3'],
                          nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'],
@@ -445,7 +473,7 @@ class SamBaseClass(object):
             self.RO_FO = RO_FO(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], FO_rr = self.desal_values_json['FO_rr'],
                                salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'], stage = 1, has_erd =  self.desal_values_json['has_erd'], 
+                               nFP = self.desal_values_json['nFP'], stage = 1, has_erd =  1, 
                          Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
                          Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
                          Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'])
@@ -457,7 +485,7 @@ class SamBaseClass(object):
             self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], 
                                  salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'],  has_erd =  self.desal_values_json['has_erd'], 
+                               nFP = self.desal_values_json['nFP'],  has_erd =  1, 
                                Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
                                Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
                                Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'],
@@ -499,7 +527,7 @@ class SamBaseClass(object):
         if desal == 'RO':
             from DesalinationModels.RO_Fixed_Load import RO
             self.RO = RO(nominal_daily_cap_tmp = self.desal_values_json['nominal_daily_cap_tmp'], FeedC_r = self.desal_values_json['FeedC_r'],
-                         stage = self.desal_values_json['stage'], has_erd =  self.desal_values_json['has_erd'],
+                         stage = self.desal_values_json['stage'], has_erd =  1,
                          T  = self.desal_values_json['T'],R1 = self.desal_values_json['R1'],
                          R2 = self.desal_values_json['R2'], R3 = self.desal_values_json['R3'],
                          nERD= self.desal_values_json['nERD'],nBP= self.desal_values_json['nBP'],nHP= self.desal_values_json['nHP'],nFP= self.desal_values_json['nFP'],
@@ -583,7 +611,7 @@ class SamBaseClass(object):
             self.RO_FO = RO_FO(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], FO_rr = self.desal_values_json['FO_rr'],
                                salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'], stage = 1, has_erd =  self.desal_values_json['has_erd'], 
+                               nFP = self.desal_values_json['nFP'], stage = 1, has_erd =  1, 
                          Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
                          Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
                          Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'])
@@ -600,7 +628,7 @@ class SamBaseClass(object):
             self.RO_MDB = RO_MDB(capacity = self.desal_values_json['capacity'], RO_rr = self.desal_values_json['RO_rr'], 
                                  salinity = self.desal_values_json['FeedC_r'], T_sw = self.desal_values_json['T_sw'], 
                                nERD = self.desal_values_json['nERD'],nBP = self.desal_values_json['nBP'],nHP = self.desal_values_json['nHP'],
-                               nFP = self.desal_values_json['nFP'],  has_erd =  self.desal_values_json['has_erd'], 
+                               nFP = self.desal_values_json['nFP'],  has_erd =  1, 
                                Qpnom1= self.desal_values_json['Qpnom1'],Am1= self.desal_values_json['Am1'],Pmax1= self.desal_values_json['Pmax1'],Ptest1= self.desal_values_json['Ptest1'],
                                Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
                                Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'],
@@ -1000,7 +1028,7 @@ class SamBaseClass(object):
                 
             for variable in all_variables:
                 # Set default value for non-specified variables
-                if self.cspModel== 'tcsdirect_steam' or self.cspModel== 'pvsamv1' or self.cspModel== 'tcsmolten_salt': 
+                if self.cspModel in [ 'tcsdirect_steam' , 'pvsamv1' , 'tcsmolten_salt' , 'pvwattsv7']: 
                     if variable['Name'] == 'file_name':
                         varValue = values_json['file_name']
                         variableValues.append({'name': 'solar_resource_file',
@@ -1094,6 +1122,7 @@ class SamBaseClass(object):
                                         'mc_bal_sca': 4.5},
         "linear_fresnel_dsg_iph":{},  
         "pvsamv1":{},   
+        "pvwattsv7":{},   
         "SC_FPC":{},
         "tcslinear_fresnel":{'track_mode': 1,
                              'tilt': 0,

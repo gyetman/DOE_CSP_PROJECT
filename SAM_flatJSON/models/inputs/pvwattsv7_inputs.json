@@ -1,0 +1,248 @@
+{
+    "pvwattsv7": [      
+        {
+            "DataType": "SSC_STRING",
+            "Name": "file_name",
+            "Label": "Weather file path",
+            "Group": "Solar Resource",
+            "Require": "?",
+            "Tab": "Location and Resource"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "system_capacity",
+            "Label": "System size (DC nameplate)",
+            "Units": "kW",
+            "Group": "System Design",
+            "Require": "*",
+            "Tab": "System Design",
+            "Section": "System Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "module_type",
+            "Label": "Module type (0: Standard, 1: Premium, 2: Thin film)",
+            "Units": "0/1/2",
+            "Meta": "Standard,Premium,Thin film",
+            "Group": "System Design",
+            "Require": "?=0",
+            "Constraint": "MIN=0,MAX=2,INTEGER",
+            "Tab": "System Design",
+            "Section": "System Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "dc_ac_ratio",
+            "Label": "DC to AC ratio",
+            "Units": "ratio",
+            "Group": "System Design",
+            "Require": "?=1.1",
+            "Constraint": "POSITIVE",
+            "Tab": "System Design",
+            "Section": "System Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "array_type",
+            "Label": "Array type (0: Fixed open rack, 1: Fixed roof mount, 2: 1-axis tracking, 3: 1-axis backtracking, 4: 2-axis tracking)",
+            "Units": "0/1/2/3/4",
+            "Meta": "Fixed Rack,Fixed Roof,1Axis,Backtracked,2Axis",
+            "Group": "System Design",
+            "Require": "*",
+            "Constraint": "MIN=0,MAX=4,INTEGER",
+            "Tab": "System Design",
+            "Section": "Orientation and Tracking"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "tilt",
+            "Label": "Tilt angle",
+            "Units": "deg",
+            "Meta": "H=0,V=90",
+            "Group": "System Design",
+            "Require": "array_type<4",
+            "Constraint": "MIN=0,MAX=90",
+            "Tab": "System Design",
+            "Section": "Orientation and Tracking"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "azimuth",
+            "Label": "Azimuth angle",
+            "Units": "deg",
+            "Meta": "E=90,S=180,W=270",
+            "Group": "System Design",
+            "Require": "array_type<4",
+            "Constraint": "MIN=0,MAX=360",
+            "Tab": "System Design",
+            "Section": "Orientation and Tracking"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "gcr",
+            "Label": "Ground coverage ratio",
+            "Units": "0..1",
+            "Group": "System Design",
+            "Require": "?=0.4",
+            "Constraint": "MIN=0.01,MAX=0.99",
+            "Tab": "System Design",
+            "Section": "Orientation and Tracking"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "rotlim",
+            "Label": "Tracker rotation angle limit",
+            "Units": "deg",
+            "Group": "System Design",
+            "Require": "?=45.0",
+            "Tab": "System Design",
+            "Section": "Orientation and Tracking"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "losses",
+            "Label": "Total system losses",
+            "Units": "%",
+            "Meta": "Total system losses",
+            "Group": "System Design",
+            "Require": "*",
+            "Constraint": "MIN=-5,MAX=99",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "System Losses"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "en_snowloss",
+            "Label": "Input 1 to enable snow loss model",
+            "Units": "0/1",
+            "Group": "System Design",
+            "Require": "?=0",
+            "Constraint": "BOOLEAN",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "Shading and Losses"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "inv_eff",
+            "Label": "Inverter efficiency at rated power",
+            "Units": "%",
+            "Group": "System Design",
+            "Require": "?=96",
+            "Constraint": "MIN=90,MAX=99.5",
+            "Tab": "System Design",
+            "Section": "System Parameters"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "shading:timestep",
+            "Label": "Beam irradiance shading losses by time stamp",
+            "Units": "%",
+            "Group": "System Design",
+            "Require": "?",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "Shading and Snow"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "shading:mxh",
+            "Label": "Month-by-hour beam irradiance shading losses",
+            "Units": "%",
+            "Group": "System Design",
+            "Require": "?",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "Shading and Snow"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "shading:azal",
+            "Label": "Solar azimuth-by-altitude beam irradiance shading losses",
+            "Units": "%",
+            "Group": "System Design",
+            "Require": "?",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "Shading and Snow"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "shading:diff",
+            "Label": "Constant sky diffuse shading loss",
+            "Units": "%",
+            "Group": "System Design",
+            "Require": "?",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "Shading and Snow"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "adjust:constant",
+            "Label": "Constant loss adjustment",
+            "Units": "%",
+            "Group": "Adjustment Factors",
+            "Require": "*",
+            "Constraint": "MAX=100",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "System Availability"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "adjust:hourly",
+            "Label": "Hourly Adjustment Factors",
+            "Units": "%",
+            "Group": "Adjustment Factors",
+            "Require": "?",
+            "Constraint": "LENGTH=8760",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "System Availability"
+        },
+        {
+            "DataType": "SSC_MATRIX",
+            "Name": "adjust:periods",
+            "Label": "Period-based Adjustment Factors",
+            "Units": "%",
+            "Meta": "n x 3 matrix [ start, end, loss ]",
+            "Group": "Adjustment Factors",
+            "Require": "?",
+            "Constraint": "COLS=3",
+            "Tab": "System Design",
+            "Section": "Losses",
+            "Subsection": "System Availability"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "enable_interconnection_limit",
+            "Label": "Input 1 to enable grid interconnection limit",
+            "Units": "0/1",
+            "Meta": "Enable a grid interconnection limit",
+            "Group": "GridLimits",
+            "Tab": "Grid Limits",
+            "Section": "Gird Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "grid_interconnection_limit_kwac",
+            "Label": "Grid interconnection limit",
+            "Units": "kWac",
+            "Group": "GridLimits",
+            "Tab": "Grid Limits",
+            "Section": "Gird Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "grid_curtailment",
+            "Label": "Grid curtailment as energy delivery limit (first year)",
+            "Units": "MW",
+            "Group": "GridLimits",
+            "Require": "?",
+            "Tab": "Grid Limits",
+            "Section": "Grid Curtialment"
+        }
+    ]
+}

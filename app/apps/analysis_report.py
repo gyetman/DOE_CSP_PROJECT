@@ -368,7 +368,10 @@ def gather_data(x):
         updates.update({'FeedC_r':d['FeedC_r'],
                         'Capacity':d['nominal_daily_cap_tmp'],
                         'storage_hour':d['storage_hour'],
-                        'RR': d['R1'] * 100})
+                        'R1': d['R1'] * 100,
+                        'R2': d['R2'] ,
+                        'R3': d['R3'] ,
+                        'stage': d['stage']})
         # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
@@ -746,6 +749,19 @@ def gather_data(x):
         updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
         updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
 
+    elif updates['solar'] == 'pvwattsv7':
+    # add specific data from solar GUI output
+        s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
+        updates.update({'q_pb_des':s['system_capacity']})
+        updates.update({'footprint1':s['system_capacity'] * 6 /1000})
+        updates.update({'footprint2':s['system_capacity'] * 8 /1000})
+
+        # add sam simulation output
+        so = helpers.json_load(flkup['sam_solar_simulation_outfile'])
+        index = helpers.index_in_list_of_dicts(so,'Name','System power generated')
+        updates.update({'elec_gen':sum(so[index]['Value']) / 1000 / 1000})
+        updates.update({'cf':sum(so[index]['Value'])  / 3.65 /24 / s['system_capacity']})
+
     elif updates['solar'] == 'SC_FPC' or updates['solar'] == 'SC_ETC':
     # add specific data from solar GUI output
         s = helpers.json_load(cfg.json_outpath / updates['solar_outfile'])
@@ -1004,6 +1020,13 @@ def set_solar_config(x):
         html.Div(f"Design electric energy production: {r['q_pb_des']:.2f} kWdc"),
         html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
         ])
+    elif app['solar'] == "pvwattsv7":
+        return ([
+        html.H5('Solar Field Configuration', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Design electric energy production: {r['q_pb_des']:.2f} kWdc"),
+        html.Div(f"Land footprint area: {r['footprint1']:.0f} to {r['footprint2']:.0f} acres"),    
+        ])
     elif app['solar'] == "SC_FPC" or app['solar'] == 'SC_ETC':
         return ([
         html.H5('Solar Field Configuration', className='card-title'),
@@ -1100,6 +1123,25 @@ def sam_performance(x):
         html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
         html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
         html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
+        html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),   
+        ])
+        else:        
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor (based on design capacity, not the actual one): {r['cf']:.1f} %"),     
+        html.Div(f"Curtailed electric energy: {r['curtail']:.2f} GWh"),    
+        html.Div(f"Percentage of curtailed electric energy: {r['curtail_p']:.1f} %"),   
+        ])
+    elif app['solar'] == "pvwattsv7":
+        if app['desal'] =='RO_FO' or app['desal'] =='RO_MDB':
+            return ([
+        html.H5('Solar Field Performance', className='card-title'),
+        html.Div(f"Technology: {cfg.Solar[r['solar']]}"),
+        html.Div(f"Annual electric energy production: {r['elec_gen']:.2f} GWh"), 
+        html.Div(f"Capacity factor: {r['cf']:.1f} %"),     
         html.Div(f"Curtailed electric energy: {r['curtail2']:.2f} GWh"),    
         html.Div(f"Percentage of curtailed electric energy: {r['curtail2_p']:.1f} %"),   
         ])
@@ -1310,15 +1352,36 @@ def set_system_performance(x):
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
         ])
     elif app['desal'] == 'RO' :
-        return ([
-        html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
-        # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
-        html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
-        html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
-        html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
-        ])
+        if r['stage'] == 1:
+            return ([
+            html.H5('Desalination System Performance', className='card-title'),
+            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
+            html.Div(f"Assumed recovery ratio: {r['R1']:.2f} %"),    
+            html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+            html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+            html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
+            ])
+        elif r['stage'] == 2:
+            return ([
+            html.H5('Desalination System Performance', className='card-title'),
+            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
+            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2']:.2f} %"),    
+            html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+            html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+            html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
+            ])
+        elif r['stage'] == 3:
+            return ([
+            html.H5('Desalination System Performance', className='card-title'),
+            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
+            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2'] * r['R3'] :.2f} %"),    
+            html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
+            html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
+            html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
+            ])
     elif app['desal'] == 'FO':
         return ([
         html.H5('Desalination System Performance', className='card-title'),

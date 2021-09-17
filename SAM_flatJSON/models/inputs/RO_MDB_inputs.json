@@ -35,14 +35,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "has_erd",
-            "Label": "Include ERD with booster pump (Input 0 to remove ERD)",
-            "Require": "*",
-            "Tab": "RO",
-            "Section": "Design Point of the System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "pretreat_power",
             "Label": "Power requirement for pretreatment",
             "Units": "kWh(e)/m3",

@@ -97,7 +97,8 @@ Financial = {'utilityrate5':'Commercial (Distributed)                   ',
              }
 
 # dict for solar/CSP 'values' and 'labels'
-Solar = {'pvsamv1' :'Photovoltaic (Detailed)',
+Solar = {'pvwattsv7': 'PVWatts',
+         'pvsamv1' :'Photovoltaic (Detailed)',
          'SC_FPC' :'Static Collector (Flat Plate)',
          'SC_ETC' :'Static Collector (Evacuated Tube)',
          'trough_physical_process_heat':'Industrial Process Heat Parabolic Trough   ',
@@ -121,7 +122,7 @@ Documentation = {
     'utilityrate5':{'doc':SAMD,'page':771}, 'lcoefcr':{'doc':SAMD,'page':829}, 'iph_to_lcoefcr':{'doc':SAMD,'page':829}, 'levpartflip':{'doc':SAMD,'page':803}, 'equpartflip':{'doc':SAMD,'page':813}, 'saleleaseback':{'doc':SAMD,'page':821}, 'singleowner':{'doc':SAMD,'page':787},
     #Solar
     'pvsamv1':{'doc':SAMD,'page':171},'SC_FPC':{'doc':SAMD,'page':19},'SC_ETC':{'doc':SAMD,'page':19},'trough_physical_process_heat':{'doc':SAMD,'page':706},'linear_fresnel_dsg_iph':{'doc':SAMD,'page':741},'tcslinear_fresnel':{'doc':SAMD,'page':605}, 'tcsMSLF':{'doc':SAMD,'page':627},
-    'tcsdirect_steam':{'doc':SAMD,'page':563}, 'tcsmolten_salt':{'doc':SAMD,'page':526}, 'tcstrough_physical':{'doc':SAMD,'page':437}
+    'tcsdirect_steam':{'doc':SAMD,'page':563}, 'tcsmolten_salt':{'doc':SAMD,'page':526}, 'tcstrough_physical':{'doc':SAMD,'page':437}, 'pvwattsv7':{'doc':SAMD,'page':228}
 }
 
 # function to look up additional documentation for each tab
@@ -183,6 +184,7 @@ def other_documentation(model, tab):
 
 #dict containing the desalination options ('value' and 'disabled') after solar model chosen
 solarToDesal = {
+    'pvwattsv7' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',True),('RO_MDB',True),('Generic',True)],
     'pvsamv1' : [('FO',True),('VAGMD',True),('MDB',True),('LTMED',True),('ABS',True),('MEDTVC',True),('RO',False),('OARO',False),('RO_FO',True),('RO_MDB',True),('Generic',True)],
     'SC_FPC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
     'SC_ETC' : [('FO',False),('VAGMD',False),('MDB',False),('LTMED',False),('ABS',False),('MEDTVC',False),('RO',True),('OARO',True),('RO_FO',False),('RO_MDB',False),('Generic',False)],
@@ -198,6 +200,7 @@ solarToDesal = {
 #dict containing the finance options ('value' and 'disabled') after desal model chosen
 solarToFinance = {
     'pvsamv1': [('utilityrate5',True),('lcoefcr',False),('iph_to_lcoefcr',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
+    'pvwattsv7': [('utilityrate5',True),('lcoefcr',False),('iph_to_lcoefcr',True),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'SC_FPC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'SC_ETC': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
     'trough_physical_process_heat': [('utilityrate5',True),('lcoefcr',True),('iph_to_lcoefcr',False),('levpartflip',True),('equpartflip',True),('saleleaseback',True),('singleowner',True)],
