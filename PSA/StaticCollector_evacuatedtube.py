@@ -96,12 +96,12 @@ class StaticCollector_et(object):
         
         row_design=data.loc[(data['Month']==self.design_point_date[1]) & (data['Day']==self.design_point_date[2]) & (data['Hour']==self.design_point_date[3])].index.values[0]
         T_amb = np.asarray(data['Tdry'])
-        T_amb_design = T_amb[row_design]
+        T_amb_design = self.Tamb_D
 
 # Update Gk (in-plate radiation)
         Gk = np.maximum(np.asarray(data['DNI']), np.asarray(data['GHI']))
         
-        Gk_design = Gk[row_design]
+        Gk_design = self.G
         
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
         dayofyear = []

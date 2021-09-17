@@ -41,7 +41,7 @@ model_selection_layout = html.Div([
             dbc.RadioItems(
                 id='select-solar',
                 options=[
-                    {'label': 'PVWatts   ',
+                    {'label': 'Photovoltaic (PVWatts)   ',
                     'value': 'pvwattsv7', 'disabled': False},
                     {'label': 'Photovoltaic (Detailed)   ',
                     'value': 'pvsamv1', 'disabled': False},

@@ -10,15 +10,6 @@
             "Tab": "Weather"
         },
         {
-            "DataType": "SSC_ARRAY",
-            "Name": "design_point_date",
-            "Label": "Design point [year, month, day, hh, mm, ss]",
-            "Units": "",
-            "Group": "System Design",
-            "Require": "*",
-            "Tab": "System Design"
-        },
-        {
             "DataType": "SSC_NUMBER",
             "Name": "desal_thermal_power_req",
             "Label": "Design capacity",

@@ -396,8 +396,8 @@ def gather_data(x):
         # updates.update({'electric_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific energy consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
-        # index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
-        # updates.update({'p_brine':dd[index]['Value']})
+        index = helpers.index_in_list_of_dicts(dd,'Name','Final permeate salinity')
+        updates.update({'s_permeate':dd[index]['Value']})
 
 
         # add specific data from desal cost output
@@ -1357,7 +1357,8 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Assumed recovery ratio: {r['R1']:.2f} %"),    
+            html.Div(f"Overall recovery ratio: {r['R1']:.2f} %"),  
+            html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"), 
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
             html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
@@ -1367,7 +1368,8 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2']:.2f} %"),    
+            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2']:.2f} %"),  
+            html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),   
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
             html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
@@ -1377,7 +1379,8 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2'] * r['R3'] :.2f} %"),    
+            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2'] * r['R3'] :.2f} %"), 
+            html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),    
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
             html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 

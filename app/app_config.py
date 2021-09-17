@@ -97,7 +97,7 @@ Financial = {'utilityrate5':'Commercial (Distributed)                   ',
              }
 
 # dict for solar/CSP 'values' and 'labels'
-Solar = {'pvwattsv7': 'PVWatts',
+Solar = {'pvwattsv7': 'Photovoltaic (PVWatts)',
          'pvsamv1' :'Photovoltaic (Detailed)',
          'SC_FPC' :'Static Collector (Flat Plate)',
          'SC_ETC' :'Static Collector (Evacuated Tube)',

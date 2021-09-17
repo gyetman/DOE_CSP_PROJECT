@@ -13,9 +13,9 @@
             "Name": "system_capacity",
             "Label": "System size (DC nameplate)",
             "Units": "kW",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "*",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "System Parameters"
         },
         {
@@ -24,10 +24,10 @@
             "Label": "Module type (0: Standard, 1: Premium, 2: Thin film)",
             "Units": "0/1/2",
             "Meta": "Standard,Premium,Thin film",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=0",
             "Constraint": "MIN=0,MAX=2,INTEGER",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "System Parameters"
         },
         {
@@ -35,10 +35,10 @@
             "Name": "dc_ac_ratio",
             "Label": "DC to AC ratio",
             "Units": "ratio",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=1.1",
             "Constraint": "POSITIVE",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "System Parameters"
         },
         {
@@ -47,10 +47,10 @@
             "Label": "Array type (0: Fixed open rack, 1: Fixed roof mount, 2: 1-axis tracking, 3: 1-axis backtracking, 4: 2-axis tracking)",
             "Units": "0/1/2/3/4",
             "Meta": "Fixed Rack,Fixed Roof,1Axis,Backtracked,2Axis",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "*",
             "Constraint": "MIN=0,MAX=4,INTEGER",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Orientation and Tracking"
         },
         {
@@ -59,10 +59,10 @@
             "Label": "Tilt angle",
             "Units": "deg",
             "Meta": "H=0,V=90",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "array_type<4",
             "Constraint": "MIN=0,MAX=90",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Orientation and Tracking"
         },
         {
@@ -71,10 +71,10 @@
             "Label": "Azimuth angle",
             "Units": "deg",
             "Meta": "E=90,S=180,W=270",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "array_type<4",
             "Constraint": "MIN=0,MAX=360",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Orientation and Tracking"
         },
         {
@@ -82,10 +82,10 @@
             "Name": "gcr",
             "Label": "Ground coverage ratio",
             "Units": "0..1",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=0.4",
             "Constraint": "MIN=0.01,MAX=0.99",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Orientation and Tracking"
         },
         {
@@ -93,9 +93,9 @@
             "Name": "rotlim",
             "Label": "Tracker rotation angle limit",
             "Units": "deg",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=45.0",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Orientation and Tracking"
         },
         {
@@ -104,10 +104,10 @@
             "Label": "Total system losses",
             "Units": "%",
             "Meta": "Total system losses",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "*",
             "Constraint": "MIN=-5,MAX=99",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "System Losses"
         },
@@ -116,10 +116,10 @@
             "Name": "en_snowloss",
             "Label": "Input 1 to enable snow loss model",
             "Units": "0/1",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=0",
             "Constraint": "BOOLEAN",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "Shading and Losses"
         },
@@ -128,10 +128,10 @@
             "Name": "inv_eff",
             "Label": "Inverter efficiency at rated power",
             "Units": "%",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?=96",
             "Constraint": "MIN=90,MAX=99.5",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "System Parameters"
         },
         {
@@ -139,9 +139,9 @@
             "Name": "shading:timestep",
             "Label": "Beam irradiance shading losses by time stamp",
             "Units": "%",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "Shading and Snow"
         },
@@ -150,9 +150,9 @@
             "Name": "shading:mxh",
             "Label": "Month-by-hour beam irradiance shading losses",
             "Units": "%",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "Shading and Snow"
         },
@@ -161,9 +161,9 @@
             "Name": "shading:azal",
             "Label": "Solar azimuth-by-altitude beam irradiance shading losses",
             "Units": "%",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "Shading and Snow"
         },
@@ -172,9 +172,9 @@
             "Name": "shading:diff",
             "Label": "Constant sky diffuse shading loss",
             "Units": "%",
-            "Group": "System Design",
+            "Group": "System Design/Sizing",
             "Require": "?",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "Shading and Snow"
         },
@@ -186,7 +186,7 @@
             "Group": "Adjustment Factors",
             "Require": "*",
             "Constraint": "MAX=100",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "System Availability"
         },
@@ -198,7 +198,7 @@
             "Group": "Adjustment Factors",
             "Require": "?",
             "Constraint": "LENGTH=8760",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "System Availability"
         },
@@ -211,7 +211,7 @@
             "Group": "Adjustment Factors",
             "Require": "?",
             "Constraint": "COLS=3",
-            "Tab": "System Design",
+            "Tab": "System Design/Sizing",
             "Section": "Losses",
             "Subsection": "System Availability"
         },

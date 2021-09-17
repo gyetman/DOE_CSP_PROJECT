@@ -94,13 +94,14 @@ class StaticCollector_fp(object):
         T_in_ave = (self.initial_water_temp + self.outlet_water_temp) / 2
         
         row_design=data.loc[(data['Month']==self.design_point_date[1]) & (data['Day']==self.design_point_date[2]) & (data['Hour']==self.design_point_date[3])].index.values[0]
+        
         T_amb = np.asarray(data['Tdry'])
-        T_amb_design = T_amb[row_design]
+        T_amb_design = self.Tamb_D
 
 # Update Gk (in-plate radiation)
         Gk = np.maximum(np.asarray(data['DNI']), np.asarray(data['GHI']))
         
-        Gk_design = Gk[row_design]
+        Gk_design = self.G
         
         Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
         dayofyear = []
@@ -155,7 +156,6 @@ class StaticCollector_fp(object):
         deltaT = T_out - T_in_ave
         
 
-        
         self.num_col = int(np.ceil(row_temp_dif/deltaT))
         mass_flow_corrected = self.num_col / row_temp_dif * deltaT * self.mass_flow_design
 
@@ -189,11 +189,12 @@ class StaticCollector_fp(object):
                 T_input = self.initial_water_temp
                 # Calculate T_out           
                 Tout_col.append(get_Tout_col(Gk[i], T_amb[i], k_theta[i],T_input))
-                
+
                 for j in range(self.num_col):
                     T_output = get_Tout_col(Gk[i], T_amb[i], k_theta[i], T_input)
                     T_input = T_output
-                
+                # print(i)
+                # print('T_output', T_output)
                 Tout_row.append(max(self.initial_water_temp,T_output))
                 gen.append(self.d*mass_flow_corrected*(Tout_row[i]-self.initial_water_temp)* self.num_row)
             else:
