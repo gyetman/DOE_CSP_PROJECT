@@ -79,7 +79,7 @@ cards = dbc.Row([
 ],style={'padding':16})
 
 chart_navbar = dbc.NavbarSimple(
-    brand="COLUMBIA UNIVERSITY | SOLAR DESALINATION ANALYSIS TOOL",
+    brand="COLUMBIA UNIVERSITY | SOLAR ENERGY DESALINATION ANALYSIS TOOL (SEDAT)",
     color="primary",
     dark=True,
     sticky='top',
@@ -89,7 +89,7 @@ chart_navbar = dbc.NavbarSimple(
 
 homepage_layout = html.Div([
     chart_navbar,
-    html.H3("Solar Desalination Analysis Tool", className='text-success', style={'text-align':'center'}),
+    html.H3("Solar Energy Desalination Analysis Tool (SEDAT)", className='text-success', style={'text-align':'center'}),
     dbc.Container([
         cards,
         dbc.Row(dbc.Col(([contact])))
