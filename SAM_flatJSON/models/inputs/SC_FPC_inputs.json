@@ -75,7 +75,7 @@
             "Group": "Collector Specification",
             "Require": "*",
             "Constraint": "",
-            "Tab": "Collector Specification"
+            "Tab": "System Design"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -85,7 +85,7 @@
             "Group": "Collector Specification",
             "Require": "*",
             "Constraint": "",
-            "Tab": "Collector Specification"
+            "Tab": "System Design"
         },
         {
             "DataType": "SSC_NUMBER",
