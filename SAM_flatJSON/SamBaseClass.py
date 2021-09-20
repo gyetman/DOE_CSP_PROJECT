@@ -132,7 +132,7 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 solar_input = json.load(read_file)
             
-            self.staticcollector=StaticCollector_fp(design_point_date = solar_input['design_point_date'],desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], v2 = solar_input['v2'] , qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
+            self.staticcollector=StaticCollector_fp(desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], v2 = solar_input['v2'] , qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
             self.heat_gen, self.sc_output = self.staticcollector.design()
             filename = 'Solar_output' + self.timestamp +'.json'
             
@@ -172,7 +172,7 @@ class SamBaseClass(object):
             
             with open(self.json_values, "r") as read_file:
                 solar_input = json.load(read_file)
-            self.staticcollector=StaticCollector_et(design_point_date = solar_input['design_point_date'],desal_thermal_power_req = solar_input['desal_thermal_power_req'],
+            self.staticcollector=StaticCollector_et(desal_thermal_power_req = solar_input['desal_thermal_power_req'],
                                                     initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],
                                                     cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], 
                                                     A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], 
