@@ -14,7 +14,7 @@
 	"equip_cost_method": "general",
 	"sec": 2.5,
 	"disposal_cost": 0.03,
-	"cost_storage": 26,
+	"cost_storage": 150,
 	"FO_unit_capex": 1000,
 	"FO_labor": 0.13,
 	"FO_chem_cost":0.07,

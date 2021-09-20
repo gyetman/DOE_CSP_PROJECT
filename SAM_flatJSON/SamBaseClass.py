@@ -862,7 +862,7 @@ class SamBaseClass(object):
             print('lcoe', self.lcoe)
             self.LCOW = OARO_cost(Capacity = self.desal_values_json['Capacity'], Prod = (self.simu_output[4]['Value']), fuel_usage = self.simu_output[7]['Value'], oaro_area  = self.costout['oaro_area'], ro_area  = self.costout['ro_area'],  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 downtime =  self.cost_values_json['downtime'],chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'], pumpcost = self.costout['pumpcost'], erdcost  = self.costout['erdcost'], ro_cost  =  self.cost_values_json['ro_cost'], oaro_cost  =  self.cost_values_json['oaro_cost'],
-                                sec =  self.costout['sec'], sam_coe = self.lcoe, practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
+                                solar_coe = self.cost_values_json['solar_coe'], sec =  self.costout['sec'], sam_coe = self.lcoe, practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
         
             self.cost_output = self.LCOW.lcow()
             

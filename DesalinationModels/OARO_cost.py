@@ -43,7 +43,8 @@ class OARO_cost(object):
                  rep_rate=0.15,    # membrane replacement 
                  practical_inv_factor = 1.6, # Practical investment factor to convert total equipment costs to total capital investment
                  storage_cap = 0, # Capacity of battery (kWh)
-                 cost_storage = 26
+                 cost_storage = 26,
+                 solar_coe = None,
                  ):
 
         self.chem_cost=chem_cost
@@ -66,16 +67,20 @@ class OARO_cost(object):
 
         self.replacement_rate=rep_rate
         # self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.ann_prod
-
+        
+        if solar_coe:
+            self.sam_coe = solar_coe
+        else:
+            self.sam_coe = sam_coe
         self.coe = coe
-        self.sam_coe = sam_coe
         self.fuel_usage = fuel_usage / 100
         self.practical_inv_factor = practical_inv_factor
 #        self.cost_module_re = cost_module_re
         self.yrs = yrs
         self.int_rate = int_rate
         self.cost_storage = cost_storage
-        self.storage_cap = storage_cap    
+        self.storage_cap = storage_cap  
+        
         
     def lcow(self):
 

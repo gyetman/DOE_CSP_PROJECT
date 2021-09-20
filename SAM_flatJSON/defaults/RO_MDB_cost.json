@@ -15,7 +15,7 @@
 	"unit_capex": null,
 	"sec": 2.5,
 	"disposal_cost": 0.03,
-	"cost_storage": 26,
+	"cost_storage": 150,
 	"solar_inlet" : 85,
 	"solar_outlet" : 95,
 	"HX_eff": 0.85,

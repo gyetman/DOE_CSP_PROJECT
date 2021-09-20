@@ -79,12 +79,12 @@
             "Units": "",
             "Require": "",
 			"Tab": "Desalination"
-        },				
-		{
+        },	
+        {
             "DataType": "SSC_NUMBER",
-            "Name": "sec",
-            "Label": "Specific energy consumption",
-            "Units": "kwh/m3",
+            "Name": "solar_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Units": "$/kWh",
             "Require": "",
 			"Tab": "Desalination"
         }

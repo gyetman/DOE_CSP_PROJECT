@@ -242,7 +242,7 @@
             "Group": "GridLimits",
             "Require": "?",
             "Tab": "Grid Limits",
-            "Section": "Grid Curtialment"
+            "Section": "Grid Curtailment"
         }
     ]
 }
