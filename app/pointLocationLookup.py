@@ -34,7 +34,6 @@ logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 # layer dictionaries. defaultLayers is always queried for model parameters. Other layers are added
 # to the defaultLayers in the method call. 
 # TODO: need to move to JSON files
-# TODO: calculate distances to water plants, desal & power plant
 
 # generalized country layer
 countryLayer = {
@@ -59,7 +58,7 @@ defaultLayers = {
     #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     # Canals are stored by state, just the base path here
     'canals':{'point':cfg.gis_query_path / 'canals_split_points' / ''},
-    'waterProxy':{'point':cfg.gis_query_path / 'roads_proxy.shp'},
+    'waterProxy':{'point':cfg.gis_query_path / 'roads_split_points' / ''},
     'tx_county':{'poly':cfg.gis_query_path / 'tx_county_water_prices.shp'},
 }
 
@@ -151,9 +150,16 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
     elif country['properties']['iso_merged'] == 'US':
         for key, value in themeLyrs.items():
             if 'point' in value.keys():
-                # handle state-level data
+                # handle state and county-level data
+                # canals are by state
                 if key == 'canals':
                     st = f"{state['properties']['STATEAB']}.shp"
+                    print(value['point'])
+                    closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
+                #water proxy is by county
+                elif key == 'waterProxy':
+                    st = f"tl_{state['properties']['STCOUNTY']}_roads_pt.shp"
+                    print(value['point'])
                     closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
                 else:
                     closestFeatures[key] = _findClosestPoint(pt,value['point'])
@@ -545,7 +551,7 @@ if __name__ == '__main__':
 
     #print(getClosestPlants(ptCoords))
     #print(_calcDistance([0,0],[1,1]))
-    ptCoords = (34.0, 115.0) 
+    ptCoords = (34.0, -115.0) 
     lookupLocation(ptCoords)
     end = datetime.datetime.now()
     print(f'total process took {end - start}')
