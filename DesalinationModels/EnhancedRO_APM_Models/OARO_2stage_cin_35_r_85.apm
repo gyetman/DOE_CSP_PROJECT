@@ -1,24 +1,24 @@
  ! No constraints set on Reynolds numbers
  Model 
    Constants
-	Awj1 = 1.5/3.6e6				! convert to m/bar/s
-	Bsj1 =  1.2469e-08!1.2752e-08  	        !  m/s,  
-	S  = 1200e-6   			! structural parameter, meter
+	Awj1 = 1.5/3.6e6			! convert to m/bar/s
+	Bsj1 = 1.2469e-08  	        !  m/s, OARO baseline salt permeability coefficient (Bartholomew & Mauter, 2018) 
+	S  = 1200e-6   				! structural parameter, meter
 
-	hf = 0.002 ! 0.00075      		! feed channel height   
-	hp = 0.002 !1.62e-3  		    ! permeate channel height, taken from Jeon et al. A simple modeling approach for a forward osmosis system with a spiral wound module. Desalination. 2018 May 1;433:120–31. 
+	hf = 0.002 ! 0.00075      	! feed channel height   
+	hp = 0.002 !1.62e-3  		! permeate channel height, taken from Jeon et al. A simple modeling approach for a forward osmosis system with a spiral wound module. Desalination. 2018 May 1;433:120–31. 
 
-	i = 2					! vant Hoff factor (dissociation factor for NaCl)
-	R = 8.314e-2 			! ideal gas constant
-	T = 20 +273.15			! temperature, Kelvin
-	MW = 58.44				! molecular weight of NaCl
+	i = 2						! vant Hoff factor (dissociation factor for NaCl)
+	R = 8.314e-2 				! ideal gas constant
+	T = 20 +273.15				! temperature, Kelvin
+	MW = 58.44					! molecular weight of NaCl
 
-	void = 0.75				! spacer porosity
+	void = 0.75					! spacer porosity
 
 
 	densityw = 995.1			! density of water, kg/m3, 997 kg/m3 is more accurate but staying consistent with the density-mass fraction fitted equation
-	D = 1e-9				! diffusivity of NaCl, m2/s
-	w=  1.34	!, > 0    	! width of membrane, m
+	D = 1e-9					! diffusivity of NaCl, m2/s
+	w=  1.34	!, > 0    		! width of membrane, m
 	L=1
 	
 	nl=0.5
@@ -51,7 +51,7 @@
 	
 	 Cin=  35		
 	 !Rtq=  0.41
-	 Rt= 0.85	!  - eps  
+	 Rt= 0.85	 ! - eps  
 	  
 	 Pmaxj1_= 65
 	 Pmaxk1_= 85
@@ -87,24 +87,17 @@
 
    Variables
 	
+	 
 	 Mpj[0] > 0  !, < Qin/3600*1300 !< Qin/3600*1300 !>= Qr/3600*995 , < Qin/3600*1300
-	
-	!Qr > 0 , < Qin
+	! Qr > 0 , < Qin
 	 
 	 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 Wj= 1e1 , >= w ,  <= 5e2	
-	 Wk= 1e2 , >= w ,  <= 5e2
 	 
-	 Lj= 4e2 , >= L , <= 1e3
-	 Lk= 2e2 , >= L , <= 1e3 
+	 Wj= 10 , >= w ,  <= 0.5e3	   ! Consider raising
+	 Wk= 100 , >= w ,  <= 1e3
 	 
-	 
-	 
-	 ! Wj= 200 , >= w ,  <= 0.5e3	   ! Consider raising
-	 ! Wk= 1e1 , >= w ,  <= 5e2
-	 
-	 ! Lj= 400 , >= L , <= 1e3 !L*24
-	 ! Lk= 1e2 , >= L , <= 5e2 !L*24
+	 Lj= 400 , >= L , <= 1e3 !L*24
+	 Lk= 200 , >= L , <= 1e3 !L*24
 
 	 ! Jwj[1:N] >= 5.6e-09 , <= 1.1111e-05 ! m3/m2/s  --> rescale to LMH
 
@@ -115,22 +108,20 @@
 	 Jsk[1:N]= 2.85e-06 , >= 0 		  , <= 1.3889e-05 ! kg/m2/s  --> rescale to g/m2/h 
 	
  	 
-	 ! Pfj[0:N]= Pmaxj1_* 0.5 , > 0 , <= Pmaxj1_ 
+	! Pfj[0:N]= Pmaxj1_* 0.5 , > 0 , <= Pmaxj1_ 
 	 
-	 ! Pfk[0:N]= Pmaxk1_* 0.5 , > 0 , <= Pmaxk1_ 
+	! Pfk[0:N]= Pmaxk1_* 0.5 , > 0 , <= Pmaxk1_ 
 	  
-	 ! Ppj[0:N] >= 1 !, <= Pfk[0]
-	 ! Ppjin > Ppj[N] 
-	 
+	! Ppj[0:N] >= 1 !, <= Pfk[0]
 	 Pfj[0]=Pmaxj1_, >= 0.5 *Pmaxj1_ , <= Pmaxj1_ 
 	 Pfj[1:N] >= 1 , <= Pmaxj1_ !0.5 *Pmaxj1_ , <= Pmaxj1_ 
 	 
-	
-	 Ppj[0:N] >= 1 !, <= 4
-	 Ppjin > Ppj[N] 
-
 	 Pfk[0]=Pmaxk1_ , >= 0.5 *Pmaxk1_ , <= Pmaxk1_ 
 	 Pfk[1:N] >= 0.5 *Pmaxk1_ , <= Pfk[0]
+	
+	 Ppj[0:N] >= 1 !, <= 4			   
+	 Ppjin > Ppj[N] 
+
 	 
 	 
 	 Cpoutj= Cin, > 10 , <= Cin !Cfoutj[1:Nstage]= Cpin/(1-Rtq), > Cpin , <= 350
@@ -139,6 +130,7 @@
 	 
 	 !!!!! Adding SEC and LCOW sections
 	 Perdoutk >= 1 , < Pfk[N]
+	 !Perdoutj >= 0, < Pfj[N]
 	 LCOW > 0 !, < 50
 	 SEC= 5 , > 0 !, < 100
 	 ! PQBpumpk= .5 ,  >= 0
@@ -387,7 +379,7 @@
 	 
 	 cfjout=750.6*Xfj[N]^2 + 995.1*Xfj[N]
 	 Xb=(Mfj[N]*Xfj[N]+Mr*Xfk[N])/(Mfj[N]+ Mr) 
-	 Cb=750.6*Xb^2 + 995.1*Xb
+	 Cb=750.6*Xb^2 + 995.1*Xb			 
    End Intermediates
 
    Equations
@@ -401,12 +393,8 @@
 	 Mpj[N] <= .8*Mfj[0]  
 	 Mpj[N] >= 0.005*Mfj[0]
 	 
-	! Mpj[N] >= 0.005*Mfj[0] 
 	 ! Xpj[N] >= Xfj[0]
 	 ! Xpj[N] <= Xfj[0]*10
-	 
-	 Xpj[N] >= Xfj[0]
-	 Xpj[N] <= Xfj[0]*10
 !!!! 	 Xpj[N] <= Xfj[0]*3 HAD TO BE DISABLED FOR 20 g/L and Rt=85%
 
 	 
