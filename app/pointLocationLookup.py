@@ -58,7 +58,7 @@ defaultLayers = {
     #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     # Canals are stored by state, just the base path here
     'canals':{'point':cfg.gis_query_path / 'canals_split_points' / ''},
-    'waterProxy':{'point':cfg.gis_query_path / 'roads_split_points' / ''},
+    'waterProxy':{'point':cfg.gis_query_path / 'roads_shapes_zipped' / ''},
     'tx_county':{'poly':cfg.gis_query_path / 'tx_county_water_prices.shp'},
 }
 
@@ -158,9 +158,12 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
                     closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
                 #water proxy is by county
                 elif key == 'waterProxy':
-                    st = f"tl_{state['properties']['STCOUNTY']}_roads_pt.shp"
-                    print(value['point'])
-                    closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
+                    base_name = f"tl_{state['properties']['STCOUNTY']}"
+                    st = f"zip://{base_name}_roads_pt.zip/{base_name}_roads_pt.shp"
+                    closestFeatures[key] = _findClosestPoint(
+                        pt, value['point'] / st, 
+                        f"{value['point']}/{base_name}"
+                    )
                 else:
                     closestFeatures[key] = _findClosestPoint(pt,value['point'])
             elif 'poly' in value.keys():
@@ -210,16 +213,21 @@ def getClosestInfrastructure(pnt):
         # get the state
         state = _findIntersectFeatures(pnt,countyLayer['county']['poly'])
         st = f"{state['properties']['STATEAB']}.shp"
+        cnty = f"tl_{state['properties']['STCOUNTY']}"
+        w_proxy = "zip://{defaultLayers['waterProxy']['point']}{cnty}/_roads_pt.zip/{cnty}_roads_pt.shp"
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
         plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
         canal = _findClosestPoint(pnt, defaultLayers['canals']['point'] / st)
         #canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
-        water = _findClosestPoint(pnt,defaultLayers['waterProxy']['point'])
+        # water is zipped, needs the kd_path parameter
+        kd = f"{defaultLayers['waterProxy']['point']}{cnty}_roads_pt"
+        logging.info(kd)
+        water = _findClosestPoint(pnt,w_proxy,kd_path=kd)
         return {
             'desal':[desal['properties']['Latitude'],desal['properties']['Longitude']],
             'plant':[plant['geometry']['coordinates'][1],plant['geometry']['coordinates'][0]],
             'canal':[canal['geometry']['coordinates'][1],canal['geometry']['coordinates'][0]],
-            'water':[water['properties']['latitude'],water['properties']['longitude']],
+            'water':[water['properties']['POINT_Y'],water['properties']['POINT_X']],
         }
     else:
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
@@ -302,17 +310,26 @@ def _findIntersectFeatures(pt,intersectLyr):
         # currently not being used...
         return _findMatchFromCandidates(pt,intersectLyr,possibleMatches)
         
-def _findClosestPoint(pt,lyr):
+def _findClosestPoint(pt,lyr,kd_path=None):
     ''' find the closest point or line to the supplied point
     @param [pt]: list or tuple of point coordinates in latitude / longitude (x,y)
     @param [closestLayers]: list of point or line layers
+    @param [kd_path]: is the path and base name for the KD file stored outside
+    of a zipped archive
     ''' 
     # TODO: update max dist, I believe it's in DD, not meters or km
     queryPoint = np.asarray([pt[1],pt[0]]) 
     # open each layer and find the matches
     logging.info(f'Finding closest point for {lyr.stem}...')
     # check for kdtree
-    kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
+    if kd_path:
+
+        logging.info(f'KD Path provided: {kd_path}')
+        kdFile = Path(f'{kd_path}.kdtree')
+    else:
+        kdFile = Path(f'{lyr.parent}/{lyr.stem}.kdtree')
+        logging.info(kd_path)
+    logging.info(kdFile)
     if kdFile.exists:
         logging.info('using pre-built index')
         with open(kdFile,'rb') as f:
@@ -320,9 +337,10 @@ def _findClosestPoint(pt,lyr):
             closestPt = idx.query(queryPoint)
             logging.debug(closestPt)
     else:
-        with fiona.open(lyr) as source:
-            features = list(source)
-        pts = np.asarray([feat['geometry']['coordinates'] for feat in features])
+        return None
+        # with fiona.open(lyr) as source:
+        #     features = list(source)
+        # pts = np.asarray([feat['geometry']['coordinates'] for feat in features])
         # TODO: finish the search function for non-KDTree points
         
     if not closestPt:
@@ -376,7 +394,7 @@ def _generateMarkdown(theme, atts, pnt):
 
     # water proxy
     if atts['waterProxy']:
-        water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+        water_pt = [atts['waterProxy']['properties'].get('POINT_Y'), atts['waterProxy']['properties'].get('POINT_X')]
         water_dist = _calcDistance(pnt,water_pt)
         mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
         water_name = atts['waterProxy']['properties'].get('FULLNAME')
@@ -510,7 +528,7 @@ def _updateMapJson(atts, pnt):
     mParams['ghi'] = atts.get('ghi')
     mParams['dni'] = atts.get('dni')
     if atts['waterProxy']:
-        water_pt = [atts['waterProxy']['properties'].get('latitude'), atts['waterProxy']['properties'].get('longitude')]
+        water_pt = [atts['waterProxy']['properties'].get('POINT_Y'), atts['waterProxy']['properties'].get('POINT_X')]
         mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
     else:
         mParams['dist_water_network'] = None
