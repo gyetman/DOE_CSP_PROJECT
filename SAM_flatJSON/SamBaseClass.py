@@ -796,7 +796,7 @@ class SamBaseClass(object):
             self.LCOW = MDB_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.MDB.Area,
                                  Pflux = self.MDB.PFlux_avg, RR = self.MDB.R[-1],
                                  TCO = sum(self.MDB.TCO) / len(self.MDB.TCO), TEI = self.MDB.TEI_r, FFR = self.MDB.FFR_r, th_module = sum(self.MDB.ThPower)/len(self.MDB.ThPower),
-                                 STEC = self.MDB.ave_stec, SEEC = self.cost_values_json['SEEC'],  MD_membrane = self.cost_values_json['MD_membrane'],
+                                 STEC = self.MDB.ave_stec, SEEC = self.MDB.SEEC[-1],  MD_membrane = self.cost_values_json['MD_membrane'],
                                  MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], 
                                  HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], 
                                  other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], 
@@ -936,7 +936,7 @@ class SamBaseClass(object):
                                           pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
                                    
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
-                                          MDB_SEC = self.cost_values_json['MDB_SEC'], MDB_capacity = self.design_output[2]['Value'], MDB_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
+                                          MDB_SEC = self.RO_MDB.MDB.SEEC[-1], MDB_capacity = self.design_output[2]['Value'], MDB_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
                                           MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             

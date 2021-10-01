@@ -157,7 +157,8 @@ def gather_data(x):
         updates.update({'thermal_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific thermal power consumption') 
         updates.update({'specific_thermal_power_consumption':dd[index]['Value']})
-        print('design_P_req:', updates['thermal_power_consumption'])
+        index = helpers.index_in_list_of_dicts(dd,'Name','Specific electrical energy consumption') 
+        updates.update({'specific_electric_power_consumption':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Gained output ratio')
         updates.update({'gained_output_ratio':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
@@ -187,7 +188,6 @@ def gather_data(x):
 
 
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
-        updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})        
     ## Temporal 'if' condition for another desal technology
     elif updates['desal'] == 'LTMED' :
@@ -957,6 +957,7 @@ def set_desal_config(x):
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
+        html.Div(f"Specific electrical energy consumption: {r['specific_electric_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Thermal power consumption: {r['thermal_power_consumption']:.2f} MW")
         ])
     elif app['desal'] == "RO_FO":

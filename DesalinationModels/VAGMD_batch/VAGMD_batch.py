@@ -60,9 +60,22 @@ class VAGMD_batch(object):
         maxS   = 292.2 # g/L
         if self.module == 0:
             k = 7
+            c0=-158.2007422
+            c1=0.39402609
+            c2=0
+            c3=0.000585345
+            c4=8.93618E-05
+            c5=-0.000287828
             self.Area = self.Area_small
+
         else:
             k = 26
+            c0=-72.53793298
+            c1=0.110437201
+            c2=0
+            c3=0.000643495
+            c4=0.000189924
+            c5=-0.001111447
             self.Area = self.Area_big
         
         RRf   = 100 * (1 - self.FeedC_r/maxS) # Maximum value of final recovery ratio allowed
@@ -130,6 +143,17 @@ class VAGMD_batch(object):
         self.TCI = [self.TCI_r]
         self.Ttank = [self.Ttank]
         
+        EffPumpFFR = 0.6
+        EffPumpCFR = 0.6
+        APdropCFR = 170 # mbar
+        self.ElPowerCooling = [(8.3140/(1013.25*0.082*3600*1000))*(APdropCFR/EffPumpCFR)*(self.CFR)]
+        self.APdropFFR  = [c0 + c1 * self.FFR_r + c2 * self.S[0] + c3 * self.FFR_r * self.S[0] + c4 * self.FFR_r**2 + c5 * self.S[0]**2]
+        self.ElPowerFeed = [(8.3140/(1013.25*0.082*3600*1000)) *(self.APdropFFR[0] / EffPumpFFR) * (self.FFR_r)]
+        self.ElPower = [self.ElPowerFeed[0] + self.ElPowerCooling[0]]
+        self.ElEnergy = [0]
+        self.AccElEnergy = [0]
+        self.SEEC = [0]
+        
         # Complete the time series
         while self.S[-1] < self.Sf and self.V[-1] > 0:
             self.t.append(self.t[-1]+ self.dt/3600)
@@ -144,6 +168,7 @@ class VAGMD_batch(object):
             self.Cmax = max(self.Ch[-1], self.Cc[-1]) 
             self.NTU = U * AHX / self.Cmin
             self.Eff.append( (1-math.exp(-(1-(self.Cmin/self.Cmax))*self.NTU))/(1-self.Cmin/self.Cmax*math.exp(-(1-(self.Cmin/self.Cmax))*self.NTU)))
+            self.ElPowerCooling.append(self.ElPowerCooling[-1])
             
             if self.j == 'o':
                 self.TCoolIn.append(self.TCoolIn[-1])
@@ -174,7 +199,14 @@ class VAGMD_batch(object):
             self.AccCEnergy.append(self.CEnergy[-1] + self.AccCEnergy[-1])
             self.GOR.append(new_results[13])
             self.STEC.append(new_results[12])
-        
+            
+            self.APdropFFR.append(c0 + c1 * self.FFR_r + c2 * self.S[-1] + c3 * self.FFR_r * self.S[-1] + c4 * self.FFR_r**2 + c5 * self.S[-1]**2)
+            self.ElPowerFeed.append((8.3140/(1013.25*0.082*3600*1000)) *(self.APdropFFR[-1] / EffPumpFFR) * (self.FFR_r) )
+            self.ElPower.append( self.ElPowerFeed[-1] + self.ElPowerCooling[-1])
+            self.ElEnergy.append( self.ElPower[-2] * (self.t[-1] - self.t[-2]))
+            self.AccElEnergy.append(self.ElEnergy[-1] + self.AccElEnergy[-1])
+            self.SEEC.append(self.AccElEnergy[-1] / (self.AccVd[-1] / 1000))
+            
 
         
         self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.AccVd, self.S, self.PFlux, self.R, self.ThEnergy, self.CEnergy])
@@ -208,6 +240,7 @@ class VAGMD_batch(object):
         # self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
         self.design_output.append({'Name':'Thermal power requirement','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
+        self.design_output.append({'Name':'Specific electrical energy consumption','Value': self.SEEC[-1],'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
         if ( k == 7 and self.Sf > 175.3):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
