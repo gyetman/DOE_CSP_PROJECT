@@ -159,10 +159,13 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
                 #water proxy is by county
                 elif key == 'waterProxy':
                     base_name = f"tl_{state['properties']['STCOUNTY']}"
-                    st = f"zip://{base_name}_roads_pt.zip/{base_name}_roads_pt.shp"
+                    st = f"{base_name}_roads_pt.zip/{base_name}_roads_pt.shp"
+                    logging.info("st:")
+                    logging.info(st)
                     closestFeatures[key] = _findClosestPoint(
-                        pt, value['point'] / st, 
-                        f"{value['point']}/{base_name}"
+                        pt, 
+                        f"zip://{value['point']}/{st}", 
+                        f"{value['point']}/{base_name}_roads_pt"
                     )
                 else:
                     closestFeatures[key] = _findClosestPoint(pt,value['point'])
@@ -214,13 +217,15 @@ def getClosestInfrastructure(pnt):
         state = _findIntersectFeatures(pnt,countyLayer['county']['poly'])
         st = f"{state['properties']['STATEAB']}.shp"
         cnty = f"tl_{state['properties']['STCOUNTY']}"
-        w_proxy = "zip://{defaultLayers['waterProxy']['point']}{cnty}/_roads_pt.zip/{cnty}_roads_pt.shp"
+        w_proxy = f"zip://{defaultLayers['waterProxy']['point']}/{cnty}_roads_pt.zip/{cnty}_roads_pt.shp"
+        logging.info("Water Proxy:")
+        logging.info(w_proxy)
         desal = _findClosestPoint(pnt,defaultLayers['desalPlants']['point'])
         plant = _findClosestPoint(pnt,defaultLayers['powerPlants']['point'])
         canal = _findClosestPoint(pnt, defaultLayers['canals']['point'] / st)
         #canal = _findClosestPoint(pnt,defaultLayers['canals']['point'])
         # water is zipped, needs the kd_path parameter
-        kd = f"{defaultLayers['waterProxy']['point']}{cnty}_roads_pt"
+        kd = f"{defaultLayers['waterProxy']['point']}/{cnty}_roads_pt"
         logging.info(kd)
         water = _findClosestPoint(pnt,w_proxy,kd_path=kd)
         return {
@@ -320,7 +325,7 @@ def _findClosestPoint(pt,lyr,kd_path=None):
     # TODO: update max dist, I believe it's in DD, not meters or km
     queryPoint = np.asarray([pt[1],pt[0]]) 
     # open each layer and find the matches
-    logging.info(f'Finding closest point for {lyr.stem}...')
+    logging.info(f'Finding closest point for {lyr}...')
     # check for kdtree
     if kd_path:
 
@@ -336,8 +341,7 @@ def _findClosestPoint(pt,lyr,kd_path=None):
             idx = pickle.load(f)
             closestPt = idx.query(queryPoint)
             logging.debug(closestPt)
-    else:
-        return None
+    # else:
         # with fiona.open(lyr) as source:
         #     features = list(source)
         # pts = np.asarray([feat['geometry']['coordinates'] for feat in features])
