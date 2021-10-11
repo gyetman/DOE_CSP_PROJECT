@@ -193,9 +193,9 @@ class VAGMD_batch(object):
             self.TEO.append(new_results[2])             
             self.ATml.append(new_results[10])
             self.ThPower.append(new_results[11])    # kW-th        
-            self.ThEnergy.append(self.ThPower[-1] * self.dt/3600)
+            self.ThEnergy.append(self.ThPower[-1] * self.dt/3600 * 1000)  # Wh-th
             self.AccThEnergy.append(self.ThEnergy[-1] + self.AccThEnergy[-1])            
-            self.CEnergy.append(self.CPower[-1] * (self.t[-1] - self.t[-2]))            
+            self.CEnergy.append(self.CPower[-1] * (self.t[-1] - self.t[-2]) * 1000)  # Wh-th           
             self.AccCEnergy.append(self.CEnergy[-1] + self.AccCEnergy[-1])
             self.GOR.append(new_results[13])
             self.STEC.append(new_results[12])
@@ -210,7 +210,8 @@ class VAGMD_batch(object):
 
         
         self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.AccVd, self.S, self.PFlux, self.R, self.ThEnergy, self.CEnergy])
-
+        print('ThPower', self.ThPower, self.dt)
+        print('CEnergy', self.CEnergy, self.t)
         self.df = pd.DataFrame(data=self.output,  index=['Step',                                                
                                                           'Operation time (min)',
                                                           'Batch volume (L)',
@@ -218,8 +219,8 @@ class VAGMD_batch(object):
                                                           'Brine salinity (g/L)',
                                                           'Permeate flux (kg/hr/m2)',
                                                           'Recovery rate (%)',
-                                                          'Thermal energy (kWh-th)',
-                                                          'Cooling energy (kWh-th)',])#,
+                                                          'Thermal energy (Wh-th)',
+                                                          'Cooling energy (Wh-th)',])#,
                                 # columns = [ str(i) for i in range(len(self.STEC))])         
         
         self.num_modules = math.ceil(self.Capacity *1000 / (self.AccVd[-1] / self.t[-1] * 24) )
