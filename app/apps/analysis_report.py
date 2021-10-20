@@ -32,6 +32,30 @@ chart_navbar = dbc.NavbarSimple(
 # analysis_report_title = html.Div([
 #     html.H2('Analysis Report', className='page-header', id='report-title'),
 #     html.P(id='data-initialize')])
+info = helpers.json_load(cfg.app_json)
+
+file_name ='/assets/Project_1_output_2021-10-19_10-19-05.xls' # 'D:/PhD/DOE/DOE_CSP_PROJECT/app/assets/Project_1_output_2021-10-19_10-19-05.xls'
+xls_result = dbc.Button(
+                html.Div([
+                dbc.NavLink('Click here to see the full results in Excel', id= 'xls_link',
+                    href=  (file_name) ,
+                    target='_blank',
+                    external_link=True,
+                    style={
+                        'float':'right',
+                        'display':'inline-block', 
+                        'padding': '4px',
+                        'font-size': '17px'
+                    },
+                    className='fas fa-info-circle fa-2x text-info'
+                    )
+                ]),
+                color="Success",
+                outline=True, 
+                size = 'sm',
+                style={'padding': '4px', 'padding-right': '6px', 'textAlign': 'center'}
+            )  
+
 
 local_condition = dbc.CardBody(id='local-condition')
 
@@ -50,6 +74,7 @@ system_description = dbc.Card([dbc.CardHeader(html.H4('System Description')),loc
 simulation_results = dbc.Card([dbc.CardHeader(html.H4('Simulation Results')),system_performance, sam_performance, cost_analysis], id='simulation-results', color='dark', inverse=True)
 
 analysis_report_layout = [chart_navbar, 
+                          xls_result,
                           dbc.Container(dbc.CardDeck([system_description, simulation_results]),style={'margin-bottom':150})]
 
 @app.callback(
@@ -100,7 +125,7 @@ def gather_data(x):
         updates.update({'gained_output_ratio':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
         updates.update({'n_modules':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
+        index = helpers.index_in_list_of_dicts(dd,'Name','recovery rate')
         updates.update({'RR':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
         updates.update({'p_brine':dd[index]['Value']})
@@ -368,9 +393,9 @@ def gather_data(x):
         updates.update({'FeedC_r':d['FeedC_r'],
                         'Capacity':d['nominal_daily_cap_tmp'],
                         'storage_hour':d['storage_hour'],
-                        'R1': d['R1'] * 100,
-                        'R2': d['R2'] ,
-                        'R3': d['R3'] ,
+                        'R1': d['R1'] ,
+                        'R2': d['R2'] /100,
+                        'R3': d['R3'] /100,
                         'stage': d['stage']})
         # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
@@ -580,7 +605,7 @@ def gather_data(x):
         updates.update({'electric_power_consumption':dd[index]['Value'] * 1000})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific electricity consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
+        index = helpers.index_in_list_of_dicts(dd,'Name','recovery rate')
         updates.update({'rr':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
         updates.update({'p_brine':dd[index]['Value']})
@@ -610,7 +635,7 @@ def gather_data(x):
                         'Capacity':d['Mprod'],
                         'storage_hour':d['storage_hour'],
                         'fossil_fuel': fossil_fuel,
-                        'RR': d['r']*100})
+                        'RR': d['r']})
         # add specific data from desal simulation output
         ds = helpers.json_load(flkup['sam_desal_simulation_outfile'])
         index = helpers.index_in_list_of_dicts(ds,'Name','Storage Capacity')
@@ -1347,7 +1372,7 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),        
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
-        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
@@ -1358,7 +1383,7 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Overall recovery ratio: {r['R1']:.2f} %"),  
+            html.Div(f"Overall recovery rate: {r['R1']:.2f} %"),  
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"), 
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1369,7 +1394,7 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2']:.2f} %"),  
+            html.Div(f"Overall recovery rate: {r['R1'] * r['R2']:.2f} %"),  
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),   
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1380,7 +1405,7 @@ def set_system_performance(x):
             html.H5('Desalination System Performance', className='card-title'),
             html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-            html.Div(f"Overall recovery ratio: {r['R1'] * r['R2'] * r['R3'] :.2f} %"), 
+            html.Div(f"Overall recovery rate: {r['R1'] * r['R2'] * r['R3'] :.2f} %"), 
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),    
             html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
             html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
@@ -1391,7 +1416,7 @@ def set_system_performance(x):
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
@@ -1401,7 +1426,7 @@ def set_system_performance(x):
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-        html.Div(f"Overall recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Overall recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
         html.Div(f"Total external heat usage: {r['external_heat']:.0f} MWh"),
         html.Div(f"Percentage of electric energy from solar field: {r['elec_solar_percent']:.1f} %"),    
@@ -1415,7 +1440,7 @@ def set_system_performance(x):
         html.Div(f"Annual water production: {r['actual_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
-        html.Div(f"Assumed recovery ratio: {r['rr']:.1f} %"),    
+        html.Div(f"Assumed recovery rate: {r['rr']:.1f} %"),    
         #html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} kWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from grid: {r['fossil_percent']:.1f} %"), 
@@ -1424,11 +1449,15 @@ def set_system_performance(x):
         df = pd.read_csv(cfg.sam_results_dir/'MDB_output.csv',skiprows = 1)      
         for i in range(1,len(df.columns.values)):
             df.columns.values[i] = str(i)
+        if len(df.columns) > 7:
+            hidden_columns = df.columns[4:-3]
+        else:
+            hidden_columns = []
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
@@ -1437,7 +1466,7 @@ def set_system_performance(x):
         html.Div("   Single module performance",
                  style = {'textAlign':'center','font-size': '18px', 'fontWeight':'bold','color':'rgb(230, 247, 240)'}),
         dash_table.DataTable(id='table',
-                              columns= [{"name": i, "id": i} for i in df.columns], 
+                              columns= [{"name": i, "id": i  } for i in df.columns  ], 
                               data=df.to_dict('records'),
                               style_cell={'backgroundColor': 'rgb(230, 247, 240)','color':'black','font-size':'12px'},
                               style_header = {'fontWeight':'bold','color':'rgb(9, 131, 143)','font-size':'16px'},
@@ -1446,15 +1475,19 @@ def set_system_performance(x):
                                       'if': {'column_id': 'Step'},
                                       'color': 'rgb(9, 131, 143)', 'font-size':'12px'
                                   }],
-                              export_format = 'xlsx'
+                              hidden_columns = hidden_columns,
+                              export_format = 'xlsx',
+                              export_columns = 'all',
+                              css=[{"selector": ".show-hide", "rule": "display: none"}]
                               ),
+        
         ])
     elif app['desal'] == 'Generic':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
         html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
-        html.Div(f"Assumed recovery ratio: {r['RR']:.2f} %"),    
+        html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
         html.Div(f"Percentage of energy from solar field: {r['solar_percent']:.1f} %"),    
         html.Div(f"Percentage of energy from other sources: {r['fossil_percent']:.1f} %"), 
