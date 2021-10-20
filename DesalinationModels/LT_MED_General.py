@@ -22,7 +22,8 @@ class lt_med_general(object):
          Nef     =  14  , # The feed water salinity, ppm
          Capacity = 2000,    # Capacity of the plant (m3/day)
          Tin     = 15 , # Inlet seawater temperature
-         RR      = 50 , # recovery ratio (%)
+         RR      = 50 , # recovery ratio (%),
+         TN      = 35 , # Last effect vapor temperature
          Fossil_f = 1 # Fossil fuel fraction
          ):
         
@@ -33,6 +34,7 @@ class lt_med_general(object):
         self.Xf = Xf *1000
         self.RR = RR / 100
         self.Tin  = Tin
+        self.TN = Tin +10
     
     def design(self):
         p1 = self.Xf
@@ -71,22 +73,47 @@ class lt_med_general(object):
                 [-0.002376352,-15203.25577,0.005467593,0.017976383,2.00E-06,-0.06875,0.215886212,-7.70E-08,-0.26807285,9.48E-07,-0.085658082,2.55E-08,0.204513889,-0.001583333,-3.11E-06,2972.305599,0.000277778,1.45E-11,0.000791667,18679.44444,1.53E-09,],
                 [0.000254866,9.327583362,0.000417519,0.962597788,1.24E-05,0.712548611,1.49E-09,8.32E-15,-5.90E-09,3.16E-11,-1.494248195,-1.18E-05,-0.680930556,-0.031864271,6.60E-11,46.37199204,0.01819,-4.17E-14,0.018914444,15.24027778,3.08E-09,]
                 ]
-                        
-        self.GOR = np.dot(paras,coeffs[0])
-        self.qs = np.dot(paras,coeffs[1])
-        self.DELTAT = np.dot(paras,coeffs[2]) # the difference between the condensation temperature in the evaporator and the vapor temperature in such effect
-        self.sA = np.dot(paras,coeffs[4])
-        self.qF = np.dot(paras, coeffs[3])
+        if self.Nef in [14,16]:
+            self.GOR = np.dot(paras,coeffs[0])
+            self.qs = np.dot(paras,coeffs[1])
+            self.DELTAT = np.dot(paras,coeffs[2]) # the difference between the condensation temperature in the evaporator and the vapor temperature in such effect
+            self.sA = np.dot(paras,coeffs[4])
+            self.qF = np.dot(paras, coeffs[3])
+        
+        else:
+            Xf, RR, TN, Ts = self.Xf, self.RR, self.TN, self.Ts
+            GOR_paras = [Xf, RR, RR* Xf, TN, TN*Xf, TN*RR, Ts, Ts*Xf, Ts*RR, Ts*TN, 1 , Ts**2, TN**2, RR**2, Xf**2]
+            sA_paras  = [Xf,    Xf**2,  RR,         RR*Xf,      RR*Xf**2,   RR**2,      RR**2*Xf,
+                         TN,    TN*Xf,  TN*Xf**2,   TN*RR,      TN*RR*Xf,   TN*RR**2,   TN**2,
+                         TN**2*Xf, TN**2*RR, Ts, Ts*Xf, Ts*Xf**2, Ts*RR, Ts*RR*Xf, 
+                         Ts*RR**2, Ts*TN, Ts*TN*Xf, Ts*TN*RR, Ts*TN**2, Ts**2, Ts**2*Xf,
+                         Ts**2*RR, Ts**2*TN, 1, Ts**3, TN**3, RR**3, Xf**3]
+            
+            GOR_coeffs = {3:[1.60E-07,0.826895712,-2.04E-07,0.003340838,-5.56E-09,0.000666667,-0.003295958,1.17E-10,-0.000549708,-2.46E-06,2.662545127,-1.98E-07,7.41E-07,-0.675925926,-4.12E-13],
+                          6:[5.86E-07,2.940942982,-1.44E-06,0.007985234,-2.26E-08,0.001472222,-0.007157144,8.73E-09,-0.001540936,4.88E-06,4.741753363,-1.04E-06,-1.67E-05,-2.333333333,-7.41E-13],
+                          9:[1.67E-06,5.9507846,-3.94E-06,0.012607651,-5.50E-08,0.002222222,-0.010203548,2.47E-08,-0.002549708,2.94E-05,6.350104873,-1.05E-05,-5.09E-05,-4.653703704,-2.88E-12],
+                          12:[3.30E-06,9.621851852,-7.98E-06,0.016637037,-1.09E-07,0.002,-0.012637326,5.13E-08,-0.003277778,8.28E-05,7.592772368,-3.09E-05,-9.98E-05,-7.425925926,-6.09E-12],
+                          15:[5.18E-06,13.78669547,-1.35E-05,0.020924649,-1.83E-07,0.000277778,-0.014688955,9.82E-08,-0.002836257,0.000158919,8.538343343,-6.45E-05,-0.000167731,-10.58982036,-1.63E-11]}
+            
+            sA_coeffs  = {3:[0.000596217,-3.66E-09,0,-2.44E-05,1.93E-09,0,5.60E-05,0,-2.95E-07,5.30E-11,0,7.14E-06,0,0.064807392,2.06E-07,0.00974051,0,-1.16E-05,-3.96E-11,0,-5.27E-06,0,-0.05718687,-2.61E-07,-0.011936049,-0.000702529,0.013464849,1.65E-07,0.003686623,0.000759933,0,-0.00019293,-0.000182949,0,3.20E-14],
+                          6:[0.00040105,-6.57E-09,0,-1.56E-05,3.67E-10,0,2.62E-05,0,7.08E-07,8.73E-12,0,1.46E-06,0,0.032775092,5.04E-08,0.002499309,0,-3.30E-06,-6.53E-12,0,-1.02E-06,0,-0.028641745,-6.66E-08,-0.002735652,-0.000301667,0.005600544,4.10E-08,0.000713386,0.000329733,0,-7.31E-05,-0.00010089,0,4.94E-14],
+                          9:[0.000596217,-3.66E-09,0,-2.44E-05,1.93E-09,0,5.60E-05,0,-2.95E-07,5.30E-11,0,7.14E-06,0,0.064807392,2.06E-07,0.00974051,0,-1.16E-05,-3.96E-11,0,-5.27E-06,0,-0.05718687,-2.61E-07,-0.011936049,-0.000702529,0.013464849,1.65E-07,0.003686623,0.000759933,0,-0.00019293,-0.000182949,0,3.20E-14],
+                          12:[0.000894724,1.62E-08,0,-0.000287808,1.22E-08,0,0.00028908,0,-1.82E-05,2.99E-10,0,3.71E-05,0,0.130413747,8.00E-07,0.040822216,0,-3.51E-05,-2.21E-10,0,-2.85E-05,0,-0.110185354,-9.65E-07,-0.05537221,-0.001731678,0.03194821,6.33E-07,0.019196432,0.001859674,0,-0.000543621,-0.000374878,0,-9.94E-14],
+                          15:[0.005685486,2.79E-07,0,-0.01767792,4.20E-07,0,0.014972954,0,-0.000685465,5.31E-09,0,0.001021958,0,0.598562516,9.56E-06,0.879295485,0,-0.000125358,-3.88E-09,0,-0.000845281,0,-0.237595008,-1.07E-05,-1.342398325,-0.012480131,0.109771476,7.64E-06,0.527896922,0.013668637,0,-0.004866016,-0.003499437,0,-2.36E-12]}
+            
+            self.GOR = np.dot(GOR_paras, GOR_coeffs[self.Nef])
+            self.sA  = np.dot(sA_paras, sA_coeffs[self.Nef])
+            
+            self.qF = self.Capacity / self.RR / 24
+            self.qs = self.Capacity * 1000 / self.GOR / 24 / 3600
+            
+            
+        
         
         self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *1000/3600
         self.P_req = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Ts+273.15))[0] *self.Capacity *1000/24/3600
         
-        # self.system = lt_med_calculation(Nef = self.Nef, Ts = self.Ts, Ms = self.qs, Mf = self.qF, Tcwin = self.Tin)
-        # self.system.model_execution() 
-        # print('calculated STEC:', self.system.STE)
-        # print('calculated GOR:', self.system.GOR)
-        # print('calculated sumA:', self.system.sum_A)
-        # print('calculated production:', self.system.Mprod_m3_day)
+        
         
         self.T_d = self.Tin + 10  
         self.T_b = self.T_d + 1  
@@ -121,9 +148,9 @@ class lt_med_general(object):
         self.design_output.append({'Name':'The mass flow rate of the steam','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific heat transfer area','Value':self.sA,'Unit':'m2/m3/day'})
         self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kg/kg'})  
-        self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
-        if self.DELTAT < 2:
-            self.design_output.append({'Name':'Warning','Value':'Delta T is too small, cost might be high','Unit':''})
+        # self.design_output.append({'Name':'Delta T','Value':self.DELTAT,'Unit':'oC'})
+        # if self.DELTAT < 2:
+        #     self.design_output.append({'Name':'Warning','Value':'Delta T is too small, cost might be high','Unit':''})
         
         
         

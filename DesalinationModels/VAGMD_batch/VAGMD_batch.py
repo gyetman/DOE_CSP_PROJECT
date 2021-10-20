@@ -210,8 +210,6 @@ class VAGMD_batch(object):
 
         
         self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.AccVd, self.S, self.PFlux, self.R, self.ThEnergy, self.CEnergy])
-        print('ThPower', self.ThPower, self.dt)
-        print('CEnergy', self.CEnergy, self.t)
         self.df = pd.DataFrame(data=self.output,  index=['Step',                                                
                                                           'Operation time (min)',
                                                           'Batch volume (L)',

@@ -34,9 +34,9 @@ class RO(object):
                 #RO Plant Design Specifications
                 nominal_daily_cap_tmp=1000,
                 Nel1=None,              #number elements per vessel in stage 1
-                R1=.4,               #Desired overall recovery rate
-                R2 = 0.833,          # 2nd stage recovery rate
-                R3 = 0.9,            # 3rd stage recovery rate
+                R1=40,               #Desired overall recovery rate
+                R2 = 83.3,          # 2nd stage recovery rate
+                R3 = 90,            # 3rd stage recovery rate
                 # RO Membrane Property Inputs: 
                 #load in from a table of membrane types w/properties or enter manually.
                 # Using default values here based on manufacturer's datasheet for seawater RO membrane element: SWC4B MAX
@@ -66,7 +66,7 @@ class RO(object):
         self.nFP=nFP
         self.nominal_daily_cap_tmp=nominal_daily_cap_tmp
         self.Nel1=Nel1
-        self.R1=R1
+        self.R1=R1/100
         self.Cf=FeedC_r  
         self.Pfp=Pfp
         self.T=T 
@@ -84,8 +84,8 @@ class RO(object):
         self.is_first_stage = is_first_stage
         self.pretreat_power = pretreat_power
         self.stage = stage
-        self.R2 = R2
-        self.R3 = R3
+        self.R2 = R2/100
+        self.R3 = R3/100
     
     def RODesign(self):
         if self.stage == 1:

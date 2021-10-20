@@ -389,7 +389,7 @@ class SamBaseClass(object):
                     for c, col in enumerate(row):
                         ws.write(r, c, col)
         xlxsname = self.project_name + '_' +  'output' + '_' + self.timestamp + '.xls'
-        wb.save(self.samPath / 'XLS results' / xlxsname)
+        wb.save(self.samPath.parent / 'app' / 'XLS_results' / xlxsname)
         
     def sam_calculation(self):
         with open(self.json_values, "r") as read_file:

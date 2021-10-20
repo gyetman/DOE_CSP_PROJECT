@@ -85,7 +85,7 @@ class RO_MDB(object):
         self.nHP=nHP
         self.nFP=nFP
         self.Nel1=Nel1   
-        self.R1=R1
+        self.R1=R1/100
         self.Cf=salinity  
         self.Pfp=Pfp
         self.T=T_sw 
@@ -102,8 +102,8 @@ class RO_MDB(object):
         self.has_erd = True if has_erd == 1 else False
         self.is_first_stage = is_first_stage
         self.pretreat_power = pretreat_power
-        self.R2 = R2
-        self.R3 = R3
+        self.R2 = R2/100
+        self.R3 = R3/100
 
     def design(self):
         self.RO_capacity = self.capacity / (1 + (1-self.RO_rr)/self.RO_rr * self.RR )

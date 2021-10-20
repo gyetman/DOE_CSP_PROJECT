@@ -129,7 +129,16 @@ class MDB_cost(object):
         self.cost_th = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh)
         self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM + self.insurance
         
-
+        CF_factor = (1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
+        print('Membrane cost:', self.MD_membrane * self.Area * self.num_modules * CF_factor)
+        print('Module assembly:', self.MD_module*self.MD_module_capacity*(self.num_modules/self.MD_module_capacity)**0.8*CF_factor)
+        print('HX_cost:', self.HX_cost * CF_factor)
+        print('other_cap:', self.other_cap * CF_factor)
+        print('Elec cost:', self.cost_elec)
+        print('Thermal cost', self.cost_th)
+        print('Cost of membrane replacemenet:', self.cost_module_re)
+        print('other_OM', self.other_OM+self.insurance)
+        
         
         self.LCOW = self.CAPEX + self.OPEX
         

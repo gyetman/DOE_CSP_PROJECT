@@ -12,7 +12,7 @@
 	"cost_storage": 26,
 	"STEC": 30,
 	"Maintenance": 0.05,
-	"SEEC": 1.5,
+	"SEEC": 1,
 	"Cap_membrane" : 11.5,
 	"Cap_HXs" : 13.8,
 	"Cap_construct" : 22.3,

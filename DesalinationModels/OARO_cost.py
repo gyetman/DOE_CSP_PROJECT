@@ -101,6 +101,13 @@ class OARO_cost(object):
         self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
        #### ADD disposal cost
         self.LCOW = self.annualized_CAPEX + self.OPEX 
+
+        print('Membrane cost:', (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost)*CR_factor* self.practical_inv_factor / self.ann_prod)
+        print('Pump cost', self.pumpcost * self.practical_inv_factor * CR_factor / self.ann_prod)
+        print('ERD cost', self.erdcost * self.practical_inv_factor * CR_factor / self.ann_prod)
+        print('membrane replacement', self.memrepcost / self.ann_prod)
+        print('Other OM: ', (self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
+        print('Electricity: ', self.energycost )
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.annualized_CAPEX,'Unit':'$/m3'})
@@ -109,15 +116,7 @@ class OARO_cost(object):
         cost_output.append({'Name':'Levelized cost of electricity (from fossile fuel)','Value':self.coe,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/m3'})
         cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
-        print('prod,', self.ann_prod)
-        print('CAPEX:', self.CAPEX)
-        print('annualized_CAPEX:', self.annualized_CAPEX)
-        print('OPEX:', self.OPEX)
-        print('SEC', self.SEC)
-        print('CR_factor',CR_factor)
-        print('salmakeupcost', self.salmakeupcost)
-        print('energycost', self.energycost)
-        
+
         return cost_output
     
 #    def pump_cost(pumppressure,pumpflowrate):
