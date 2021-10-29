@@ -82,6 +82,16 @@ wells = dl.GeoJSON(
     hoverStyle=dict(weight=5, color='#666', dashArray=''),
 )
 
+# load weather file
+weather_stations = dl.GeoJSON(
+    url='/assets/global_weather_file.geojson',
+    id = {'type':'json_theme','index':'geojson_weather'},
+    cluster=True,
+    zoomToBoundsOnClick=True,
+    superClusterOptions={'radius': 74},
+    hoverStyle=dict(weight=5, color='#666', dashArray=''),
+)
+
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
@@ -145,10 +155,11 @@ radios = dbc.FormGroup([
         options=[{'label':'Canals', 'value':'canals'},
                     {'label':'Power Plants', 'value':'pplants'},
                     {'label':'Desalination Plants', 'value':'desal'},
-                    {'label':'Water wells', 'value':'wells'},
-                    {'label': 'Regulatory', 'value':'regulatory'}],
+                    {'label':'Water Wells', 'value':'wells'},
+                    {'label': 'Regulatory', 'value':'regulatory'}, 
+                    {'label': 'Weather Stations', 'value':'weather'}],
         labelStyle={'display': 'inline-block'},
-        value='canals',
+        value='weather',
         inline=True
     ),
     dbc.RadioItems(
@@ -193,6 +204,7 @@ theme_ids = {
     #'wells': wells,
     'wells': html.Div([wells, info]),
     'regulatory': regulatory,
+    'weather': html.Div([weather_stations, info])
 }
 
 
@@ -315,6 +327,10 @@ def info_hover(features):
                 f"TDS: {tds:,} {units}", html.Br(), 
                 f"Depth: {depth} ft", html.Br(),
                 f"Temperature: - {temp_units}"]
+        elif 'City' in feature['properties'].keys():
+            header = ['Weather Station', html.Br()]
+            name = feature['properties']['City']
+            return header + [name]
 
         #feature is Power Plant
         else:
