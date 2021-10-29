@@ -1,5 +1,6 @@
 import urllib.parse
 import urllib.request
+import json
 
 # API key
 KEY = 'vAvU9ZlrZXVAKd6nKbgUPcIs1yfemIJYmfOFa0N5'
@@ -27,9 +28,22 @@ def lookup_rates(lat,lon,**kwargs):
     # API only supports GET, so we create it as a string
     req = BASE_URL + data
     with urllib.request.urlopen(req) as response:
-        return response.read()
+        result =  json.load(response)
 
+    # convert the result to a dictionary
+    prices = result.get('outputs')
+    if not prices:
+        return None
 
+    # create markdown from the result
+    md = f'**Electricity Prices from NREL, 2012** \n'
+    md += f'Company: {prices.get("utility_name")} \n'
+    md += f'Commercial: {prices.get("commercial")} $/kWh \n'
+    md += f'Industrial: {prices.get("industrial")} $/kWh \n'
+    md += f'Residential: {prices.get("residential")} $/kWh \n'
+    # for price in ['commercial','industrial','residential']:
+    #     md += f'{price.title()}: {prices.get(price)}$/kWh \n'
+    return(md)
 
 if __name__ == '__main__':
     ''' main method for testing/development '''
