@@ -53,7 +53,7 @@ defaultLayers = {
     #'desalPlants':{'point':cfg.gis_query_path / 'global_desal_plants.geojson'},
     'powerPlants':{'point':cfg.gis_query_path / 'power_plants.geojson'},
     #'waterPrice':{'point':cfg.gis_query_path / 'CityWaterCosts.shp'},
-    'waterPrice':{'point':cfg.gis_query_path / 'water_prices_ibnet.geojson'},
+    'waterPrice':{'point':cfg.gis_query_path / 'global_water_prices.geojson'},
     'weatherFile':{'point':cfg.gis_query_path / 'global_weather_file.geojson'},
     #'canals':{'point':cfg.gis_query_path / 'canals-vertices.geojson'},
     # Canals are stored by state, just the base path here
@@ -199,6 +199,7 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
                         closestFeatures[key] = ''
     # update the map data JSON file
     logging.info('Updating map json')
+    logging.info(closestFeatures.keys())
     _updateMapJson(closestFeatures, pt)
     # return the markdown
     return(_generateMarkdown(mapTheme,closestFeatures,pt))
@@ -513,6 +514,7 @@ def _updateMapJson(atts, pnt):
     # update dictionary
     wx = atts['weatherFile']['properties']
     mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
+    logging.info(atts['waterPrice']['properties'])
     mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot6M3CurrUSD')
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = pnt[0]
@@ -540,7 +542,7 @@ def _updateMapJson(atts, pnt):
     mParams['state'] = wx.get('State')
     mParams['city'] = wx.get('City')
     mParams['Country'] = wx.get('Country')
-    mParams['water_price'] = atts['waterPrice']['properties'].get('Water_bill')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot6M3CurrUSD')
 
     mParams['latitude'] = pnt[0]
     mParams['longitude'] = pnt[1]
