@@ -11,6 +11,7 @@ class LTMED_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
+                 downtime = 10,
                  fuel_usage = 0, # %
                  f_HEX = 0.4, # Cost fraction of the evaporator 
                  HEX_area = 389, # Heat exchanger area (m2)
@@ -49,7 +50,7 @@ class LTMED_cost(object):
             self.sam_coh = float(solar_coh)
         else:
             self.sam_coh = sam_coh
-        self.Prod = Prod
+        self.Prod = Prod * (1 - downtime/ 100)
         self.SEEC = SEEC
         self.Chemicals = Chemicals
         self.Labor = Labor

@@ -101,13 +101,12 @@ class OARO_cost(object):
         self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
        #### ADD disposal cost
         self.LCOW = self.annualized_CAPEX + self.OPEX 
-
-        print('Membrane cost:', (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost)*CR_factor* self.practical_inv_factor / self.ann_prod)
-        print('Pump cost', self.pumpcost * self.practical_inv_factor * CR_factor / self.ann_prod)
-        print('ERD cost', self.erdcost * self.practical_inv_factor * CR_factor / self.ann_prod)
-        print('membrane replacement', self.memrepcost / self.ann_prod)
-        print('Other OM: ', (self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
-        print('Electricity: ', self.energycost )
+        print('OARO',self.oaro_area)
+        print('RO',self.ro_area)
+        print('mem', self.oaro_area+self.ro_area)
+        # print('CAPEX', self.annualized_CAPEX)
+        # print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
+        # print('Electricity: ', self.energycost )
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.annualized_CAPEX,'Unit':'$/m3'})

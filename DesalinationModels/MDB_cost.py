@@ -12,6 +12,7 @@ class MDB_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
+                 downtime = 10,
                  fuel_usage = 0, # %
                  RR = 30, # %
                  Area = 25.92 , # Membrane area (m2)
@@ -77,6 +78,7 @@ class MDB_cost(object):
         self.coe = coe
         self.Capacity = Capacity
         self.coh = coh
+        self.downtime = downtime / 100
         
         if solar_coh != '':
             self.sam_coh = float(solar_coh)
@@ -110,6 +112,7 @@ class MDB_cost(object):
         self.RR = RR / 100
         
     def lcow(self):
+        self.Prod *= (1-self.downtime)
         self.module_cost = (self.MD_module*self.MD_module_capacity*(self.num_modules/self.MD_module_capacity)**0.8 + self.MD_membrane * self.Area * self.num_modules) 
         self.delta_T2 = self.solar_outlet - self.TEI
         self.delta_T1 = self.solar_inlet - self.TCO

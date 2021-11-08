@@ -11,6 +11,7 @@ class Generic_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
+                 downtime = 10,
                  fuel_usage = 0, # %
                  unit_cost = 1000, # $/m3/day
                  STEC = 60 , # Thermal energy consumption (kW)
@@ -47,7 +48,7 @@ class Generic_cost(object):
             self.sam_coh = float(solar_coh)
         else:
             self.sam_coh = sam_coh
-        self.Prod = Prod
+        self.Prod = Prod * (1 - downtime /100 )
         self.SEEC = SEEC
         self.Chemicals = Chemicals
         self.Labor = Labor

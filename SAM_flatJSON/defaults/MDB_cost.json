@@ -11,7 +11,7 @@
 	"SEEC": 1.25,
 	"cost_module_re": 0.220,
 	"cost_storage": 26,
-	"MD_membrane": 0.083,
+	"MD_membrane": 0.034,
 	"HX": 0.39,
 	"MD_module": 2.16,
 	"MD_module_capacity": 3,
@@ -26,5 +26,6 @@
 	"pump": 3.33,
 	"pump_capacity": 5,
 	"other": 16.65,
-	"other_capacity": 3
+	"other_capacity": 3,
+	"downtime": 10
 }

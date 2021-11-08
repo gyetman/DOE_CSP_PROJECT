@@ -12,7 +12,7 @@ class FO_cost(object):
                  Capacity = 10000, # Desalination plant capacity (m3/day)
                  Prod = 3285000, # Annual permeate production (m3)
                  fuel_usage = 0, # Total fuel usage (%)
-
+                 downtime = 10,
                  # OPEX parameters
                  STEC = 30 , # Specifc thermal energy consumption (kWh/m3)
                  SEEC = 1, # Specifc electric energy consumption (kWh/m3)
@@ -54,7 +54,8 @@ class FO_cost(object):
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
-
+        
+        self.downtime = downtime / 100
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
@@ -68,7 +69,7 @@ class FO_cost(object):
         #     self.total_CAPEX = 4500000
         # else:
         #     self.total_CAPEX = 1333000
-        self.Prod = Prod
+        self.Prod = Prod * (1- self.downtime)
         self.SEEC = SEEC
         self.CAP_system =Cap_membrane + Cap_HXs + Cap_construct + Cap_DS + Cap_coalescers + Cap_structural + Cap_polishing \
                         + Cap_pipes + Cap_filtration + Cap_electrical +  Cap_pumps + Cap_instrumentation + Cap_valves \
