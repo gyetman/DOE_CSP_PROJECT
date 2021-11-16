@@ -10,6 +10,14 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "downtime",
+            "Label": "System downtime",
+            "Units": "%",
+            "Require": "*",
+			"Tab": "Desalination"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "int_rate",
             "Label": "Average interest rate",
             "Units": "",

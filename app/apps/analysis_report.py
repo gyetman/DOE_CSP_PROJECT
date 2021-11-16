@@ -34,10 +34,10 @@ chart_navbar = dbc.NavbarSimple(
 #     html.P(id='data-initialize')])
 info = helpers.json_load(cfg.app_json)
 
-file_name ='/assets/Project_1_output_2021-10-19_10-19-05.xls' # 'D:/PhD/DOE/DOE_CSP_PROJECT/app/assets/Project_1_output_2021-10-19_10-19-05.xls'
+file_name ='/assets/docs/Detailed description for Input Variables.pdf#page=1' # 'D:/PhD/DOE/DOE_CSP_PROJECT/app/assets/Project_1_output_2021-10-19_10-19-05.xls'
 xls_result = dbc.Button(
                 html.Div([
-                dbc.NavLink('Click here to see the full results in Excel', id= 'xls_link',
+                dbc.NavLink('Access to the full results in Excel', id= 'xls_link',
                     href=  (file_name) ,
                     target='_blank',
                     external_link=True,
@@ -125,7 +125,7 @@ def gather_data(x):
         updates.update({'gained_output_ratio':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Number of modules required')
         updates.update({'n_modules':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','recovery rate')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
         updates.update({'RR':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
         updates.update({'p_brine':dd[index]['Value']})

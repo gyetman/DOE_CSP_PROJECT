@@ -197,9 +197,8 @@ class VAGMD_batch(object):
             self.AccThEnergy.append(self.ThEnergy[-1] + self.AccThEnergy[-1])            
             self.CEnergy.append(self.CPower[-1] * (self.t[-1] - self.t[-2]) * 1000)  # Wh-th           
             self.AccCEnergy.append(self.CEnergy[-1] + self.AccCEnergy[-1])
-            self.GOR.append(new_results[13])
-            self.STEC.append(new_results[12])
-            
+            self.GOR.append((self.AccVd[-1] * new_results[8] * new_results[7] / 1000) / (self.AccThEnergy[-1] * 3.6e3))
+            self.STEC.append(self.AccThEnergy[-1] / (self.AccVd[-1] / 1000) / 1000)
             self.APdropFFR.append(c0 + c1 * self.FFR_r + c2 * self.S[-1] + c3 * self.FFR_r * self.S[-1] + c4 * self.FFR_r**2 + c5 * self.S[-1]**2)
             self.ElPowerFeed.append((8.3140/(1013.25*0.082*3600*1000)) *(self.APdropFFR[-1] / EffPumpFFR) * (self.FFR_r) )
             self.ElPower.append( self.ElPowerFeed[-1] + self.ElPowerCooling[-1])
@@ -238,9 +237,9 @@ class VAGMD_batch(object):
         # self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
         # self.design_output.append({'Name':'Permeate flow volume for each batch volume','Value':self.Vd[-1],'Unit':'L'})
         self.design_output.append({'Name':'Thermal power requirement','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
-        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.ave_stec,'Unit':'kWh(th)/m3'})
+        self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC[-1],'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Specific electrical energy consumption','Value': self.SEEC[-1],'Unit':'kWh(e)/m3'})
-        self.design_output.append({'Name':'Gained output ratio','Value':sum(self.GOR)/len(self.GOR),'Unit':''})
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR[-1],'Unit':''})
         if ( k == 7 and self.Sf > 175.3):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
         if ( k == 26 and self.Sf > 140.2):
@@ -391,7 +390,7 @@ class VAGMD_batch(object):
         # GOR 
         GOR = PFR * AHvP * RhoP / ThPower / 3600 / 1000 / 1000
         
-        # return [PFlux, TCO, TEO, PFR, ATml, ThPower, STEC, GOR]
+        # return  0  , 1  , 2  , 3   , 4  , 5   , 6  , 7   , 8   , 9, 10  , 11     ,12   , 13
         return [PFlux, TCO, TEO, RhoF, CpF, RhoC, CpC, RhoP, AHvP, A, ATml, ThPower, STEC, GOR]
     
     

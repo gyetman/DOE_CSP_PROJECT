@@ -12,6 +12,7 @@ class VAGMD_cost(object):
     def __init__(self,
                  Capacity = 1000, # Desalination plant capacity (m3/day)
                  Prod = 328500, # Annual permeate production (m3)
+                 downtime = 10,
                  fuel_usage = 0, # %
                  Area = 25.92 , # Membrane area (m2)
                  Pflux = 2.832,  # Permeate flux per module (l/h/module)
@@ -82,7 +83,7 @@ class VAGMD_cost(object):
         else:
             self.sam_coh = sam_coh
         self.cost_module_re = cost_module_re
-        self.Prod = Prod
+        self.Prod = Prod * (1 - downtime / 100)
         self.STEC = STEC
         self.yrs = yrs
         self.int_rate = int_rate
