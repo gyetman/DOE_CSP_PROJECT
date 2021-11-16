@@ -896,13 +896,22 @@ def set_local_condition(x):
     pp_dist = r.get('dist_power_plant')
     pp_dist = round(pp_dist) if pp_dist else '-'
  
+    w_price = r.get('water_price')
+    if w_price : 
+        try:
+            w_price = round(float(w_price),2)
+        except ValueError as e:
+            w_price = '-'
+    else:
+        w_price = '-'
+        
     return ([
     html.H5('Local Condition', className='card-title'),
     html.Div(f"Location: {city}, {r['state']}"),
     html.Div(f"Daily average DNI: {r['dni']:.1f} kWh/m2/day"),
     html.Div(f"Daily average GHI: {r['ghi']:.1f} kWh/m2/day"),
     html.Div(f"Feedwater salinity: {r['FeedC_r']:.1f} g/L"),
-    html.Div(f"Market water price: {r['water_price']} $/m3"), 
+    html.Div(f"Market water price: {w_price} $/m3"), 
     html.Div(f"Distance to nearest desalination plant: {r['dist_desal_plant']:.1f} km"),
     html.Div(f"Distance to nearest water network: {wn_dist} km"),
     html.Div(f"Distance to nearest power plant: {pp_dist} km")

@@ -9,6 +9,7 @@ import pandas as pd
 import helpers
 import pointLocationLookup
 import lookup_nrel_utility_prices
+import lookup_openei_rates
 import dash_leaflet.express as dlx
 
 from dash.dependencies import ALL, Input, Output, State, MATCH
@@ -329,8 +330,12 @@ def get_point_info(_,site_details_state):
     site_long=map_data['longitude']
     lat_lng = (site_lat, site_long)
     md = str(pointLocationLookup.lookupLocation(lat_lng))
-    pmd = str(lookup_nrel_utility_prices.lookup_rates(lat_lng[0],lat_lng[1]))
-    markdown = dcc.Markdown(f'{md}\n\n{pmd}')
+    emd = lookup_openei_rates.lookup_rates(lat_lng[0],lat_lng[1])
+    #pmd = str(lookup_nrel_utility_prices.lookup_rates(lat_lng[0],lat_lng[1]))
+    if emd:
+        markdown = dcc.Markdown(f'{md} \n{emd} \n')
+    else:
+        markdown = dcc.Markdown(f'{md} \n')
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup.
     # Site selected by user from map-data. 

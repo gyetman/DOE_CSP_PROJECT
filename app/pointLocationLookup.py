@@ -515,7 +515,7 @@ def _updateMapJson(atts, pnt):
     wx = atts['weatherFile']['properties']
     mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
     logging.info(atts['waterPrice']['properties'])
-    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot6M3CurrUSD')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot100M3CurrUSD')
     # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
     mParams['latitude'] = pnt[0]
     mParams['longitude'] = pnt[1]
@@ -542,7 +542,7 @@ def _updateMapJson(atts, pnt):
     mParams['state'] = wx.get('State')
     mParams['city'] = wx.get('City')
     mParams['Country'] = wx.get('Country')
-    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot6M3CurrUSD')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot100M3CurrUSD')
 
     mParams['latitude'] = pnt[0]
     mParams['longitude'] = pnt[1]

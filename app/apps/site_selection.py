@@ -8,6 +8,7 @@ import dash_leaflet as dl
 import pandas as pd
 #import helpers
 import pointLocationLookup
+import lookup_openei_rates
 
 from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
@@ -240,7 +241,13 @@ def click_coord(coords):
     prevent_initial_call=True)
 
 def get_point_info(lat_lng):
-    markdown = dcc.Markdown(str(pointLocationLookup.lookupLocation(lat_lng)))
+    markdown = str(pointLocationLookup.lookupLocation(lat_lng))
+    emd = lookup_openei_rates.lookup_rates(lat_lng[0],lat_lng[1])
+    if emd:
+        markdown += emd
+        markdown = dcc.Markdown(markdown)
+    else:
+        markdown = dcc.Markdown(markdown)
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     if not closest:
         return markdown, [None,None,None,None], None
