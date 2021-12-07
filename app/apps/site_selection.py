@@ -2,16 +2,20 @@ import app_config
 import json
 import dash
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
+# import dash_core_components as dcc
+from dash import dcc
+#import dash_html_components as html
+from dash import html
 import dash_leaflet as dl
+import dash_leaflet.express as dlx
 import pandas as pd
 #import helpers
 import pointLocationLookup
 import lookup_openei_rates
-
 from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
+from dash_extensions.javascript import arrow_function, assign
+
 from pathlib import Path
 
 from app import app
@@ -96,6 +100,34 @@ weather_stations = dl.GeoJSON(
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
+# us Counties for population projections
+classes = [-50,-25,-5,5,25,100,295]
+colorscale = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
+style = dict(weight=1, opacity=1, color='white', dashArray='3', fillOpacity=0.7)
+ctg = ["{}+".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["{}+".format(classes[-1])]
+colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=colorscale, width=300, height=30, position="bottomleft")
+# Geojson rendering logic, must be JavaScript as it is executed in clientside.
+style_handle = assign("""function(feature, context){
+    const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
+    const value = feature.properties[colorProp];  // get value the determines the color
+    for (let i = 0; i < classes.length; ++i) {
+        if (value > classes[i]) {
+            style.fillColor = colorscale[i];  // set the fill color according to the class
+        }
+    }
+    return style;
+}""")
+
+pop_projections = dl.GeoJSON(
+    url="/assets/us_county.geojson",  # url to geojson file
+    options=dict(style=style_handle),  # how to style each polygon
+    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
+    zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
+    hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
+    hideout=dict(colorscale=colorscale, classes=classes, style=style, colorProp="pop_change_percent"),
+    id="geojson"
+)
+
 # placeholder for mouseover data
 info = html.Div(children='',
                 className="mapinfo",
@@ -158,7 +190,9 @@ radios = dbc.FormGroup([
                     {'label':'Desalination Plants', 'value':'desal'},
                     {'label':'Water Wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}, 
-                    {'label': 'Weather Stations', 'value':'weather'}],
+                    {'label': 'Weather Stations', 'value':'weather'},
+                    {'label': 'Population Projections','value':'pop_projections'},
+        ],               
         labelStyle={'display': 'inline-block'},
         value='weather',
         inline=True
@@ -202,12 +236,11 @@ theme_ids = {
     'canals': html.Div([canals]),
     'pplants': html.Div([power_plants, info]),
     'desal': html.Div([desal, info]),
-    #'wells': wells,
     'wells': html.Div([wells, info]),
     'regulatory': regulatory,
-    'weather': html.Div([weather_stations, info])
+    'weather': html.Div([weather_stations, info]),
+    'pop_projections': pop_projections,
 }
-
 
 @app.callback(Output(BASE_LAYER_ID, "url"),
             [Input(BASE_LAYER_DROPDOWN_ID, "value")])

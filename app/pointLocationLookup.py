@@ -16,6 +16,66 @@ from rtree import index
 from haversine import haversine, Unit
 from urllib.parse import urlparse
 
+
+# GLOBALS
+# TODO: move rate lookup globals to JSON
+# globals for fuel rate lookups
+BASE_FUEL_URL = 'https://www.eia.gov/dnav/pet/pet_pri_gnd_dcus_'
+STATE_FUEL_RATES = [
+    'CA','CO','FL','MA','MN','NY','OH','TX','WA'
+]
+REGION_FUEL_RATES_LOOKUP ={
+    'CT':'1x', # PADD1A
+    'ME':'1x',
+    'MA':'1x',
+    'NH':'1x',
+    'RI':'1x',
+    'VT':'1x',
+    'DE':'1y', #PADD1B
+    'DC':'1y',
+    'MD':'1y',
+    'NJ':'1y',
+    'NY':'1y',
+    'PA':'1y',
+    'FL':'1z', #PADD1C
+    'GA':'1z',
+    'NC':'1z',
+    'SC':'1z',
+    'VA':'1z',
+    'WV':'1z',
+    'IL':'20', #PADD2
+    'IN':'20',
+    'IO':'20',
+    'KS':'20',
+    'KY':'20',
+    'MI':'20',
+    'MS':'20',
+    'NE':'20',
+    'ND':'20',
+    'OH':'20',
+    'OK':'20',
+    'SD':'20',
+    'TN':'20',
+    'WI':'20',
+    'AL':'30',#PADD3
+    'AR':'30',
+    'LA':'30',
+    'MS':'30',
+    'NM':'30',
+    'TX':'30',
+    'CO':'40',#PADD4
+    'ID':'40',
+    'MT':'40',
+    'UT':'40',
+    'WY':'40',
+    'AK':'5xca',#PADD5
+    'AZ':'5xca',
+    'HI':'5xca',
+    'NV':'5xca',
+    'OR':'5xca',
+    'WA':'5xca',
+}
+
 # set basic logging for when module is imported 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
@@ -26,7 +86,6 @@ logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 # TODO: fix lat/longitude written to JSON file
 
-''' Module to lookup features based on a point location. Uses rtrees if they exist. '''
 
 ''' GLOBALS '''
 # markdown text template
@@ -44,7 +103,7 @@ countyLayer = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'}
 }
 
-# default theme layers
+# default theme layers for query
 defaultLayers = {
     'county':{'poly':cfg.gis_query_path / 'us_county.shp'},
     'dni':{'raster':cfg.gis_query_path / 'DNI.tif'},
@@ -178,6 +237,8 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
                     closestFeatures[key] = float(tmp)
                 else:
                     closestFeatures[key] = ''
+
+                    
     else:
         logging.info('international, only getting subset of features')
         # TODO: refactor to use method or better logic, not hard-coded keys! 
@@ -357,10 +418,18 @@ def _findClosestPoint(pt,lyr,kd_path=None):
         return(match)
 
     # update json file
-    try:
-        helpers.json_update(data=mParams, filename=cfg.map_json)
-    except FileNotFoundError:
-        helpers.initialize_json(data=mParams, filename=cfg.map_json)
+    # try:
+    #     helpers.json_update(data=mParams, filename=cfg.map_json)
+    # except FileNotFoundError:
+    #     helpers.initialize_json(data=mParams, filename=cfg.map_json)
+
+def _getFuelURL(state):
+    '''Construct the URL for the EIA web page listing fuel rates
+    using the provided state abbreviation '''
+    if state.upper() in STATE_FUEL_RATES:
+        return f'{BASE_FUEL_URL}s{state.lower()}_w.htm' 
+    elif state.upper() in REGION_FUEL_RATES_LOOKUP.keys():
+        return f'{BASE_FUEL_URL}r{REGION_FUEL_RATES_LOOKUP[state.upper()]}_w.htm'
 
 def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
@@ -504,7 +573,9 @@ def _generateMarkdown(theme, atts, pnt):
             mdown += f"**Regulatory Framework**  \n"
             link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
             mdown += link + '  \n'
-
+        fuel_url = _getFuelURL(state)
+        if fuel_url:
+            mdown += f'[Fuel Prices from EIA]({fuel_url})  \n'
     return mdown
     return(str(atts))
 
