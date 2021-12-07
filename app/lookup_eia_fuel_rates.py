@@ -7,8 +7,68 @@ import dash_html_components as html
 # API key
 KEY = '544d48d18f13dc9f9dc475908344ceaf'
 # API URL
-BASE_URL = 'https://api.openei.org/utility_rates?'
+BASE_FUEL_URL = 'https://www.eia.gov/dnav/pet/pet_pri_gnd_dcus_'
 
+STATE_FUEL_RATES = [
+    'CA','CO','FL','MA','MN','NY','OH','TX','WA'
+]
+REGION_FEUL_RATES_LOOKUP ={
+    'CT':'1x', # PADD1A
+    'ME':'1x',
+    'MA':'1x',
+    'NH':'1x',
+    'RI':'1x',
+    'VT':'1x',
+
+    'DE':'1y', #PADD1B
+    'DC':'1y',
+    'MD':'1y',
+    'NJ':'1y',
+    'NY':'1y',
+    'PA':'1y',
+
+    'FL':'1z', #PADD1C
+    'GA':'1z',
+    'NC':'1z',
+    'SC':'1z',
+    'VA':'1z',
+    'WV':'1z',
+
+    'IL':'20', #PADD2
+    'IN':'20',
+    'IO':'20',
+    'KS':'20',
+    'KY':'20',
+    'MI':'20',
+    'MS':'20',
+    'NE':'20',
+    'ND':'20',
+    'OH':'20',
+    'OK':'20',
+    'SD':'20',
+    'TN':'20',
+    'WI':'20',
+
+    'AL':'30',#PADD3
+    'AR':'30',
+    'LA':'30',
+    'MS':'30',
+    'NM':'30',
+    'TX':'30',
+
+    'CO':'40',#PADD4
+    'ID':'40',
+    'MT':'40',
+    'UT':'40',
+    'WY':'40',
+    
+    'AK':'5xca',#PADD5
+    'AZ':'5xca',
+    'HI':'5xca',
+    'NV':'5xca',
+    'OR':'5xca',
+    'WA':'5xca',
+}
 
 # TODO: 
 # find industrial (failing that, commercial)
@@ -19,79 +79,17 @@ BASE_URL = 'https://api.openei.org/utility_rates?'
 # otherwise, query international data 
 
     
-def lookup_rates(lat,lon,**kwargs):
-    '''Fetch water utility rates from the open_ei API
-    using the provided coordinates '''
-    url_params = {
-        'api_key':KEY,
-        'version':'8',
-        'lat':lat,
-        'lon':lon,
-        'format':'json',
-        'is_default':'false',
-    }
-    if 'format' in kwargs.keys():
-        url_params['format'] = kwargs['format']
-    if 'radius' in kwargs.keys():
-        url_params['radius'] = kwargs['radius']
-    if 'limit' in kwargs.keys():
-        url_params['limit'] = kwargs['limit']
-    if 'version' in kwargs.keys():
-        url_params['version'] = kwargs['version']
+def lookup_rates(state='NJ'):
+    '''Construct the URL for the EIA web page listing fuel rates
+    using the provided state abbreviation '''
+    if state.upper() in STATE_RATES:
+        return f'{BASE_URL}s{state.lower()}_w.htm' 
+    elif state.upper() in REGION_RATES_LOOKUP.keys():
+        return f'{BASE_URL}r{REGION_RATES_LOOKUP[state.upper()]}_w.htm'
 
-    results = {}
-    md = ''
-    for sector in ('Industrial','Commercial'):
-        url_params['sector'] = sector
-
-        data = urllib.parse.urlencode(url_params)
-        # the normal urllib.request.Request defaults to POST, but the 
-        # API only supports GET, so we create it as a string
-        req = BASE_URL + data
-        #print(req)
-        with urllib.request.urlopen(req) as response:
-            result =  json.load(response)
-
-        items = result.get('items')
-        if not items:
-            # print(f'No matches for {sector}')
-            continue
-        
-        print(f'retrieved {len(items)} records...')
-        # get the URIs for each utility
-        results = items[0]
-
-        # print(results)
-        link = results.get('uri')
-        if link: 
-            # update markdown based on the result
-            #md = html.Div(html.A(f'<b>{sector} Electricity Prices from OpenEI</b>', href=f'{link}', target='_blank'))
-            #md = f'<a href="{link}", target="_blank">Electricity Prices from OpenEI</a> \n'
-            md = f'[**{sector} Electricity Prices from OpenEI**]({link}#3__Energy) \n\n'
-            return md
-        else:
-            return None
-
-        # md += f'Commercial: {prices.get("commercial")} $/kWh \n'
-        # md += f'Industrial: {prices.get("industrial")} $/kWh \n'
-        # md += f'Residential: {prices.get("residential")} $/kWh \n'
-        # # for price in ['commercial','industrial','residential']:
-        # #     md += f'{price.title()}: {prices.get(price)}$/kWh \n'
-        # return(md)
-    # if len(results) > 0:
-    #     for key, value in results.items():
-    #         print(value)
-    # else:
-    #     return None
 
 if __name__ == '__main__':
     ''' main method for testing/development '''
     print('testing GET of data based on coords...')
-    test = lookup_rates(40.89,-74.01)
-    # test additional parameters
-    # test = lookup_rates(35.45,-82.98,radius=100,limit=2,format='xml')
-    # test for no results
-    # test = lookup_rates(-55,110)
-    print(test)
-    print('test complete')
+    print(lookup_rates('NJ'))
     
