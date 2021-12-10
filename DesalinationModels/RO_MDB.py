@@ -129,8 +129,8 @@ class RO_MDB(object):
                           TCI_r = self.TCI_r, FFR_r = self.FFR_r, V0 = self.V0,
                           j = self.j, Ttank = self.Ttank, TCoolIn = self.TCoolIn, dt = self.dt )
         self.MDB.design() 
-        Thermal_load = self.MDB.ave_stec * self.MDB.Capacity / 24 # kWh
-        STEC = self.MDB.ave_stec
+        Thermal_load = self.MDB.STEC[-1] * self.MDB.Capacity / 24 # kWh
+        STEC = self.MDB.STEC[-1]
         # MDB_p_s = (1-FO.Salt_rej) * RO_brine_salinity  * RO_brine / FO_Mprod
         MDB_b_s =  RO_brine_salinity  * RO_brine / (RO_brine - MDB_Mprod)
                    # RO power[0],      FO power[1],   , RO_bs[2]         , FO_bs[3],Recovery rate[4],           #   RO permeate[5],     FO permeate[6],   Overall STEC,[7]                  Overall SEC[8],                            ,[9]Feed water flowrate
@@ -149,7 +149,7 @@ class RO_MDB(object):
         
         self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.case.SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'STEC-MD (Specific thermal power consumption)','Value':STEC,'Unit':'kWh(th)/m3'})   
-        self.design_output.append({'Name':'Gained output ratio of MD','Value':sum(self.MDB.GOR)/len(self.MDB.GOR),'Unit':'kg/kg'})
+        self.design_output.append({'Name':'Gained output ratio of MD','Value':self.MDB.GOR[-1],'Unit':'kg/kg'})
         
         self.design_output.append({'Name':'Feed flow rate','Value':RO_case.case.Qf1,'Unit':'m3/h'})        
         # self.design_output.append({'Name':'(FO) Strong draw solution flow rate','Value':FO.SD,'Unit':'m3/day'}) 

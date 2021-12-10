@@ -301,6 +301,7 @@ class SamBaseClass(object):
                 self.lcoe = self.ssc.data_get_number(self.data, b'lcoe_real') / 100
 
             self.lcoh =  self.lcoe * 0.23
+            # self.lcoh = self.lcoe * (sum(self.elec_gen) / sum(self.heat_gen))
             # print(self.elec_gen[0:24])
             # print(self.heat_gen[0:24])
             if self.desalination:

@@ -27,7 +27,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Nef",
-            "Label": "Number of effects (12, 14 or 16)",
+            "Label": "Number of effects (3,6,9,12 or 15)",
             "Units": "",
             "Require": "*"
         },

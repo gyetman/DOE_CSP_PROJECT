@@ -225,7 +225,7 @@ class VAGMD_batch(object):
         self.PFlux_avg= sum(self.PFlux) / len(self.PFlux)
         self.df = self.df.round(decimals = 1)
         self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
-        self.P_req = self.ave_stec * self.Capacity / 24   # kW
+        self.P_req = self.STEC[-1] * self.Capacity / 24   # kW
         # self.df.to_csv('D:/PhD/DOE/DOE_CSP_PROJECT/SAM_flatJSON/results/MDB_output.csv')
         
         self.design_output = []
@@ -244,7 +244,7 @@ class VAGMD_batch(object):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
         if ( k == 26 and self.Sf > 140.2):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 140.2 g/L in module AS26C2.7L(373), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
-        
+        print(self.PFlux_avg)
                 
         
         return self.design_output
@@ -395,7 +395,7 @@ class VAGMD_batch(object):
     
     
     def simulation(self, gen, storage):
-        self.thermal_load = sum(self.ThEnergy) / self.t[-1] * self.num_modules # kWh per hour
+        self.thermal_load = self.P_req # kWh per hour
         self.max_prod = self.AccVd[-1] / self.t[-1] /1000 * self.num_modules # m3/h
         self.storage_cap = storage * self.thermal_load # kWh
         
@@ -431,6 +431,7 @@ class VAGMD_batch(object):
         Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
     
         simu_output = []
+        print(self.thermal_load)
 
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
