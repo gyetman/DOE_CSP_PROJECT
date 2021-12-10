@@ -129,34 +129,34 @@ pop_projections = dl.GeoJSON(
     id="geojson"
 )
 
-# California water use
-wclasses = [100000,250000,500000,1000000,1500000,216102]
-wclass_labels = [100,250,500,1000,1500,2200000]
-wcolorscale = ['#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
-wstyle = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
-wctg = ["{:,}k".format(cls, wclass_labels[i + 1]) for i, cls in enumerate(wclass_labels[:-1])] + ["{}k af".format('200+')]
-wcolorbar = dlx.categorical_colorbar(categories=wctg, colorscale=wcolorscale, width=300, height=30, position="bottomleft")
-# Geojson rendering logic, must be JavaScript as it is executed in clientside.
-style_handle = assign("""function(feature, context){
-    const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
-    const value = feature.properties[colorProp];  // get value the determines the color
-    for (let i = 0; i < classes.length; ++i) {
-        if (value > classes[i]) {
-            style.fillColor = colorscale[i];  // set the fill color according to the class
-        }
-    }
-    return style;
-}""")
+# # California water use
+# wclasses = [100000,250000,500000,1000000,1500000,216102]
+# wclass_labels = [100,250,500,1000,1500,2200000]
+# wcolorscale = ['#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
+# wstyle = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
+# wctg = ["{:,}k".format(cls, wclass_labels[i + 1]) for i, cls in enumerate(wclass_labels[:-1])] + ["{}k af".format('200+')]
+# wcolorbar = dlx.categorical_colorbar(categories=wctg, colorscale=wcolorscale, width=300, height=30, position="bottomleft")
+# # Geojson rendering logic, must be JavaScript as it is executed in clientside.
+# style_handle = assign("""function(feature, context){
+#     const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
+#     const value = feature.properties[colorProp];  // get value the determines the color
+#     for (let i = 0; i < classes.length; ++i) {
+#         if (value > classes[i]) {
+#             style.fillColor = colorscale[i];  // set the fill color according to the class
+#         }
+#     }
+#     return style;
+# }""")
 
-water_use = dl.GeoJSON(
-    url="/assets/water_use_dau.geojson",  # url to geojson file
-    options=dict(style=style_handle),  # how to style each polygon
-    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
-    zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
-    hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
-    hideout=dict(colorscale=wcolorscale, classes=wclasses, style=wstyle, colorProp="annual_water_use"),
-    id="wgeojson"
-)
+# water_use = dl.GeoJSON(
+#     url="/assets/water_use_dau.geojson",  # url to geojson file
+#     options=dict(style=style_handle),  # how to style each polygon
+#     zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
+#     zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
+#     hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
+#     hideout=dict(colorscale=wcolorscale, classes=wclasses, style=wstyle, colorProp="annual_water_use"),
+#     id="wgeojson"
+# )
 
 
 # placeholder for mouseover data
@@ -224,7 +224,7 @@ radios = dbc.FormGroup([
                     {'label': 'Regulatory', 'value':'regulatory'}, 
                     {'label': 'Weather Stations', 'value':'weather'},
                     {'label': 'Projected Population Change','value':'pop_projections'},
-                    {'label': 'CA Agricultural Water Use','value':'water_use'},
+                    #{'label': 'CA Agricultural Water Use','value':'water_use'},
         ],               
         labelStyle={'display': 'inline-block'},
         value='weather',
@@ -273,7 +273,7 @@ theme_ids = {
     'regulatory': regulatory,
     'weather': html.Div([weather_stations, info]),
     'pop_projections': ([pop_projections,colorbar]),
-    'water_use': ([water_use,wcolorbar])
+    #'water_use': ([water_use,wcolorbar])
 }
 
 @app.callback(Output(BASE_LAYER_ID, "url"),
