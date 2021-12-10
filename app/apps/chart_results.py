@@ -4,8 +4,10 @@ import pandas as pd
 
 import dash
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
+#import dash_core_components as dcc
+from dash import dcc
+#import dash_html_components as html
+from dash import html
 from dash.dependencies import Input, Output, State
 
 import app_config as cfg
@@ -90,6 +92,7 @@ time_series = [{'label':' Hourly', 'value':'Hourly'},
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
               dbc.NavItem(dbc.NavLink("Charts"), active=True),
+              #dbc.NavItem(dbc.NavLink("Charts")),
               dbc.NavItem(dbc.NavLink("Report", href='/analysis-report')),
               dbc.NavItem(dbc.NavLink("Results Map", href='/results-map'))],
     brand="Model Results",

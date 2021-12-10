@@ -101,10 +101,11 @@ weather_stations = dl.GeoJSON(
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
 # us Counties for population projections
-classes = [-50,-25,-5,5,25,100,295]
-colorscale = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
-style = dict(weight=1, opacity=1, color='white', dashArray='3', fillOpacity=0.7)
-ctg = ["{}+".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["{}+".format(classes[-1])]
+classes = [-50,-25,-5,5,25,50,295]
+#colorscale = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
+colorscale = ["#2166ac","#67a9cf","#d1e5f0","#f7f7f7","#fddbc7","#ef8a62","#b2182b"]
+style = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
+ctg = ["{}%".format(cls, classes[i + 1]) for i, cls in enumerate(classes[:-1])] + ["{}%".format(classes[-1])]
 colorbar = dlx.categorical_colorbar(categories=ctg, colorscale=colorscale, width=300, height=30, position="bottomleft")
 # Geojson rendering logic, must be JavaScript as it is executed in clientside.
 style_handle = assign("""function(feature, context){
@@ -121,12 +122,42 @@ style_handle = assign("""function(feature, context){
 pop_projections = dl.GeoJSON(
     url="/assets/us_county.geojson",  # url to geojson file
     options=dict(style=style_handle),  # how to style each polygon
-    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
+    zoomToBounds=False,  # when true, zooms to bounds when data changes (e.g. on load)
     zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
     hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
     hideout=dict(colorscale=colorscale, classes=classes, style=style, colorProp="pop_change_percent"),
     id="geojson"
 )
+
+# California water use
+wclasses = [100000,250000,500000,1000000,1500000,216102]
+wclass_labels = [100,250,500,1000,1500,2200000]
+wcolorscale = ['#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
+wstyle = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
+wctg = ["{:,}k".format(cls, wclass_labels[i + 1]) for i, cls in enumerate(wclass_labels[:-1])] + ["{}k af".format('200+')]
+wcolorbar = dlx.categorical_colorbar(categories=wctg, colorscale=wcolorscale, width=300, height=30, position="bottomleft")
+# Geojson rendering logic, must be JavaScript as it is executed in clientside.
+style_handle = assign("""function(feature, context){
+    const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
+    const value = feature.properties[colorProp];  // get value the determines the color
+    for (let i = 0; i < classes.length; ++i) {
+        if (value > classes[i]) {
+            style.fillColor = colorscale[i];  // set the fill color according to the class
+        }
+    }
+    return style;
+}""")
+
+water_use = dl.GeoJSON(
+    url="/assets/water_use_dau.geojson",  # url to geojson file
+    options=dict(style=style_handle),  # how to style each polygon
+    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
+    zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
+    hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
+    hideout=dict(colorscale=wcolorscale, classes=wclasses, style=wstyle, colorProp="annual_water_use"),
+    id="wgeojson"
+)
+
 
 # placeholder for mouseover data
 info = html.Div(children='',
@@ -136,7 +167,8 @@ info = html.Div(children='',
 
 map_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
-              dbc.NavItem(dbc.NavLink("Site Selection"), active=True)],
+              #dbc.NavItem(dbc.NavLink("Site Selection"), active=True)],
+              dbc.NavItem(dbc.NavLink("Site Selection"))],
     brand='Site Selection',
     color='primary',
     dark=True,
@@ -191,7 +223,8 @@ radios = dbc.FormGroup([
                     {'label':'Water Wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}, 
                     {'label': 'Weather Stations', 'value':'weather'},
-                    {'label': 'Population Projections','value':'pop_projections'},
+                    {'label': 'Projected Population Change','value':'pop_projections'},
+                    {'label': 'CA Agricultural Water Use','value':'water_use'},
         ],               
         labelStyle={'display': 'inline-block'},
         value='weather',
@@ -239,7 +272,8 @@ theme_ids = {
     'wells': html.Div([wells, info]),
     'regulatory': regulatory,
     'weather': html.Div([weather_stations, info]),
-    'pop_projections': pop_projections,
+    'pop_projections': ([pop_projections,colorbar]),
+    'water_use': ([water_use,wcolorbar])
 }
 
 @app.callback(Output(BASE_LAYER_ID, "url"),
