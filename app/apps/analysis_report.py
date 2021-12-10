@@ -605,7 +605,7 @@ def gather_data(x):
         updates.update({'electric_power_consumption':dd[index]['Value'] * 1000})
         index = helpers.index_in_list_of_dicts(dd,'Name','Specific electricity consumption') 
         updates.update({'specific_power_consumption':dd[index]['Value']})
-        index = helpers.index_in_list_of_dicts(dd,'Name','recovery rate')
+        index = helpers.index_in_list_of_dicts(dd,'Name','Recovery ratio')
         updates.update({'rr':dd[index]['Value']})
         index = helpers.index_in_list_of_dicts(dd,'Name','Brine concentration')
         updates.update({'p_brine':dd[index]['Value']})

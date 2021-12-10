@@ -794,7 +794,6 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         parametric_info = dict()
 
 
-
         #NOTE need to transform the selectedXRows data to simple lists or sets
         # so that we can do a simple inclusion case  i.e. if x in y:
         # Collect selected variables from all tables into a single list
@@ -911,13 +910,27 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                     
         #run the model once if no parametric variables selected
         else:
-            run_model(csp=app['solar'],
-                      desal=app['desal'],
-                      finance=app['finance'],
-                      json_file=solar_model_outfile_path,
-                      desal_file=desal_model_outfile_path,
-                      finance_file=finance_model_outfile_path,
+            try:
+                print('model started')
+                run_model(csp=app['solar'],
+                          desal=app['desal'],
+                          finance=app['finance'],
+                          json_file=solar_model_outfile_path,
+                          desal_file=desal_model_outfile_path,
+                          finance_file=finance_model_outfile_path,
                       timestamps = timestamp)
+                print('model finished')
+            except:
+                print('Model simulation failed, please check if the inputs are legit')
+                return (   (html.Div([
+                            html.H5('Simulation failed; refresh the page and check the validity of your inputs.', className='text-primary'),
+                            #dcc.Link(dbc.Button("View Results", color="primary")
+                            
+                ])),
+                # send 'nothing' to dcc.Loading (since it will be removed)
+                html.Div(''),
+                # and replace the old button
+                html.P()   )      
         # return a new button with a link to charts
         link = '/parametric-charts' if len(parametric_info)>0 else '/chart-results'
         return (   (html.Div([

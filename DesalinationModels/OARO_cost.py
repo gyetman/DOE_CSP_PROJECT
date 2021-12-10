@@ -99,13 +99,18 @@ class OARO_cost(object):
 #        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
 #        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
         self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
+        
        #### ADD disposal cost
         self.LCOW = self.annualized_CAPEX + self.OPEX 
-        print('OARO',self.oaro_area)
-        print('RO',self.ro_area)
-        print('mem', self.oaro_area+self.ro_area)
+        # print('OARO',self.oaro_area)
+        # print('RO',self.ro_area)
+        # print('mem', self.oaro_area+self.ro_area)
         # print('CAPEX', self.annualized_CAPEX)
-        # print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
+        mem_capex = CR_factor * (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost) / self.ann_prod
+        print('Mem capex', mem_capex)
+        print('Other CAPEX', self.annualized_CAPEX - mem_capex)
+        print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
+        print('Energy cost', self.energycost)
         # print('Electricity: ', self.energycost )
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
