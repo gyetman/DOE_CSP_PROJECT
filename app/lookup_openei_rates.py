@@ -1,6 +1,7 @@
 from html import parser
 import urllib.parse
 import urllib.request
+import certifi
 import json
 import dash_html_components as html
 
@@ -49,7 +50,7 @@ def lookup_rates(lat,lon,**kwargs):
         # API only supports GET, so we create it as a string
         req = BASE_URL + data
         #print(req)
-        with urllib.request.urlopen(req) as response:
+        with urllib.request.urlopen(req, cafile=certifi.where()) as response:
             result =  json.load(response)
 
         items = result.get('items')
