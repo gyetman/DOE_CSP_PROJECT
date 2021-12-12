@@ -379,9 +379,15 @@ def info_hover(features):
             header = ['Well\n', html.Br()]
             name = feature['properties']['name']
             tds = feature['properties']['TDS']
+            if not tds:
+                tds = '-'
+            else:
+                tds = round(tds,1)
             depth = feature['properties']['DEPTH']
             if not depth:
                 depth = '-'
+            else:
+                depth = round(depth,1)
             # todo, get this dynamically
             depth_units = 'feet'
             temperature = feature['properties']['TEMP']
