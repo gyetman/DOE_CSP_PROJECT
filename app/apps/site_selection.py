@@ -79,7 +79,7 @@ canals = dl.GeoJSON(
 
 # load wells
 wells = dl.GeoJSON(
-    url='/assets/wells_sw.geojson',
+    url='/assets/wells_tds.geojson',
     id = {'type':'json_theme','index':'geojson_wells'},
     cluster=True,
     zoomToBoundsOnClick=True,
@@ -377,7 +377,7 @@ def info_hover(features):
                 f"Capacity: {capacity_field} {units}"]
         elif 'TDS' in feature['properties'].keys():
             header = ['Well\n', html.Br()]
-            name = feature['properties']['orgName']
+            name = feature['properties']['name']
             tds = feature['properties']['TDS']
             depth = feature['properties']['DEPTH']
             if not depth:
