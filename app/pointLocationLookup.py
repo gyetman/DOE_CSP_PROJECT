@@ -445,7 +445,7 @@ def _generateMarkdown(theme, atts, pnt):
     if atts['desalPlants']:
         desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
         desal_dist = _calcDistance(pnt,desal_pt)
-        mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project_na')}\n"
+        mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project na')}\n"
         desal = atts['desalPlants']['properties']
         try:
             mdown += f"Capacity: {float(desal.get('Capacity')):,.0f} m3/day  \n"

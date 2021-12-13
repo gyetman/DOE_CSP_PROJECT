@@ -22,6 +22,13 @@ from app import app
 
 gis_data = app_config.gis_data_path
 
+
+#TODO:
+# links open in new tab
+# bug: key error site selection line 368
+# name is none for desal plant
+
+
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
 # public mapbox token
@@ -31,9 +38,9 @@ mapbox_token = 'pk.eyJ1IjoiZ3lldG1hbiIsImEiOiJjanRhdDU1ejEwZHl3NDRsY3NuNDRhYXd1I
 # add any new themes here to make them appear in the 
 # list of radio buttons. note: first item is the 
 # default for when map loads, change order to update. 
-mapbox_ids = {
-    'Satellite': 'mapbox/satellite-streets-v9', 
+mapbox_ids = {    
     'Topographic': 'mapbox/outdoors-v9',
+    'Satellite': 'mapbox/satellite-streets-v9', 
     # 'Regulatory':'gyetman/ck7avopr400px1ilc7j49bi6j', # duplicate entry
 }
 
@@ -130,33 +137,32 @@ pop_projections = dl.GeoJSON(
 )
 
 # # California water use
-# wclasses = [100000,250000,500000,1000000,1500000,216102]
-# wclass_labels = [100,250,500,1000,1500,2200000]
-# wcolorscale = ['#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026']
-# wstyle = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
-# wctg = ["{:,}k".format(cls, wclass_labels[i + 1]) for i, cls in enumerate(wclass_labels[:-1])] + ["{}k af".format('200+')]
-# wcolorbar = dlx.categorical_colorbar(categories=wctg, colorscale=wcolorscale, width=300, height=30, position="bottomleft")
+wclasses = [25,50,100,250]
+wcolorscale = ['#f1eef6', '#bdc9e1','#74a9cf', '#2b8cbe'] #'#045a8d'
+wstyle = dict(weight=1, opacity=.5, color='white', dashArray='3', fillOpacity=0.9)
+wctg =["{} mgd".format(cls, wclasses[i + 1]) for i, cls in enumerate(wclasses[:-1])] + ["{} mgd".format(wclasses[-1])]
+wcolorbar = dlx.categorical_colorbar(categories=wctg, colorscale=wcolorscale, width=300, height=30, position="topright")
 # # Geojson rendering logic, must be JavaScript as it is executed in clientside.
-# style_handle = assign("""function(feature, context){
-#     const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
-#     const value = feature.properties[colorProp];  // get value the determines the color
-#     for (let i = 0; i < classes.length; ++i) {
-#         if (value > classes[i]) {
-#             style.fillColor = colorscale[i];  // set the fill color according to the class
-#         }
-#     }
-#     return style;
-# }""")
+style_handle = assign("""function(feature, context){
+    const {classes, colorscale, style, colorProp} = context.props.hideout;  // get props from hideout
+    const value = feature.properties[colorProp];  // get value the determines the color
+    for (let i = 0; i < classes.length; ++i) {
+        if (value > classes[i]) {
+            style.fillColor = colorscale[i];  // set the fill color according to the class
+        }
+    }
+    return style;
+}""")
 
-# water_use = dl.GeoJSON(
-#     url="/assets/water_use_dau.geojson",  # url to geojson file
-#     options=dict(style=style_handle),  # how to style each polygon
-#     zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
-#     zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
-#     hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
-#     hideout=dict(colorscale=wcolorscale, classes=wclasses, style=wstyle, colorProp="annual_water_use"),
-#     id="wgeojson"
-# )
+water_use = dl.GeoJSON(
+    url="/assets/ca_ag_water.geojson",  # url to geojson file
+    options=dict(style=style_handle),  # how to style each polygon
+    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
+    zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
+    hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
+    hideout=dict(colorscale=wcolorscale, classes=wclasses, style=wstyle, colorProp="TEST"),
+    id="wgeojson"
+)
 
 
 # placeholder for mouseover data
@@ -224,10 +230,10 @@ radios = dbc.FormGroup([
                     {'label': 'Regulatory', 'value':'regulatory'}, 
                     {'label': 'Weather Stations', 'value':'weather'},
                     {'label': 'Projected Population Change','value':'pop_projections'},
-                    #{'label': 'CA Agricultural Water Use','value':'water_use'},
+                    {'label': 'CA Agricultural Water Use','value':'water_use'},
         ],               
         labelStyle={'display': 'inline-block'},
-        value='weather',
+        value='canals',
         inline=True
     ),
     dbc.RadioItems(
@@ -273,7 +279,7 @@ theme_ids = {
     'regulatory': regulatory,
     'weather': html.Div([weather_stations, info]),
     'pop_projections': ([pop_projections,colorbar]),
-    #'water_use': ([water_use,wcolorbar])
+    'water_use': ([water_use,wcolorbar])
 }
 
 @app.callback(Output(BASE_LAYER_ID, "url"),
