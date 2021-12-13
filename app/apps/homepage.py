@@ -9,6 +9,9 @@ from dash.dependencies import Input, Output, State
 
 from app import app
 
+
+#TODO: fix link to aws page
+
 card_documentation = dtc.Card(
     title='Documentation',
     # link='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf',
@@ -48,7 +51,7 @@ card_select_site = html.A(dtc.Card(
 
 card_quick_analysis = dtc.Card(
     title='Quick Analysis',
-    link='http://ec2-18-223-238-182.us-east-2.compute.amazonaws.com/calculate_lcow.html',
+    link='http://ec2-3-15-146-59.us-east-2.compute.amazonaws.com/calculate_lcow.html',
     image='/assets/images/quick_analysis.png',
     description="Calculate LCOW using a simple model.",
     #badges=['Badge 1', 'Badge 2', 'Badge 3'],
