@@ -9,6 +9,8 @@ import numpy as np
 import helpers
 import xarray as xr
 
+from dash import dcc
+
 from pathlib import Path
 from scipy.spatial import KDTree
 from shapely.geometry import Point, Polygon, shape
@@ -435,6 +437,7 @@ def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
+    links = []
     mdown = f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}  \n"
     dni = atts.get('dni')
     ghi = atts.get('ghi')
@@ -448,7 +451,7 @@ def _generateMarkdown(theme, atts, pnt):
         mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project na')}\n"
         desal = atts['desalPlants']['properties']
         try:
-            mdown += f"Capacity: {float(desal.get('Capacity')):,.0f} m3/day  \n"
+            mdown += f"Capacity: {float(desal.get('Capacity').strip().replace(',','')):,.0f} m3/day  \n"
         except Exception as e:
             logging.error(e)
             mdown += f"Capacity: -  \n"    
@@ -500,10 +503,7 @@ def _generateMarkdown(theme, atts, pnt):
             mdown += f"Year of data: {power.get('Data_Year')}  \n"
         except:
             pass
-        # try:
-        #     mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
-        # except:
-        #     mdown += f"Condenser Heat: -  \n"
+
 
     water = atts['waterPrice']['properties']
     mdown += f"**Residential Water Prices** (2018)  \n"
@@ -543,10 +543,12 @@ def _generateMarkdown(theme, atts, pnt):
         address = water.get('WebAddress')
         if address: 
             url_parsed = urlparse(address)
-            mdown += f"[Utility Web Site]({url_parsed.scheme + '://' + url_parsed.netloc + '/'})  \n"
-            mdown += f"[Utility Price List]({address})  \n"
+            links.append(dcc.Link(children="test", href="https://google.com", target="new"))
+            # mdown += f'<a href="{url_parsed.scheme + "://" + url_parsed.netloc}" target="_blank">Utility Web Site</a>'
+            # {url_parsed.scheme + "://" + url_parsed.netloc} target="_blank")  \n'
+            # mdown += f"[Utility Price List]({address})  \n"
     except Exception as e:
-        logging.error(e)
+        logging.info(e)
         mdown += f"Residential price: -  \n"
 
 
@@ -564,7 +566,7 @@ def _generateMarkdown(theme, atts, pnt):
         else:
             mdown += "Average Residential Prices: $-  \n"
     else:
-        logging.info('No Texas County!!!')
+        logging.info('No Texas County!')
 
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')
@@ -577,7 +579,6 @@ def _generateMarkdown(theme, atts, pnt):
         if fuel_url:
             mdown += f'[Fuel Prices from EIA]({fuel_url})  \n'
     return mdown
-    return(str(atts))
 
 def _updateMapJson(atts, pnt):
 
