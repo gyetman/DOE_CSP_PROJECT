@@ -244,7 +244,7 @@ class VAGMD_batch(object):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
         if ( k == 26 and self.Sf > 140.2):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 140.2 g/L in module AS26C2.7L(373), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
-        print(self.PFlux_avg)
+        # print(self.PFlux_avg)
                 
         
         return self.design_output
@@ -431,7 +431,7 @@ class VAGMD_batch(object):
         Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
     
         simu_output = []
-        print(self.thermal_load)
+        # print(self.thermal_load)
 
         simu_output.append({'Name':'Water production','Value':prod,'Unit':'m3'})
         simu_output.append({'Name':'Storage status','Value':storage_status,'Unit':'kWh'})
