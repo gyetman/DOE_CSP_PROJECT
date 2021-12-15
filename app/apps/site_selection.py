@@ -52,7 +52,7 @@ BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS2 = "site-details-selection"
 USER_POINT = 'user_point'
 QUERY_STATUS = 'query_status'
-LINKS='links-section'
+LINKS='site-links-section'
 
 def get_style(feature):
     return dict()

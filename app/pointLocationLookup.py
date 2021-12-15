@@ -494,7 +494,7 @@ def _generateMarkdown(theme, atts, pnt):
         except:
             mdown.append(f"Number of Generators: -  ")
         try: 
-            mdown.append("Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  ")
+            mdown.append(f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  ")
         except:
             mdown.append("Annual Net Generation: - MWh  ")
         try:
