@@ -320,14 +320,13 @@ def click_coord(coords):
 
 def get_point_info(lat_lng):
     markdown, links = pointLocationLookup.lookupLocation(lat_lng)
+    markdown = dcc.Markdown(markdown)
     #markdown = pointLocationLookup.lookupLocation(lat_lng)
     # print(f'Links: {links}')
     emd = lookup_openei_rates.lookup_rates(lat_lng[0],lat_lng[1])
     if emd:
-        markdown.append(emd)
-        markdown = dcc.Markdown(markdown)
-    else:
-        markdown = dcc.Markdown(markdown)
+        links.append(emd)
+        
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     if not closest:
         return markdown, [None,None,None,None], None, links

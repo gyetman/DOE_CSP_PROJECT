@@ -68,8 +68,10 @@ def lookup_rates(lat,lon,**kwargs):
             # update markdown based on the result
             #md = html.Div(html.A(f'<b>{sector} Electricity Prices from OpenEI</b>', href=f'{link}', target='_blank'))
             #md = f'<a href="{link}", target="_blank">Electricity Prices from OpenEI</a> \n'
-            md = f'[**{sector} Electricity Prices from OpenEI**]({link}#3__Energy) \n\n'
-            return md
+            # md = f'[**{sector} Electricity Prices from OpenEI**]({link}#3__Energy) \n\n'
+            energy_link = html.A("Electricity Prices from OpenEI", href=f"{link}#3__Energy", target="_blank")
+
+            return energy_link
         else:
             return None
 

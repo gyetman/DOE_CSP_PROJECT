@@ -545,9 +545,6 @@ def _generateMarkdown(theme, atts, pnt):
             logging.info(f'url type: {url_parsed}')
             links.append(html.A("Water Price Source", href=href_parsed, target="_blank"))
             links.append(html.Br())
-            print()
-            print(href_parsed)
-            print()
             
     except Exception as e:
         logging.info(e)
