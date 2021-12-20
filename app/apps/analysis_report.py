@@ -37,7 +37,7 @@ chart_navbar = dbc.NavbarSimple(
 #     html.P(id='data-initialize')])
 info = helpers.json_load(cfg.app_json)
 
-file_name ='/assets/docs/Detailed description for Input Variables.pdf#page=1' # 'D:/PhD/DOE/DOE_CSP_PROJECT/app/assets/Project_1_output_2021-10-19_10-19-05.xls'
+file_name ='/assets/docs/Excel_results.pdf#page=1' # 'D:/PhD/DOE/DOE_CSP_PROJECT/app/assets/Project_1_output_2021-10-19_10-19-05.xls'
 xls_result = dbc.Button(
                 html.Div([
                 dbc.NavLink('Access to the full results in Excel', id= 'xls_link',
