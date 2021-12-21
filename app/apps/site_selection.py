@@ -232,7 +232,7 @@ radios = dbc.FormGroup([
                     {'label':'Water Wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}, 
                     {'label': 'Weather Stations', 'value':'weather'},
-                    {'label': 'Projected Population Change','value':'pop_projections'},
+                    {'label': 'Projected Population Change to 2050','value':'pop_projections'},
                     {'label': 'CA Agricultural Water Use','value':'water_use'},
         ],               
         labelStyle={'display': 'inline-block'},
