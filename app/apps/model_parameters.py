@@ -69,16 +69,19 @@ def convert_strings_to_literal(v):
     else:
         return v['Value']
                         
-def create_data_table(table_data, table_index, model_type, model_name, selectable): #ZZZ
+def create_data_table(table_data, table_index, model_type, model_name, selectable):
     return html.Div([
         html.P(),
         dash_table.DataTable(
             #type i.e. 'solar-table'
             #index is the tab-section-subsection 
-            id={'type':f'{model_type}-table', 'model': model_name, 'index':table_index}, #ZZZ
+            id={'type':f'{model_type}-table', 'model': model_name, 'index':table_index}, 
             columns=cols,
             data=table_data,
             editable=True,
+            persistence = True,
+            persisted_props = ['data'],
+            persistence_type = 'memory',
             row_selectable='multi' if selectable else False,
             style_cell={
                 'textAlign': 'left',
@@ -117,7 +120,6 @@ def create_data_table(table_data, table_index, model_type, model_name, selectabl
                 'font-family': 'Helvetica',
                 #'fontWeight': 'bold',
             },
-            #column_static_tooltip=tips
         ),
         html.P(),
     ])
@@ -334,7 +336,6 @@ desal_side_panel = dbc.CardBody([
         target="run-desal-design"),
 ])
 
-
 solar_side_panel = dbc.CardBody([
     html.H4("Solar Thermal System Model", className="card-title"),
     html.P("", className='card-text'),
@@ -366,31 +367,45 @@ primary_card = dbc.Card(
 )
 
 
-SAM_JSON_BUTTON = html.Div(children=html.Div(id='sam-json'),id='sam-json-button')
+SAM_JSON_BUTTON = html.Div(children=html.Div(id='sam-json'),id='sam-json-button',className='w-50')
 
 SAM_JSON_file = [dcc.Upload(
-    html.Button('If you start your project from SAM, you may click here to upload a SAM generated JSON file and import the inputs'),
-    style={
-        'width': '95%',
-        'height': '60px',
-        'lineHeight': '45px',
-        'textAlign': 'center',
-        'margin': '10px'
-    },
-    id = 'sam-json'),
-    
-    dbc.NavLink('', id='sam-json-document',
-    href= "/assets/docs/Detailed description for Input Variables.pdf#page=1",
-    target='_blank',
-    external_link=True,
-    style={
-        'float':'right',
-        'display':'inline-block', 
-        'padding': '4px',
-        'font-size': '18px'
-    },
-    className='fas fa-info-circle fa-2x text-info'
-    )]
+    html.Div([
+        dbc.Button([
+            html.Div([
+                html.Div('Upload SAM JSON File', 
+                    style={'display':'inline-block','padding-top':'6px'}),
+                dbc.NavLink('', id='sam-json-document',
+                    href= "/assets/docs/Detailed description for Input Variables.pdf#page=1",
+                    target='_blank',
+                    external_link=True,
+                    style={
+                        'float':'right',
+                        'display':'inline-block', 
+                        'padding': '4px',
+                        'font-size': '24px'
+                    },
+                    className='fas fa-info-circle fa-2x text-info')
+            ])
+        ],id='sam-button-tip', color='success', className='mt-2 w-75', style={'height':'50px', 'display':'inline-block'}, outline=True),
+        dbc.Tooltip('If you start your project from SAM, you may click here to import the inputs from a SAM generated JSON file',
+            target='sam-button-tip',
+            placement='bottom'),
+    ],className='d-grid',style={'padding': '0px', 'padding-right': '6px'})
+)]
+
+REFRESH_BUTTON = html.A([
+    dbc.Button(children="Refresh Data",
+        color='success', 
+        className='mt-2 w-75', 
+        id='refresh-tip',
+        style={'height':'50px', 'display':'inline-block'}, 
+        outline=True),
+    dbc.Tooltip('Reset model variables to default values',
+        target='refresh-tip',
+        placement='bottom')
+    ],href='/model-variables',className='w-50'
+)
 
 weather_documentation = dbc.Button(
                     html.Div([
@@ -423,15 +438,15 @@ desal_design_results_card = dbc.Card(
 
 side_panel = dbc.Card([model_card, desal_design_results_card, primary_card,],className="h-100", color="secondary")
 
-tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col([tabs_accordion,  SAM_JSON_BUTTON], width=9, id='tabs-data-initialize')],no_gutters=True)
+BUTTONS = html.Div([dbc.Row([dbc.Col(SAM_JSON_BUTTON,className='d-flex justify-content-end'),dbc.Col(REFRESH_BUTTON, className ='d-flex')])])
+
+tabs = dbc.Row([dbc.Col(side_panel, width=3), dbc.Col([tabs_accordion,  BUTTONS], width=9, id='tabs-data-initialize')],no_gutters=True)
 
 model_tables_layout = html.Div([parameters_navbar, tabs])
-
 #
 ### CALLBACKS
 #     
 
-# NOTE: we'll want to eventually unpack the dict for the function call... 
 for model, functions in pdeps.functions_per_model.items():
     model_type=pdeps.find_model_type(model)
     for function in functions:    
@@ -457,7 +472,7 @@ for model, functions in pdeps.functions_per_model.items():
             intables = [state for state in states if type(state)==list]
             return pdeps.function_switcher(function['function'],intables)
 
-                
+
 @app.callback(
     Output('tabs-card', 'children'),
     [Input('tabs-data-initialize', 'children'),
