@@ -1,4 +1,6 @@
 from datetime import date
+
+from dash.dcc.Markdown import Markdown
 import app_config as cfg 
 import json
 import logging
@@ -8,6 +10,9 @@ import fiona
 import numpy as np
 import helpers
 import xarray as xr
+
+from dash import html
+from dash import dcc
 
 from pathlib import Path
 from scipy.spatial import KDTree
@@ -213,7 +218,6 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
                 # canals are by state
                 if key == 'canals':
                     st = f"{state['properties']['STATEAB']}.shp"
-                    print(value['point'])
                     closestFeatures[key] = _findClosestPoint(pt, value['point'] / st)
                 #water proxy is by county
                 elif key == 'waterProxy':
@@ -264,6 +268,7 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
     _updateMapJson(closestFeatures, pt)
     # return the markdown
     return(_generateMarkdown(mapTheme,closestFeatures,pt))
+    #return(_generateMarkdown(mapTheme,closestFeatures,pt))
 
 def getClosestInfrastructure(pnt):
     ''' Get the closest desal and power plant locations '''
@@ -273,7 +278,6 @@ def getClosestInfrastructure(pnt):
     if not country: 
         return None
 
-    print(country['properties'])
     if country['properties']['iso_merged'] == 'US':
         # get the state
         state = _findIntersectFeatures(pnt,countyLayer['county']['poly'])
@@ -417,11 +421,6 @@ def _findClosestPoint(pt,lyr,kd_path=None):
         match = features[closestPt[1]]
         return(match)
 
-    # update json file
-    # try:
-    #     helpers.json_update(data=mParams, filename=cfg.map_json)
-    # except FileNotFoundError:
-    #     helpers.initialize_json(data=mParams, filename=cfg.map_json)
 
 def _getFuelURL(state):
     '''Construct the URL for the EIA web page listing fuel rates
@@ -435,149 +434,151 @@ def _generateMarkdown(theme, atts, pnt):
     ''' generate the markdown to be returned for the current theme '''
     # TODO: something more elegant than try..except for formatted values that crash on None
     # handle the standard theme layers (all cases)
-    mdown = f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}  \n"
+    links = [] # holds all links to be returned
+    mdown = []
+    mdown.append(f"Located near {atts['weatherFile']['properties'].get('City').replace('[','(').replace(']', ')')}, {atts['weatherFile']['properties'].get('State')}  ")
     dni = atts.get('dni')
     ghi = atts.get('ghi')
     if all((dni,ghi)):
-        mdown += f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day  \n" 
+        mdown.append(f"DNI: {dni:,.1f}   GHI:{ghi:,.1f}   kWh/m2/day  ")
     else:
-        mdown += "DNI: -   GHI:-  kWh/m2/day  \n"
+        mdown.append("DNI: - GHI:- kWh/m2/day  ")
     if atts['desalPlants']:
         desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
         desal_dist = _calcDistance(pnt,desal_pt)
-        mdown += f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project na')}\n"
+        mdown.append(f"**Closest desalination plant** ({desal_dist:,.1f} km) name: {atts['desalPlants']['properties'].get('Project na')}  ")
         desal = atts['desalPlants']['properties']
         try:
-            mdown += f"Capacity: {float(desal.get('Capacity')):,.0f} m3/day  \n"
+            mdown.append(f"Capacity: {float(desal.get('Capacity').strip().replace(',','')):,.0f} m3/day  ")
         except Exception as e:
             logging.error(e)
-            mdown += f"Capacity: -  \n"    
-        mdown += f"Technology: {desal.get('Technology')}  \n"
-        mdown += f"Feedwater:  {desal.get('Feedwater')}  \n"
-        mdown += f"Customer type: {desal.get('Customer_t')}  \n"
+            mdown.append(f"Capacity: -  ")  
+        mdown.append(f"Technology: {desal.get('Technology')}  ")
+        mdown.append(f"Feedwater:  {desal.get('Feedwater')}  ")
+        mdown.append(f"Customer type: {desal.get('Customer t')}  ")
 
     if atts['canals']:
         canal_pt = [atts['canals']['geometry'].get('coordinates')[1],atts['canals']['geometry'].get('coordinates')[0]]
         canal_dist = _calcDistance(pnt,canal_pt)
-        mdown +=f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) "
+        mdown.append(f"**Closest Canal / piped water infrastructure** ({canal_dist:,.1f} km) ")
         canal_name = atts['canals']['properties'].get('Name')
         if canal_name is None:
-            mdown += '  \n'
+            mdown.append('  ')
         else:
-            mdown += f"{canal_name}  \n"
+            mdown.append(f"{canal_name}  ")
 
     # water proxy
     if atts['waterProxy']:
         water_pt = [atts['waterProxy']['properties'].get('POINT_Y'), atts['waterProxy']['properties'].get('POINT_X')]
         water_dist = _calcDistance(pnt,water_pt)
-        mdown +=f"**Closest Water Proxy Location** ({water_dist:,.1f} km) "
+        mdown.append(f"**Closest Water Proxy Location** ({water_dist:,.1f} km) ")
         water_name = atts['waterProxy']['properties'].get('FULLNAME')
         if water_name is None:
-            mdown+= '  \n'
+            mdown.append('  ')
         else:
-            mdown+= f"{water_name}  \n"
+            mdown.append(f"{water_name}  ")
     # power plants
     if atts['powerPlants']:
         power = atts['powerPlants']['properties']
         power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
         power_dist = _calcDistance(pnt,power_pt)
-        mdown += f"**Closest power plant** ({power_dist:,.1f} km): {power.get('Plant_name')}  \n"
+        mdown .append(f"**Closest power plant** ({power_dist:,.1f} km): {power.get('Plant_name')}  ")
 
-        mdown += f"Primary Generation: {power.get('Plant_primary_fuel')}  \n"
+        mdown.append(f"Primary Generation: {power.get('Plant_primary_fuel')}  ")
         try:
-            mdown += f"Nameplate Capacity: {power.get('Plant_nameplate_capacity__MW_'):,.0f} MW  \n"
+            mdown.append(f"Nameplate Capacity: {power.get('Plant_nameplate_capacity__MW_'):,.0f} MW  ")
         except:
-            mdown += f"Production: -  \n"
+            mdown.append(f"Production: -  ")
         try:
-            mdown += f"Number of Generators: {power.get('Number_of_generators')}  \n"
+            mdown.append(f"Number of Generators: {power.get('Number_of_generators')}  ")
         except:
-            mdown += f"Number of Generators: -  \n"
+            mdown.append(f"Number of Generators: -  ")
         try: 
-            mdown += f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  \n"
+            mdown.append(f"Annual Net Generation: {power.get('Plant_annual_net_generation__MW'):,.0f} MWh  ")
         except:
-            mdown += "Annual Net Generation: - MWh  \n"
+            mdown.append("Annual Net Generation: - MWh  ")
         try:
-            mdown += f"Year of data: {power.get('Data_Year')}  \n"
+            mdown.append(f"Year of data: {power.get('Data_Year')}  ")
         except:
             pass
-        # try:
-        #     mdown += f"Condenser Heat: {power.get('Total_Pote'):,1f} MJ (29 C < T < 41 C)  \n"
-        # except:
-        #     mdown += f"Condenser Heat: -  \n"
+
 
     water = atts['waterPrice']['properties']
-    mdown += f"**Residential Water Prices** (2018)  \n"
+    mdown.append("**Residential Water Prices** (2018)  ")
     try:
-        mdown += f"Utility provider: {water.get('UtilityShortName')}  \n"
+        mdown.append(f"Utility provider: {water.get('UtilityShortName')}  ")
         mc6 = water.get('CalcTot6M3CurrUSD')
         mc15 = water.get('CalcTot15M3CurrUSD')
         mc50 = water.get('CalcTot50M3CurrUSD')
         mc100 = water.get('CalcTot100M3CurrUSD')
         if not mc6:
-            mdown += f"Consumption to 6m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 6m3: $ - /m3  ")
         elif float(mc6) < 0.005:
-            mdown += f"Consumption to 6m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 6m3: $ - /m3  ")
         else:
-            mdown += f"Consumption to 6m3: ${float(mc6):,.2f}/m3  \n"
+            mdown.append(f"Consumption to 6m3: ${float(mc6):,.2f}/m3  ")
         if not mc15:
-            mdown += f"Consumption to 15m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 15m3: $ - /m3  ")
         elif float(mc15) < 0.005:
-            mdown += f"Consumption to 15m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 15m3: $ - /m3  ")
         else:
-            mdown += f"Consumption to 15m3: ${float(mc15):,.2f}/m3  \n"
+            mdown.append(f"Consumption to 15m3: ${float(mc15):,.2f}/m3  ")
                
         if not mc50:
-            mdown += f"Consumption to 50m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 50m3: $ - /m3  ")
         elif float(mc50) < 0.005:
-            mdown += f"Consumption to 50m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 50m3: $ - /m3  ")
         else:
-            mdown += f"Consumption to 50m3: ${float(mc50):,.2f}/m3  \n"
+            mdown.append(f"Consumption to 50m3: ${float(mc50):,.2f}/m3  ")
 
         if not mc100:
-            mdown += f"Consumption to 100m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 100m3: $ - /m3  ")
         elif float(mc100) < 0.06:
-            mdown += f"Consumption to 100m3: $ - /m3  \n"
+            mdown.append(f"Consumption to 100m3: $ - /m3  ")
         else:
-            mdown += f"Consumption to 100m3: ${float(mc100):,.2f}/m3  \n"
+            mdown.append(f"Consumption to 100m3: ${float(mc100):,.2f}/m3  ")
 
         address = water.get('WebAddress')
         if address: 
             url_parsed = urlparse(address)
-            mdown += f"[Utility Web Site]({url_parsed.scheme + '://' + url_parsed.netloc + '/'})  \n"
-            mdown += f"[Utility Price List]({address})  \n"
+            href_parsed = f'{url_parsed.scheme}://{url_parsed.netloc}{url_parsed.path}'
+            logging.info(f'url type: {url_parsed}')
+            links.append(html.A("Water Price Source", href=href_parsed, target="_blank"))
+            links.append(html.Br())
+            
     except Exception as e:
-        logging.error(e)
-        mdown += f"Residential price: -  \n"
-
+        logging.info(e)
+        mdown.append(f"Residential price: -  ")
 
     if atts['tx_county']:
         tx_prices = atts['tx_county']['properties']
-        mdown += f'**Texas County Water Prices**  \n'
+        mdown.append(f'**Texas County Water Prices**  ')
         comm_price = tx_prices.get('comm_avg')
         res_price = tx_prices.get('res_avg')
         if comm_price:
-            mdown += f'Average Commercial Price: ${comm_price:,.2f}/m3  \n'
+            mdown.append(f'Average Commercial Price: ${comm_price:,.2f}/m3  ')
         else:
-            mdown += "Average Commercial Price: $-  \n"
+            mdown.append("Average Commercial Price: $-  ")
         if res_price:
-            mdown += f"Average Residential Price: ${res_price:,.2f}/m3  \n"
+            mdown.append(f"Average Residential Price: ${res_price:,.2f}/m3  ")
         else:
-            mdown += "Average Residential Prices: $-  \n"
+            mdown.append("Average Residential Prices: $-  ")
     else:
-        logging.info('No Texas County!!!')
+        logging.debug('No Texas County!')
 
     if atts['county']:
         state = atts['county']['properties'].get('STATEAB')
         #link = f'<a href="{regulatory_links[state]}" target="_blank">{state}</a>'
         if state in regulatory_links.keys():
-            mdown += f"**Regulatory Framework**  \n"
-            link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
-            mdown += link + '  \n'
+            #link = f"[Regulatory information for {state}]({regulatory_links.get(state)})"
+            link = f"{regulatory_links.get(state)}"
+            links.insert(0, html.Br())
+            links.insert(0, html.A(f"Regulatory information for {state}", href=link, target='_blank'))
         fuel_url = _getFuelURL(state)
         if fuel_url:
-            mdown += f'[Fuel Prices from EIA]({fuel_url})  \n'
-    return mdown
-    return(str(atts))
+            links.append(html.A('Fuel Prices from EIA',href=fuel_url, target='_blank'))
+            links.append(html.Br())
+    return(mdown, links)
 
 def _updateMapJson(atts, pnt):
 

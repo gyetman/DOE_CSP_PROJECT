@@ -24,10 +24,12 @@ gis_data = app_config.gis_data_path
 
 
 #TODO:
-# links open in new tab
-# bug: key error site selection line 368
-# name is none for desal plant
-
+## Error with two or more desal plants in a cluster
+# Traceback (most recent call last):
+#   File "/Users/gyetman/DOE/DOE_CSP_PROJECT/app/apps/site_selection.py", line 374, in info_hover
+#     if feature['properties']['cluster']:
+# KeyError: 'properties'
+# Error only occurs occasionally, can be safely ignored. 
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
@@ -50,6 +52,7 @@ BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 SITE_DETAILS2 = "site-details-selection"
 USER_POINT = 'user_point'
 QUERY_STATUS = 'query_status'
+LINKS='site-links-section'
 
 def get_style(feature):
     return dict()
@@ -229,7 +232,7 @@ radios = dbc.FormGroup([
                     {'label':'Water Wells', 'value':'wells'},
                     {'label': 'Regulatory', 'value':'regulatory'}, 
                     {'label': 'Weather Stations', 'value':'weather'},
-                    {'label': 'Projected Population Change','value':'pop_projections'},
+                    {'label': 'Projected Population Change to 2050','value':'pop_projections'},
                     {'label': 'CA Agricultural Water Use','value':'water_use'},
         ],               
         labelStyle={'display': 'inline-block'},
@@ -265,7 +268,8 @@ def render_map():
             ],width=8),
             dbc.Col([
                 html.H3('Site details:', className='text-success'),
-                html.Div(id=SITE_DETAILS2)
+                html.Div(id=SITE_DETAILS2),
+                html.Div(id=LINKS)
             ],width=3)
         ],style={'padding':40})
     ]
@@ -309,32 +313,34 @@ def click_coord(coords):
         Output(SITE_DETAILS2, 'children'),
         Output("closest-facilities", 'children'),
         Output(QUERY_STATUS, 'children'),
+        Output(LINKS, 'children')
     ],
     [Input(MAP_ID, 'click_lat_lng')],
     prevent_initial_call=True)
 
 def get_point_info(lat_lng):
-    markdown = str(pointLocationLookup.lookupLocation(lat_lng))
+    markdown, links = pointLocationLookup.lookupLocation(lat_lng)
+    markdown = dcc.Markdown(markdown)
+    #markdown = pointLocationLookup.lookupLocation(lat_lng)
+    # print(f'Links: {links}')
     emd = lookup_openei_rates.lookup_rates(lat_lng[0],lat_lng[1])
     if emd:
-        markdown += emd
-        markdown = dcc.Markdown(markdown)
-    else:
-        markdown = dcc.Markdown(markdown)
+        links.append(emd)
+        
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     if not closest:
-        return markdown, [None,None,None,None], None
+        return markdown, [None,None,None,None], None, links
     elif 'plant' in closest.keys():
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
         plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
         canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
         water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-        return markdown, [desal,plant,canal,water], None
+        return markdown, [desal,plant,canal,water], None, links
     elif 'desal' in closest.keys():
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])
-        return markdown, [desal,None,None,None], None
+        return markdown, [desal,None,None,None], None, links
     else:
-        return markdown, [None,None,None,None], None
+        return markdown, [None,None,None,None], None, links
 
         
 @app.callback(

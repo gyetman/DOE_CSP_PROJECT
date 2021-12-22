@@ -43,6 +43,7 @@ RESULTS_BASE_LAYER_ID = "results-base-layer-id"
 RESULTS_BASE_LAYER_DROPDOWN_ID = "base-layer-drop-down-id"
 RESULTS_SITE_DETAILS = "site-details-results"
 LOADING_STATUS = "loading-status"
+LINKS_SECTION = "links-section"
 
 classes = [0.0,1.0,2.0,3.0,4.0,5.0]
 color_scale = ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']
@@ -100,21 +101,7 @@ wells = dl.GeoJSON(
 # regulatory layer from Mapbox
 regulatory = dl.TileLayer(url=mapbox_url.format(id = 'gyetman/ckbgyarss0sm41imvpcyl09fp', access_token=mapbox_token))
 
-# County price data
-# with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
-#     counties= json.load(f)
 
-        
-# us_counties = dl.GeoJSON(
-#     #url='/assets/us_counties2.geojson',
-#     data=counties,
-#     id='water_prices',
-#     options=dict(),
-#     hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
-# )
-
-# with open('./assets/global_water_tarrifs.geojson', 'r', encoding='UTF-8') as f:
-#     city_prices = json.load(f)
 with open('./assets/water_prices_ibnet.geojson', 'r', encoding='UTF-8') as f:
     city_prices = json.load(f)
 
@@ -226,7 +213,8 @@ def render_results_map():
 
 
                 html.H3('Site details:', className='text-success'),
-                html.Div(id=RESULTS_SITE_DETAILS)
+                html.Div(id=RESULTS_SITE_DETAILS),
+                html.Div(id=LINKS_SECTION)
             ],width=3)
         ],style={'padding':20})
     ],id='init_center')
@@ -264,19 +252,7 @@ def update_price_layers(price_factor,closest_from_map):
     model_lookup = app_config.build_file_lookup(app_json['solar'],app_json['desal'],app_json['finance'],app_json['timestamp'])
     finance = helpers.json_load(model_lookup['sam_desal_finance_outfile'])
     model_price =  finance[helpers.index_in_list_of_dicts(finance,'Name','Levelized cost of water')]['Value']
-    # with open('./assets/us_counties2.geojson','r', encoding = 'UTF-8') as f:
-    #     counties= json.load(f)
-    # new_features = [feature for feature in counties['features'] if feature['properties']['comm_price']]
-    # new_features = [feature for feature in new_features if feature['properties']['comm_price'] > model_price * price_factor]
 
-    # counties['features'] = new_features
-
-    # us_counties = dl.GeoJSON(
-    #     data=counties,
-    #     id='water_prices',
-    #     options=dict(),
-    #             hideout=dict(colorscale=color_scale, classes=classes, style=style, color_prop="comm_price"),
-    # )
 
     with open('./assets/global_water_tarrifs.geojson','r', encoding = 'UTF-8') as f:
         city_prices = json.load(f)
@@ -285,14 +261,6 @@ def update_price_layers(price_factor,closest_from_map):
 
     city_prices['features'] = new_features
 
-    # city_price_lyr = dl.GeoJSON(
-    #     data=city_prices,
-    #     id='city_water_prices',
-    #     cluster=True,
-    #     zoomToBoundsOnClick=True,
-    #     superClusterOptions={"radius": 75},
-    #     hoverStyle=dict(weight=5, color='#666', dashArray=''),
-    # )
     markers = []
     for pt in new_features:
         markers.append(
@@ -321,7 +289,8 @@ def update_price_layers(price_factor,closest_from_map):
 
 @app.callback([Output(RESULTS_SITE_DETAILS, 'children'),
                 Output("results-closest-facilities", 'children'), 
-                Output(LOADING_STATUS, 'children'),],
+                Output(LOADING_STATUS, 'children'),
+                Output(LINKS_SECTION,'children')],
                 [Input('init', 'children')],
                 State(RESULTS_SITE_DETAILS, 'children'),
                 prevent_initial_call=False
@@ -332,13 +301,13 @@ def get_point_info(_,site_details_state):
     site_lat=map_data['latitude']
     site_long=map_data['longitude']
     lat_lng = (site_lat, site_long)
-    md = str(pointLocationLookup.lookupLocation(lat_lng))
+    markdown,links = pointLocationLookup.lookupLocation(lat_lng)
+    markdown = dcc.Markdown(markdown)
     emd = lookup_openei_rates.lookup_rates(lat_lng[0],lat_lng[1])
     #pmd = str(lookup_nrel_utility_prices.lookup_rates(lat_lng[0],lat_lng[1]))
     if emd:
-        markdown = dcc.Markdown(f'{md} \n{emd} \n')
-    else:
-        markdown = dcc.Markdown(f'{md} \n')
+        links.append(emd)
+
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     # TODO: change to .get for keys and return result, leave location handling to pointLocationLookup.
     # Site selected by user from map-data. 
@@ -351,16 +320,16 @@ def get_point_info(_,site_details_state):
                 children=[dl.Tooltip("Selected site")],
     )
     if not closest:
-        return markdown, user_point, None
+        return markdown, user_point, None, links
     elif 'plant' in closest.keys():
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
         plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
         canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
         water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-        return markdown, [desal,plant,canal,water,user_point], None
+        return markdown, [desal,plant,canal,water,user_point], None, links
     else:
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")]) 
-        return markdown, [desal,user_point], None
+        return markdown, [desal,user_point], None, links
 
 @app.callback(Output('results-info', 'children'),
         [Input({'type':'json_theme', 'index': ALL}, 'hover_feature')],
