@@ -1,4 +1,5 @@
 import app_config
+import itertools
 import json
 import dash
 import dash_bootstrap_components as dbc
@@ -53,6 +54,10 @@ SITE_DETAILS2 = "site-details-selection"
 USER_POINT = 'user_point'
 QUERY_STATUS = 'query_status'
 LINKS='site-links-section'
+POP_GRAPH = 'pop-graph'
+POP_FIELDS = []
+for i in range(1,6):
+    POP_FIELDS.append([f'ssp{i}{x}' for x in range(2020,2051,5)])
 
 def get_style(feature):
     return dict()
@@ -132,11 +137,11 @@ style_handle = assign("""function(feature, context){
 pop_projections = dl.GeoJSON(
     url="/assets/us_county.geojson",  # url to geojson file
     options=dict(style=style_handle),  # how to style each polygon
-    zoomToBounds=False,  # when true, zooms to bounds when data changes (e.g. on load)
+    zoomToBounds=True,  # when true, zooms to bounds when data changes (e.g. on load)
     zoomToBoundsOnClick=True,  # when true, zooms to bounds of feature (e.g. polygon) on click
     hoverStyle=arrow_function(dict(weight=5, color='#666', dashArray='')),  # style applied on hover
     hideout=dict(colorscale=colorscale, classes=classes, style=style, colorProp="pop_change_percent"),
-    id="geojson"
+    id="pop-projections"
 )
 
 # # California water use
@@ -270,8 +275,11 @@ def render_map():
                 html.H3('Site details:', className='text-success'),
                 html.Div(id=SITE_DETAILS2),
                 html.Div(id=LINKS)
-            ],width=3)
-        ],style={'padding':40})
+            ],width=3),
+        ],style={'padding':30}),
+        dbc.Row([
+            html.Div(id=POP_GRAPH)
+        ])
     ]
 
 
@@ -438,6 +446,16 @@ def info_hover(features):
         return ['Hover over a feature']
 
 
+@app.callback(
+    Output(POP_GRAPH,'children'),
+    [Input(component_id='pop-projections',component_property='hover-feature')]
+)
+
+def plot_pop_projection(feature):
+    if feature:
+        print('Got Feature')
+        return(feature)
+
 external_stylesheets = [dbc.themes.FLATLY]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Site Selection (Beta)'
@@ -446,5 +464,4 @@ app.title = 'Site Selection (Beta)'
 
 if __name__ == '__main__':
     app.run_server(debug=False, port=8150)
-
 
