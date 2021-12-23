@@ -212,9 +212,8 @@ query_status = dcc.Loading(
     type='default',
     color='#ffff', 
     style={"position": "absolute", "top": "200px", "right": "50%", "zIndex": "1000"},
-    children = ['Querying GIS Layers']
-      
 )
+
 site_selection_map = dl.Map(
     id=MAP_ID, 
     style={'width': '100%', 'height': '500px'}, 
@@ -277,22 +276,17 @@ def render_map():
                 query_status,
                 site_selection_map,
                 dbc.Row([
-                    dbc.Col(radios),
-                    #dbc.Col(legend)
-                    dbc.Col(id=POP_GRAPH)
+                    dbc.Col([radios,html.Div(id='next-button'),],width=9),
+                    dbc.Col(legend)
                 ]),
-                html.Div(id='next-button'),
             ],width=8),
             dbc.Col([
                 html.H3('Site details:', className='text-success'),
+                html.Div(id=POP_GRAPH),
                 html.Div(id=SITE_DETAILS2),
                 html.Div(id=LINKS)
             ]),
         ],style={'padding':30}),
-        dbc.Row(legend)
-        # dbc.Row([
-        #     html.Div(id=POP_GRAPH)
-        # ])
     ]
 
 
@@ -484,12 +478,12 @@ def plot_pop_projection(feature):
             title='Shared Socioecomic Pathways Population Projections',
             xaxis_title = 'Year',
             yaxis_title= 'County Population',
-            # legend = dict(
-            #     yanchor="top",
-            #     y=0.99,
-            #     xanchor="left",
-            #     x=0.01
-            # )
+            legend = dict(
+                yanchor="bottom",
+                y=-1,
+                xanchor="left",
+                x=0.01
+            )
         )
         for ssp in SSPS:
             fig.add_trace(go.Scatter(
