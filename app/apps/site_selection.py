@@ -272,14 +272,14 @@ radios = dbc.FormGroup([
 def render_map():
     return [
         map_navbar,
-        # dbc.Input(id='price_factor',value='1.0',type='hidden'),
         dbc.Row([
             dbc.Col([
                 query_status,
                 site_selection_map,
                 dbc.Row([
-                    dbc.Col(radios, width=7),
-                    dbc.Col(legend)
+                    dbc.Col(radios),
+                    #dbc.Col(legend)
+                    dbc.Col(id=POP_GRAPH)
                 ]),
                 html.Div(id='next-button'),
             ],width=8),
@@ -287,11 +287,12 @@ def render_map():
                 html.H3('Site details:', className='text-success'),
                 html.Div(id=SITE_DETAILS2),
                 html.Div(id=LINKS)
-            ],width=3),
+            ]),
         ],style={'padding':30}),
-        dbc.Row([
-            html.Div(id=POP_GRAPH)
-        ])
+        dbc.Row(legend)
+        # dbc.Row([
+        #     html.Div(id=POP_GRAPH)
+        # ])
     ]
 
 
@@ -483,6 +484,12 @@ def plot_pop_projection(feature):
             title='Shared Socioecomic Pathways Population Projections',
             xaxis_title = 'Year',
             yaxis_title= 'County Population',
+            # legend = dict(
+            #     yanchor="top",
+            #     y=0.99,
+            #     xanchor="left",
+            #     x=0.01
+            # )
         )
         for ssp in SSPS:
             fig.add_trace(go.Scatter(
