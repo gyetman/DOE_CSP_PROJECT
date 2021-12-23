@@ -43,7 +43,8 @@
             "Label": "Run type",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -107,7 +108,8 @@
             "Name": "rec_aspect",
             "Label": "Receiver aspect ratio",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -124,14 +126,16 @@
             "Label": "Receiver design heatloss",
             "Units": "kW/m2",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "land_bound_type",
             "Label": "Land boundary type",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -157,14 +161,16 @@
             "Label": "Land boundary table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "land_bound_list",
             "Label": "Boundary table listing",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -221,35 +227,40 @@
             "Name": "interp_nug",
             "Label": "Interpolation nugget",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "interp_beta",
             "Label": "Interpolation beta coef.",
             "Group": "heliostat",
-            "Require": "?=1.99"
+            "Require": "?=1.99",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_flux_x",
             "Label": "Flux map X resolution",
             "Group": "heliostat",
-            "Require": "?=12"
+            "Require": "?=12",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "n_flux_y",
             "Label": "Flux map Y resolution",
             "Group": "heliostat",
-            "Require": "?=1"
+            "Require": "?=1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "dens_mirror",
             "Label": "Ratio of reflective area to profile",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -257,7 +268,8 @@
             "Label": "Heliostat position table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "run_type=1"
+            "Require": "run_type=1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -265,7 +277,8 @@
             "Label": "Heliostat aim point table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -280,7 +293,8 @@
             "Name": "eta_map",
             "Label": "Field efficiency array",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -288,14 +302,16 @@
             "Label": "Flux map sun positions",
             "Units": "deg",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "flux_maps",
             "Label": "Flux map intensities",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -441,7 +457,8 @@
             "Name": "calc_fluxmaps",
             "Label": "Include fluxmap calculations",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -589,7 +606,8 @@
             "Name": "is_optimize",
             "Label": "Do SolarPILOT optimization",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -648,7 +666,8 @@
             "Name": "check_max_flux",
             "Label": "Check max flux at design point",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -775,7 +794,8 @@
             "Label": "Maximum heat rate of auxiliary heater",
             "Units": "MW",
             "Group": "dsg_controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1221,7 +1241,8 @@
             "Label": "Solar field area",
             "Units": "m^2",
             "Group": "dsg_controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1269,7 +1290,8 @@
             "Label": "HP turbine outlet temperature",
             "Units": "C",
             "Group": "dsg_controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1277,7 +1299,8 @@
             "Label": "Target reheater outlet temp.",
             "Units": "C",
             "Group": "dsg_controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1325,7 +1348,8 @@
             "Label": "Reference HTF inlet temperature at design",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1333,7 +1357,8 @@
             "Label": "Reference HTF outlet temperature at design",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1341,7 +1366,8 @@
             "Label": "Fraction of thermal power required for standby mode",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1349,7 +1375,8 @@
             "Label": "Boiler operating pressure @ design",
             "Units": "bar",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1357,7 +1384,8 @@
             "Label": "Reheater operating pressure at design",
             "Units": "bar",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1365,7 +1393,8 @@
             "Label": "Design reheat mass flow rate fraction",
             "Units": "none",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1447,7 +1476,8 @@
             "Label": "Hot HTF inlet temperature, from storage tank",
             "Units": "C",
             "Group": "powerblock",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1494,7 +1524,8 @@
             "Label": "Power production at design conditions",
             "Units": "MWe",
             "Group": "parasitics",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1502,7 +1533,8 @@
             "Label": "Power cycle efficiency at design",
             "Units": "none",
             "Group": "parasitics",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1655,7 +1687,8 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100"
+            "Costraint": "MAX=100",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1664,7 +1697,8 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760"
+            "Costraint": "LENGTH=8760",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1674,7 +1708,8 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3"
+            "Costraint": "COLS=3",
+			"Tab":"Auxiliary (Not used)"
         }
     ]
 }

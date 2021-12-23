@@ -19,8 +19,16 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "rr",
-            "Label": "Recovery rate mode (Input '1' for high recovery rate, input '2' for low recovery rate)",
+            "Label": "Recovery rate mode (Input '1': max recovery rate towards ZLD, input '2':  lower recovery rate)",
             "Units": "",
+            "Require": "*",
+            "Constraint": ">0"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "storage_hour",
+            "Label": "Battery storage hours",
+            "Units": "hour",
             "Require": "*",
             "Constraint": ">0"
         }

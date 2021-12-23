@@ -107,10 +107,10 @@ class OARO_cost(object):
         # print('mem', self.oaro_area+self.ro_area)
         # print('CAPEX', self.annualized_CAPEX)
         mem_capex = CR_factor * (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost) / self.ann_prod
-        print('Mem capex', mem_capex)
-        print('Other CAPEX', self.annualized_CAPEX - mem_capex)
-        print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
-        print('Energy cost', self.energycost)
+        #print('Mem capex', mem_capex)
+        #print('Other CAPEX', self.annualized_CAPEX - mem_capex)
+        #print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
+        #print('Energy cost', self.energycost)
         # print('Electricity: ', self.energycost )
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []

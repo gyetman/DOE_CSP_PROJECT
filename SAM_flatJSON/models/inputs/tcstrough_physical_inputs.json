@@ -257,7 +257,8 @@
             "Label": "Design turbine gross output",
             "Units": "MWe",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1546,7 +1547,8 @@
             "Label": "Tracking mode",
             "Units": "none",
             "Group": "Weather",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1554,7 +1556,8 @@
             "Label": "Tilt angle of surface/axis",
             "Units": "none",
             "Group": "Weather",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1562,7 +1565,8 @@
             "Label": "Azimuth angle of surface/axis",
             "Units": "none",
             "Group": "Weather",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1570,7 +1574,8 @@
             "Label": "Calculate temps and pressures at design conditions for runners and headers",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1578,7 +1583,8 @@
             "Label": "Maximum number of diameters in each of the hot and cold headers",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1586,7 +1592,8 @@
             "Label": "Length of runner pipe in power block",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1594,7 +1601,8 @@
             "Label": "Threshold length of straight runner pipe without an expansion loop",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1602,7 +1610,8 @@
             "Label": "Compined perpendicular lengths of each header expansion loop",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1610,7 +1619,8 @@
             "Label": "Compined perpendicular lengths of each runner expansion loop",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1618,7 +1628,8 @@
             "Label": "Minimum number of expansion loops per single-diameter runner section",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1626,7 +1637,8 @@
             "Label": "North/south separation between subfields. 0 = SCAs are touching",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1634,7 +1646,8 @@
             "Label": "Number of collector loops per expansion loop",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1642,7 +1655,8 @@
             "Label": "Location of first header expansion loop. 1 = after first collector loop",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1651,7 +1665,8 @@
             "Units": "0/1",
             "Meta": "no/yes",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1659,7 +1674,8 @@
             "Label": "In acceptance testing mode - require steady-state startup",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1668,7 +1684,8 @@
             "Units": "2-Jan",
             "Meta": "hx/loop",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1677,7 +1694,8 @@
             "Units": "kWht/K-MWt",
             "Meta": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1685,7 +1703,8 @@
             "Label": "Heat capacity of the balance of plant on the cold side",
             "Units": "kWht/K-MWt",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1693,7 +1712,8 @@
             "Label": "Non-HTF heat capacity associated with each SCA - per meter basis",
             "Units": "Wht/K-m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1701,7 +1721,8 @@
             "Label": "Interconnect component minor loss coefficients, row=intc, col=cpnt",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1709,7 +1730,8 @@
             "Label": "Interconnect component diameters, row=intc, col=cpnt",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1717,7 +1739,8 @@
             "Label": "Interconnect component lengths, row=intc, col=cpnt",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1725,7 +1748,8 @@
             "Label": "Interconnect component type, row=intc, col=cpnt",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1733,7 +1757,8 @@
             "Label": "Use custom solar field pipe diams, wallthks, and lengths",
             "Units": "none",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1741,7 +1766,8 @@
             "Label": "Custom runner diameters",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1749,7 +1775,8 @@
             "Label": "Custom runner wall thicknesses",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1757,7 +1784,8 @@
             "Label": "Custom runner lengths",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1765,7 +1793,8 @@
             "Label": "Custom header diameters",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1773,7 +1802,8 @@
             "Label": "Custom header wall thicknesses",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1781,7 +1811,8 @@
             "Label": "Custom header lengths",
             "Units": "m",
             "Group": "solar_field",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1789,7 +1820,8 @@
             "Label": "User defined field fluid property data",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -1797,7 +1829,8 @@
             "Label": "User defined storage fluid property data",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1805,7 +1838,8 @@
             "Label": "Heat exchanger (HX) exists (1=yes, 0=no)",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1813,7 +1847,8 @@
             "Label": "HX configuration",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1821,7 +1856,8 @@
             "Label": "Max heat rate of auxiliary heater",
             "Units": "MWt",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1829,7 +1865,8 @@
             "Label": "Aux heater outlet temp set point",
             "Units": "C",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1837,7 +1874,8 @@
             "Label": "Initial hot tank fluid volume",
             "Units": "m3",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1845,7 +1883,8 @@
             "Label": "Initial cold tank fluid tmeperature",
             "Units": "C",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1853,7 +1892,8 @@
             "Label": "Total tank volume, including unusable HTF at bottom",
             "Units": "m3",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1861,7 +1901,8 @@
             "Label": "Tanks are in parallel, not in series, with solar field",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1869,7 +1910,8 @@
             "Label": "Bypass valve connects field outlet to cold tank",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1877,7 +1919,8 @@
             "Label": "Minimum hot tank htf inlet temperature",
             "Units": "C",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1885,7 +1928,8 @@
             "Label": "Design heat input to power block",
             "Units": "MWt",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1893,7 +1937,8 @@
             "Label": "Maximum turbine over design operation fraction",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1901,7 +1946,8 @@
             "Label": "Minimum turbine operation fraction before shutdown",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1909,7 +1955,8 @@
             "Label": "Design-point velocity to size the TES pipe diameters",
             "Units": "m/s",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1917,7 +1964,8 @@
             "Label": "TES pipe losses are based on custom lengths and coeffs",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1925,7 +1973,8 @@
             "Label": "Minor loss coeffs for the coll, gen, and bypass loops",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1933,7 +1982,8 @@
             "Label": "Use custom SGS pipe diams, wallthks, and lengths",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1941,7 +1991,8 @@
             "Label": "Custom SGS diameters",
             "Units": "m",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1949,7 +2000,8 @@
             "Label": "Custom SGS wall thicknesses",
             "Units": "m",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -1957,7 +2009,8 @@
             "Label": "Custom SGS lengths",
             "Units": "m",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1965,7 +2018,8 @@
             "Label": "Pressure drop within the steam generator",
             "Units": "bar",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1973,7 +2027,8 @@
             "Label": "Solar field type, 1 = trough, 2 = tower",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1981,7 +2036,8 @@
             "Label": "1=2-tank, 2=thermocline",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1989,7 +2045,8 @@
             "Label": "Thermocline fill material",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1997,7 +2054,8 @@
             "Label": "Thermocline void fraction",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2005,7 +2063,8 @@
             "Label": "Min allowable hot side outlet temp during discharge",
             "Units": "C",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2013,7 +2072,8 @@
             "Label": "Max allowable cold side outlet temp during charge",
             "Units": "C",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2021,7 +2081,8 @@
             "Label": "Nodes modeled in the flow path",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2029,7 +2090,8 @@
             "Label": "0=entire tank is hot, 1=entire tank is cold",
             "Units": "-",
             "Group": "controller",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2038,7 +2100,8 @@
             "Units": "1/2/03",
             "Meta": "tower/trough/user",
             "Group": "powerblock",
-            "Require": "pc_config=0"
+            "Require": "pc_config=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2046,7 +2109,8 @@
             "Label": "Fossil fuel lower heating value - Thermal power generated per unit fuel",
             "Units": "MW/MMBTU",
             "Group": "enet",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         }
     ]
 }

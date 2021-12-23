@@ -108,7 +108,7 @@ class RO_MDB(object):
     def design(self):
         self.RO_capacity = self.capacity / (1 + (1-self.RO_rr)/self.RO_rr * self.RR )
         
-        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr, FeedC_r = self.salinity, stage = 1,
+        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr*100, FeedC_r = self.salinity, stage = 1,
                      nERD = self.nERD, nBP = self.nBP, nHP = self.nHP, nFP = self.nFP, Nel1 = self.Nel1,
                     Qpnom1=self.Qpnom1 ,  Am1=self.Am1,  Ptest1=self.Ptest1, Ctest1=self.Ctest1,          
                     SR1=self.SR1,  Rt1=self.Rt1, Pdropmax=self.Pdropmax,  Pfp=self.Pfp  ,     
@@ -125,7 +125,7 @@ class RO_MDB(object):
         RO_brine_salinity = (RO_case.case.Cf * RO_feed - RO_case.case.Cp * RO_permeate)/ RO_brine  #  g/L 
         MDB_Mprod = self.capacity - self.RO_capacity
         
-        self.MDB = VAGMD_batch( module = self.module, FeedC_r = RO_brine_salinity, RR=self.RR, Capacity = MDB_Mprod, TEI_r = self.TEI_r,
+        self.MDB = VAGMD_batch( module = self.module, FeedC_r = RO_brine_salinity, RR=self.RR*100, Capacity = MDB_Mprod, TEI_r = self.TEI_r,
                           TCI_r = self.TCI_r, FFR_r = self.FFR_r, V0 = self.V0,
                           j = self.j, Ttank = self.Ttank, TCoolIn = self.TCoolIn, dt = self.dt )
         self.MDB.design() 
@@ -137,6 +137,7 @@ class RO_MDB(object):
         #result = [RO_case.PowerTotal, Thermal_load[0], RO_brine_salinity, FO_b_s, (FO_Mprod+RO_permeate)/RO_feed, self.RO_capacity,     FO_Mprod,         STEC[0]*FO_Mprod/self.capacity,   RO_case.SEC_RO*RO_capacity/self.capacity,   RO_feed ]
         self.P_req = Thermal_load
         self.design_output = []
+        self.design_output.append({'Name':'Maximum MD recovery rate','Value':self.MDB.RRf,'Unit':'%'})         
         self.design_output.append({'Name':'Overall recovery rate','Value':(MDB_Mprod+RO_permeate)/RO_feed * 100,'Unit':'%'})        
         self.design_output.append({'Name':'RO capacity','Value':self.RO_capacity,'Unit':'m3/day'})
         self.design_output.append({'Name':'MD capacity','Value':MDB_Mprod,'Unit':'m3/day'})        

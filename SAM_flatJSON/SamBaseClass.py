@@ -591,7 +591,7 @@ class SamBaseClass(object):
             self.OARO = OARO(FeedC_r =self.desal_values_json['FeedC_r'], Capacity =self.desal_values_json['Capacity'], rr =self.desal_values_json['rr'])
             self.design_output, self.costout =self.OARO.design()    
 
-            self.simu_output = self.OARO.simulation(gen = self.elec_gen, storage = 0)
+            self.simu_output = self.OARO.simulation(gen = self.elec_gen, storage = self.desal_values_json['storage_hour'])
         
         elif desal == 'LSRRO':
             from DesalinationModels.LSRRO import LSRRO

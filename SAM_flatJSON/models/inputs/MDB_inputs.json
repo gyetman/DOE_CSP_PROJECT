@@ -27,14 +27,14 @@
             "DataType": "SSC_NUMBER",
             "Name": "TEI_r",
             "Label": "Evaporator channel inlet temperature (Valid range: 60 to 80)",
-            "Units": "C",
+            "Units": "oC",
             "Require": "*"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "TCI_r",
             "Label": "Condenser channel inlet temperature (Valid range: 20 to 30)",
-            "Units": "C",
+            "Units": "oC",
             "Require": "*"
         },
         {
@@ -55,7 +55,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "Ttank",
-            "Label": "Initial temperature of feed water (Valid range: 20 to 30)",
+            "Label": "Initial temperature of the saline feed (Valid range: 20 to 30 and larger than the condenser channel inlet temperature)",
             "Units": "oC",
             "Require": "*",
             "Constraint": "<1101,>399"

@@ -32,6 +32,14 @@
             "Require": "",
 			"Tab": "Desalination"
         },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "solar_coe",
+            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Units": "$/kWh",
+            "Require": "",
+			"Tab": "Desalination"
+        },
 		{
             "DataType": "SSC_NUMBER",
             "Name": "oaro_cost",
@@ -82,10 +90,11 @@
         },	
         {
             "DataType": "SSC_NUMBER",
-            "Name": "solar_coe",
-            "Label": "Unit cost of electricity from solar field (LCOE) (Input value to overwrite LCOE calculated from solar field)",
+            "Name": "cost_storage",
+            "Label": "Cost of thermal storage",
             "Units": "$/kWh",
-            "Require": "",
+            "Require": "*",
+            "Constraint": "",
 			"Tab": "Desalination"
         }
     ]

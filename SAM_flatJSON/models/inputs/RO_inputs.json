@@ -36,21 +36,21 @@
             "DataType": "SSC_NUMBER",
             "Name": "R1",
             "Label": "1st pass recovery rate",
-            "Require": "*",
+            "Units": "%",
             "Tab": "Design Point of the System"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "R2",
             "Label": "2nd pass recovery rate (if applicable)",
-            "Require": "*",
+            "Units": "%",
             "Tab": "Design Point of the System"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "R3",
             "Label": "3rd pass recovery rate (if applicable)",
-            "Require": "*",
+            "Require": "%",
             "Tab": "Design Point of the System"
         },
         {
