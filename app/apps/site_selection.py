@@ -17,6 +17,7 @@ from dash.dependencies import ALL, Input, Output, State, MATCH
 from dash.exceptions import PreventUpdate
 from dash_extensions.javascript import arrow_function, assign
 
+import plotly.graph_objects as go
 from pathlib import Path
 
 from app import app
@@ -58,6 +59,9 @@ POP_GRAPH = 'pop-graph'
 POP_FIELDS = []
 for i in range(1,6):
     POP_FIELDS.append([f'ssp{i}{x}' for x in range(2020,2051,5)])
+
+NEW_INDEX = list(range(2020,2051,5))
+SSPS = [f'SSP{x}' for x in range(1,6)]
 
 def get_style(feature):
     return dict()
@@ -448,13 +452,37 @@ def info_hover(features):
 
 @app.callback(
     Output(POP_GRAPH,'children'),
-    [Input(component_id='pop-projections',component_property='hover-feature')]
+    [Input(component_id='pop-projections',component_property='hover_feature')]
 )
 
 def plot_pop_projection(feature):
     if feature:
-        print('Got Feature')
-        return(feature)
+        ## get the info and turn it into a dataframe
+        pop_df = pd.DataFrame(feature['properties'], index=[0])
+        ssps = pop_df[POP_FIELDS[0]].transpose()
+        ssps.rename(columns={ssps.columns[0]: 'SSP1'}, inplace=True)
+        ssps.index = NEW_INDEX
+        for i in range(2,6):
+            tmp = pop_df[POP_FIELDS[i-1]].transpose()
+            tmp.rename(columns={tmp.columns[0]: f'SSP{i}'}, inplace=True)
+            tmp.index = NEW_INDEX
+            ssps = ssps.join(tmp)
+
+        print(ssps.head())
+
+        ## make the graph and return it
+
+        fig = go.Figure()
+        for ssp in SSPS:
+            fig.add_trace(go.Scatter(
+                x = list(ssps.index),
+                y = list(ssps[ssp]),
+                mode = 'lines',
+                name = ssp
+            ))
+        return(dcc.Graph(figure=fig))
+    else:
+        return None
 
 external_stylesheets = [dbc.themes.FLATLY]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
