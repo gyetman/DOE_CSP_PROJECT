@@ -445,5 +445,17 @@
 	"metric_17" : "size_of_debt",
 	"metric_17_label" : "Debt",
 	"number_compute_modules" : 3,
-	"number_metrics" : 18
+	"number_metrics" : 18,
+	"sm_or_area": 0,
+	"specified_total_aperture": 30000,
+	"actual_sm":2.3,
+	"actual_aperture":30099,
+	"loop_eff": 0.601571,
+	"opt_derate": 0.940896,
+	"opt_normal": 0.650199,
+	"hl_derate": 0.98333,
+	"hl_des": 166.25,
+	"avg_dt_des": 367,
+	"loop_opt_eff": 0.61177,
+	"field_thermal_output": 17.2015
 }
