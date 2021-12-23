@@ -2,7 +2,7 @@
 Model name: Process Heat Linear Fresnel Direct Steam
 Model label: linear_fresnel_dsg_iph
 """
-
+import math
 
 # Number of loops equation
 eqn1  = {
@@ -40,12 +40,12 @@ def linear_fresnel_dsg_iph(invalues):
                               HCE_FieldFrac[0][2] * Design_loss[0][2] +\
                               HCE_FieldFrac[0][3] * Design_loss[0][3] 
                               
-    nLoops = specified_solar_multiple * q_pb_des / (I_bn_des * rec_optical_derate * coll_opt_loss_norm_inc * \
-            (1 - heat_loss_at_design/( I_bn_des * A_aperture[0][0] / L_col[0][0])) )* 1e6 / (nModBoil * A_aperture[0][0] )
+    nLoops = math.ceil(specified_solar_multiple * q_pb_des / (I_bn_des * rec_optical_derate * coll_opt_loss_norm_inc * \
+            (1 - heat_loss_at_design/( I_bn_des * A_aperture[0][0] / L_col[0][0])) )* 1e6 / (nModBoil * A_aperture[0][0] ))
         
     target_thermal_power =  q_pb_des *  specified_solar_multiple * 1000
 
-    return [int(nLoops) + 1, target_thermal_power]
+    return [nLoops, target_thermal_power]
 
 #%%
 """
@@ -224,7 +224,7 @@ def trough_physical_process_heat(invalues):
         total_ap += A_aperture[sca_t]
     single_loop_aperature = total_ap
     
-    nLoops = int(specified_solar_multiple * total_required_aperture_for_SM1 / single_loop_aperature) + 1
+    nLoops = math.ceil(specified_solar_multiple * total_required_aperture_for_SM1 / single_loop_aperature) 
 
     total_aperture = single_loop_aperature * nLoops
     field_thermal_output = I_bn_des * total_loop_conversion_efficiency * total_aperture / 1e6
@@ -315,7 +315,7 @@ def tcstrough_physical(invalues):
     else:
         retval = specified_total_aperture
         
-    nLoops = int(retval / single_loop_aperature) + 1
+    nLoops = math.ceil(retval / single_loop_aperature)
     total_aperture = single_loop_aperature * nLoops
     if sm_or_area == 0:
         solar_mult = specified_solar_multiple
@@ -333,11 +333,11 @@ def tcstrough_physical(invalues):
     W_pb_design = P_ref
     # thermal_capacity = P_ref / eta_ref * tshours
     # vol_tank = thermal_capacity * 1e6 * 3600 / (fluid_dens * fluid_sph * 1000 * hx_derate * ( (T_loop_out - dt_hot) - (T_loop_in_des - dt_cold)))
-    print('total_required_aperture_for_SM1', total_required_aperture_for_SM1)
-    print('total_loop_conversion_efficiency', total_loop_conversion_efficiency)
-    print('loop_optical_efficiency', loop_optical_efficiency)
-    print('cspdtr_loop_hce_heat_loss', cspdtr_loop_hce_heat_loss)
-    print('single_loop_aperature', single_loop_aperature)
+    # print('total_required_aperture_for_SM1', total_required_aperture_for_SM1)
+    # print('total_loop_conversion_efficiency', total_loop_conversion_efficiency)
+    # print('loop_optical_efficiency', loop_optical_efficiency)
+    # print('cspdtr_loop_hce_heat_loss', cspdtr_loop_hce_heat_loss)
+    # print('single_loop_aperature', single_loop_aperature)
     return [nLoops, solar_mult, total_aperture, system_capacity, is_hx, W_pb_design]#, vol_tank]
 
 #%% 
@@ -440,59 +440,69 @@ Model name: Linear Fresnel Molten Salt
 Model label: tcsmolten_salt
 """
 # nLoops
+
 eqn08 = {
         'model': 'tcsMSLF',
-        'outputs': ['system_capacity'],
-        # , 'vol_tank'],
-        'inputs':['P_ref',  'gross_to_net_eff'
+        'outputs': ['system_capacity', 'actual_sm', 'actual_aperture', 'nLoops','loop_eff',
+                    'opt_derate', 'opt_normal', 'hl_derate', 'hl_des', 'avg_dt_des', 'loop_opt_eff',
+                    'field_thermal_output'
+                  ],
+        
+        'inputs':['P_ref',  'gross_to_net_eff', 'sm_or_area', 'solar_mult', 'specified_total_aperture', 'eta_ref', 'I_bn_des',
+                  'TrackingError', 'GeomEffects', 'reflectivity', 'Dirt_mirror', 'Error', 'rec_model', 'HCE_FieldFrac', 
+                  'Shadowing', 'dirt_env', 'I_bn_des', 'A_aperture', 'L_mod', 'Design_loss', 'HL_T_coefs', 'T_loop_in_des',
+                  'T_loop_out', 'T_amb_sf_des', 'nMod'
                   ],
         'function': 'tcsMSLF'
         }
                                                                                     
 def tcsMSLF(invalues):
-    P_ref,  gross_to_net_eff \
+    P_ref,  gross_to_net_eff, sm_or_area, solar_mult, specified_total_aperture, eta_ref, I_bn_des,\
+    TrackingError, GeomEffects, reflectivity, Dirt_mirror, Error, rec_model, HCE_FieldFrac, \
+    Shadowing, dirt_env, I_bn_des, A_aperture, L_mod, Design_loss, HL_T_coefs, T_loop_in_des, \
+    T_loop_out, T_amb_sf_des, nMod \
     = invalues
-
+    
+    
     system_capacity = P_ref * gross_to_net_eff *1000
-
-    return [system_capacity]
-
-# eqn08 = {
-#         'model': 'tcsMSLF',
-#         'outputs': ['nLoops', 'q_pb_des','q_max_aux','solarm','specified_total_aperture', 'P_turb_des', 'system_capacity'],
-#         'inputs':['sm_or_area', 'demand_var','eta_ref','I_bn_des','sh_geom_unique', 'nModBoil','nModSH','A_aperture',
-#                   'TrackingError','GeomEffects','rho_mirror_clean','dirt_mirror','error','HLCharType',
-#                   'HCE_FieldFrac','Shadowing', 'Dirt_HCE','L_col','T_cold_ref','T_amb_des_sf','T_hot','HL_dT','Design_loss',
-#                   'Pipe_hl_coef','solarm','specified_total_aperture', 'P_boil_des', 'gross_net_conv_factor'
-#                   ],
-#         'function': 'tcsMSLF'        
-#         }
-# def tcsMSLF(invalues):
-#     sm_or_area, demand_var, eta_ref, I_bn_des, sh_geom_unique, nModBoil, nModSH, A_aperture,\
-#     TrackingError, GeomEffects, rho_mirror_clean, dirt_mirror, error, HLCharType,\
-#     HCE_FieldFrac, Shadowing, Dirt_HCE, L_col, T_cold_ref, T_amb_des_sf, T_hot, HL_dT, Design_loss,\
-#     Pipe_hl_coef, solarm, specified_total_aperture, P_boil_des, gross_net_conv_factor     = invalues
+    loop_aperture = nMod * A_aperture
     
+    avg_dt_des = (T_loop_in_des + T_loop_out) / 2 - T_amb_sf_des
     
-#     total_loop_conv_eff, loop_aperture = tcslinear_fresnel_loop_eff(I_bn_des, sh_geom_unique, nModBoil, nModSH, A_aperture,
-#                                TrackingError, GeomEffects, rho_mirror_clean, dirt_mirror, error, HLCharType,
-#                                HCE_FieldFrac, Shadowing, Dirt_HCE, L_col, T_cold_ref, T_amb_des_sf, T_hot, HL_dT, Design_loss,
-#                                Pipe_hl_coef)
-#     sm1_aperture = demand_var / eta_ref / I_bn_des / total_loop_conv_eff * 1e6
+    if rec_model == 1:
+        opt_derate = 1
+        hl_des =  HL_T_coefs[0] + HL_T_coefs[1] * avg_dt_des    + HL_T_coefs[2] * avg_dt_des**2 +\
+                  HL_T_coefs[3] * avg_dt_des**3 + HL_T_coefs[4] * avg_dt_des**4
+    else:
+        opt_derate = HCE_FieldFrac[0] * Shadowing[0] * dirt_env[0] +\
+                     HCE_FieldFrac[1] * Shadowing[1] * dirt_env[1] +\
+                     HCE_FieldFrac[2] * Shadowing[2] * dirt_env[2] +\
+                     HCE_FieldFrac[3] * Shadowing[3] * dirt_env[3] 
+        hl_des = HCE_FieldFrac[0] * Design_loss[0] +\
+                 HCE_FieldFrac[1] * Design_loss[1] +\
+                 HCE_FieldFrac[2] * Design_loss[2] +\
+                 HCE_FieldFrac[3] * Design_loss[3] 
+                 
+    hl_derate = 1 - hl_des / (I_bn_des *  A_aperture / L_mod)
+    opt_normal = TrackingError * GeomEffects * reflectivity * Dirt_mirror *Error
+    loop_opt_eff = opt_derate * opt_normal
+    loop_eff = loop_opt_eff * hl_derate
+    sm1_aperture = P_ref / eta_ref / I_bn_des / loop_eff * 1e6
+    
+    if sm_or_area == 0:
+        actual_sm = solar_mult
+        nLoops = math.ceil(solar_mult * sm1_aperture / loop_aperture )
+        actual_aperture = loop_aperture * nLoops
         
-#     if sm_or_area == 0:
-#         solarm = solarm
-#         nLoops = int(solarm * sm1_aperture / loop_aperture )  +1      
-#         specified_total_aperture = loop_aperture * nLoops
-#     else:
-#     	nLoops = int(specified_total_aperture / loop_aperture) +1
-#     	solarm = loop_aperture * nLoops / sm1_aperture   
+    else:
+        nLoops = math.ceil(specified_total_aperture / loop_aperture) 
+        actual_sm = loop_aperture * nLoops / sm1_aperture   
+        actual_aperture = specified_total_aperture
+    
+    a_sf_act = loop_aperture * nLoops
+    field_thermal_output = 1e-6 * a_sf_act  * I_bn_des * loop_eff
 
-    
-#     q_pb_des = demand_var / eta_ref 
-#     actual_aper = loop_aperture * nLoops
-#     q_max_aux = 1e-6 * actual_aper * I_bn_des * total_loop_conv_eff 
-#     P_turb_des = P_boil_des
-#     system_capacity = demand_var * gross_net_conv_factor * 1000
-    
-#     return [nLoops, q_pb_des, q_max_aux, solarm, specified_total_aperture, P_turb_des, system_capacity]
+    return [system_capacity, actual_sm, actual_aperture, nLoops, loop_eff, \
+            opt_derate, opt_normal, hl_derate, hl_des, avg_dt_des, loop_opt_eff, field_thermal_output]
+
+

@@ -91,7 +91,56 @@
             "Group": "controller",
             "Require": "*",
             "Tab": "Solar Field",
-            "Section": "Design Point"
+            "Section": "Design Point (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "actual_sm",
+            "Label": "Actual solar multiple",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "actual_aperture",
+            "Label": "Actual aperture",
+			"Units": "m2",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loop_opt_eff",
+            "Label": "Loop optical efficiency",
+			"Units": "",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "loop_eff",
+            "Label": "Total loop conversion efficiency",
+			"Units": "",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "field_thermal_output",
+            "Label": "Field thermal output",
+			"Units": "MWt",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Design Point (automatically calculated)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -322,8 +371,26 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "sm_or_area",
+            "Label": "Input '0' to specify solar multiple, input '1' to specify field aperture",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "solar_mult",
-            "Label": "Solar multiple",
+            "Label": "Solar multiple (Specify in mode '0')",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Solar Field",
+            "Section": "Solar Field Parameters"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "specified_total_aperture",
+            "Label": "Field aperture (Specify in mode '1')",
             "Group": "controller",
             "Require": "*",
             "Tab": "Solar Field",
@@ -730,7 +797,8 @@
             "Group": "controller",
             "Require": "*",
             "Tab": "Collector and Receiver",
-            "Section": "Aggregate Weighted Losses"
+            "Section": "Receiver Geometry and Heat Loss",
+			"Subsection": "Evacuated Tube Heat Loss Model"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1870,6 +1938,53 @@
             "Constraint": "COLS=3",
             "Tab": "Power Cycle",
             "Section": "System Availability"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "avg_dt_des",
+            "Label": "Average field temp difference at design",
+			"Units": "oC",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Aggregate Weighted Losses (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hl_des",
+            "Label": "Heat loss at design",
+			"Units": "W/m",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Aggregate Weighted Losses (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "hl_derate",
+            "Label": "Receiver thermal derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Aggregate Weighted Losses (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_derate",
+            "Label": "Receiver optical derate",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Aggregate Weighted Losses (automatically calculated)"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "opt_normal",
+            "Label": "Collector optical loss at normal incidence",
+            "Group": "controller",
+            "Require": "*",
+            "Tab": "Collector and Receiver",
+            "Section": "Aggregate Weighted Losses (automatically calculated)"
         }
     ]
 }
