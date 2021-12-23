@@ -3665,21 +3665,24 @@
             "Name": "inv_tdc_plc",
             "Label": "Temperature derate curves for Part Load Curve",
             "Units": "C",
-            "Require": "inverter_model=2"
+            "Require": "inverter_model=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "en_batt",
             "Label": "Enable battery storage model",
             "Units": "0/1",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "load",
             "Label": "Electricity load (year 1)",
             "Units": "kW",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3741,7 +3744,8 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_chem",
-            "Label": "Battery chemistry"
+            "Label": "Battery chemistry",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3755,7 +3759,8 @@
             "DataType": "SSC_NUMBER",
             "Name": "inv_snl_paco",
             "Label": "Inverter Sandia Maximum AC Power",
-            "Units": "Wac"
+            "Units": "Wac",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3769,7 +3774,8 @@
             "DataType": "SSC_NUMBER",
             "Name": "inv_ds_paco",
             "Label": "Inverter Datasheet Maximum AC Power",
-            "Units": "Wac"
+            "Units": "Wac",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3809,12 +3815,14 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_ac_or_dc",
-            "Label": "Battery interconnection (AC or DC)"
+            "Label": "Battery interconnection (AC or DC)",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dc_dc_efficiency",
-            "Label": "PV DC to battery DC efficiency"
+            "Label": "PV DC to battery DC efficiency",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -3826,261 +3834,305 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dc_ac_efficiency",
-            "Label": "Battery DC to AC efficiency"
+            "Label": "Battery DC to AC efficiency",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_ac_dc_efficiency",
-            "Label": "Inverter AC to battery DC efficiency"
+            "Label": "Inverter AC to battery DC efficiency",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_meter_position",
-            "Label": "Position of battery relative to electric meter"
+            "Label": "Position of battery relative to electric meter",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_losses",
             "Label": "Battery system losses at each timestep",
             "Units": "kW",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_losses_charging",
             "Label": "Battery system losses when charging",
             "Units": "kW",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_losses_discharging",
             "Label": "Battery system losses when discharging",
             "Units": "kW",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_losses_idle",
             "Label": "Battery system losses when idle",
             "Units": "kW",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_loss_choice",
             "Label": "Loss power input option",
             "Units": "0/1",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_current_choice",
-            "Label": "Limit cells by current or power"
+            "Label": "Limit cells by current or power",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_computed_strings",
-            "Label": "Number of strings of cells"
+            "Label": "Number of strings of cells",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_computed_series",
-            "Label": "Number of cells in series"
+            "Label": "Number of cells in series",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_computed_bank_capacity",
             "Label": "Computed bank capacity",
-            "Units": "kWh"
+            "Units": "kWh",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_current_charge_max",
             "Label": "Maximum charge current",
-            "Units": "A"
+            "Units": "A",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_current_discharge_max",
             "Label": "Maximum discharge current",
-            "Units": "A"
+            "Units": "A",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_power_charge_max",
             "Label": "Maximum charge power",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_power_discharge_max",
             "Label": "Maximum discharge power",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_voltage_choice",
             "Label": "Battery voltage input option",
             "Units": "0/1",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Vfull",
             "Label": "Fully charged cell voltage",
-            "Units": "V"
+            "Units": "V",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Vexp",
             "Label": "Cell voltage at end of exponential zone",
-            "Units": "V"
+            "Units": "V",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Vnom",
             "Label": "Cell voltage at end of nominal zone",
-            "Units": "V"
+            "Units": "V",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Vnom_default",
             "Label": "Default nominal cell voltage",
-            "Units": "V"
+            "Units": "V",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Qfull",
             "Label": "Fully charged cell capacity",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Qfull_flow",
             "Label": "Fully charged flow battery capacity",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Qexp",
             "Label": "Cell capacity at end of exponential zone",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Qnom",
             "Label": "Cell capacity at end of nominal zone",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_C_rate",
-            "Label": "Rate at which voltage vs. capacity curve input"
+            "Label": "Rate at which voltage vs. capacity curve input",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_resistance",
             "Label": "Internal resistance",
-            "Units": "Ohm"
+            "Units": "Ohm",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "batt_voltage_matrix",
-            "Label": "Battery voltage vs. depth-of-discharge"
+            "Label": "Battery voltage vs. depth-of-discharge",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "LeadAcid_q20_computed",
             "Label": "Capacity at 20-hour discharge rate",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "LeadAcid_q10_computed",
             "Label": "Capacity at 10-hour discharge rate",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "LeadAcid_qn_computed",
             "Label": "Capacity at discharge rate for n-hour rate",
-            "Units": "Ah"
+            "Units": "Ah",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "LeadAcid_tn",
             "Label": "Time to discharge",
-            "Units": "h"
+            "Units": "h",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_initial_SOC",
             "Label": "Initial state-of-charge",
-            "Units": "%"
+            "Units": "%",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_minimum_SOC",
             "Label": "Minimum allowed state-of-charge",
-            "Units": "%"
+            "Units": "%",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_maximum_SOC",
             "Label": "Maximum allowed state-of-charge",
-            "Units": "%"
+            "Units": "%",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_minimum_modetime",
             "Label": "Minimum time at charge state",
-            "Units": "min"
+            "Units": "min",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "batt_lifetime_matrix",
-            "Label": "Cycles vs capacity at different depths-of-discharge"
+            "Label": "Cycles vs capacity at different depths-of-discharge",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_calendar_choice",
             "Label": "Calendar life degradation input option",
-            "Units": "0/1/2"
+            "Units": "0/1/2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "batt_calendar_lifetime_matrix",
-            "Label": "Days vs capacity"
+            "Label": "Days vs capacity",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_calendar_q0",
-            "Label": "Calendar life model initial capacity cofficient"
+            "Label": "Calendar life model initial capacity cofficient",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_calendar_a",
             "Label": "Calendar life model coefficient",
-            "Units": "1/sqrt(day)"
+            "Units": "1/sqrt(day)",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_calendar_b",
             "Label": "Calendar life model coefficient",
-            "Units": "K"
+            "Units": "K",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_calendar_c",
             "Label": "Calendar life model coefficient",
-            "Units": "K"
+            "Units": "K",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_replacement_capacity",
             "Label": "Capacity degradation at which to replace battery",
-            "Units": "%"
+            "Units": "%",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -4088,238 +4140,276 @@
             "Label": "Enable battery replacement?",
             "Units": "0=none,1=capacity based,2=user schedule",
             "Require": "?=0",
-            "Constraints": "INTEGER,MIN=0,MAX=2"
+            "Constraints": "INTEGER,MIN=0,MAX=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_replacement_schedule",
             "Label": "Battery bank replacements per year (user specified)",
             "Units": "number/year",
-            "Require": "batt_replacement_option=2"
+            "Require": "batt_replacement_option=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_replacement_cost",
             "Label": "Cost to replace battery per kWh",
-            "Units": "$/kWh"
+            "Units": "$/kWh",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_mass",
             "Label": "Battery mass",
-            "Units": "kg"
+            "Units": "kg",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_length",
             "Label": "Battery length",
-            "Units": "m"
+            "Units": "m",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_width",
             "Label": "Battery width",
-            "Units": "m"
+            "Units": "m",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_height",
             "Label": "Battery height",
-            "Units": "m"
+            "Units": "m",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_Cp",
             "Label": "Battery specific heat capacity",
-            "Units": "J/KgK"
+            "Units": "J/KgK",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_h_to_ambient",
             "Label": "Heat transfer between battery and environment",
-            "Units": "W/m2K"
+            "Units": "W/m2K",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "T_room",
             "Label": "Temperature of storage room",
-            "Units": "C"
+            "Units": "C",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "cap_vs_temp",
             "Label": "Effective capacity as function of temperature",
-            "Units": "C,%"
+            "Units": "C,%",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_manual_charge",
             "Label": "Periods 1-6 charging allowed?",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_manual_discharge",
             "Label": "Periods 1-6 discharging allowed?",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_manual_gridcharge",
             "Label": "Periods 1-6 grid charging allowed?",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_manual_percent_discharge",
             "Label": "Periods 1-6 discharge percent",
             "Units": "%",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_manual_percent_gridcharge",
             "Label": "Periods 1-6 gridcharge percent",
             "Units": "%",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_manual_sched",
             "Label": "Battery dispatch schedule for weekday",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_manual_sched_weekend",
             "Label": "Battery dispatch schedule for weekend",
-            "Require": "en_batt=1&batt_dispatch_choice=4"
+            "Require": "en_batt=1&batt_dispatch_choice=4",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_target_power",
             "Label": "Grid target power (AC) for every time step",
             "Units": "kWac",
-            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_target_power_monthly",
             "Label": "Grid target power (AC) on monthly basis",
             "Units": "kWac",
-            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_target_choice",
             "Label": "Target power input option",
             "Units": "0/1",
-            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=0&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_custom_dispatch",
             "Label": "Custom battery power (DC) for every time step",
             "Units": "kWdc",
-            "Require": "en_batt=1&batt_dispatch_choice=3"
+            "Require": "en_batt=1&batt_dispatch_choice=3",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dispatch_choice",
             "Label": "Battery dispatch algorithm",
             "Units": "0/1/2/3/4",
-            "Require": "en_batt=1"
+            "Require": "en_batt=1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_pv_clipping_forecast",
             "Label": "PV clipping forecast",
             "Units": "kW",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "batt_pv_dc_forecast",
             "Label": "PV dc power forecast",
             "Units": "kW",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dispatch_auto_can_gridcharge",
             "Label": "Grid charging allowed for automated dispatch?",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dispatch_auto_can_charge",
             "Label": "PV charging allowed for automated dispatch?",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dispatch_auto_can_clipcharge",
             "Label": "Battery can charge from clipped PV for automated dispatch?",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_auto_gridcharge_max_daily",
             "Label": "Allowed grid charging percent per day for automated dispatch",
-            "Units": "kW"
+            "Units": "kW",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_look_ahead_hours",
             "Label": "Hours to look ahead in automated dispatch",
-            "Units": "hours"
+            "Units": "hours",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_dispatch_update_frequency_hours",
             "Label": "Frequency to update the look-ahead dispatch",
-            "Units": "hours"
+            "Units": "hours",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_cycle_cost_choice",
             "Label": "Use SAM model for cycle costs or input custom",
-            "Units": "0/1"
+            "Units": "0/1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "batt_cycle_cost",
             "Label": "Input battery cycle costs",
-            "Units": "$/cycle-kWh"
+            "Units": "$/cycle-kWh",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "en_electricity_rates",
-            "Label": "Enable Electricity Rates"
+            "Label": "Enable Electricity Rates",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekday",
             "Label": "Energy charge weekday schedule",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_sched_weekend",
             "Label": "Energy charge weekend schedule",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "ur_ec_tou_mat",
             "Label": "Energy rates table",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "ppa_price_input",
             "Label": "PPA Price Input",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -4327,33 +4417,38 @@
             "Label": "PPA multiplier model",
             "Units": "0/1",
             "Require": "?=0",
-            "Constraints": "INTEGER,MIN=0"
+            "Constraints": "INTEGER,MIN=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_factors_ts",
             "Label": "Dispatch payment factor time step",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=1"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_tod_factors",
             "Label": "TOD factors for periods 1-9",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_sched_weekday",
             "Label": "Diurnal weekday TOD periods",
             "Units": "1..9",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
             "Name": "dispatch_sched_weekend",
             "Label": "Diurnal weekend TOD periods",
             "Units": "1..9",
-            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0"
+            "Require": "en_batt=1&batt_meter_position=1&batt_dispatch_choice=2&ppa_multiplier_model=0",
+			"Tab":"Auxiliary (Not used)"
         }
     ]
 }

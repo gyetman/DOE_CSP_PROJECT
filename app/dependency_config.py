@@ -43,7 +43,7 @@ def linear_fresnel_dsg_iph(invalues):
     nLoops = specified_solar_multiple * q_pb_des / (I_bn_des * rec_optical_derate * coll_opt_loss_norm_inc * \
             (1 - heat_loss_at_design/( I_bn_des * A_aperture[0][0] / L_col[0][0])) )* 1e6 / (nModBoil * A_aperture[0][0] )
         
-    target_thermal_power =  q_pb_des *  specified_solar_multiple
+    target_thermal_power =  q_pb_des *  specified_solar_multiple * 1000
 
     return [int(nLoops) + 1, target_thermal_power]
 
@@ -79,10 +79,10 @@ def tcslinear_fresnel(invalues):
         
     if sm_or_area == 0:
         solarm = solarm
-        nLoops = int(solarm * sm1_aperture / loop_aperture )        
+        nLoops = int(solarm * sm1_aperture / loop_aperture )  +1      
         specified_total_aperture = loop_aperture * nLoops
     else:
-    	nLoops = int(specified_total_aperture / loop_aperture)
+    	nLoops = int(specified_total_aperture / loop_aperture) +1
     	solarm = loop_aperture * nLoops / sm1_aperture   
 
     
@@ -430,7 +430,7 @@ def tcsmolten_salt(invalues):
     P_ref,  gross_to_net_eff \
     = invalues
 
-    system_capacity = P_ref * gross_to_net_eff
+    system_capacity = P_ref * gross_to_net_eff *1000
 
     return [system_capacity]
 
@@ -453,6 +453,46 @@ def tcsMSLF(invalues):
     P_ref,  gross_to_net_eff \
     = invalues
 
-    system_capacity = P_ref * gross_to_net_eff
+    system_capacity = P_ref * gross_to_net_eff *1000
 
     return [system_capacity]
+
+# eqn08 = {
+#         'model': 'tcsMSLF',
+#         'outputs': ['nLoops', 'q_pb_des','q_max_aux','solarm','specified_total_aperture', 'P_turb_des', 'system_capacity'],
+#         'inputs':['sm_or_area', 'demand_var','eta_ref','I_bn_des','sh_geom_unique', 'nModBoil','nModSH','A_aperture',
+#                   'TrackingError','GeomEffects','rho_mirror_clean','dirt_mirror','error','HLCharType',
+#                   'HCE_FieldFrac','Shadowing', 'Dirt_HCE','L_col','T_cold_ref','T_amb_des_sf','T_hot','HL_dT','Design_loss',
+#                   'Pipe_hl_coef','solarm','specified_total_aperture', 'P_boil_des', 'gross_net_conv_factor'
+#                   ],
+#         'function': 'tcsMSLF'        
+#         }
+# def tcsMSLF(invalues):
+#     sm_or_area, demand_var, eta_ref, I_bn_des, sh_geom_unique, nModBoil, nModSH, A_aperture,\
+#     TrackingError, GeomEffects, rho_mirror_clean, dirt_mirror, error, HLCharType,\
+#     HCE_FieldFrac, Shadowing, Dirt_HCE, L_col, T_cold_ref, T_amb_des_sf, T_hot, HL_dT, Design_loss,\
+#     Pipe_hl_coef, solarm, specified_total_aperture, P_boil_des, gross_net_conv_factor     = invalues
+    
+    
+#     total_loop_conv_eff, loop_aperture = tcslinear_fresnel_loop_eff(I_bn_des, sh_geom_unique, nModBoil, nModSH, A_aperture,
+#                                TrackingError, GeomEffects, rho_mirror_clean, dirt_mirror, error, HLCharType,
+#                                HCE_FieldFrac, Shadowing, Dirt_HCE, L_col, T_cold_ref, T_amb_des_sf, T_hot, HL_dT, Design_loss,
+#                                Pipe_hl_coef)
+#     sm1_aperture = demand_var / eta_ref / I_bn_des / total_loop_conv_eff * 1e6
+        
+#     if sm_or_area == 0:
+#         solarm = solarm
+#         nLoops = int(solarm * sm1_aperture / loop_aperture )  +1      
+#         specified_total_aperture = loop_aperture * nLoops
+#     else:
+#     	nLoops = int(specified_total_aperture / loop_aperture) +1
+#     	solarm = loop_aperture * nLoops / sm1_aperture   
+
+    
+#     q_pb_des = demand_var / eta_ref 
+#     actual_aper = loop_aperture * nLoops
+#     q_max_aux = 1e-6 * actual_aper * I_bn_des * total_loop_conv_eff 
+#     P_turb_des = P_boil_des
+#     system_capacity = demand_var * gross_net_conv_factor * 1000
+    
+#     return [nLoops, q_pb_des, q_max_aux, solarm, specified_total_aperture, P_turb_des, system_capacity]

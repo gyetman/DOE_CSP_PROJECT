@@ -14,7 +14,8 @@
             "Name": "solar_resource_data",
             "Label": "solar resouce data in memory",
             "Group": "Weather",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -24,21 +25,24 @@
             "Meta": "0=diurnal,1=timestep",
             "Group": "Time of Delivery",
             "Require": "?=0",
-            "Costraint": "INTEGER,MIN=0"
+            "Costraint": "INTEGER,MIN=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
             "Name": "dispatch_factors_ts",
             "Label": "Dispatch payment factor array",
             "Group": "Time of Delivery",
-            "Require": "ppa_multiplier_model=1"
+            "Require": "ppa_multiplier_model=1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "field_model_type",
             "Label": "0=design field and tower/receiver geometry 1=design field 2=user field, calculate performance 3=user performance maps vs solar position",
             "Group": "heliostat",
-            "Require": "*"
+            "Require": "*",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -154,7 +158,8 @@
             "Label": "Land boundary table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -162,7 +167,8 @@
             "Label": "Boundary table listing",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -220,7 +226,8 @@
             "Label": "Interpolation nugget",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -228,7 +235,8 @@
             "Label": "Interpolation beta coef.",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "?=1.99"
+            "Require": "?=1.99",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -236,7 +244,8 @@
             "Label": "Heliostat aim point table",
             "Units": "m",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -244,14 +253,16 @@
             "Label": "Field efficiency array",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "eta_map_aod_format",
             "Label": "Use 3D AOD format field efficiency array-",
             "Meta": "heliostat",
-            "Group": "?=0"
+            "Group": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -259,7 +270,8 @@
             "Label": "Flux map intensities",
             "Units": "-",
             "Group": "heliostat",
-            "Require": "?"
+            "Require": "?",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -376,14 +388,16 @@
             "Name": "check_max_flux",
             "Label": "Check max flux at design point",
             "Group": "heliostat",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
             "Name": "sf_excess",
             "Label": "Heliostat field multiple",
             "Group": "heliostat",
-            "Require": "?=1.0"
+            "Require": "?=1.0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -820,7 +834,8 @@
             "Name": "crossover_shift",
             "Label": "No. panels shift in receiver crossover position",
             "Group": "receiver",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1621,7 +1636,8 @@
             "Label": "Simulation start time",
             "Units": "s",
             "Group": "sys_ctrl",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1629,7 +1645,8 @@
             "Label": "Simulation stop time",
             "Units": "s",
             "Group": "sys_ctrl",
-            "Require": "?=31536000"
+            "Require": "?=31536000",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1637,7 +1654,8 @@
             "Label": "Number of simulation time steps per hour",
             "Units": "-",
             "Group": "sys_ctrl",
-            "Require": "?=-1"
+            "Require": "?=-1",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -1645,7 +1663,8 @@
             "Label": "Allocate arrays for only the required number of steps",
             "Units": "-",
             "Group": "sys_ctrl",
-            "Require": "?=0"
+            "Require": "?=0",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -2384,7 +2403,8 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "*",
-            "Costraint": "MAX=100"
+            "Costraint": "MAX=100",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_ARRAY",
@@ -2393,7 +2413,8 @@
             "Units": "%",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "LENGTH=8760"
+            "Costraint": "LENGTH=8760",
+			"Tab":"Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_MATRIX",
@@ -2403,7 +2424,8 @@
             "Meta": "n x 3 matrix [ start, end, loss ]",
             "Group": "Loss Adjustments",
             "Require": "?",
-            "Costraint": "COLS=3"
+            "Costraint": "COLS=3",
+			"Tab":"Auxiliary (Not used)"
         }
     ]
 }

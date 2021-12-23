@@ -19,7 +19,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "RR",
-            "Label": "Recovery ratio (0.3 to 0.5)",
+            "Label": "Recovery ratio (30 to 50%)",
             "Units": "",
             "Require": "*",
             "Constraint": ">0.3, <0.5"
@@ -27,7 +27,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "Nef",
-            "Label": "Number of effects (12, 14 or 16)",
+            "Label": "Number of effects (3,6,9,12 or 15)",
             "Units": "none",
             "Require": "*"
         },

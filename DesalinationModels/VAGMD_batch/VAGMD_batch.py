@@ -78,11 +78,11 @@ class VAGMD_batch(object):
             c5=-0.001111447
             self.Area = self.Area_big
         
-        RRf   = 100 * (1 - self.FeedC_r/maxS) # Maximum value of final recovery ratio allowed
+        self.RRf   = 100 * (1 - self.FeedC_r/maxS) # Maximum value of final recovery ratio allowed
         # maxRR = 100 * (1 - (minS/maxS))  # 
 
-        if self.RR > RRf:
-            raise Exception("The recovery rate must be below ", RRf, "%")
+        if self.RR > self.RRf:
+            raise Exception("The recovery rate must be below ", self.RRf, "%")
         
         
         self.Sf = self.FeedC_r / ( 1 - self.RR/100)  # Final feed salinity (g/L)  
@@ -231,7 +231,7 @@ class VAGMD_batch(object):
         self.design_output = []
         self.design_output.append({'Name':'Selected module size','Value':self.Area,'Unit':'m2'})
         self.design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
-        self.design_output.append({'Name':'Maximum potential recovery rate','Value':RRf,'Unit':'%'})  
+        self.design_output.append({'Name':'Maximum potential recovery rate','Value':self.RRf,'Unit':'%'})  
         self.design_output.append({'Name':'Actual recovery rate','Value':self.R[-1],'Unit':'%'})    
         self.design_output.append({'Name':'Brine concentration','Value':self.Sf,'Unit':'g/L'})      
         # self.design_output.append({'Name':'Total processing time for one batch volume','Value':self.t[-1],'Unit':'h'})
@@ -239,7 +239,7 @@ class VAGMD_batch(object):
         self.design_output.append({'Name':'Thermal power requirement','Value': self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC[-1],'Unit':'kWh(th)/m3'})
         self.design_output.append({'Name':'Specific electrical energy consumption','Value': self.SEEC[-1],'Unit':'kWh(e)/m3'})
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR[-1],'Unit':''})
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR[-1],'Unit':'kJ/kJ'})
         if ( k == 7 and self.Sf > 175.3):
             self.design_output.append({'Name':'    Note','Value':"Since the final brine salinity > 175.3 g/L in module AS7C1.5L(268), the model includes feed salinity as the only input, and closed cooling system will be applied.",'Unit':''})            
         if ( k == 26 and self.Sf > 140.2):

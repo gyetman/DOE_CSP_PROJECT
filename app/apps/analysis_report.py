@@ -152,6 +152,7 @@ def gather_data(x):
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
+        updates.update({'cost_storage':f['cost_storage']})
     elif updates['desal'] == 'MDB':
     # add specific data from desalination GUI output
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -217,6 +218,7 @@ def gather_data(x):
 
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})        
+        updates.update({'cost_storage':f['cost_storage']})
     ## Temporal 'if' condition for another desal technology
     elif updates['desal'] == 'LTMED' :
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -274,7 +276,7 @@ def gather_data(x):
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
         updates.update({'lcoe':f['coe']})
-
+        updates.update({'cost_storage':f['cost_storage']})
     elif updates['desal'] == 'ABS':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         fossil_fuel = "Yes" if d['Fossil_f'] else "No"
@@ -334,7 +336,8 @@ def gather_data(x):
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
-        updates.update({'lcoe':f['coe']})        
+        updates.update({'lcoe':f['coe']}) 
+        updates.update({'cost_storage':f['cost_storage']})       
         
     elif updates['desal'] == 'MEDTVC':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -390,7 +393,8 @@ def gather_data(x):
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'electric_energy_consumption':f['SEEC']})
-        updates.update({'lcoe':f['coe']})        
+        updates.update({'lcoe':f['coe']}) 
+        updates.update({'cost_storage':f['cost_storage']})       
     elif updates['desal'] == 'RO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         updates.update({'FeedC_r':d['FeedC_r'],
@@ -443,6 +447,7 @@ def gather_data(x):
         
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
+        updates.update({'cost_storage':f['cost_storage']})
 
         
     elif updates['desal'] == 'RO_FO':
@@ -580,8 +585,8 @@ def gather_data(x):
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
         #fossil_fuel = "Yes" if d['Fossil_f'] else "No"
         updates.update({'FeedC_r':d['FeedC_r'],
-                        'Capacity':d['Capacity']
-                       # 'storage_hour':d['storage_hour'],
+                        'Capacity':d['Capacity'],
+                        'storage_hour':d['storage_hour']
                        # 'fossil_fuel': fossil_fuel
                        })
                       #  'RR': d['R1'] * 100})
@@ -630,6 +635,7 @@ def gather_data(x):
         updates.update({'lcoe':f['coe']})
         updates.update({'downtime': f['downtime']})
         updates.update({'actual_prod':(1-f['downtime']/100) * ds[indexp]['Value']})
+        updates.update({'cost_storage':f['cost_storage']})
         
     elif updates['desal'] == 'FO':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -684,6 +690,7 @@ def gather_data(x):
         updates.update({'labor':dc[index]['Value']})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
+        updates.update({'cost_storage':f['cost_storage']})
         
     elif updates['desal'] == 'Generic':
         d = helpers.json_load(cfg.json_outpath / updates['desal_outfile'])
@@ -736,6 +743,7 @@ def gather_data(x):
         # updates.update({'labor':dc[index]['Value']})
         f = helpers.json_load(cfg.json_outpath / updates['finance_outfile'])
         updates.update({'lcoe':f['coe']})
+        updates.update({'cost_storage':f['cost_storage']})
         
     if updates['solar'] == 'linear_fresnel_dsg_iph':
         # add specific data from solar GUI output
@@ -935,6 +943,7 @@ def set_desal_config(x):
         html.Div(f"Number of module required: {r['n_modules']}"),
         html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Thermal storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         # html.Div(f"Specific electric energy consumption: {r['electric_energy_consumption']:.2f}  kWh/m3"),
@@ -947,6 +956,7 @@ def set_desal_config(x):
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
         html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Thermal storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW"),
@@ -960,6 +970,7 @@ def set_desal_config(x):
         # html.Div(f"Number of vessels: {r['number_vessels']} "),
         html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Battery storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
         # html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
         ])
@@ -968,8 +979,9 @@ def set_desal_config(x):
         html.H5('Desalination System Configuration', className='card-title'),
         html.Div(f"Technology: {cfg.Desal[r['desal']]}"),
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
-        #html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
-        #html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Battery storage hour: {r['storage_hour']} hrs"),
+        html.Div(f"Battery storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Battery storage cost: {r['cost_storage']:.0f} $/kWh"),
         #html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific energy consumption: {r['specific_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required electric energy: {r['electric_power_consumption']:.0f} kW")
@@ -981,6 +993,7 @@ def set_desal_config(x):
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
         html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Thermal storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.2f} MW")
@@ -992,6 +1005,7 @@ def set_desal_config(x):
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
         html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Thermal storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Specific electrical energy consumption: {r['specific_electric_power_consumption']:.2f} kWh/m3"),
@@ -1024,6 +1038,7 @@ def set_desal_config(x):
         html.Div(f"Design capacity: {r['Capacity']} m3/day"),
         html.Div(f"Thermal storage hour: {r['storage_hour']} hrs"),
         html.Div(f"Thermal storage capacity: {r['thermal_storage_capacity']:.0f} kWh"),
+        html.Div(f"Thermal storage cost: {r['cost_storage']:.0f} $/kWh"),
         html.Div(f"Waste heat / fossil fuel enabled: {r['fossil_fuel']}"),
         # html.Div(f"Specific thermal energy consumption: {r['specific_thermal_power_consumption']:.2f} kWh/m3"),
         html.Div(f"Required thermal energy: {r['thermal_power_consumption']:.0f} kW")
@@ -1381,7 +1396,7 @@ def set_system_performance(x):
     if app['desal'] == 'LTMED' or app['desal'] == 'VAGMD' or app['desal'] == 'MEDTVC' or app['desal'] == 'ABS':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),        
         html.Div(f"Gained output ratio: {r['gained_output_ratio']:.2f}"),
         html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
@@ -1393,7 +1408,7 @@ def set_system_performance(x):
         if r['stage'] == 1:
             return ([
             html.H5('Desalination System Performance', className='card-title'),
-            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
             html.Div(f"Overall recovery rate: {r['R1']:.2f} %"),  
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"), 
@@ -1404,7 +1419,7 @@ def set_system_performance(x):
         elif r['stage'] == 2:
             return ([
             html.H5('Desalination System Performance', className='card-title'),
-            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
             html.Div(f"Overall recovery rate: {r['R1'] * r['R2']:.2f} %"),  
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),   
@@ -1415,7 +1430,7 @@ def set_system_performance(x):
         elif r['stage'] == 3:
             return ([
             html.H5('Desalination System Performance', className='card-title'),
-            html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+            html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
             # html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
             html.Div(f"Overall recovery rate: {r['R1'] * r['R2'] * r['R3'] :.2f} %"), 
             html.Div(f"Final permeate salinity: {r['s_permeate']:.2f} mg/L"),    
@@ -1426,7 +1441,7 @@ def set_system_performance(x):
     elif app['desal'] == 'FO':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
@@ -1436,7 +1451,7 @@ def set_system_performance(x):
     elif app['desal'] == 'RO_FO' or app['desal'] == 'RO_MDB':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Overall recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total grid electricity usage: {r['grid_usage']:.0f} MWh"),
@@ -1449,7 +1464,7 @@ def set_system_performance(x):
     elif app['desal'] == 'OARO' or app['desal'] == 'LSRRO' or app['desal'] == 'COMRO' :
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['actual_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Annual downtime: {r['downtime']: .0f} %"),
         html.Div(f"Assumed recovery rate: {r['rr']:.1f} %"),    
@@ -1467,7 +1482,7 @@ def set_system_performance(x):
             hidden_columns = []
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),
@@ -1497,7 +1512,7 @@ def set_system_performance(x):
     elif app['desal'] == 'Generic':
         return ([
         html.H5('Desalination System Performance', className='card-title'),
-        html.Div(f"Annual water production: {r['water_prod']:.0f} m3"),
+        html.Div(f"Average daily water production: {r['water_prod']/365:.0f} m3"),
         html.Div(f"Brine concentration: {r['p_brine']:.1f} g/L"),   
         html.Div(f"Assumed recovery rate: {r['RR']:.2f} %"),    
         html.Div(f"Total fuel usage: {r['fossil_usage']:.0f} MWh"),

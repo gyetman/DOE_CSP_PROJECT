@@ -227,7 +227,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "RR",
-            "Label": "Recovery rate",
+            "Label": "Recovery rate (allowed maximum is shown in the Desalination Design Results)",
             "Units": "%",
             "Require": "*",
             "Constraint": "<1101,>399",

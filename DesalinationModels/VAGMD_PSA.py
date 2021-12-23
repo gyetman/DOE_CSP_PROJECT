@@ -196,7 +196,7 @@ class VAGMD_PSA(object):
         self.design_output.append({'Name':'Brine concentration','Value':brine_salinity,'Unit':'g/L'})    
         self.design_output.append({'Name':'Thermal power requirement','Value':self.ThPower * self.num_modules / 1000,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':''})
+        self.design_output.append({'Name':'Gained output ratio','Value':self.GOR,'Unit':'kJ/kJ'})
         self.design_output.append({'Name':'Recovery ratio','Value':self.F / self.FFR_r *100 ,'Unit':'%'})
         
         return

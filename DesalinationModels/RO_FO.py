@@ -70,7 +70,7 @@ class RO_FO(object):
         self.nFP=nFP          
         self.nominal_daily_cap_tmp=nominal_daily_cap_tmp
         self.Nel1=Nel1
-        self.R1=R1/100
+        self.R1=R1
         self.Cf=salinity  
         self.Pfp=Pfp
         self.T=T_sw 
@@ -92,7 +92,8 @@ class RO_FO(object):
         self.R3 = R3/100
     def design(self):
         self.RO_capacity = self.capacity / (1 + (1-self.RO_rr)/self.RO_rr * self.FO_rr * 0.9)
-        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr, FeedC_r = self.salinity, stage = 1,
+
+        RO_case = RO(T = self.T_sw, nominal_daily_cap_tmp=self.RO_capacity, R1=self.RO_rr*100, FeedC_r = self.salinity, stage = 1,
                      nERD = self.nERD, nBP = self.nBP, nHP = self.nHP, nFP = self.nFP, Nel1 = self.Nel1,
                     Qpnom1=self.Qpnom1 ,  Am1=self.Am1,  Ptest1=self.Ptest1, Ctest1=self.Ctest1,          
                     SR1=self.SR1,  Rt1=self.Rt1, Pdropmax=self.Pdropmax,  Pfp=self.Pfp  ,     
@@ -108,7 +109,7 @@ class RO_FO(object):
         RO_brine_salinity = (RO_case.case.Cf * RO_feed - RO_case.case.Cp * RO_permeate)/ RO_brine  #  g/L 
         FO_Mprod = self.capacity - self.RO_capacity
         
-        FO = FO_generalized( T_sw = self.T_sw, FeedC_r = RO_brine_salinity, r=self.FO_rr, Mprod = FO_Mprod, Salt_rej = self.FO_salt_rej)
+        FO = FO_generalized( T_sw = self.T_sw, FeedC_r = RO_brine_salinity, r=self.FO_rr*100, Mprod = FO_Mprod, Salt_rej = self.FO_salt_rej)
         FO.FO_design() 
         Thermal_load = FO.Thermal_power
         STEC = FO.STEC

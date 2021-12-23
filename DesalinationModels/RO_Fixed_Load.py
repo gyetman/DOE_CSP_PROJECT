@@ -123,7 +123,6 @@ class RO(object):
             self.PowerTotal = self.case.PowerTotal    
             self.SEC = self.case.SEC
             self.total_num_modules = self.case.num_modules
-            
             design_output = []
             design_output.append({'Name':'Actual capacity of the system','Value':self.case.nominal_daily_cap,'Unit':'m3/day'})
             design_output.append({'Name':'Estimated EPC cost','Value':self.case.EPC ,'Unit':'$ per m3/day'})            

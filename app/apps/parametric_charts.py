@@ -29,7 +29,8 @@ desal_outputs = {
         'Levelized cost of water':'parametric_desal_finance_outfile',
         'Total fossil fuel usage':'parametric_desal_simulation_outfile',
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-        'Specific energy consumption': 'parametric_desal_design_outfile'},
+        'Specific electricity consumption': 'parametric_desal_design_outfile'
+        },
         'LTMED':{
         'Total water production':'parametric_desal_simulation_outfile',
         'Levelized cost of water':'parametric_desal_finance_outfile',
@@ -89,7 +90,9 @@ desal_units = {
     'Total fossil fuel usage':'kWh',
     'Percentage of fossil fuel consumption':'%',
     'Specific thermal power consumption':'kWh(th)/m3',
-    'Specific energy consumption':'kWh(e)/m3'}
+    'Specific energy consumption':'kWh(e)/m3',
+    'Specific electricity consumption': 'kWh(e)/m3',
+    'Water production': 'm3'}
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),
