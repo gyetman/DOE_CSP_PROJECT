@@ -1,3 +1,4 @@
+from dash.html.Label import Label
 import app_config
 import itertools
 import json
@@ -475,22 +476,20 @@ def plot_pop_projection(feature):
             tmp.index = NEW_INDEX
             ssps = ssps.join(tmp)
 
-        print(ssps.head())
-
         ## make the graph and return it
 
         fig = go.Figure()
         fig.update_layout(
-            title="Shared Socioecomic Pathways Population Projections",
+            title='Shared Socioecomic Pathways Population Projections',
             xaxis_title = 'Year',
-            yaxis_title= 'Population'
+            yaxis_title= 'County Population',
         )
         for ssp in SSPS:
             fig.add_trace(go.Scatter(
                 x = list(ssps.index),
                 y = list(ssps[ssp]),
                 mode = 'lines',
-                name = ssp
+                name = f'{ssp}: {SSPS_LABELS[ssp]}'
             ))
         return(dcc.Graph(figure=fig))
     else:
