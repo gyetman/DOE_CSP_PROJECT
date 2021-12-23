@@ -63,6 +63,13 @@ for i in range(1,6):
 NEW_INDEX = list(range(2020,2051,5))
 SSPS = [f'SSP{x}' for x in range(1,6)]
 
+SSPS_LABELS = {
+    'SSP1':'Sustainability',
+    'SSP2':'Middle of the Road',
+    'SSP3':'Regional Rivalry',
+    'SSP4':'Inequality',
+    'SSP5':'Fossil-fueled development'
+}
 def get_style(feature):
     return dict()
 def get_d_style(feature):
@@ -473,6 +480,11 @@ def plot_pop_projection(feature):
         ## make the graph and return it
 
         fig = go.Figure()
+        fig.update_layout(
+            title="Shared Socioecomic Pathways Population Projections",
+            xaxis_title = 'Year',
+            yaxis_title= 'Population'
+        )
         for ssp in SSPS:
             fig.add_trace(go.Scatter(
                 x = list(ssps.index),
