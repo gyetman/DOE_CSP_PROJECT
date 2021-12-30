@@ -169,13 +169,13 @@ class RO_FO_cost(object):
         self.cost_heat = self.FO_STEC * (self.FO_fuel_usage * self.coh + (1-self.FO_fuel_usage) * self.sam_coh) 
         
         
-        self.RO_OPEX = self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
+        self.RO_OPEX = self.cost_elec + self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
         self.FO_OPEX = self.cost_heat + self.FO_labor + self.FO_chem_cost + self.FO_goods_cost 
  
         self.insurance_cost = (self.RO_CAPEX + self.FO_CAPEX ) *self.insurance  / (self.Prod+0.1)
         self.OPEX = self.RO_OPEX + self.FO_OPEX  + self.disposal_cost
         self.CAPEX = (self.RO_CAPEX + self.FO_CAPEX ) / self.Prod
-        self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost
+        self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost 
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})

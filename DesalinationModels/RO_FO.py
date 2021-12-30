@@ -180,7 +180,7 @@ class RO_FO(object):
             elec_load = load            
             
             grid_percentage = sum(grid)/sum(energy_consumption)*100
-            fossil_percentage = 1
+            fossil_percentage = 100
             Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
             Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
         
@@ -222,7 +222,7 @@ class RO_FO(object):
             th_energy_consumption = energy_consumption
             elec_load = [0]
             
-            grid_percentage = 1
+            grid_percentage = 100
             fossil_percentage = sum(fuel)/sum(energy_consumption)*100
             Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
             Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]           

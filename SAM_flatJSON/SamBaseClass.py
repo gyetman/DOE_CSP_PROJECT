@@ -850,7 +850,6 @@ class SamBaseClass(object):
 
         elif desal == 'OARO':
             from DesalinationModels.OARO_cost import OARO_cost
-            print('lcoe', self.lcoe)
             self.LCOW = OARO_cost(Capacity = self.desal_values_json['Capacity'], Prod = (self.simu_output[4]['Value']), fuel_usage = self.simu_output[7]['Value'], oaro_area  = self.costout['oaro_area'], ro_area  = self.costout['ro_area'],  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 downtime =  self.cost_values_json['downtime'],chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'], pumpcost = self.costout['pumpcost'], erdcost  = self.costout['erdcost'], ro_cost  =  self.cost_values_json['ro_cost'], oaro_cost  =  self.cost_values_json['oaro_cost'],
                                 solar_coe = self.cost_values_json['solar_coe'], sec =  self.costout['sec'], sam_coe = self.lcoe, practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
@@ -915,7 +914,7 @@ class SamBaseClass(object):
             unit_capex = [self.cost_values_json['unit_capex']]
             self.LCOW = RO_MDB_cost(Capacity = Capacity, Prod = self.simu_output[4]['Value'],chem_cost = self.cost_values_json['chem_cost'], labor_cost = self.cost_values_json['labor_cost'],
                                           unit_capex = unit_capex, rep_rate = self.cost_values_json['rep_rate'], 
-                                          MDB_Area = self.RO_MDB.MDB.Area, Pflux = self.RO_MDB.MDB.PFlux[0], TCO = self.RO_MDB.MDB.TCO[0], TEI = self.RO_MDB.MDB.TEI_r, FFR = self.RO_MDB.MDB.FFR_r, 
+                                          MDB_Area = self.RO_MDB.MDB.Area, Pflux = self.RO_MDB.MDB.PFlux_avg, TCO = self.RO_MDB.MDB.TCO[0], TEI = self.RO_MDB.MDB.TEI_r, FFR = self.RO_MDB.MDB.FFR_r, 
                                           th_module = self.RO_MDB.MDB.ThPower[0], 
                                           MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], 
                                           MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], 
@@ -927,8 +926,8 @@ class SamBaseClass(object):
                                           pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
                                    
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
-                                          MDB_SEC = self.RO_MDB.MDB.SEEC[-1], MDB_capacity = self.design_output[2]['Value'], MDB_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          MDB_SEC = self.RO_MDB.MDB.SEEC[-1], MDB_capacity = self.design_output[3]['Value'], MDB_STEC = self.design_output[9]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
+                                          grid_usage = self.simu_output[7]['Value'], MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'Generic':

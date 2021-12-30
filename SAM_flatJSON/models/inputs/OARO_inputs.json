@@ -11,7 +11,7 @@
 		{
             "DataType": "SSC_NUMBER",
             "Name": "FeedC_r",
-            "Label": "Feed concentration (Please select 20, 35, 70 or 125 g/L)",
+            "Label": "Feed concentration (Acceptable values are 20, 35, 70 and 125 g/L)",
             "Units": "g/L",
             "Require": "*",
             "Constraint": "20,35 or 70"

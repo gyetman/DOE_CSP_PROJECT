@@ -223,6 +223,9 @@ class VAGMD_batch(object):
         self.num_modules = math.ceil(self.Capacity *1000 / (self.AccVd[-1] / self.t[-1] * 24) )
         self.ave_stec = sum(self.STEC)/len(self.STEC)
         self.PFlux_avg= sum(self.PFlux) / len(self.PFlux)
+        print(self.FeedC_r)
+        print('PFlux:', self.PFlux_avg, len(self.PFlux))
+        print('STEC', self.STEC[-1])
         self.df = self.df.round(decimals = 1)
         self.df.to_csv(cfg.sam_results_dir/'MDB_output.csv')
         self.P_req = self.STEC[-1] * self.Capacity / 24   # kW

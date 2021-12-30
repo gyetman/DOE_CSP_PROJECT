@@ -74,13 +74,18 @@ desal_outputs = {
         'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile'},       
         'RO_MDB':{
         'Annual water production':'parametric_desal_simulation_outfile',
-        'Levelized cost of water':'parametric_desal_finance_outfile'},
-        # 'Total fossil fuel usage':'parametric_desal_simulation_outfile',
-        # 'Percentage of fossil fuel consumption': 'parametric_desal_simulation_outfile',
-        # 'Specific thermal power consumption': 'parametric_desal_design_outfile'}
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Percentage of grid electricity consumption': 'parametric_desal_simulation_outfile',
+        'Percentage of external fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'SEC-RO (Specific electricity consumption)': 'parametric_desal_design_outfile',
+        'STEC-MD (Specific thermal power consumption)': 'parametric_desal_design_outfile'},
         'RO_FO':{
         'Annual water production':'parametric_desal_simulation_outfile',
-        'Levelized cost of water':'parametric_desal_finance_outfile',}
+        'Levelized cost of water':'parametric_desal_finance_outfile',
+        'Percentage of grid electricity consumption': 'parametric_desal_simulation_outfile',
+        'Percentage of external fossil fuel consumption': 'parametric_desal_simulation_outfile',
+        'SEC-RO (Specific electricity consumption)': 'parametric_desal_design_outfile',
+        'STEC-FO (Specific thermal power consumption)': 'parametric_desal_design_outfile'}
         }
     
 desal_units = {
@@ -92,7 +97,13 @@ desal_units = {
     'Specific thermal power consumption':'kWh(th)/m3',
     'Specific energy consumption':'kWh(e)/m3',
     'Specific electricity consumption': 'kWh(e)/m3',
-    'Water production': 'm3'}
+    'Water production': 'm3',
+    'SEC-RO (Specific electricity consumption)': 'kWh(e)/m3',
+    'STEC-MD (Specific thermal power consumption)': 'kWh(th)/m3',
+    'STEC-FO (Specific thermal power consumption)': 'kWh(th)/m3',
+    'Percentage of grid electricity consumption':'%',
+    'Percentage of external fossil fuel consumption':'%'
+    }
 
 chart_navbar = dbc.NavbarSimple(
     children=[dbc.NavItem(dbc.NavLink("Home", href='/home')),

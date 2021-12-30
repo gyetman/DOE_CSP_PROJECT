@@ -160,8 +160,8 @@ class RO_MDB(object):
     def simulation(self, elec_gen, thermal_gen, solar_type = "pv", storage = 0 ): # solar_type = (pv, csp, thermal)
         gen = elec_gen
         if solar_type == 'pv':
-            self.elec_load = self.design_output[5]['Value']  # kWh
-            self.thermal_load = self.design_output[6]['Value']*1000 # kWh
+            self.elec_load = self.design_output[6]['Value']  # kWh
+            self.thermal_load = self.design_output[7]['Value']*1000 # kWh
             self.max_prod = self.capacity / 24 # m3/h
             self.storage_cap = 0 # kWh
             self.Fossil_f = 1
@@ -197,13 +197,13 @@ class RO_MDB(object):
             elec_load = load
             
             grid_percentage = sum(grid)/sum(energy_consumption)*100
-            fossil_percentage = 1
+            fossil_percentage = 100
             Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
             Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]
         
         if solar_type == 'thermal':
             gen = thermal_gen
-            self.thermal_load = self.design_output[6]['Value'] * 1000 # kWh
+            self.thermal_load = self.design_output[7]['Value'] * 1000 # kWh
             self.max_prod = self.capacity / 24 # m3/h
             self.storage_cap = 0 # kWh
             self.Fossil_f = 1
@@ -238,15 +238,15 @@ class RO_MDB(object):
             
             elec_load = [0]
             
-            grid_percentage = 1
+            grid_percentage = 100
             fossil_percentage = sum(fuel)/sum(energy_consumption)*100
             Month = [0,31,59,90,120,151,181,212,243,273,304,334,365]
             Monthly_prod = [ sum( prod[Month[i]*24:(Month[i+1]*24)] ) for i in range(12) ]           
         
         if solar_type == 'csp':
             gen = thermal_gen
-            self.elec_load = self.design_output[5]['Value']
-            self.thermal_load = self.design_output[6]['Value'] * 1000 # kWh
+            self.elec_load = self.design_output[6]['Value']
+            self.thermal_load = self.design_output[7]['Value'] * 1000 # kWh
             self.max_prod = self.capacity / 24 # m3/h
             self.storage_cap = 0 # kWh
             self.Fossil_f = 1

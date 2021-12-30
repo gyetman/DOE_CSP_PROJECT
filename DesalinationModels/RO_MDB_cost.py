@@ -116,8 +116,7 @@ class RO_MDB_cost(object):
         # self.Pflux = Pflux
         self.Area = Area
         # self.PF_module = self.Pflux * self.Area
-        self.num_modules = NV*Nel
-        self.total_area = self.num_modules*self.Area
+        self.total_area = NV*Nel*self.Area
         self.membrane_cost=membrane_cost
         self.pressure_vessel_cost=pressure_vessel_cost
         self.NV=NV
@@ -149,7 +148,8 @@ class RO_MDB_cost(object):
         self.Pflux = Pflux
         self.MDB_Area = MDB_Area
         self.PF_module = self.Pflux * self.MDB_Area
-        self.num_modules = math.ceil(Capacity[0] *1000 / self.PF_module / self.operation_hour)
+        self.MDB_capacity = MDB_capacity
+        self.num_modules = math.ceil(MDB_capacity *1000 / self.PF_module / self.operation_hour)
         self.HX_eff = HX_eff
         self.solar_inlet = solar_inlet
         self.solar_outlet = solar_outlet
@@ -226,20 +226,20 @@ class RO_MDB_cost(object):
 
 # Energy cost
         self.cost_elec = (self.SEC + self.MDB_SEC) * (self.grid_usage * self.coe + (1-self.grid_usage) * self.sam_coe)
-
         self.cost_heat = self.MDB_STEC * (self.MDB_fuel_usage * self.coh + (1-self.MDB_fuel_usage) * self.sam_coh) 
-        
+                
 # RO OM cost        
         self.RO_OPEX = self.disposal_cost+self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
 # MDB OM cost        
         self.other_OM = self.MDB_CAPEX  *0.018 / self.Prod
-        self.MDB_OPEX = self.cost_module_re + self.other_OM 
+        self.MDB_OPEX = self.cost_module_re + self.other_OM + self.cost_heat
  
         self.OPEX = self.RO_OPEX + self.MDB_OPEX
         self.insurance_cost = (self.RO_CAPEX + self.MDB_CAPEX ) * self.insurance / (self.Prod)
         #### ADD disposal cost
         self.CAPEX = (self.RO_CAPEX + self.MDB_CAPEX ) / self.Prod
-        self.LCOW = self.CAPEX + self.OPEX
+        self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost
+
 #        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
@@ -250,7 +250,8 @@ class RO_MDB_cost(object):
         cost_output.append({'Name':'Levelized cost of electricity (from solar field)','Value':self.sam_coe,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat (from fossile fuel)','Value':self.coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
-        # cost_output.append({'Name':'Energy cost','Value':self.cost_elec,'Unit':'$/m3'})    
+        cost_output.append({'Name':'Electricity cost','Value':self.cost_elec,'Unit':'$/m3'})   
+        cost_output.append({'Name':'Thermal energy cost','Value':self.cost_heat,'Unit':'$/m3'}) 
         
         return cost_output
     

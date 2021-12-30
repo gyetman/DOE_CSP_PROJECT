@@ -211,7 +211,7 @@
             "DataType": "SSC_NUMBER",
             "Name": "V0",
             "Label": "Initial batch volume",
-            "Units": "m3",
+            "Units": "L",
             "Require": "*",
             "Tab": "VAGMD-batch"
         },
