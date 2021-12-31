@@ -132,7 +132,11 @@ class SamBaseClass(object):
             with open(self.json_values, "r") as read_file:
                 solar_input = json.load(read_file)
             
-            self.staticcollector=StaticCollector_fp(desal_thermal_power_req = solar_input['desal_thermal_power_req'],initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], v2 = solar_input['v2'] , qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
+            self.staticcollector=StaticCollector_fp(desal_thermal_power_req = solar_input['desal_thermal_power_req'],
+                                                    initial_water_temp = solar_input['initial_water_temp'],outlet_water_temp = solar_input['outlet_water_temp'],
+                                                    cleanless_factor = solar_input['cleanless_factor'],G = solar_input['G'],a = solar_input['a'], b = solar_input['b'], c = solar_input['c'], 
+                                                    A = solar_input['A'], file_name = solar_input['file_name'], tilt_angle = solar_input['tilt_angle'], v1 = solar_input['v1'], 
+                                                    v2 = solar_input['v2'] , qm = solar_input['qm'], Tamb_D = solar_input['Tamb_D'] )
             self.heat_gen, self.sc_output = self.staticcollector.design()
             filename = 'Solar_output' + self.timestamp +'.json'
             
@@ -152,7 +156,8 @@ class SamBaseClass(object):
             with open(finance_model_outfile_path, "r") as read_file:
                 cost_input = json.load(read_file)            
 
-            self.collector_cost = ETC_cost(aperture_area = self.sc_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'], capacity = solar_input['desal_thermal_power_req'] * 1000,
+            self.collector_cost = ETC_cost(aperture_area = self.sc_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'],
+                                           capacity = solar_input['desal_thermal_power_req'] * 1000, land_cost = cost_input['land_cost'],
                                            EC = cost_input['EC'], yrs = cost_input['yrs'], int_rate = cost_input['int_rate'], coe = cost_input['coe'], p_OM = cost_input['p_OM'],
                                            unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.P_req)
             self.cost_out = self.collector_cost.lcoh()
@@ -195,7 +200,8 @@ class SamBaseClass(object):
             with open(finance_model_outfile_path, "r") as read_file:
                 cost_input = json.load(read_file)            
 
-            self.collector_cost = ETC_cost(aperture_area = self.et_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'], capacity = solar_input['desal_thermal_power_req'] * 1000,
+            self.collector_cost = ETC_cost(aperture_area = self.et_output[3]['Value'], non_solar_area_multiplier = cost_input['non_solar_area_multiplier'], 
+                                           capacity = solar_input['desal_thermal_power_req'] * 1000, land_cost = cost_input['land_cost'],
                                            EC = cost_input['EC'], yrs = cost_input['yrs'], int_rate = cost_input['int_rate'], coe = cost_input['coe'], p_OM = cost_input['p_OM'],
                                            unit_cost = cost_input['unit_cost'], cost_boiler = cost_input['cost_boiler'], thermal_gen = sum(self.heat_gen), P_req = self.P_req)
             self.cost_out = self.collector_cost.lcoh()
@@ -894,7 +900,8 @@ class SamBaseClass(object):
                                           FO_labor = self.cost_values_json['FO_labor'], FO_chem_cost = self.cost_values_json['FO_chem_cost'], FO_goods_cost = self.cost_values_json['FO_goods_cost'], 
                                           cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
                                           FO_SEC = self.cost_values_json['FO_SEC'], FO_capacity = self.design_output[2]['Value'], FO_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
-                                          FO_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
+                                          grid_usage = self.simu_output[7]['Value'], FO_fuel_usage = self.simu_output[8]['Value'],
+                                          coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()
             
         elif desal == 'RO_MDB':
@@ -1226,8 +1233,8 @@ class SamBaseClass(object):
 
             except Exception as error:
                 self.logger.critical(error)
-                print(error)
-                print(ssc_var)
+                # print(error)
+                # print(ssc_var)
 #                self.logger.info(stringsInJson)
 #        print(added_variables)
 

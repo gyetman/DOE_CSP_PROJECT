@@ -60,8 +60,6 @@ class ETC_cost(object):
         
         self.lcoh = self.CAPEX + self.OPEX
         
-        
-        
         cost_output = []
         cost_output.append({'Name':'Desal CAPEX','Value':self.CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})

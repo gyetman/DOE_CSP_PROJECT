@@ -289,8 +289,6 @@ class RO_FO(object):
         simu_output.append({'Name':'External thermal energy usage','Value':fuel,'Unit':'kWh'})
         simu_output.append({'Name':'Overall recovery rate','Value':self.design_output[0]['Value'],'Unit':'%'})
 
-        print(elec_gen[0:24])
-        print(elec_load[0:24])
         simu_output.append({'Name':'Curtailed solar thermal energy','Value':(sum(thermal_gen) - sum(load)) / 1000000 ,'Unit':'GWh'})   
         simu_output.append({'Name':'Percentage of curtailed thermal energy','Value':(sum(thermal_gen) - sum(load)) / (sum(thermal_gen)+1) * 100 ,'Unit':'%'})
         simu_output.append({'Name':'Curtailed solar electric energy','Value':max(0, (sum(elec_gen) - sum(elec_load))) / 1000000 ,'Unit':'GWh'})   

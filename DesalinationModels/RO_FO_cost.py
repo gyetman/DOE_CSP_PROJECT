@@ -165,7 +165,6 @@ class RO_FO_cost(object):
         self.FO_CAPEX = ((self.FO_total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) 
 
         self.cost_elec = (self.SEC + self.FO_SEC) * (self.grid_usage * self.coe + (1-self.grid_usage) * self.sam_coe)
-
         self.cost_heat = self.FO_STEC * (self.FO_fuel_usage * self.coh + (1-self.FO_fuel_usage) * self.sam_coh) 
         
         

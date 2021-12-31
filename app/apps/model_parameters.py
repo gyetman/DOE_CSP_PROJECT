@@ -579,7 +579,10 @@ def create_tabs_and_tables(x, samjson):
                   models[1]:solar_model_vars}  
     
     def _make_tabs_in_collapse(i):
-        model_name = {'solar': app['solar'], 'desal': app['desal'], 'finance': app['finance']}       
+        if app['solar'] == "SC_ETC" or app['solar'] == "SC_FPC" :
+            model_name = {'solar': app['solar'], 'desal': app['desal'], 'finance': "lcoh_calculator"} 
+        else:
+            model_name = {'solar': app['solar'], 'desal': app['desal'], 'finance': app['finance']}       
         
         return dbc.Card(
             [
@@ -800,6 +803,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
     converted to json and used as input to run the model.
     Finally the model is run.
     '''
+
     if n_clicks:
         #create dict lookups for model and filenames
         app = helpers.json_load(cfg.app_json)
@@ -827,7 +831,7 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
         for fR in selectedFinRows:
             if fR:
                 selected_fin.extend(fR)
-                
+
         # pull out variable names and values and add to new dict
 
         for solTable in solTableData:

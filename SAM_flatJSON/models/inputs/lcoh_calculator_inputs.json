@@ -42,14 +42,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "coe",
-            "Label": "Unit cost of electricity",
-            "Units": "$/kWh",
-            "Require": "*",
-			"Tab": "Static collector"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "p_OM",
             "Label": "Operational cost from the solar field",
             "Units": "% of the capital cost",
