@@ -38,7 +38,7 @@ model_selection_layout = html.Div([
             ),    
    
     dbc.FormGroup([
-        dbc.Label("Solar Thermal System", width=2, size='lg',color='warning',style={'text-align':'center'}),
+        dbc.Label("Solar Energy Generation", width=2, size='lg',color='warning',style={'text-align':'center'}),
         dbc.Col(
             dbc.RadioItems(
                 id='select-solar',
@@ -72,7 +72,7 @@ model_selection_layout = html.Div([
     ],row=True),
     dbc.FormGroup([
         #dbc.Label("Desalination System", width=2, size='lg',color='success',style={'text-align':'center'}),
-        dbc.Label("Desalination System",width=2, size='lg',color='info',style={'text-align':'center'}),
+        dbc.Label("Desalination",width=2, size='lg',color='info',style={'text-align':'center'}),
         dbc.Col(
             dbc.RadioItems(
                 id='select-desal',
@@ -80,7 +80,7 @@ model_selection_layout = html.Div([
         ),
     ],row=True,),
     dbc.FormGroup([
-        dbc.Label("Financial Model",width=2, size='lg',color='success',style={'text-align':'center'}),
+        dbc.Label("Financial",width=2, size='lg',color='success',style={'text-align':'center'}),
         dbc.Col(
             dbc.RadioItems(
                 id='select-finance',

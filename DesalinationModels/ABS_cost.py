@@ -40,7 +40,7 @@ class ABS_cost(object):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         self.f_HEX = f_HEX
-        self.HEX_area = HEX_area
+        self.HEX_area = HEX_area*Capacity
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
@@ -66,7 +66,7 @@ class ABS_cost(object):
         
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/(self.Capacity/24/3.6)/302.01)**0.8) 
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
         
         if self.P_req < 400:
             self.cost_AHP = (226.85 - 0.332 * self.P_req) * 1.2  # $/kW

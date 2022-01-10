@@ -621,7 +621,7 @@ class SamBaseClass(object):
                          Ctest1= self.desal_values_json['Ctest1'],SR1= self.desal_values_json['SR1'],Rt1= self.desal_values_json['Rt1'],Pdropmax= self.desal_values_json['Pdropmax'],
                          Pfp= self.desal_values_json['Pfp'],maxQf= self.desal_values_json['maxQf'])
             self.design_output = self.RO_FO.design()
-            if self.cspModel=='pvsamv1':
+            if self.cspModel=='pvsamv1' or self.cspModel=='pvwattsv7':
                 self.simu_output = self.RO_FO.simulation(elec_gen = self.elec_gen, thermal_gen = [0],  solar_type = 'pv', storage = 0)
             elif self.cspModel == 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat' or self.cspModel == 'SC_FPC' or self.cspModel == 'SC_ETC':
                 self.simu_output = self.RO_FO.simulation(elec_gen = [0], thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
@@ -643,7 +643,7 @@ class SamBaseClass(object):
                                j = self.desal_values_json['j'], TCoolIn = self.desal_values_json['TCoolIn'],
                                Ttank = self.desal_values_json['Ttank'], dt = self.desal_values_json['dt'])
             self.design_output = self.RO_MDB.design() 
-            if self.cspModel=='pvsamv1':
+            if self.cspModel=='pvsamv1' or self.cspModel=='pvwattsv7':
                 self.simu_output = self.RO_MDB.simulation(elec_gen = self.elec_gen, thermal_gen = [0],  solar_type = 'pv', storage = 0)
             elif self.cspModel == 'linear_fresnel_dsg_iph' or self.cspModel == 'trough_physical_process_heat' or self.cspModel == 'SC_FPC' or self.cspModel == 'SC_ETC':
                 self.simu_output = self.RO_MDB.simulation(elec_gen = [0], thermal_gen = self.heat_gen, solar_type = 'thermal', storage = 0)
@@ -828,7 +828,7 @@ class SamBaseClass(object):
         elif desal == 'ABS':
             from DesalinationModels.ABS_cost import ABS_cost
             self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], P_req = self.P_req,  downtime = self.cost_values_json['downtime'],
-                                   # HEX_area = self.LTMED.system.sum_A,
+                                   HEX_area = self.ABS.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
                                     Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'],  solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.ABS.storage_cap)
@@ -881,7 +881,7 @@ class SamBaseClass(object):
             
         elif desal == 'RO_FO':
             from DesalinationModels.RO_FO_cost import RO_FO_cost
-            if self.cspModel=='pvsamv1':
+            if self.cspModel=='pvsamv1' or self.cspModel=='pvwattsv7':
                 self.sam_lcoe = self.lcoe
                 self.sam_lcoh = 0
 
@@ -906,7 +906,7 @@ class SamBaseClass(object):
             
         elif desal == 'RO_MDB':
             from DesalinationModels.RO_MDB_cost import RO_MDB_cost
-            if self.cspModel=='pvsamv1':
+            if self.cspModel=='pvsamv1' or  self.cspModel=='pvwattsv7':
                 self.sam_lcoe = self.lcoe
                 self.sam_lcoh = 0
 

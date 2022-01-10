@@ -239,7 +239,7 @@ class lt_med_calculation(object):
             self.BPE[0]  = self.A[0] * self.Xb_w[0] + self.B[0] * self.Xb_w[0]**2 + self.C[0] * self.Xb_w[0]**3
             self.Tv[0]   = self.Tb[0] - self.BPE[0] - self.DELTAT_loss
             self.Uef[0]  = 1.9695 + (1.2057e-2  * self.Tb[0]) - (8.5989e-5 * self.Tb[0]**2) + (2.5651e-7 * self.Tb[0]**3)
-            
+            print(self.Mv)
             for i in range(1, self.Nef):
                 self.DTb[i] *= self.Aef[i] / self.Am
                 self.Tb[i]  = self.Tb[i-1] -self.DTb[i]
@@ -253,6 +253,8 @@ class lt_med_calculation(object):
                 self.Tdb[i]  = self.Tv[i] - self.NEA[i]
                 self.DA[i]   = abs(self.Aef[i-1] - self.Aef[i])
             
+            print(self.count)
+            print(self.Mv)
             self.count += 1
             self.max_DA = max(self.DA)
         
@@ -317,11 +319,11 @@ class lt_med_calculation(object):
         
 #%% MODEL EXECUTION            
 
-# default_case = lt_med_calculation(Nef=16,Ts=80)
-# default_case.preheater_calculations()
-# default_case.effects_calculation()
-# default_case.condenser_calculations()
-# default_case.distilllates_calculations()
+default_case = lt_med_calculation(Nef=14,Ts=80)
+default_case.preheater_calculations()
+default_case.effects_calculation()
+default_case.condenser_calculations()
+default_case.distilllates_calculations()
     
         
         
