@@ -69,9 +69,9 @@ class ABS_cost(object):
         self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
         
         if self.P_req < 400:
-            self.cost_AHP = (226.85 - 0.332 * self.P_req) * 1.2  # $/kW
+            self.cost_AHP = (241.425 - 0.03766 * self.P_req) * 1.2  # $/kW
         else:
-            self.cost_AHP = (95.04 - 0.002432 * self.P_req) * 1.2
+            self.cost_AHP = (101.1432 - 0.0025885 * self.P_req) * 1.2
             
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap + self.cost_AHP * self.P_req)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
