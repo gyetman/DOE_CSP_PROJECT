@@ -30,7 +30,7 @@ class VAGMD_PSA(object):
 
     def __init__(self,
                  # Design parameters
-                 module = 1,  # '0' for AS7C1.5L module and '1' for AS24C5L module
+                 module = 1,  # '0' for AS7C1.5L module and '1' for AS26C7.2L module
                  TEI_r  = 80, # Evaporator channel inlet temperature (ºC)
                  TCI_r  = 25, # Condenser channel inlet temperature (ºC)
                  FFR_r  = 582.7, # Feed flow rate (l/h)
@@ -152,7 +152,7 @@ class VAGMD_PSA(object):
             
             # TEI_c: Evaporator channel inlet temperature (ºC)
             
-            self.PFlux = a0 + a1 * self.TEI_c + a2 * self.FFR_c + a4 * self.FeedC_c + a5 * self.TEI_c * self.FFR_c + a6 * self.TCI_c * self.FFR_c + a7 * self.FFR_c**2
+            self.PFlux = a0 + a1 * self.TEI_c + a2 * self.FFR_c + a3 * self.TCI_c + a4 * self.FeedC_c + a5 * self.TEI_c * self.FFR_c + a6 * self.TCI_c * self.FFR_c + a7 * self.FFR_c**2
             
             # TCO (oC)
             a0 = 66.3418043159458

@@ -34,8 +34,8 @@ class ABS_cost(object):
                  solar_coh = '',
                  sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
-                 storage_cap = 0 # Capacity of thermal storage (kWh)
-                 
+                 storage_cap = 0, # Capacity of thermal storage (kWh)
+                 pump_type = 1
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
@@ -63,17 +63,22 @@ class ABS_cost(object):
         self.int_rate = int_rate
         self.cost_storage = cost_storage
         self.storage_cap = storage_cap
-        
+        self.pump_type = pump_type
     def lcow(self):
         
         self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
         
-        if self.P_req < 400:
-            self.cost_AHP = (241.425 - 0.03766 * self.P_req) * 1.2  # $/kW
+        if self.pump_type == 1:
+            self.cost_AHP = 0.9168 * self.Capacity**(-0.255)
         else:
-            self.cost_AHP = (101.1432 - 0.0025885 * self.P_req) * 1.2
+            self.cost_AHP = 1.5602 * self.Capacity**(-0.255)
+        
+        # if self.P_req < 400:
+        #     self.cost_AHP = (241.425 - 0.03766 * self.P_req) * 1.2  # $/kW
+        # else:
+        #     self.cost_AHP = (101.1432 - 0.0025885 * self.P_req) * 1.2
             
-        self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap + self.cost_AHP * self.P_req)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
+        self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap + self.cost_AHP * self.Capacity)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
 
