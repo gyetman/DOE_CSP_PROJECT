@@ -117,7 +117,7 @@ ADD = "/assets/docs/Detailed description for Input Variables.pdf"
 
 Documentation = {
     #Desal
-    'FO':{'doc':SDAT,'page':35}, 'VAGMD':{'doc':SDAT,'page':27}, 'MDB':{'doc':SDAT,'page':32}, 'LTMED':{'doc':SDAT,'page':21}, 'ABS':{'doc':SDAT,'page':27}, 'MEDTVC':{'doc':SDAT,'page':27}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':40}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':40}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':42}, 'RO_MDB':{'doc':SDAT,'page':42}, 'Generic':{'doc':SDAT,'page':44},
+    'FO':{'doc':SDAT,'page':57}, 'VAGMD':{'doc':SDAT,'page':50}, 'MDB':{'doc':SDAT,'page':53}, 'LTMED':{'doc':SDAT,'page':39}, 'ABS':{'doc':SDAT,'page':45}, 'MEDTVC':{'doc':SDAT,'page':42}, 'NUN':{'doc':SDAT,'page':27}, 'RO':{'doc':SDAT,'page':62}, 'COMRO':{'doc':SDAT,'page':27}, 'OARO':{'doc':SDAT,'page':63}, 'LSRRO':{'doc':SDAT,'page':27}, 'RO_FO':{'doc':SDAT,'page':64}, 'RO_MDB':{'doc':SDAT,'page':66}, 'Generic':{'doc':SDAT,'page':66},
     #Financial
     'utilityrate5':{'doc':SAMD,'page':771}, 'lcoefcr':{'doc':SAMD,'page':829}, 'iph_to_lcoefcr':{'doc':SAMD,'page':829}, 'levpartflip':{'doc':SAMD,'page':803}, 'equpartflip':{'doc':SAMD,'page':813}, 'saleleaseback':{'doc':SAMD,'page':821}, 'singleowner':{'doc':SAMD,'page':787},
     #Solar
