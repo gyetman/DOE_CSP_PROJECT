@@ -15,7 +15,7 @@ from app import app
 card_documentation = dtc.Card(
     title='Documentation',
     # link='https://sam.nrel.gov/images/web_page_files/sam-help-2020-2-29-r1.pdf',
-    link='/assets/docs/documentation.pdf',
+    link='/assets/docs/documentation.pdf#page=1',
     image='assets/images/documentation.png',
     description="The Solar Desalination Analysis Tool User Manual.",
     #badges=['Badge 1', 'Badge 2', 'Badge 3'],
