@@ -3,11 +3,17 @@
 ## Models
 
 Low-temperature multi-effect distillation (LT-MED)
+
 Multi-effect distillation with thermal vapor compression (MED-TVC)
+
 Multi-effect distillation with absorption heat pumps (MED-ABS)
+
 Vacuum air gap membrane distillation (VAGMD) in continuous and batch operation modes
+
 Reverse osmosis (RO) with multiple passes
+
 Osmotically assisted reverse osmosis (OARO), forward osmosis (FO), and RO-VAGMD, and RO-FO hybridizations. 
+
 
 ![image](https://user-images.githubusercontent.com/821483/154331345-89f47bdd-d4c3-43fe-9ce5-02461c132260.png)
 
