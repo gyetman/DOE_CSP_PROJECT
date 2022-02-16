@@ -12,7 +12,11 @@ Vacuum air gap membrane distillation (VAGMD) in continuous and batch operation m
 
 Reverse osmosis (RO) with multiple passes
 
-Osmotically assisted reverse osmosis (OARO), forward osmosis (FO), and RO-VAGMD, and RO-FO hybridizations. 
+Osmotically assisted reverse osmosis (OARO)
+
+Forward osmosis (FO)
+
+RO-VAGMD and RO-FO hybridizations. 
 
 
 ## App (GUI)
