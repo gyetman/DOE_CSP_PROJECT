@@ -27,12 +27,7 @@ gis_data = app_config.gis_data_path
 
 
 #TODO:
-## Error with two or more desal plants in a cluster
-# Traceback (most recent call last):
-#   File "/Users/gyetman/DOE/DOE_CSP_PROJECT/app/apps/site_selection.py", line 374, in info_hover
-#     if feature['properties']['cluster']:
-# KeyError: 'properties'
-# Error only occurs occasionally, can be safely ignored. 
+# nothing current
 
 # Mapbox setup
 mapbox_url = "https://api.mapbox.com/styles/v1/{id}/tiles/{{z}}/{{x}}/{{y}}{{r}}?access_token={access_token}"
