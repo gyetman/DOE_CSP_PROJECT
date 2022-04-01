@@ -40,7 +40,7 @@ class ABS_cost(object):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         self.f_HEX = f_HEX
-        self.HEX_area = HEX_area*Capacity
+        self.HEX_area = HEX_area * 86.4 # from m2/m3/day to m3/kg/s
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
@@ -66,7 +66,7 @@ class ABS_cost(object):
         self.pump_type = pump_type
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/302.01)**0.8) 
         
         if self.pump_type == 1:
             self.cost_AHP = 0.9168 * self.Capacity**(-0.255)
@@ -83,8 +83,8 @@ class ABS_cost(object):
         
 
         self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) \
-            + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX \
-            + self.Miscellaneous + self.Discharge + self.Insurance/100*self.CAPEX 
+            + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.cost_sys*self.Capacity/self.Prod \
+            + self.Miscellaneous + self.Discharge + self.Insurance/100*self.cost_sys*self.Capacity/self.Prod 
         
         self.LCOW = self.CAPEX + self.OPEX
         
@@ -96,7 +96,6 @@ class ABS_cost(object):
         cost_output.append({'Name':'Levelized cost of heat (from solar field)','Value':self.sam_coh,'Unit':'$/m3'})
         cost_output.append({'Name':'Energy cost','Value':self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC,'Unit':'$/m3'})
         cost_output.append({'Name':'Absorption heat pump capital cost','Value':self.cost_AHP,'Unit':'$/kW'})
-         
         
         return cost_output
 #%%

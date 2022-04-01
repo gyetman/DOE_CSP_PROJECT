@@ -120,6 +120,15 @@
             "Require": "*",
             "Constraint": "",
 			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "Insurance",
+            "Label": "Insurance (percentage of CAPEX)",
+            "Units": "%",
+            "Require": "*",
+            "Constraint": "",
+			"Tab": "Desalination"
         }
     ]
 }

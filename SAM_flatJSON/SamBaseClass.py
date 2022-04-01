@@ -835,7 +835,8 @@ class SamBaseClass(object):
             self.LCOW = LTMED_cost(f_HEX = self.cost_values_json['f_HEX'], downtime = self.cost_values_json['downtime'],
                                     HEX_area = self.LTMED.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.LTMED.STEC,
-                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
+                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'],
+                                    Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'], Insurance = self.cost_values_json['Insurance'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.LTMED.storage_cap)
             self.cost_output = self.LCOW.lcow()
             
@@ -844,7 +845,8 @@ class SamBaseClass(object):
             self.LCOW = ABS_cost(f_HEX = self.cost_values_json['f_HEX'], P_req = self.P_req,  downtime = self.cost_values_json['downtime'],
                                    HEX_area = self.ABS.sA, pump_type = self.ABS.pump_type,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.ABS.STEC,
-                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
+                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], 
+                                    Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'], Insurance = self.cost_values_json['Insurance'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'],  solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.ABS.storage_cap)
             self.cost_output = self.LCOW.lcow()  
             
@@ -853,7 +855,8 @@ class SamBaseClass(object):
             self.LCOW = MEDTVC_cost(f_HEX = self.cost_values_json['f_HEX'], downtime = self.cost_values_json['downtime'],
                                     HEX_area = self.MEDTVC.sA,
                                    Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], SEEC = self.cost_values_json['SEEC'], STEC = self.MEDTVC.STEC,
-                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'], Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'],
+                                    Chemicals = self.cost_values_json['Chemicals'], Labor = self.cost_values_json['Labor'], Discharge = self.cost_values_json['Discharge'],
+                                    Maintenance = self.cost_values_json['Maintenance'],  Miscellaneous = self.cost_values_json['Miscellaneous'], Insurance = self.cost_values_json['Insurance'],
                                    yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'],  solar_coh =  self.cost_values_json['solar_coh'], coh =  self.cost_values_json['coh'], sam_coh = self.lcoh, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MEDTVC.storage_cap)
             self.cost_output = self.LCOW.lcow()
             

@@ -24,7 +24,7 @@ class MEDTVC_cost(object):
                  Miscellaneous = 0.1, # Other direct/indirect cost ($/m3)
                  Discharge = 0.02, # Water discharge/disposal cost ($/m3)
                  Maintenance = 2, # Percentage to the capital cost (%)
-                 
+                 Insurance = 0.5, # Percentage to the capital cost (%)                 
 #                 GOR = 10.475,  # Gained output ratio
                 # downtime = 0.1, # Yearly downtime of the plant (ratio)
                  yrs = 20, # Expected plant lifetime
@@ -40,7 +40,7 @@ class MEDTVC_cost(object):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         self.f_HEX = f_HEX
-        self.HEX_area = HEX_area*Capacity
+        self.HEX_area = HEX_area * 86.4 # from m2/m3/day to m3/kg/s
         self.Capacity = Capacity
         self.STEC = STEC
         self.coe = coe
@@ -63,16 +63,19 @@ class MEDTVC_cost(object):
         self.cost_storage = cost_storage
         self.storage_cap = storage_cap
         self.Nef = Nef
+        self.Insurance = Insurance
     def lcow(self):
         
-        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/8841)**0.8) 
-
+        self.cost_sys = 6291 * self.Capacity**(-0.135) * (1- self.f_HEX + self.f_HEX * (self.HEX_area/302.01)**0.8) 
+  
         self.CAPEX = ((self.cost_sys*self.Capacity+ self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod 
         
         
 
-        self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.CAPEX + self.Miscellaneous + self.Discharge
-        
+        self.OPEX = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh) \
+            + self.coe * self.SEEC + self.Chemicals + self.Labor + self.Maintenance/100*self.cost_sys*self.Capacity/self.Prod \
+            + self.Miscellaneous + self.Discharge + self.Insurance/100*self.cost_sys*self.Capacity/self.Prod 
+            
         self.LCOW = self.CAPEX + self.OPEX
         
 

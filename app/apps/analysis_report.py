@@ -1544,7 +1544,7 @@ def set_cost_analysis(x):
         html.Div(f"Assumed cost of heat (LCOH, from other sources): {r['lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of heat (LCOH, from solar field): {r['sam_lcoh']:.3f} $/kWh"),
         html.Div(f"Levelized cost of electric energy (LCOE): {r['lcoe']:.2f} $/kWh"),
-        html.Div(f"Capital cost of heat pump: {r['AHP_cost']:.0f} $/kW"),        
+        html.Div(f"Capital cost of heat pump: {r['AHP_cost']:.2f} $/kW"),        
         html.Div(f"Capital cost: {r['capital_cost']:.2f} $/m3"),
         html.Div(f"Operational and Maintenance cost: {r['ops_cost']:.2f} $/m3"),
         html.Div(f"Unit energy cost: {r['energy_cost']:.2f} $/m3",
