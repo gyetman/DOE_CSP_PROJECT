@@ -55,8 +55,10 @@ class RO_FO_cost(object):
                  #HX_eff = 0.85, # Heat exchanger efficiency
                  #cost_module_re = 0.220 , # Cost of module replacement ($/m3)
                  unit_capex=1100,  # total EPC cost, USD/(m3/day)
-                 cost_storage = 26 , # Cost of battery ($/kWh)
-                 storage_cap = 0, # Capacity of battery (kWh)
+                 cost_storage = 26 , # Cost of thermal storage ($/kWh)
+                 cost_battery = 150, # cost of battery ($/kWh)
+                 storage_cap = 0, # Capacity of thermal storage (kWh)
+                 battery_cap = 0, # Capacity of battery (kWh)
                  
                  FO_capacity = 288,
                  FO_SEC = 1, # kWh/m3
@@ -115,6 +117,8 @@ class RO_FO_cost(object):
         self.int_rate = int_rate
         self.cost_storage = cost_storage
         self.storage_cap = storage_cap
+        self.battery_cap = battery_cap
+        self.cost_battery = cost_battery
 
         self.FO_capacity = FO_capacity
         self.FO_SEC = FO_SEC # kWh/m3
@@ -159,7 +163,7 @@ class RO_FO_cost(object):
                 self.unit_capex_empirical = [3726.1 * self.capacity[0] ** (-0.071)]
             self.EPC_cost = self.capacity[0] * self.unit_capex_empirical[0]
 
-            self.RO_CAPEX =(self.EPC_cost)*self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1) #/ self.ann_prod
+            self.RO_CAPEX =(self.EPC_cost + self.cost_battery * self.battery_cap)*self.int_rate*(1+self.int_rate)**self.yrs / ((1+self.int_rate)**self.yrs-1) #/ self.ann_prod
            
         self.FO_total_CAPEX = self.FO_capacity * self.FO_unit_capex
         self.FO_CAPEX = ((self.FO_total_CAPEX + self.cost_storage * self.storage_cap)*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) 
@@ -171,7 +175,7 @@ class RO_FO_cost(object):
         self.RO_OPEX = self.cost_elec + self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
         self.FO_OPEX = self.cost_heat + self.FO_labor + self.FO_chem_cost + self.FO_goods_cost 
  
-        self.insurance_cost = (self.RO_CAPEX + self.FO_CAPEX ) *self.insurance  / (self.Prod+0.1)
+        self.insurance_cost = (self.EPC_cost + self.FO_total_CAPEX + + self.cost_battery * self.battery_cap + self.cost_storage * self.storage_cap) *self.insurance  / (self.Prod)
         self.OPEX = self.RO_OPEX + self.FO_OPEX  + self.disposal_cost
         self.CAPEX = (self.RO_CAPEX + self.FO_CAPEX ) / self.Prod
         self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost 

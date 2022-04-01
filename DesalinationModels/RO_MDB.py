@@ -20,7 +20,7 @@ class RO_MDB(object):
                  capacity = 1000, 
                  RO_rr=40, 
                  salinity=35, 
-                 T_sw=15, 
+                 T_sw=15                                          , 
                  
                  # RO parameters
                  nERD=0.95,            # Energy recovery device efficiency
@@ -150,7 +150,7 @@ class RO_MDB(object):
         
         self.design_output.append({'Name':'SEC-RO (Specific electricity consumption)','Value':RO_case.case.SEC,'Unit':'kWh(e)/m3'})
         self.design_output.append({'Name':'STEC-MD (Specific thermal power consumption)','Value':STEC,'Unit':'kWh(th)/m3'})   
-        self.design_output.append({'Name':'Gained output ratio of MD','Value':self.MDB.GOR[-1],'Unit':'kg/kg'})
+        self.design_output.append({'Name':'Gained output ratio of MD','Value':self.MDB.GOR[-1],'Unit':'kg permeate/kg steam'})
         
         self.design_output.append({'Name':'Feed flow rate','Value':RO_case.case.Qf1,'Unit':'m3/h'})        
         # self.design_output.append({'Name':'(FO) Strong draw solution flow rate','Value':FO.SD,'Unit':'m3/day'}) 

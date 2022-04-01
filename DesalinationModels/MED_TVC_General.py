@@ -11,7 +11,7 @@ import math
 import DesalinationModels.IAPWS97_thermo_functions as TD_func
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 from scipy.optimize import fmin
-from DesalinationModels.VAGMD_batch.SW_functions import SW_Density
+from DesalinationModels.VAGMD_batch.SW_functions import SW_Density, BPE, SW_Enthalpy
 from iapws import IAPWS97, SeaWater
 # from DesalinationModels.LT_MED_calculation import lt_med_calculation
 
@@ -23,7 +23,7 @@ class med_tvc_general(object):
          Capacity = 2000,    # Capacity of the plant (m3/day)\
          Pm      = 20,  # motive steam pressure entering the thermocompressor (bar)
          Tin     = 15 , # Inlet seawater temperature
-         RR      = 0.5 , # recovery ratio
+         RR      = 50 , # recovery ratio
          Fossil_f = 1 # Fossil fuel fraction
          ):
         
@@ -106,45 +106,64 @@ class med_tvc_general(object):
         self.qF = np.dot(paras,coeffs[4])
         self.sA = np.dot(paras,coeffs[5])
         self.Ts = 70
-        # self.STEC = 1/self.GOR * (TD_func.enthalpySatVapTW(self.Ts+273.15)-TD_func.enthalpySatLiqTW(self.Tin + 10 +273.15))[0] *1000/3600
         
+        
+        self.T_d = self.Tin + 10  # Brine temperature at last effect 
+        
+        h_vsat = IAPWS97(P=self.Pm/10*1.01325,x=1).h # saturated steam enthalpy
+        h_lsat = IAPWS97(T=273.15+ self.Ts, x=0).h   # saturated liquid enthalpy
+        
+        # Calculate cooling water flow rate
+        Q_loss = 0.054 # System thermal loss
+        
+            # mass balance
+        q_d = self.Capacity / 24 # Hourly distillate production (m3/hr)
+        self.q_feed = q_d / self.RR # Feed seawater flow rate (m3/hr)
+        q_b = self.q_feed - q_d # Brine flow rate (m3/hr)
 
-        h_steam = IAPWS97(P=20,x=1).h
-        h_cond = IAPWS97(T=273.15+70,x=0).h
+        self.s_b = self.Xf /1000/ (1- self.RR) #  brine salinity (g/L)
+ 
+            # BPE calculation
+        SW_BPE = BPE(self.T_d, self.s_b)
         
-        self.STEC = 1/self.GOR * (h_steam-h_cond) *1000/3600
-        self.P_req = self.STEC *self.Capacity *1000/24/3600       
-       
-        self.T_b = self.Tin + 10  # Brine temperature at last effect (T_b = T_d = T_cool = T_cond)
-        self.h_b = IAPWS97(T=273.15+ self.T_b,x=0).h    # Enthalpy of the flow at brine temperature
-        self.h_sw = SeaWater(T=273.15+15,P = 0.101325, S = 0.035).h   
-        # print('QMED', self.P_req)
-        # print('enthalpy:', self.h_b, self.h_sw)
+        self.T_b =  self.T_d + SW_BPE # brine temperature
+        self.T_cool = self.T_d - 3 # cooling reject temperature (Assume DHTP = 3)
         
-        self.brine_d = SW_Density(self.T_b,'c',0,'ppt',1,'bar')
-        self.distillate_d = SW_Density(self.T_b,'c',self.Xf * 2,'ppm',1,'bar')     
-        self.average_d = self.brine_d * self.RR + self.distillate_d * (1-self.RR)        
-        # self.q_cooling = ( self.P_req * 3600 - (self.qF * self.average_d * self.h_b - self.qF * self.average_d * self.h_sw)) / (self.h_b - self.h_sw)
-        self.q_cooling = 0.95 * self.P_req * 3.6   /(self.h_b - self.h_sw)
-        print(self.P_req * 3600)
-        print((self.h_b - self.h_sw))
+            # densities
+        rho_b = SW_Density(self.T_b,'c',self.s_b*1000,'ppm',1,'bar')  # brine density
+        rho_d = SW_Density(self.T_d,'c',0,'ppm',1,'bar')  # distillate density
+        rho_sw= SW_Density(self.Tin,'c',self.Xf,'ppm',1,'bar')  # seawater density
+        rho_f = SW_Density(self.T_cool,'c',self.Xf,'ppm',1,'bar')  # cooling reject density
         
-        from DesalinationModels.LTMED_cost import LTMED_cost
-        lcow = LTMED_cost(STEC = self.STEC )
+            # enthalpies
+        h_d = IAPWS97(T=273.15+ self.T_d,x=0).h 
+        h_b = SW_Enthalpy(self.T_b, self.s_b)/ 1000
+        h_sw = SW_Enthalpy(self.Tin, self.Xf/1000)/ 1000
+        h_cool = SW_Enthalpy(self.T_cool, self.Xf/1000)/ 1000
         
-        brine_s = self.Xf /1000 / ( 1- self.RR)
+            # energy consumption
+        self.STEC = 1/self.GOR * (h_vsat-h_lsat) *rho_d/3600
+        self.P_req = self.STEC *self.Capacity /24 
         
-        self.design_output = []
-#        design_output.append({'Name':'Number of modules required','Value':self.num_modules,'Unit':''})
-#        design_output.append({'Name':'Permeate flux of module','Value':self.Mprod,'Unit':'l/h'})
-#        design_output.append({'Name':'Condenser outlet temperature','Value':self.TCO,'Unit':'oC'})
-#        design_output.append({'Name':'Permeate flow rate','Value': self.F * self.num_modules,'Unit':'l/h'})    
+            # mass flow rates
+        self.m_d = q_d * rho_d / 3600 # distillate mass flow rate (kg/s)
+        self.m_b = q_b * rho_b / 3600 # brine mass flow rate (kg/s)
+        self.m_f = self.q_feed * rho_f / 3600 # feed mass flow rate (kg/s)
+        self.m_sw = ((1-Q_loss)*self.P_req - self.m_b * h_b - self.m_d * h_d + h_cool * self.m_f) / (h_cool - h_sw) # intake + cooling water mass flow rate (kg/s)
+        
+        
+            # volume flow rates
+        self.q_sw = self.m_sw / rho_sw * 3600 # m3/h
+        self.q_cooling = self.q_sw - self.q_feed
+        
+        
+        self.design_output = []   
         self.design_output.append({'Name':'Thermal power requirement','Value':self.P_req / 1000 ,'Unit':'MW(th)'})
         self.design_output.append({'Name':'Specific thermal power consumption','Value':self.STEC,'Unit':'kWh(th)/m3'})
-        self.design_output.append({'Name':'Brine concentration','Value':brine_s,'Unit':'g/L'})
+        self.design_output.append({'Name':'Brine concentration','Value':self.s_b,'Unit':'g/L'})
         self.design_output.append({'Name':'Feedwater flow rate','Value':self.qF,'Unit':'m3/h'})
-        # if self.q_cooling > 0:
-            # self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
+        if self.q_cooling > 0:
+            self.design_output.append({'Name':'Cooling water flow rate','Value':self.q_cooling,'Unit':'m3/h'}) 
         self.design_output.append({'Name':'Heating steam mass flow rate entering the first effect','Value':self.qs,'Unit':'kg/s'})
         self.design_output.append({'Name':'Motive steam mass flow rate entering the thermocompressor','Value':self.qm,'Unit':'kg/s'})
         self.design_output.append({'Name':'Specific area','Value':self.sA,'Unit':'m2 per m3/day'})
@@ -152,11 +171,6 @@ class med_tvc_general(object):
         self.design_output.append({'Name':'Mean temperature difference between effects','Value':self.DELTAT,'Unit':'oC'})
         if self.DELTAT < 1.5:
             self.design_output.append({'Name':'Warning','Value':'Delta T is too small, resulting in high heat transfer area and associated cost.','Unit':''})
-        
-        
-        
-        
-        # self.design_output.append({'Name':'Specific heat exchanger area','Value':self.system.sA,'Unit':'m2/(kg/s)'}) 
         
         return self.design_output
     

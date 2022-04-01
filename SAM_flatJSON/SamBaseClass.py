@@ -78,6 +78,7 @@ class SamBaseClass(object):
             self.set_data(self.varListCsp)
             # execute csp model
             self.module_create_execute(self.cspModel)
+            self.module_create_execute('grid')
 
             # execute financial model, if any
             if self.financialModel:
@@ -259,6 +260,7 @@ class SamBaseClass(object):
             self.set_data(self.varListCsp)
             # execute csp model
             self.module_create_execute(self.cspModel)
+            self.module_create_execute('grid')
 
             # execute financial model, if any
             if self.financialModel:
@@ -328,6 +330,7 @@ class SamBaseClass(object):
             self.set_data(self.varListCsp)
             # execute csp model
             self.module_create_execute(self.cspModel)
+            self.module_create_execute('grid')
 
             # execute financial model, if any
             if self.financialModel:
@@ -433,7 +436,7 @@ class SamBaseClass(object):
 
         elif desal == 'MDB':
             from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
-            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
+            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] , PumpEff = self.desal_values_json['PumpEff'])
             self.design_output =  self.MDB.design() 
             self.P_req = self.MDB.P_req
 
@@ -555,7 +558,7 @@ class SamBaseClass(object):
 
         elif desal == 'MDB':
             from DesalinationModels.VAGMD_batch.VAGMD_batch import VAGMD_batch
-            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'] )
+            self.MDB = VAGMD_batch(module = self.desal_values_json['module'], TEI_r = self.desal_values_json['TEI_r'],TCI_r  = self.desal_values_json['TCI_r'],FFR_r = self.desal_values_json['FFR_r'],FeedC_r = self.desal_values_json['FeedC_r'],Capacity= self.desal_values_json['Capacity'],Fossil_f= self.desal_values_json['Fossil_f'], V0 =self.desal_values_json['V0'], RR = self.desal_values_json['RR'],  PumpEff = self.desal_values_json['PumpEff'] )
             self.design_output = self.MDB.design()  
 
             self.simu_output = self.MDB.simulation(gen = self.heat_gen, storage = self.desal_values_json['storage_hour'])
@@ -779,7 +782,7 @@ class SamBaseClass(object):
             self.LCOW = RO_cost(Capacity = Capacity, Prod = sum(self.simu_output[0]['Value']), fuel_usage = self.simu_output[7]['Value'], 
                                 Area =  self.desal_values_json['Am1'], yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                 num_modules = self.RO.total_num_modules, solar_coe = self.cost_values_json['solar_coe'], IX_cost = self.cost_values_json['IX_cost'],
-                                chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
+                                insurance = self.cost_values_json['insurance'], chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'],
                                 unit_capex =  unit_capex, sec =  self.RO.SEC ,disposal_cost =  self.cost_values_json['disposal_cost'], sam_coe = self.lcoe, cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.RO.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
@@ -788,9 +791,19 @@ class SamBaseClass(object):
         elif desal == 'VAGMD':
             from DesalinationModels.VAGMD_cost import VAGMD_cost
 
-            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'], downtime = self.cost_values_json['downtime'],
-                                   MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'], other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
-                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.VAGMD.storage_cap )
+            self.LCOW = VAGMD_cost(Capacity = self.desal_values_json['Capacity'], Prod = self.simu_output[4]['Value'], fuel_usage = self.simu_output[7]['Value'], 
+                                   Area = self.VAGMD.Area, Pflux = self.VAGMD.PFlux, TCO = self.VAGMD.TCO, TEI = self.VAGMD.TEI_r, FFR = self.VAGMD.FFR_r, 
+                                   th_module = self.VAGMD.ThPower, STEC = self.VAGMD.STEC, SEEC = self.cost_values_json['SEEC'], downtime = self.cost_values_json['downtime'],
+                                   MD_membrane = self.cost_values_json['MD_membrane'], MD_module = self.cost_values_json['MD_module'], MD_module_capacity = self.cost_values_json['MD_module_capacity'], 
+                                   HX = self.cost_values_json['HX'], endplates = self.cost_values_json['endplates'], endplates_capacity = self.cost_values_json['endplates_capacity'],
+                                   other_capacity = self.cost_values_json['other_capacity'], heat_cool = self.cost_values_json['heat_cool'], heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], 
+                                   h_r = self.cost_values_json['h_r'], h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], 
+                                   tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], pump_capacity = self.cost_values_json['pump_capacity'], 
+                                   other = self.cost_values_json['other'], 
+                                   yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], coh =  self.cost_values_json['coh'], 
+                                   solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], 
+                                   solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], insurance = self.cost_values_json['insurance'] , cost_module_re = self.cost_values_json['cost_module_re'] , 
+                                   maintenance = self.cost_values_json['maintenance'] ,operational = self.cost_values_json['operational'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.VAGMD.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
 
@@ -811,7 +824,8 @@ class SamBaseClass(object):
                                  pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
                                  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
                                  coh =  self.cost_values_json['coh'], solar_coh =  self.cost_values_json['solar_coh'], sam_coh = self.lcoh, solar_inlet =  self.cost_values_json['solar_inlet'], 
-                                 solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], 
+                                 solar_outlet =  self.cost_values_json['solar_outlet'], HX_eff =  self.cost_values_json['HX_eff'], insurance = self.cost_values_json['insurance'] ,
+                                 maintenance = self.cost_values_json['maintenance'] ,operational = self.cost_values_json['operational'] ,
                                  cost_module_re =  self.cost_values_json['cost_module_re'] , cost_storage = self.cost_values_json['cost_storage'], storage_cap = self.MDB.storage_cap )
 
             self.cost_output = self.LCOW.lcow()
@@ -857,7 +871,7 @@ class SamBaseClass(object):
         elif desal == 'OARO':
             from DesalinationModels.OARO_cost import OARO_cost
             self.LCOW = OARO_cost(Capacity = self.desal_values_json['Capacity'], Prod = (self.simu_output[4]['Value']), fuel_usage = self.simu_output[7]['Value'], oaro_area  = self.costout['oaro_area'], ro_area  = self.costout['ro_area'],  yrs = self.cost_values_json['yrs'], int_rate =  self.cost_values_json['int_rate'], coe =  self.cost_values_json['coe'], 
-                                downtime =  self.cost_values_json['downtime'],chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'], pumpcost = self.costout['pumpcost'], erdcost  = self.costout['erdcost'], ro_cost  =  self.cost_values_json['ro_cost'], oaro_cost  =  self.cost_values_json['oaro_cost'],
+                                insurance = self.cost_values_json['insurance'], downtime =  self.cost_values_json['downtime'],disposal_cost =  self.cost_values_json['disposal_cost'], chem_cost =  self.cost_values_json['chem_cost'], labor_cost =  self.cost_values_json['labor_cost'], rep_rate =  self.cost_values_json['rep_rate'], pumpcost = self.costout['pumpcost'], erdcost  = self.costout['erdcost'], ro_cost  =  self.cost_values_json['ro_cost'], oaro_cost  =  self.cost_values_json['oaro_cost'],
                                 solar_coe = self.cost_values_json['solar_coe'], sec =  self.costout['sec'], sam_coe = self.lcoe, practical_inv_factor = self.cost_values_json['practical_inv_factor'], storage_cap = self.OARO.storage_cap )
         
             self.cost_output = self.LCOW.lcow()
@@ -898,7 +912,7 @@ class SamBaseClass(object):
             self.LCOW = RO_FO_cost(Capacity = Capacity, Prod = self.simu_output[4]['Value'],chem_cost = self.cost_values_json['chem_cost'], labor_cost = self.cost_values_json['labor_cost'],
                                           unit_capex = unit_capex,rep_rate = self.cost_values_json['rep_rate'], FO_unit_capex = self.cost_values_json['FO_unit_capex'], 
                                           FO_labor = self.cost_values_json['FO_labor'], FO_chem_cost = self.cost_values_json['FO_chem_cost'], FO_goods_cost = self.cost_values_json['FO_goods_cost'], 
-                                          cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
+                                          insurance = self.cost_values_json['insurance'], 
                                           FO_SEC = self.cost_values_json['FO_SEC'], FO_capacity = self.design_output[2]['Value'], FO_STEC = self.design_output[8]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
                                           grid_usage = self.simu_output[7]['Value'], FO_fuel_usage = self.simu_output[8]['Value'],
                                           coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'],sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
@@ -930,9 +944,9 @@ class SamBaseClass(object):
                                           heat_cool_capacity = self.cost_values_json['heat_cool_capacity'], h_r = self.cost_values_json['h_r'], 
                                           h_r_capacity = self.cost_values_json['h_r_capacity'], tank = self.cost_values_json['tank'], 
                                           tank_capacity = self.cost_values_json['tank_capacity'], pump = self.cost_values_json['pump'], 
-                                          pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'], 
-                                   
-                                          cost_storage = self.cost_values_json['cost_storage'],  insurance = self.cost_values_json['insurance'], 
+                                          pump_capacity = self.cost_values_json['pump_capacity'], other = self.cost_values_json['other'],                                           
+                                          maintenance = self.cost_values_json['maintenance'], operational = self.cost_values_json['operational'],
+                                          insurance = self.cost_values_json['insurance'], 
                                           MDB_SEC = self.RO_MDB.MDB.SEEC[-1], MDB_capacity = self.design_output[3]['Value'], MDB_STEC = self.design_output[9]['Value'], disposal_cost = self.cost_values_json['disposal_cost'], 
                                           grid_usage = self.simu_output[7]['Value'], MDB_fuel_usage = self.simu_output[8]['Value'], coe = self.cost_values_json['coe'], solar_coe = self.cost_values_json['solar_coe'], solar_coh = self.cost_values_json['solar_coh'], coh = self.cost_values_json['coh'], sam_coe = self.sam_lcoe, sam_coh = self.sam_lcoh)
             self.cost_output = self.LCOW.lcow()

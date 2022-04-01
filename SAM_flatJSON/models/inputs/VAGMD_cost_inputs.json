@@ -87,6 +87,33 @@
         },
 		{
             "DataType": "SSC_NUMBER",
+            "Name": "maintenance",
+            "Label": "Maintenance cost (percentage of CAPEX)",
+            "Units": "%",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance",
+            "Label": "Insurance (percentage of CAPEX)",
+            "Units": "%",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "operational",
+            "Label": "Specific operational cost (chemical, labor and brine disposal)",
+            "Units": "$/m3",
+            "Require": "*",
+            "Costraint": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
             "Name": "cost_module_re",
             "Label": "Cost of module replacement",
             "Units": "$/m3",

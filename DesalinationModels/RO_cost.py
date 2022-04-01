@@ -35,7 +35,7 @@ class RO_cost(object):
                  solar_coe =  0,
                  chem_cost=0.05, # specific chemical cost ($/m3)
                  labor_cost=0.1,  # specific labor cost ($/m3)
-                 rep_rate=0.2,    # membrane replacement rate
+                 rep_rate=5,    # membrane replacement rate (yrs)
                  equip_cost_method='general', # Option 1:'general' capex breakdown by cost factor; Option 2: 'specify' equipment costs
                  sec= 2.5, # specific energy consumption (kwh/m3)
                  HP_pump_pressure=60, # high pressure pump discharge pressure (bar)
@@ -46,6 +46,7 @@ class RO_cost(object):
                  ERD_pressure=49  ,      # ERD pressure set to brine pressure entering (bar)  
                  disposal_cost=0.03,    # specific waste disposal cost($/m3)
                  IX_cost = 0.15, # ion-exchange cost ($/m3)
+                 insurance = 0.5, # insurance (percentage of CAPEX)
                  #coh = 0.01 , # Unit cost of heat ($/kWh)
                  #sam_coh = 0.02, # Unit cost of heat from SAM ($/kWh)
                  #solar_inlet = 85, # Solar field inlet temperature
@@ -67,8 +68,8 @@ class RO_cost(object):
         self.ERD_flowrate=ERD_flowrate
         self.ERD_pressure=ERD_pressure
         self.ann_prod=Prod * (1-downtime /100)
-        self.chem_cost=chem_cost
-        self.labor_cost=labor_cost
+        self.chem_cost=chem_cost 
+        self.labor_cost=labor_cost 
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
         # self.Pflux = Pflux
         self.Area = Area
@@ -80,9 +81,18 @@ class RO_cost(object):
         self.SEC=sec
         self.capacity=Capacity
         self.equip_cost_method=equip_cost_method
-        self.replacement_rate=rep_rate
+        
+        # calculate membrane replacement cost
+        rep_yr = rep_rate
+        self.replacement_rate = 0
+        while rep_yr < yrs:
+            self.replacement_rate += 1 / (1+int_rate) ** rep_yr
+            rep_yr += rep_rate              
+        self.replacement_rate *= CR_factor(yrs,int_rate)
         self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.ann_prod
-        self.disposal_cost=disposal_cost
+        
+        
+        self.disposal_cost=disposal_cost 
 #        self.HX_eff = HX_eff
         
         self.unit_capex = unit_capex
@@ -92,6 +102,7 @@ class RO_cost(object):
 #        self.th_module = th_module
 #        self.FFR = FFR
         self.IX_cost = IX_cost
+        self.insurance = insurance / 100
         self.coe = coe
         if solar_coe is None:
             self.sam_coe = sam_coe
@@ -137,7 +148,8 @@ class RO_cost(object):
             self.CAPEX =(self.EPC_cost +  self.cost_storage * self.storage_cap)*CR_factor(self.yrs,self.int_rate) / self.ann_prod
 
         self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
-        self.OPEX = (self.disposal_cost + self.chem_cost +self.labor_cost ) * self.EPC_cost / self.ann_prod + self.cost_elec + self.IX_cost  + self.membrane_replacement_cost#maintenance and membrane replacement
+        self.insurance_cost = self.EPC_cost * self.insurance / self.ann_prod
+        self.OPEX = self.disposal_cost + self.chem_cost +self.labor_cost + self.cost_elec + self.insurance_cost + self.IX_cost  + self.membrane_replacement_cost#maintenance and membrane replacement
 
         self.LCOW = self.CAPEX + self.OPEX
 

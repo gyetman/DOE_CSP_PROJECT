@@ -358,7 +358,6 @@ def FO(invalues):
     Mprod = invalues[0]
     capex = 26784 * Mprod ** (-0.428)
     labor = 0.04757 * Mprod ** (-0.178)
-    print(capex, labor)
     return [capex, labor]
 
 #%%
@@ -396,20 +395,22 @@ Model label: tcsdirect_steam
 # nLoops
 eqn06 = {
         'model': 'tcsdirect_steam',
-        'outputs': ['system_capacity'],
+        'outputs': ['system_capacity', 'q_pb_design', 'h_tower'],
         # , 'vol_tank'],
-        'inputs':['p_cycle_design',  'gross_to_net_eff'
+        'inputs':['p_cycle_design',  'gross_to_net_eff', 'eta_ref', 'THT'
                   ],
         'function': 'tcsdirect_steam'
         }
                                                                                     
 def tcsdirect_steam(invalues):
-    p_cycle_design,  gross_to_net_eff \
+    p_cycle_design,  gross_to_net_eff, eta_ref, THT \
     = invalues
 
-    system_capacity = p_cycle_design * 1000 * gross_to_net_eff
-
-    return [system_capacity]
+    system_capacity = p_cycle_design * gross_to_net_eff
+    q_pb_design = p_cycle_design / eta_ref
+    h_tower = THT
+    
+    return [system_capacity, q_pb_design, h_tower]
 
 #%%
 """
@@ -430,7 +431,7 @@ def tcsmolten_salt(invalues):
     P_ref,  gross_to_net_eff \
     = invalues
 
-    system_capacity = P_ref * gross_to_net_eff *1000
+    system_capacity = P_ref * gross_to_net_eff 
 
     return [system_capacity]
 

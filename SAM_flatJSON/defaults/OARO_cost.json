@@ -7,10 +7,12 @@
 	"oaro_cost": 50,
 	"ro_cost" : 30,
 	"downtime": 10,
-	"chem_cost": 0.01,
-	"labor_cost": 0.02,
+	"chem_cost": 0.03,
+	"labor_cost": 0.05,
+	"disposal_cost": 0.01,
+	"insurance": 0.5,
 	"practical_inv_factor":1.6,
-	"rep_rate": 0.15,
+	"rep_rate": 5,
 	"sec": 5,
 	"cost_storage": 150
 }

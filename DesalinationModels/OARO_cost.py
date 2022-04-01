@@ -12,7 +12,7 @@ Battery cost
 
 import numpy as np
 import math
-# from CostModels.desalinationcosts import CR_factor
+from CostModels.desalinationcosts import CR_factor
 
 
 class OARO_cost(object):
@@ -38,17 +38,21 @@ class OARO_cost(object):
                  sam_coe = 0.07,
                  downtime = 10, # Annual downtime percentage (%)
                  sec = 5.3, #
-                 chem_cost=0.01, # specific chemical cost ($/m3)
-                 labor_cost=0.02,  # specific labor cost ($/m3)
-                 rep_rate=0.15,    # membrane replacement 
+                 chem_cost=0.03, # specific chemical cost ($/m3)
+                 labor_cost=0.05,  # specific labor cost ($/m3)
+                 disposal_cost = 0.01, # specific disposal cost ($/m3)
+                 insurance = 0.5, # percentage of capex (%)
+                 rep_rate=5,    # membrane replacement 
                  practical_inv_factor = 1.6, # Practical investment factor to convert total equipment costs to total capital investment
                  storage_cap = 0, # Capacity of battery (kWh)
                  cost_storage = 26,
                  solar_coe = None,
                  ):
 
-        self.chem_cost=chem_cost
-        self.labor_cost=labor_cost
+        self.chem_cost=chem_cost 
+        self.labor_cost=labor_cost 
+        self.disposal_cost = disposal_cost
+        self.insurance = insurance / 100
         self.downtime = downtime #* (1-downtime) # Average daily operation hour (h/day)
         # self.Pflux = Pflux
         self.oaro_area = oaro_area
@@ -65,8 +69,14 @@ class OARO_cost(object):
         self.SEC=sec
         self.capacity=Capacity
 
-        self.replacement_rate=rep_rate
-        # self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.ann_prod
+        # calculate membrane replacement cost
+        rep_yr = rep_rate
+        self.replacement_rate = 0
+        while rep_yr < yrs:
+            self.replacement_rate += 1 / (1+int_rate) ** rep_yr
+            rep_yr += rep_rate              
+        self.replacement_rate *= CR_factor(yrs,int_rate)
+
         
         if solar_coe:
             self.sam_coe = solar_coe
@@ -85,34 +95,25 @@ class OARO_cost(object):
     def lcow(self):
 
         self.CAPEX = (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost + self.pumpcost + self.erdcost ) * self.practical_inv_factor
-        self.memrepcost = (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost) * self.replacement_rate
-        self.maintlaborcost = self.labor_cost * self.CAPEX
-        self.chemicost = self.chem_cost * self.CAPEX
+        self.memrepcost = (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost) * self.replacement_rate / self.ann_prod
+        self.maintlaborcost = self.labor_cost 
+        self.chemicost = self.chem_cost 
+        self.disposalcost = self.disposal_cost 
         self.energycost = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
         self.salmakeupcost = 0.025 *self.Ma* 3600* self.ann_prod/self.capacity
-        self.OPEX = (self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod + self.energycost
+        self.insurance_cost = self.insurance * self.CAPEX / self.ann_prod
+        self.OPEX = self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost + self.disposalcost + self.insurance_cost + self.energycost
         
+
         CR_factor = 1/((1 - (1 /(1 + self.int_rate ) ** self.yrs)) / self.int_rate )
         self.annualized_CAPEX = CR_factor * self.CAPEX / self.ann_prod
         
-#           self.equip_cost=
-#        self.other_cap = (5 * (self.num_modules/3)**0.6 + 5 * (self.num_modules/3)**0.5 + 3*(self.Feed/5)**0.6 + 15 *(self.num_modules/3)**0.3 + 0.25*5 + 2*5*(self.Feed/10)**0.6) *1.11
-#        self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap)
         self.cost_elec = self.SEC * (self.fuel_usage * self.coe + (1-self.fuel_usage) * self.sam_coe)
         
-       #### ADD disposal cost
         self.LCOW = self.annualized_CAPEX + self.OPEX 
-        # print('OARO',self.oaro_area)
-        # print('RO',self.ro_area)
-        # print('mem', self.oaro_area+self.ro_area)
-        # print('CAPEX', self.annualized_CAPEX)
+
         mem_capex = CR_factor * (self.oaro_area * self.oaro_cost + self.ro_area * self.ro_cost) / self.ann_prod
-        #print('Mem capex', mem_capex)
-        #print('Other CAPEX', self.annualized_CAPEX - mem_capex)
-        #print('Other OM: ',(self.memrepcost +  self.chemicost + self.maintlaborcost + self.salmakeupcost) / self.ann_prod)
-        #print('Energy cost', self.energycost)
-        # print('Electricity: ', self.energycost )
-#        self.test=(self.total_capex*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.ann_prod
+
         cost_output = []
         cost_output.append({'Name':'Desal Annualized CAPEX','Value':self.annualized_CAPEX,'Unit':'$/m3'})
         cost_output.append({'Name':'Desal OPEX','Value':self.OPEX,'Unit':'$/m3'})
@@ -123,10 +124,6 @@ class OARO_cost(object):
 
         return cost_output
     
-#    def pump_cost(pumppressure,pumpflowrate):
-#        pumpcapex=53*pumppressure*pumpflowrate
-#        return pumpcapex
-#    def cost_method(self):
     
     #%%
 # rocost=OARO_cost()

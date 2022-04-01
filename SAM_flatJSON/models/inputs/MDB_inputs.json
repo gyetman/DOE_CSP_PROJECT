@@ -91,7 +91,15 @@
             "Units": "second",
             "Require": "*",
             "Constraint": "<1101,>399"
-        },				
+        },	
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "PumpEff",
+            "Label": "Pump efficiency",
+            "Units": "%",
+            "Require": "*",
+            "Constraint": ""
+        },					
 		{
             "DataType": "SSC_NUMBER",
             "Name": "storage_hour",

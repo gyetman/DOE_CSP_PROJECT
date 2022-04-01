@@ -24,6 +24,8 @@ class RO_FO(object):
                  salinity=35, 
                  T_sw=15, 
                  
+                 battery_hour = 0,  # battery hours (hr)
+                 storage_hour = 0,  # thermal storage hours (hr)
                  # RO parameters
                  nERD=0.95,            # Energy recovery device efficiency
                  nBP=0.8,
@@ -57,7 +59,8 @@ class RO_FO(object):
                  is_first_stage = True, # include intake/feed pump powr requirement if first stage
                  pretreat_power = 1,  # kWh/m3 assumed for pretreatment
                  # FO parameters
-                 FO_salt_rej =0.95):
+                 FO_salt_rej =0.95,
+                 ):
         self.capacity = capacity
         self.RO_rr = RO_rr /100
         self.FO_rr = FO_rr /100

@@ -58,9 +58,25 @@
         },
 		{
             "DataType": "SSC_NUMBER",
+            "Name": "disposal_cost",
+            "Label": "Specific waste disposal cost",
+            "Units": "$/m3",
+            "Require": "",
+			"Tab": "Desalination"
+        },	
+		{
+            "DataType": "SSC_NUMBER",
+            "Name": "insurance",
+            "Label": "Insurance (Percentage of CAPEX)",
+            "Units": "%",
+            "Require": "",
+			"Tab": "Desalination"
+        },
+		{
+            "DataType": "SSC_NUMBER",
             "Name": "rep_rate",
-            "Label": "Membrane replacement rate",
-            "Units": "",
+            "Label": "Membrane replacement frequency",
+            "Units": "yrs",
             "Require": "",
 			"Tab": "Desalination"
         },	
@@ -86,14 +102,6 @@
             "Label": "Battery cost",
             "Units": "$/kWh",
             "Require": "*",
-			"Tab": "Desalination"
-        },	
-		{
-            "DataType": "SSC_NUMBER",
-            "Name": "disposal_cost",
-            "Label": "Specific waste disposal cost",
-            "Units": "$/m3",
-            "Require": "",
 			"Tab": "Desalination"
         },	
 		{

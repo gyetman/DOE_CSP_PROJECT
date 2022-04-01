@@ -112,7 +112,7 @@ class OARO(object):
             #     print("Cin=",sol['cin'])
             # print("Water Recovery Rate=",sol['rt'])
             # print("Solution recovery rate=",rtq)
-            print("LCOW=",LCOW,"$/m3")
+            # print("LCOW=",LCOW,"$/m3")
             # print("area=", sol['amj'],'m2')
             # print("Specialized membrane area =",sol['amk'])
             # print('pumpcost=', sol['pumptotalcostsum[{}]'.format(int(sol['nstage']))])

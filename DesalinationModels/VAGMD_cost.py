@@ -55,8 +55,10 @@ class VAGMD_cost(object):
                  other = 15* 1.2,  # Base price of controller, cabling and programming (k$/base capacity)
                  other_capacity = 3, # Base capacity of controller, cabling and programming (modules)
                  cost_storage = 26 , # Cost of thermal storage ($/kWh)
-                 storage_cap = 13422 # Capacity of thermal storage (kWh)     
-                 
+                 storage_cap = 13422, # Capacity of thermal storage (kWh)     
+                 insurance = 0.5,  # insurance (percentage of CAPEX)
+                 maintenance = 1.3, # percentage of CAPEX (%)
+                 operational = 0.1 # Specific operational cost ($/m3)
                  ):
         
         self.operation_hour = 24 #* (1-downtime) # Average daily operation hour (h/day)
@@ -106,7 +108,10 @@ class VAGMD_cost(object):
         self.pump_capacity = pump_capacity
         self.other = other
         self.other_capacity = other_capacity
-   
+        
+        self.insurance = insurance / 100
+        self.maintenance = maintenance / 100 
+        self.operationalcost = operational
         
     def lcow(self):
         self.module_cost = (self.MD_module*self.MD_module_capacity*(self.num_modules/self.MD_module_capacity)**0.8 + self.MD_membrane * self.Area * self.num_modules) 
@@ -119,13 +124,13 @@ class VAGMD_cost(object):
         self.other_cap = (self.h_r * (self.num_modules/self.h_r_capacity)**0.6 + self.tank * (self.num_modules/self.tank_capacity)**0.5 + self.pump*(self.Feed/self.pump_capacity)**0.6 + self.other *(self.num_modules/self.other_capacity)**0.3 + 0.25*5 + 2*self.heat_cool*(self.Feed/self.heat_cool_capacity)**0.6) 
         self.cost_sys = (self.module_cost + self.HX_cost + self.other_cap + self.cost_storage * self.storage_cap / 1000)
 
-        self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod+0.1) 
+        self.CAPEX = (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / (self.Prod) 
         
         self.cost_elec = self.SEEC * self.coe
-        self.other_OM = self.CAPEX  *0.018
-        self.insurance = self.CAPEX *0.005 
+        self.maintenancecost = self.cost_sys*1000   * self.maintenance / (self.Prod)
+        self.insurancecost = self.cost_sys*1000 * self.insurance / (self.Prod)
         self.cost_th = self.STEC * (self.fuel_usage * self.coh + (1-self.fuel_usage) * self.sam_coh)
-        self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.other_OM + self.insurance
+        self.OPEX = self.cost_elec + self.cost_th + self.cost_module_re + self.maintenancecost + self.insurancecost + self.operationalcost
         
         self.LCOW = self.CAPEX + self.OPEX
         

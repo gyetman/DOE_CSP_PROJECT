@@ -942,7 +942,8 @@ def update_model_variables_and_run_model(n_clicks, solTableData, desTableData, f
                           finance_file=finance_model_outfile_path,
                       timestamps = timestamp)
                 print('model finished')
-            except:
+            except Exception as e:
+                print(e)
                 print('Model simulation failed, please check if the inputs are legit')
                 return (   (html.Div([
                             html.H5('Simulation failed; refresh the page and check the validity of your inputs.', className='text-primary'),

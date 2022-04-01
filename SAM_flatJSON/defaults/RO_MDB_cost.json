@@ -8,8 +8,8 @@
 	"Area" : 40.8,
 	"membrane_cost" : 30,
 	"pressure_vessel_cost": 1000,
-	"chem_cost": 0.03,
-	"labor_cost": 0.05,
+	"chem_cost": 0.015,
+	"labor_cost": 0.025,
 	"rep_rate": 5,
 	"equip_cost_method": "general",
 	"unit_capex": null,
@@ -42,5 +42,7 @@
 	"coe": 0.05,
 	"coh": 0.01,
 	"solar_coh": null,
-	"sam_coh": 0.01
+	"sam_coh": 0.01,
+	"maintenance": 1.3,
+	"operational": 0.1
 }

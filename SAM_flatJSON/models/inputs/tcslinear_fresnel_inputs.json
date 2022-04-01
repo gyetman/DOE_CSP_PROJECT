@@ -1,6 +1,33 @@
 {
     "tcslinear_fresnel": [
         {
+            "DataType": "SSC_NUMBER",
+            "Name": "enable_interconnection_limit",
+            "Label": "Enable interconnection limit (0: Disable, 1: Enable)",
+            "Units": "0/1",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "grid_interconnection_limit_kwac",
+            "Label": "Grid interconnection limit",
+			"Units": "kWac",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "grid_curtailment",
+            "Label": "Curtailment",
+			"Units": "MW",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Curtailment"
+        },
+        {
             "DataType": "SSC_STRING",
             "Name": "file_name",
             "Label": "Local weather file path",

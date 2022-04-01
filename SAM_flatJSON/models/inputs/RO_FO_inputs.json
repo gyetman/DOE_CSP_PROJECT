@@ -44,16 +44,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "storage_hour",
-            "Label": "Battery storage hours",
-            "Units": "hour",
-            "Require": "*",
-            "Costraint": ">0",
-            "Tab": "RO",
-            "Section": "Design Point of the System"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "nERD",
             "Label": "Energy recovery device efficiency",
             "Require": "*",

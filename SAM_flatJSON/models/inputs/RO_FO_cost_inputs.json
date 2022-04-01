@@ -30,8 +30,8 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "insurance",
-            "Label": "Insurance",
-            "Units": "% of the capital cost",
+            "Label": "Insurance (Percentage of CAPEX)",
+            "Units": "%",
             "Require": "",
 			"Tab": "Desalination",
 			"Section": "General"
@@ -72,15 +72,6 @@
 			"Tab": "Desalination",
 			"Section": "Cost of RO"
         },	
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "cost_storage",
-            "Label": "Thermal storage cost",
-            "Units": "$/kWh",
-            "Require": "*",
-			"Tab": "Desalination",
-			"Section": "General"
-        },		
 		{
             "DataType": "SSC_NUMBER",
             "Name": "disposal_cost",

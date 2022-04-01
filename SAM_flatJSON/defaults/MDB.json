@@ -12,5 +12,6 @@
 	"j": "c",
 	"Ttank": 25,
 	"TCoolIn": 15,
+	"PumpEff": 60,
 	"dt": 60
 }

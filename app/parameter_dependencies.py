@@ -134,6 +134,7 @@ functions_per_model = {
 #     Output({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'},'data'),
 #     [Input({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp'),Input({'type':'solar-table', 'index': 'Power_CycleOperationGeneral', 'model': 'tcslinear_fresnel'}, 'data_timestamp')],
 #     [State({'type':'solar-table', 'index': 'Power_CycleAvaialability_and_CurtailmentGeneral', 'model': 'tcslinear_fresnel'}, 'data')],
+
 def convert_strings_to_literal(v):
     '''converts some string values to their literal values'''
     #arrays and matrices need to be converted back from string

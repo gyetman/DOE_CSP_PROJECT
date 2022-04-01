@@ -18,6 +18,7 @@
 	"nFP": 0.8,
 	"Fossil_f": 0,
 	"storage_hour": 0,
+	"battery_hour": 0,
 	"Qpnom1": 27.3,
 	"Am1": 40.8,
 	"Pmax1":82.7,

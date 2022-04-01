@@ -195,3 +195,32 @@ def SW_SpcHeat(T,uT,S,uS,P,uP):
     cp = cp_sw_P0 + cp_sw_P    
     
     return cp
+
+
+def BPE(dT, dS):
+    if dT < 0 or dS > 200 or dS < 0 or dS > 120:
+        return False
+    T = dT
+    S = dS / 1000
+    a1, a2, a3, a4, a5, a6 = -0.00045838530457, 0.28230948284, 17.945189194, 0.00015361752708, 0.052669058133, 6.5604855793
+    AA = a1 * T**2 + a2 * T + a3
+    BB = a4 * T**2 + a5 * T + a6
+    SW_BPE = AA*S**2 + BB * S
+    
+    return SW_BPE
+
+def SW_Enthalpy(dT, dS):
+    if dT < 10 or dT > 120 or dS < 0 or dS > 120:
+        return False
+    T = dT
+    S = dS / 1000
+    b1, b2, b3, b4, b5, b6, b7, b8, b9, b10 = -23482.5, 315183, 2802690, -14460600, 7826.07, -44.1733, 0.21394, -19910.8, 27784.6, 97.2801
+    
+    h_w = 141.355 + 4202.07 * T - 0.535 * T ** 2 + 0.004 * T ** 3
+    SW_Enthalpy = h_w - S * (b1 + b2 * S + b3 * S ** 2 + b4 * S ** 3 + b5 * T + b6 * T ** 2 + b7 * T ** 3 + b8 * S * T + b9 * S ** 2 * T + b10 * S * T ** 2)
+    SW_Enthalpy = h_w - S * (b1 + b2 * S + b3 * S ** 2 + b4 * S ** 3 + b5 * T + b6 * T ** 2 + b7 * T ** 3 + b8 * S * T + b9 * S ** 2 * T + b10 * S * T ** 2)
+
+    return SW_Enthalpy
+
+    
+    

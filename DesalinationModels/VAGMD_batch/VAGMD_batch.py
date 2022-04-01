@@ -30,7 +30,7 @@ class VAGMD_batch(object):
         
         Capacity = 1000, # System Capcity (m3/day)
         Fossil_f = 1, # Fossil fuel fraction
-        
+        PumpEff = 60, # Pump efficiency
         j = 'c', # cooling system: 'c' for closed, 'o' for open
         Ttank = 25, # Initial temeprature of the saline feed
         TCoolIn = 15, # Initial tmeeprature of the cooling water
@@ -52,6 +52,7 @@ class VAGMD_batch(object):
         self.Ttank = Ttank
         self.TCoolIn = TCoolIn
         self.dt = dt
+        self.PumpEff = PumpEff / 100
         self.base_path = Path(__file__).resolve().parent.parent.parent.absolute()
 
     def design(self):
@@ -143,10 +144,10 @@ class VAGMD_batch(object):
         self.TCI = [self.TCI_r]
         self.Ttank = [self.Ttank]
         
-        EffPumpFFR = 0.6
-        EffPumpCFR = 0.6
+        EffPumpFFR = self.PumpEff
+        EffPumpCFR = self.PumpEff
         APdropCFR = 170 # mbar
-        self.ElPowerCooling = [(8.3140/(1013.25*0.082*3600*1000))*(APdropCFR/EffPumpCFR)*(self.CFR)]
+        self.ElPowerCooling = [(8.3140/(1013.25*0.082*3600*1000))*(APdropCFR/ EffPumpCFR)*(self.CFR)]
         self.APdropFFR  = [c0 + c1 * self.FFR_r + c2 * self.S[0] + c3 * self.FFR_r * self.S[0] + c4 * self.FFR_r**2 + c5 * self.S[0]**2]
         self.ElPowerFeed = [(8.3140/(1013.25*0.082*3600*1000)) *(self.APdropFFR[0] / EffPumpFFR) * (self.FFR_r)]
         self.ElPower = [self.ElPowerFeed[0] + self.ElPowerCooling[0]]
@@ -205,8 +206,7 @@ class VAGMD_batch(object):
             self.ElEnergy.append( self.ElPower[-2] * (self.t[-1] - self.t[-2]))
             self.AccElEnergy.append(self.ElEnergy[-1] + self.AccElEnergy[-1])
             self.SEEC.append(self.AccElEnergy[-1] / (self.AccVd[-1] / 1000))
-            
-
+              
         
         self.output = np.array([[i for i in range(len(self.STEC))], self.tminute, self.V, self.AccVd, self.S, self.PFlux, self.R, self.ThEnergy, self.CEnergy])
         self.df = pd.DataFrame(data=self.output,  index=['Step',                                                

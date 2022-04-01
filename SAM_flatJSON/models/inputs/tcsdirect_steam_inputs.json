@@ -1,6 +1,33 @@
 {
     "tcsdirect_steam": [
         {
+            "DataType": "SSC_NUMBER",
+            "Name": "enable_interconnection_limit",
+            "Label": "Enable interconnection limit (0: Disable, 1: Enable)",
+            "Units": "0/1",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_NUMBER",
+            "Name": "grid_interconnection_limit_kwac",
+            "Label": "Grid interconnection limit",
+			"Units": "kWac",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Interconnection Limit"
+        },
+        {
+            "DataType": "SSC_ARRAY",
+            "Name": "grid_curtailment",
+            "Label": "Curtailment",
+			"Units": "MW",
+            "Require": "?",
+            "Tab": "Grid Limits",
+			"Section": "Grid Curtailment"
+        },
+        {
             "DataType": "SSC_STRING",
             "Name": "file_name",
             "Label": "local weather file path",
@@ -11,9 +38,19 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "p_cycle_design",
+            "Label": "Design turbine gross output (> 30)",
+            "Units": "MW",
+            "Group": "dsg_controller",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "system_capacity",
-            "Label": "Nameplate capacity (automatically calculated)",
-            "Units": "kW",
+            "Label": "Net nameplate capacity (automatically calculated)",
+            "Units": "MWe",
             "Group": "direct steam tower",
             "Require": "*",
             "Tab": "Power Cycle",
@@ -205,7 +242,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "hel_stow_deploy",
-            "Label": "Stow/deploy elevation",
+            "Label": "heliostat stow/deploy angle",
             "Units": "deg",
             "Group": "heliostat",
             "Require": "*",
@@ -215,7 +252,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "v_wind_max",
-            "Label": "Max. wind velocity",
+            "Label": "Wind stow speed",
             "Units": "m/s",
             "Group": "heliostat",
             "Require": "*",
@@ -316,7 +353,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_0",
-            "Label": "Attenuation coefficient 0",
+            "Label": "Polynomial coefficient 0",
             "Group": "heliostat",
             "Require": "?=0.006789",
             "Tab": "Heliostat Field",
@@ -325,7 +362,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_1",
-            "Label": "Attenuation coefficient 1",
+            "Label": "Polynomial coefficient 1",
             "Group": "heliostat",
             "Require": "?=0.1046",
             "Tab": "Heliostat Field",
@@ -334,7 +371,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_2",
-            "Label": "Attenuation coefficient 2",
+            "Label": "Polynomial coefficient 2",
             "Group": "heliostat",
             "Require": "?=-0.0107",
             "Tab": "Heliostat Field",
@@ -343,7 +380,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "c_atm_3",
-            "Label": "Attenuation coefficient 3",
+            "Label": "Polynomial coefficient 3",
             "Group": "heliostat",
             "Require": "?=0.002845",
             "Tab": "Heliostat Field",
@@ -435,12 +472,12 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "THT",
-            "Label": "The height of the tower (hel. pivot to rec equator)",
+            "Label": "Tower height",
             "Units": "m",
             "Group": "receiver",
             "Require": "*",
             "Tab": "Tower and Receiver",
-            "Section": "Thermal Design & Operation"
+            "Section": "Tower"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -770,7 +807,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "fossil_mode",
-            "Label": "Fossil model: 1=Normal, 2=Supplemental",
+            "Label": "Fossil dispatch model: 1=Minimum backup level, 2=Supplemental operation",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
@@ -780,9 +817,19 @@
         },
         {
             "DataType": "SSC_NUMBER",
+            "Name": "eta_ref",
+            "Label": "Reference conversion efficiency at design condition",
+            "Units": "none",
+            "Group": "powerblock",
+            "Require": "*",
+            "Tab": "Power Cycle",
+            "Section": "Plant Design"
+        },
+        {
+            "DataType": "SSC_NUMBER",
             "Name": "q_pb_design",
-            "Label": "Heat rate into powerblock at design",
-            "Units": "MW",
+            "Label": "Design thermal input power (automatically calculated)",
+            "Units": "MWt",
             "Group": "dsg_controller",
             "Require": "*",
             "Tab": "Power Cycle",
@@ -814,8 +861,7 @@
             "Units": "m",
             "Group": "dsg_controller",
             "Require": "*",
-            "Tab": "Tower and Receiver",
-            "Section": "Tower"
+            "Tab": "Auxiliary (Not used)"
         },
         {
             "DataType": "SSC_NUMBER",
@@ -971,16 +1017,6 @@
         },
         {
             "DataType": "SSC_NUMBER",
-            "Name": "p_cycle_design",
-            "Label": "Design turbine gross output (> 30)",
-            "Units": "MW",
-            "Group": "dsg_controller",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Design"
-        },
-        {
-            "DataType": "SSC_NUMBER",
             "Name": "gross_to_net_eff",
             "Label": "Estimated gross to net conversion factor",
             "Units": "",
@@ -992,7 +1028,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "ct",
-            "Label": "Cooling Type",
+            "Label": "Cooling Type (1: Evaporative, 2: Air-cooled, 3: Hybrid)",
             "Units": "-",
             "Group": "dsg_controller",
             "Require": "*",
@@ -1327,16 +1363,6 @@
             "Name": "P_ref",
             "Label": "Reference output electric power at design condition",
             "Units": "MW",
-            "Group": "powerblock",
-            "Require": "*",
-            "Tab": "Power Cycle",
-            "Section": "Plant Design"
-        },
-        {
-            "DataType": "SSC_NUMBER",
-            "Name": "eta_ref",
-            "Label": "Reference conversion efficiency at design condition",
-            "Units": "none",
             "Group": "powerblock",
             "Require": "*",
             "Tab": "Power Cycle",

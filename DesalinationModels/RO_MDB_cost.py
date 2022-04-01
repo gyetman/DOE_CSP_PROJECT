@@ -98,8 +98,10 @@ class RO_MDB_cost(object):
                  sam_coh = 0.02, # $/kWh
                  coh = 0.01, # $/kWh
                  MDB_fuel_usage = 0, # %
-                 downtime = 10  # % 
+                 downtime = 10,  # % 
 
+                 maintenance = 1.3, # MD maintenance cost (% of CAPEX)
+                 operational = 0.1, # specific operational cost (chemical, labor and disposal)
                  
                  ):
         self.HP_pump_pressure=HP_pump_pressure
@@ -123,8 +125,20 @@ class RO_MDB_cost(object):
         self.SEC=sec
         self.capacity=Capacity
         self.equip_cost_method=equip_cost_method
-        self.replacement_rate=1 / rep_rate
+        
+        self.maintenance = maintenance / 100
+        self.operational = operational
+        
+        # calculate RO membrane replacement cost
+        rep_yr = rep_rate
+        self.replacement_rate = 0
+        while rep_yr < yrs:
+            self.replacement_rate += 1 / (1+int_rate) ** rep_yr
+            rep_yr += rep_rate              
+        self.replacement_rate *= CR_factor(yrs,int_rate)
         self.membrane_replacement_cost=self.membrane_cost*self.total_area*self.replacement_rate/self.Prod
+         
+        
         self.disposal_cost=disposal_cost
 #        self.HX_eff = HX_eff
         self.unit_capex = unit_capex
@@ -186,6 +200,7 @@ class RO_MDB_cost(object):
         self.MDB_STEC = MDB_STEC
                 
     def lcow(self):
+# RO capital cost
         if self.equip_cost_method=='specify':
             self.total_module_cost = self.total_area*self.membrane_cost + self.NV*self.pressure_vessel_cost
             self.HPpump_cost=53*self.HP_pump_flowrate*self.HP_pump_pressure
@@ -194,7 +209,7 @@ class RO_MDB_cost(object):
     #        self.ERD_cost=
 #            self.other_equip_cost=
 #            self.equip_cost=self.HPpump_cost + self.BPpump_cost +self.ERD_cost + self.other_equip_cost
-            self.CAPEX = self.total_module_cost*CR_factor(self.yrs,self.int_rate) / self.ann_prod
+            self.CAPEX = self.total_module_cost*CR_factor(self.yrs,self.int_rate) / self.Prod
 #           (self.cost_sys*1000*self.int_rate*(1+self.int_rate)**self.yrs) / ((1+self.int_rate)**self.yrs-1) / self.Prod
             self.unit_capex=self.total_module_cost/self.capacity  
 #        elif self.equip_cost_method=='general':
@@ -231,11 +246,14 @@ class RO_MDB_cost(object):
 # RO OM cost        
         self.RO_OPEX = self.disposal_cost+self.cost_elec+self.chem_cost +self.labor_cost + self.membrane_replacement_cost#maintenance and membrane replacement
 # MDB OM cost        
-        self.other_OM = self.MDB_CAPEX  *0.018 / self.Prod
-        self.MDB_OPEX = self.cost_module_re + self.other_OM + self.cost_heat
+
+        self.MD_maintenancecost = self.cost_sys*1000   * self.maintenance / (self.Prod)
+        self.MDB_OPEX = self.cost_module_re + self.MD_maintenancecost + self.cost_heat + self.operational
  
-        self.OPEX = self.RO_OPEX + self.MDB_OPEX
-        self.insurance_cost = (self.RO_CAPEX + self.MDB_CAPEX ) * self.insurance / (self.Prod)
+# LCOW
+        self.insurance_cost = (self.EPC_cost + self.cost_sys*1000 ) * self.insurance / (self.Prod)
+        self.OPEX = self.RO_OPEX + self.MDB_OPEX + self.insurance_cost
+
         #### ADD disposal cost
         self.CAPEX = (self.RO_CAPEX + self.MDB_CAPEX ) / self.Prod
         self.LCOW = self.CAPEX + self.OPEX + self.insurance_cost

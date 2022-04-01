@@ -218,7 +218,7 @@
         {
             "DataType": "SSC_NUMBER",
             "Name": "enable_interconnection_limit",
-            "Label": "Input 1 to enable grid interconnection limit",
+            "Label": "Enable interconnection limit (0: Disable, 1: Enable)",
             "Units": "0/1",
             "Meta": "Enable a grid interconnection limit",
             "Group": "GridLimits",
