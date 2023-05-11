@@ -9,7 +9,10 @@ from apps import analysis_report, chart_results, homepage, model_selection, mode
 
 layout = html.Div([
     dcc.Location(id='url', refresh=True),
-    html.Div(id='page-content')
+    html.Div(id='page-content'),
+    dcc.Store(id='session',storage_type='session',
+              data=[{'test':'somedata'}, 
+                    {'test2':'moredata'}]),
 ])
 app.layout = layout
 app.title = 'Solar Desalination Analysis Tool'
