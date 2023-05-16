@@ -323,12 +323,17 @@ def click_coord(coords):
         Output(SITE_DETAILS2, 'children'),
         Output("closest-facilities", 'children'),
         Output(QUERY_STATUS, 'children'),
-        Output(LINKS, 'children')
+        Output(LINKS, 'children'),
+        Output('session', 'data'),
     ],
     [Input(MAP_ID, 'click_lat_lng')],
     prevent_initial_call=True)
 
 def get_point_info(lat_lng):
+    # prevent_initial_call not working, not sure why
+    if lat_lng is None:
+        return None, [None,None,None,None], None, None, None
+    ## Temporarily returning closest to store in session! 
     markdown, links = pointLocationLookup.lookupLocation(lat_lng)
     markdown = dcc.Markdown(markdown)
     #markdown = pointLocationLookup.lookupLocation(lat_lng)
@@ -339,18 +344,18 @@ def get_point_info(lat_lng):
         
     closest = pointLocationLookup.getClosestInfrastructure(lat_lng)
     if not closest:
-        return markdown, [None,None,None,None], None, links
+        return markdown, [None,None,None,None], None, links, None
     elif 'plant' in closest.keys():
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])          
         plant = dl.Polyline(positions=[lat_lng,closest['plant']], color='#ffa500', children=[dl.Tooltip("Power Plant")])
         canal = dl.Polyline(positions=[lat_lng,closest['canal']], color='#add8e6', children=[dl.Tooltip("Canal/Piped Water")])
         water = dl.Polyline(positions=[lat_lng,closest['water']], color='#000000', children=[dl.Tooltip("Water Network Proxy")])
-        return markdown, [desal,plant,canal,water], None, links
+        return markdown, [desal,plant,canal,water], None, links, closest
     elif 'desal' in closest.keys():
         desal = dl.Polyline(positions=[lat_lng,closest['desal']], color='#FF0000', children=[dl.Tooltip("Desal Plant")])
-        return markdown, [desal,None,None,None], None, links
+        return markdown, [desal,None,None,None], None, links, closest
     else:
-        return markdown, [None,None,None,None], None, links
+        return markdown, [None,None,None,None], None, links, closest
 
         
 @app.callback(
