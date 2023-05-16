@@ -318,7 +318,7 @@ def click_coord(coords):
         return [0,0]
     else:
         return coords
-
+ 
 @app.callback([
         Output(SITE_DETAILS2, 'children'),
         Output("closest-facilities", 'children'),
@@ -334,7 +334,12 @@ def get_point_info(lat_lng):
     if lat_lng is None:
         return None, [None,None,None,None], None, None, None
     ## Temporarily returning closest to store in session! 
-    markdown, links = pointLocationLookup.lookupLocation(lat_lng)
+    markdown, links, mapJson = pointLocationLookup.lookupLocation(lat_lng)
+    print('!!!!!!!!!!!!!!!!!!!!!')
+    print()
+    print(mapJson)
+    print()
+    print('!!!!!!!!!!!!!!!')
     markdown = dcc.Markdown(markdown)
     #markdown = pointLocationLookup.lookupLocation(lat_lng)
     # print(f'Links: {links}')

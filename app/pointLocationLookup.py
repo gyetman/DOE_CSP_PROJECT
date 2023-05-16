@@ -265,10 +265,16 @@ def lookupLocation(pt, mapTheme='default', verbose=False):
     # update the map data JSON file
     logging.info('Updating map json')
     logging.info(closestFeatures.keys())
-    _updateMapJson(closestFeatures, pt)
-    # return the markdown
-    return(_generateMarkdown(mapTheme,closestFeatures,pt))
-    #return(_generateMarkdown(mapTheme,closestFeatures,pt))
+
+    mapJson = _paramsToJson(closestFeatures, pt)
+    logging.info('Generating markdown')
+    mdown, links = _generateMarkdown(mapTheme,closestFeatures,pt)
+    return(mdown, links, mapJson)
+
+    # _updateMapJson(closestFeatures, pt)
+    # # return the markdown
+    # return(_generateMarkdown(mapTheme,closestFeatures,pt))
+    # #return(_generateMarkdown(mapTheme,closestFeatures,pt))
 
 def getClosestInfrastructure(pnt):
     ''' Get the closest desal and power plant locations '''
@@ -581,7 +587,7 @@ def _generateMarkdown(theme, atts, pnt):
     return(mdown, links)
 
 def _updateMapJson(atts, pnt):
-
+    '''deprecated, use _paramsToJson() instead'''
     mParams = dict()
     # update dictionary
     wx = atts['weatherFile']['properties']
@@ -632,6 +638,48 @@ def _updateMapJson(atts, pnt):
         helpers.json_update(data=mParams, filename=cfg.map_json)
     except FileNotFoundError:
         helpers.initialize_json(data=mParams, filename=cfg.map_json)
+
+def _paramsToJson(atts, pnt):
+    ''' takes the results of the lookups, calculates distances, and puts it all in a dictionary'''
+    mParams = dict()
+    # update dictionary
+    wx = atts['weatherFile']['properties']
+    mParams['file_name'] = str(cfg.weather_path / wx.get('filename'))
+    # logging.info(atts['waterPrice']['properties'])
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot100M3CurrUSD')
+    # mParams['water_price_res'] = dfAtts.Avg_F5000gal_res_perKgal.values[0]
+    mParams['latitude'] = pnt[0]
+    mParams['longitude'] = pnt[1]
+    if atts['desalPlants']:
+        desal_pt = [atts['desalPlants']['properties'].get('Latitude'),atts['desalPlants']['properties'].get('Longitude')]
+        mParams['dist_desal_plant'] = _calcDistance(pnt,desal_pt)
+    else:
+        mParams['dist_desal_plant'] = None
+    if atts['powerPlants']:
+        power_pt = [atts['powerPlants']['geometry']['coordinates'][1],atts['powerPlants']['geometry']['coordinates'][0]]
+        mParams['dist_power_plant'] = _calcDistance(pnt,power_pt)
+    else:
+        mParams['dist_power_plant'] = None
+
+    # mParams['dist_water_network'] = dfAtts.WaterNetworkDistance.values[0] / 1000
+    mParams['ghi'] = atts.get('ghi')
+    mParams['dni'] = atts.get('dni')
+    if atts['waterProxy']:
+        water_pt = [atts['waterProxy']['properties'].get('POINT_Y'), atts['waterProxy']['properties'].get('POINT_X')]
+        mParams['dist_water_network'] = _calcDistance(pnt,water_pt)
+    else:
+        mParams['dist_water_network'] = None
+
+    mParams['state'] = wx.get('State')
+    mParams['city'] = wx.get('City')
+    mParams['Country'] = wx.get('Country')
+    mParams['water_price'] = atts['waterPrice']['properties'].get('CalcTot100M3CurrUSD')
+
+    mParams['latitude'] = pnt[0]
+    mParams['longitude'] = pnt[1]
+
+    return mParams
+    
 
 if __name__ == '__main__':
     ''' main method for testing/development '''
